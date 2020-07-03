@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_parent_progress"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    android:background="@drawable/round_border_white"
+    android:layout_gravity="center"
+    >
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Small.MultiplePulse"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:padding="@dimen/d_10dp"
+        app:SpinKit_Color="@color/c_blue" />
+
+    <TextView
+        android:id="@+id/tv_appname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spin_kit"
+        android:layout_marginStart="@dimen/d_10dp"
+        android:layout_marginEnd="@dimen/d_10dp"
+        android:layout_marginBottom="@dimen/d_8dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:gravity="center"
+        android:padding="@dimen/d_4dp"
+        android:text="@string/s_loading"
+        android:textColor="@color/c_gray_text"
+        android:textSize="@dimen/text_size_16" />
+
+</RelativeLayout>
+

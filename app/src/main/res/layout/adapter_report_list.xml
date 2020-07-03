@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/c_white"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/d_10dp"
+        android:layout_marginLeft="@dimen/d_10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_audittype"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6.5"
+                android:text="Audit Type"
+                android:gravity="left"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:fontFamily="@font/nunitosans_semibold"
+                android:padding="@dimen/d_4dp"
+                android:maxLines="1"
+                android:textColor="@color/c_dark_gray"
+                android:textSize="@dimen/text_size_16"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.5"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Score:"
+                    android:gravity="right"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:fontFamily="@font/nunitosans_semibold"
+                    android:padding="@dimen/d_4dp"
+                    android:maxLines="1"
+                    android:textColor="@color/c_gray_text"
+                    android:textSize="@dimen/text_size_16"/>
+                <TextView
+                    android:id="@+id/tv_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="48%"
+                    android:gravity="left"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:fontFamily="@font/nunitosans_semibold"
+                    android:maxLines="1"
+                    android:textColor="@color/c_blue"
+                    android:textSize="@dimen/text_size_14"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_auditname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ABC audit"
+            android:gravity="left"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:padding="@dimen/d_4dp"
+            android:maxLines="1"
+            android:textColor="@color/c_gray_text"
+            android:textSize="@dimen/text_size_16"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_auditid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ABC audit (ID :076567)"
+                android:gravity="left"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:fontFamily="@font/nunitosans_semibold"
+                android:padding="@dimen/d_4dp"
+                android:maxLines="1"
+                android:textColor="@color/c_gray_text"
+                android:textSize="@dimen/text_size_14"/>
+            <TextView
+                android:id="@+id/tv_non_compliance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Non-compliances: 4"
+                android:gravity="right"
+                android:visibility="invisible"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:fontFamily="@font/nunitosans_semibold"
+                android:padding="@dimen/d_4dp"
+                android:maxLines="1"
+                android:textColor="@color/c_red"
+                android:textSize="@dimen/text_size_14"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Friday, April 16,2020 09 AM"
+            android:gravity="left"
+            android:fontFamily="@font/nunitosans_regular"
+            android:padding="@dimen/d_4dp"
+            android:textColor="@color/c_gray_text"
+            android:textSize="@dimen/text_size_14"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6.5"
+                android:text="Dwaraka New Delhi"
+                android:gravity="left"
+                android:fontFamily="@font/nunitosans_regular"
+                android:padding="@dimen/d_4dp"
+                android:textColor="@color/c_gray_text"
+                android:textSize="@dimen/text_size_14"/>
+
+            <TextView
+                android:id="@+id/tv_auditorname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.5"
+                android:text="Jasmeeet"
+                android:gravity="left"
+                android:fontFamily="@font/nunitosans_semibold"
+                android:padding="@dimen/d_4dp"
+                android:textColor="@color/c_gray_text"
+                android:textSize="@dimen/text_size_14"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+    <View
+        android:id="@+id/view_devider"
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:layout_marginTop="@dimen/size_2dp"
+        android:layout_below="@+id/ll_parent"
+        android:background="@color/c_light_gray"/>
+
+</LinearLayout>

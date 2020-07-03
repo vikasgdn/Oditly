@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/d_2dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:id="@+id/ll_sub_section_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/na_status_border"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_sub_section_icon"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginTop="@dimen/d_5dp"
+            android:src="@mipmap/completed_status" />
+
+        <TextView
+            android:id="@+id/tv_sub_section_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_brand_standard"
+            android:gravity="center"
+            android:minLines="2"
+            android:maxLines="2"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/d_3dp"
+            android:layout_marginEnd="@dimen/d_3dp"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_12" />
+
+        <TextView
+            android:id="@+id/tv_question_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Question : 20/20"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_12" />
+
+        <TextView
+            android:id="@+id/tv_question_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5/12"
+            android:textAlignment="center"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_10" />
+
+        <CheckBox
+            android:id="@+id/cb_brand_standard_na"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:buttonTint="@color/c_light_gray"
+            android:scaleY="0.7"
+            android:scaleX="0.7"
+            android:fontFamily="@font/nunitosans_regular"
+            android:layout_marginEnd="5dp"
+            android:text="@string/s_na" />
+
+        <TextView
+            android:id="@+id/tv_sub_section_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_start"
+            android:padding="@dimen/d_5dp"
+            android:layout_margin="@dimen/d_1dp"
+            android:textAlignment="center"
+            android:background="@color/c_light_gray_max"
+            android:textColor="@color/c_green"
+            android:textSize="@dimen/text_size_14" />
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

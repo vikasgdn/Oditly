@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/d_10dp"
+    android:background="@color/colorWhite">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_attached_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d_120dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/button_border_blue" />
+
+            <ImageButton
+                android:id="@+id/edit_image"
+                android:layout_width="wrap_content"
+                android:padding="@dimen/d_5dp"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_edit"/>
+
+        </RelativeLayout>
+
+
+
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/d_5dp"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_size_14"
+            android:minLines="6"
+            android:gravity="top"
+            android:hint="@string/text_enter_desc"
+            android:background="@drawable/attachment_description_border" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/d_30dp"
+            android:paddingEnd="@dimen/d_30dp"
+            android:layout_marginTop="@dimen/d_20dp">
+
+            <TextView
+                android:id="@+id/tv_submit_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/text_submit"
+                android:layout_weight="1"
+                android:padding="@dimen/d_5dp"
+                android:textColor="@color/colorWhite"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:background="@drawable/button_border_blue"
+                android:textSize="@dimen/d_14dp" />
+
+            <TextView
+                android:id="@+id/tv_cancel_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:padding="@dimen/d_5dp"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/d_20dp"
+                android:textColor="@color/colorWhite"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:background="@drawable/button_border_blue"
+                android:textSize="@dimen/text_size_14" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

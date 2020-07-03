@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MultiSpinnerSearch">
+        <attr name="hintText" format="string" />
+    </declare-styleable>
+
+    <!--START - MULTIPLE THEMES-->
+    <!--Android theme Ref : https://github.com/zouliping/AndroidNightMode,-->
+    <!--Ref : https://github.com/dersoncheng/MultipleTheme (Using this one in this project)-->
+    <!--Ref : https://github.com/codepath/android_guides/wiki/Developing-Custom-Themes-->
+
+    <attr name="mtrl_textinput_default_box_stroke_color" format="reference|color"/>
+
+    <attr name="mainLayoutBGColor" format="reference|color"/>
+    <attr name="cardBGColor" format="color"/>
+    <attr name="listItemBGColor" format="color"/>
+
+    <attr name="headerTextColor" format="color"/>
+    <attr name="textColor" format="color"/>
+    <attr name="textColorSubtitle" format="color"/>
+    <attr name="textColorPrice" format="color"/>
+    <attr name="textColorTimeStamp" format="color"/>
+    <attr name="hintColor" format="color"/>
+
+    <attr name="textColorSpecial" format="color"/>
+    <attr name="buttonTextColorSpecial" format="color"/>
+    <attr name="buttonBGColorSpecial" format="color"/>
+
+    <attr name="buttonBGColor" format="color"/>
+    <attr name="buttonTextColor" format="color"/>
+
+    <attr name="tabLayoutBGColor" format="color"/>
+    <attr name="tabSelectedTextColor" format="color"/>
+    <attr name="tabNormalTextColor" format="color"/>
+
+    <attr name="popupBGColor" format="reference|color"/>
+    <attr name="popupHeaderBGColor" format="reference|color"/>
+    <attr name="popupHeaderTextColor" format="reference|color"/>
+    <attr name="popupTextColor" format="reference|color"/>
+    <attr name="popupHintColor" format="reference|color"/>
+
+    <attr name="dividerColor" format="color"/>
+
+    <attr name="inputLayoutStyle" format="integer"/>
+    <attr name="inputLayoutOutlineColor" format="color"/>
+    <!--END - MULTIPLE THEMES-->
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/menuone"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/s_setting" />
+        <item
+            android:id="@+id/nav_changepass"
+            android:icon="@drawable/ic_password"
+            android:title="@string/s_change_pass" />
+        <item
+            android:id="@+id/nav_language"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/s_language" />
+    </group>
+
+    <group
+        android:id="@+id/menutwo"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_support"
+            android:icon="@drawable/ic_report"
+            android:title="@string/s_support" />
+        <item
+            android:id="@+id/nav_privacy_policy"
+            android:icon="@drawable/ic_report2"
+            android:title="@string/s_privacy_policy"
+            />
+        <item
+            android:id="@+id/nav_term_cond"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/s_term" />
+        <item
+            android:id="@+id/nav_version"
+            android:icon="@drawable/ic_version"
+            android:title="@string/s_version" />
+    </group>
+    <group
+        android:id="@+id/menuthree"
+        android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/s_logout" />
+    </group>
+
+</menu>

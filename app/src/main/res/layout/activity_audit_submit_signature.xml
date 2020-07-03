@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <include
+        android:id="@+id/header"
+        layout="@layout/include_header_text"
+        />
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:hint="Enter Your Name"
+        android:visibility="gone"
+        android:layout_below="@+id/header"
+        android:layout_marginTop="20dp"
+        android:layout_margin="@dimen/d_5dp"
+        android:background="@drawable/brandstandard_border"
+        android:padding="10dp"
+        />
+
+    <com.github.gcacace.signaturepad.views.SignaturePad
+        android:id="@+id/signature_pad"
+        android:layout_above="@+id/buttons_container"
+        android:layout_below="@+id/et_name"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <LinearLayout
+        android:id="@+id/buttons_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:paddingTop="16dp">
+
+        <Button
+            android:id="@+id/clear_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/c_blue"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_marginRight="2dp"
+            android:textColor="@color/c_white"
+            android:enabled="false"
+            android:text="@string/text_clear_pad" />
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:padding="10dp"
+            android:background="@color/c_blue"
+            android:layout_weight="1"
+            android:textColor="@color/c_white"
+            android:enabled="false"
+            android:text="@string/text_save" />
+    </LinearLayout>
+
+</RelativeLayout>

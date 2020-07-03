@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_white"
+    >
+    <RelativeLayout
+        android:id="@+id/ll_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/d_10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_gray_text"
+            android:padding="@dimen/d_10dp"
+            android:layout_marginLeft="@dimen/d_2dp"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:fontFamily="@font/nunitosans_regular"
+            android:background="@drawable/change_password_border"
+            android:textSize="14sp"
+            android:hint="@string/text_audit_id_name"/>
+
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/d_4dp"
+            android:src="@mipmap/iv_search_2"/>
+
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"
+        android:padding="@dimen/d_2dp"
+        android:src="@mipmap/iv_filter"/>
+
+
+    <View
+        android:id="@+id/view_devider"
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:layout_below="@+id/ll_filter"
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/d_10dp"
+        android:background="@color/c_light_gray"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_auditlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_devider"
+        android:layout_marginTop="@dimen/d_4dp"
+        android:layout_marginBottom="@dimen/d_50dp"
+        android:fadeScrollbars="false"
+        tools:listitem="@layout/adapter_report_list"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_nodatafound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_devider"
+        android:visibility="gone"
+        android:background="@mipmap/no_data_found"
+        >
+        <TextView
+            android:id="@+id/tv_nodatafound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="0dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:gravity="center"
+            android:padding="@dimen/d_8dp"
+            android:text="@string/s_nodatafound"
+            android:textColor="@color/c_red"
+            android:textSize="@dimen/text_size_18"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+
+
+    <include
+        android:layout_width="@dimen/d_progressbar"
+        android:layout_height="@dimen/d_progressbar"
+        android:layout_centerInParent="true"
+        layout="@layout/spunk_view"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_filter"
+        android:layout_width="@dimen/d_50dp"
+        android:layout_height="@dimen/d_50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:layout_marginBottom="70dp"
+        android:layout_marginRight="@dimen/d_8dp"
+        android:backgroundTint="@color/c_blue"
+        android:src="@mipmap/iv_filter_white"
+        app:fabSize="mini"
+        />
+
+</RelativeLayout>

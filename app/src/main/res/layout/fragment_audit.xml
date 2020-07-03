@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_white"
+    >
+    <LinearLayout
+        android:id="@+id/ll_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/d_10dp"
+        android:layout_marginRight="@dimen/d_10dp"
+        android:background="@color/c_white"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s_description_insp"
+            android:layout_marginBottom="@dimen/d_5dp"
+            android:layout_marginTop="@dimen/d_5dp"
+            android:gravity="left"
+            android:textColor="@color/c_gray"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textSize="@dimen/text_size_14"/>
+
+        <LinearLayout
+            android:id="@+id/ll_audit_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_description"
+            android:background="@drawable/tv_shape_corner_blue_border"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tv_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/s_scheduled"
+                android:layout_marginTop="@dimen/d_1dp"
+                android:layout_marginBottom="@dimen/d_1dp"
+                android:layout_marginLeft="@dimen/d_1dp"
+                android:gravity="center"
+                android:fontFamily="@font/nunitosans_regular"
+                android:background="@drawable/auditbn_selector"
+                android:padding="@dimen/d_8dp"
+                android:textColor="@color/text_selector"
+                android:textSize="@dimen/text_size_14"/>
+            <View
+                android:layout_width="@dimen/d_1dp"
+                android:layout_height="match_parent"
+                android:background="@color/c_blue"/>
+
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/s_progress"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/d_1dp"
+                android:layout_marginBottom="@dimen/d_1dp"
+                android:background="@drawable/auditbn_selector"
+                android:fontFamily="@font/nunitosans_regular"
+                android:padding="@dimen/d_8dp"
+                android:textColor="@color/text_selector"
+                android:textSize="@dimen/text_size_14"/>
+            <View
+                android:layout_width="@dimen/d_1dp"
+                android:layout_height="match_parent"
+                android:background="@color/c_blue"/>
+
+            <TextView
+                android:id="@+id/tv_overdue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/s_overdue"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/d_1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@drawable/auditbn_selector"
+                android:fontFamily="@font/nunitosans_regular"
+                android:padding="@dimen/d_8dp"
+                android:textColor="@color/text_selector"
+                android:textSize="@dimen/text_size_14"/>
+        </LinearLayout>
+
+        <com.oditly.audit.inspection.util.JustifiedTextView
+            android:id="@+id/tv_audit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s_audit_des"
+            android:layout_marginTop="@dimen/d_5dp"
+            android:visibility="gone"
+            android:layout_below="@+id/ll_audit_type"
+            android:layout_gravity="left"
+            android:padding="@dimen/d_5dp"
+            android:textColor="@color/c_gray"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textSize="@dimen/text_size_14"/>
+
+    </LinearLayout>
+    <View
+        android:id="@+id/view_devider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d_1dp"
+        android:layout_below="@+id/ll_parent"
+        android:visibility="invisible"
+        android:background="@color/c_white"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_auditlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_parent"
+        android:layout_marginTop="@dimen/d_4dp"
+        android:layout_marginBottom="@dimen/d_50dp"
+        android:fadeScrollbars="false"
+        tools:listitem="@layout/adapter_auditlist"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_nodatafound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_devider"
+        android:visibility="gone"
+        android:background="@mipmap/no_data_found"
+        >
+        <TextView
+            android:id="@+id/tv_nodatafound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="0dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:gravity="center"
+            android:padding="@dimen/d_8dp"
+            android:text="@string/s_nodatafound"
+            android:textColor="@color/c_red"
+            android:textSize="@dimen/text_size_18"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+
+
+    <include
+        android:layout_width="@dimen/d_progressbar"
+        android:layout_height="@dimen/d_progressbar"
+        android:layout_centerInParent="true"
+        layout="@layout/spunk_view"
+        />
+
+</RelativeLayout>

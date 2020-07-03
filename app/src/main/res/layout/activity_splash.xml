@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_blue"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/d_20dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="@dimen/d_20dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_logoimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/white_logo_splash" />
+
+        <TextView
+            android:id="@+id/tv_appname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/comfortaa_bold"
+            android:gravity="center"
+            android:padding="@dimen/d_5dp"
+            android:text="@string/app_name_small"
+            android:textColor="@color/c_white"
+            android:textSize="@dimen/text_size_48" />
+
+        <TextView
+            android:id="@+id/tv_slogan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunitosans_regular"
+            android:gravity="center"
+            android:padding="@dimen/d_5dp"
+            android:text="@string/s_digitize"
+            android:textColor="@color/c_white"
+            android:textSize="@dimen/text_size_18" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_signin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_border"
+        android:textColor="@color/c_blue"
+        android:fontFamily="@font/nunitosans_semibold"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="150dp"
+        app:elevation="@dimen/d_5dp"
+        android:gravity="center"
+        android:focusable="false"
+        android:layout_alignParentBottom="true"
+        android:textSize="@dimen/text_size_20"
+        android:textAllCaps="false"
+        android:text="@string/s_signin"/>
+
+
+
+</RelativeLayout>

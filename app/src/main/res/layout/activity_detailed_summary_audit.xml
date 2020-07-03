@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+   >
+
+    <include layout="@layout/include_header_text" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/detailed_summary_btn_layout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_detailed_summary_audit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false">
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/detailed_summary_btn_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/d_10dp">
+
+            <Button
+                android:id="@+id/ds_save_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/text_save"
+                android:layout_weight="1"
+                android:textColor="@color/c_white"
+                android:background="@drawable/button_border_blue"
+                android:layout_marginStart="@dimen/d_5dp"
+                android:layout_marginEnd="@dimen/d_5dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="@dimen/text_size_16"
+                android:minHeight="@dimen/search_btn_height"/>
+
+            <Button
+                android:id="@+id/ds_submit_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/text_submit"
+                android:layout_weight="1"
+                android:textColor="@color/c_white"
+                android:background="@drawable/button_border_blue"
+                android:layout_marginStart="@dimen/d_5dp"
+                android:layout_marginEnd="@dimen/d_5dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="@dimen/text_size_16"
+                android:minHeight="@dimen/search_btn_height"/>
+
+        </LinearLayout>
+
+        <include
+            android:layout_width="@dimen/d_progressbar"
+            android:layout_height="@dimen/d_progressbar"
+            android:layout_centerInParent="true"
+            layout="@layout/spunk_view"
+            />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

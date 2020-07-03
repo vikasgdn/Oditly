@@ -1,0 +1,163 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/c_white</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+    </style>
+
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+
+    <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/c_gray</item>
+        <item name="colorControlActivated">@color/c_blue</item>
+        <item name="colorControlHighlight">@color/c_blue</item>
+        <item name="hintTextColor">@color/c_blue</item>
+        <item name="android:textColorHint">@color/c_blue</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+
+    <style name="TextViewAccount" parent="android:Widget.TextView">
+        <item name="textColor">@color/c_dark_gray</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="fontFamily">@font/nunitosans_regular</item>
+        <item name="android:gravity">left</item>
+        <item name="android:paddingLeft">@dimen/d_10dp</item>
+        <item name="android:paddingRight">@dimen/d_10dp</item>
+        <item name="android:paddingTop">@dimen/d_15dp</item>
+        <item name="android:paddingBottom">@dimen/d_15dp</item>
+
+    </style>
+
+
+    <style name="TextViewAccount_pdg10" parent="android:Widget.TextView">
+        <item name="textColor">@color/c_dark_gray</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="fontFamily">@font/nunitosans_regular</item>
+        <item name="android:gravity">left</item>
+        <item name="android:paddingLeft">@dimen/d_10dp</item>
+        <item name="android:paddingRight">@dimen/d_10dp</item>
+        <item name="android:paddingTop">@dimen/d_1dp</item>
+        <item name="android:paddingBottom">@dimen/d_10dp</item>
+
+    </style>
+
+    <style name="Text_Audit_Info" parent="android:Widget.TextView">
+        <item name="textColor">@color/c_dark_gray</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="fontFamily">@font/nunitosans_regular</item>
+        <item name="android:gravity">left</item>
+        <item name="android:padding">@dimen/d_15dp</item>
+    </style>
+
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/c_blue</item>
+    </style>
+
+    <style name="MyTabLayout" parent="Base.Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
+    </style>
+
+    <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">18sp</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+
+    <style name="NavigationDrawerStyle">
+
+        <item name="android:textSize">16sp</item><!-- text size in menu-->
+
+        <!-- item size in menu-->
+      <!--  <item name="android:listPreferredItemHeightSmall">40dp</item>
+        <item name="listPreferredItemHeightSmall">40dp</item>-->
+
+        <!-- item padding left in menu-->
+        <item name="listPreferredItemPaddingLeft">8dp</item>
+
+        <!-- item padding right in menu-->
+        <item name="listPreferredItemPaddingRight">8dp</item>
+        <item name="fontFamily">@font/nunitosans_regular</item>
+        <item name="textColor">@color/c_light_gray</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="ToolbarColorStyle" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/c_white</item>
+        <item name="android:textSize">40sp</item>
+    </style>
+
+//copied
+    <style name="EditText">
+        <item name="android:singleLine">true</item>
+        <item name="colorControlNormal">#FFFFFF</item>
+        <item name="colorControlActivated">#FFFFFF</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    //copied
+    <style name="search_button" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/c_blue</item>
+        <item name="colorButtonNormal">@color/c_blue</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size_15</item>
+        <item name="android:minHeight">@dimen/search_btn_height</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:background">@color/c_blue</item>
+        <item name="android:padding">@dimen/d_20dp</item>
+        <item name="android:text">@string/text_search</item>
+        <item name="android:minWidth">@dimen/d_90dp</item>
+        <item name="android:layout_marginEnd">@dimen/d_5dp</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+    <style name="ExpandIconStyle" parent="Theme.AppCompat.Light">
+        <item name="android:layout_width">@dimen/drop_down_icon</item>
+        <item name="android:layout_height">@dimen/drop_down_icon</item>
+        <item name="android:src">@drawable/expand_icon</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_marginEnd">@dimen/d_5dp</item>
+        <item name="android:layout_marginStart">@dimen/d_5dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+    <style name="HeadingTextStyle" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/text_size_15</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+    <string name="text_search">Search</string>
+    <dimen name="drop_down_icon">15dp</dimen>
+</resources>

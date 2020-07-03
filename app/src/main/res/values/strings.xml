@@ -1,0 +1,235 @@
+<resources>
+    <string name="app_name">Oditly</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="home_second">Home Second</string>
+    <string name="s_digitize">Automate Inspection Workflows</string>
+    <string name="s_signin">Sign In</string>
+    <string name="s_next">Next</string>
+    <string name="s_signin_to_oditly">Sign In to Oditly</string>
+    <string name="h_email">Email</string>
+    <string name="s_forgot_pass">Forgot Password?</string>
+    <string name="s_remember">Remember Me</string>
+    <string name="default_progress_dialog_message">Loading...</string>
+    <string name="s_enter">Enter</string>
+    <string name="h_password">Password</string>
+    <string name="s_description">This section contains all the actions that are scheduled, in progress or overdue</string>
+    <string name="s_description_insp">This section contains all the inspections that are scheduled, in progress or overdue</string>
+
+    <string name="s_scheduled">Scheduled</string>
+    <string name="s_progress">In Progress</string>
+    <string name="s_overdue">Overdue</string>
+    <string name="s_audit_des">"This Section Contain all the action that are in due period and under progress but incomplete. Please click resume to continue and complete assigned action. "</string>
+    <string name="s_resume">Resume</string>
+    <string name="s_setting">Settings</string>
+    <string name="s_change_pass">Change Password</string>
+    <string name="s_language">Language</string>
+    <string name="s_support">Support</string>
+    <string name="s_privacy_policy">Privacy Policy</string>
+    <string name="s_term">Terms of Service</string>
+    <string name="s_version">Version</string>
+    <string name="s_logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="s_schedule">Schedule</string>
+    <string name="s_analytics">Analytics</string>
+    <string name="s_user">Users</string>
+    <string name="s_reports">Reports</string>
+    <string name="app_name_small">oditly</string>
+    <string name="s_signout">Sign Out</string>
+    <string name="s_account">Account</string>
+    <string name="s_entervallidemail">Enter valid email</string>
+    <string name="s_entercorrectpass">Enter correct password</string>
+    <string name="s_entercorrectpass_conf">Enter correct Confirm  password</string>
+    <string name="oops">Oops.. Something went wrong..</string>
+
+    <string name="internet_error">Please check your Internet Connection.</string>
+    <string name="s_nodatafound">No Inspection Found.</string>
+    <string name="text_ok">OK</string>
+    <string name="text_youarenot">You are not allowed to perform any function in this inspection</string>
+    <string name="text_start">Start</string>
+
+    <string name="text_audit_target">Your Inspection Target</string>
+    <string name="text_you_need">You need to complete the following sections</string>
+    <string name="text_your_goal">Your Goal</string>
+    <string name="text_you_need_assignmnt">You need to complete the following sections</string>
+    <string name="text_search_with_auditid">Search with Inspection ID, Auditor Email ID</string>
+    <string name="text_sorrynoauditfound">Sorry, No Inspection Found</string>
+
+
+    <string name="text_password_contain">Password should contain:</string>
+
+    <string name="text_password_rule">1. between 8 and 20 characters  \n2. at least one lower case letter \n3. at least one upper case letter
+ \n4. at least one digit \n5.  at least one of these special characters ~!@#$%^&amp;*()_+</string>
+
+
+
+    <string name="text_brand_standard">BRAND STANDARD</string>
+    <string name="text_executive_summary">EXECUTIVE SUMMARY</string>
+    <string name="text_detailed_summary">DETAILED SUMMARY</string>
+    <string name="text_detailed_summary_s">Detailed Summary</string>
+    <string name="text_auditor">AUDITOR NAME</string>
+    <string name="text_reviewer">REVIEWER NAME</string>
+    <string name="text_overdue">OVERDUE</string>
+
+    <string name="text_location">Location</string>
+    <string name="text_brand">Brand</string>
+    <string name="text_audit_name">Inspection Name</string>
+    <string name="text_save">Save</string>
+    <string name="text_submit">Submit</string>
+    <string name="text_photo">Media</string>
+    <string name="text_summary">Summary</string>
+    <string name="text_comment">Comment</string>
+    <string name="text_ref_image">Refrence</string>
+    <string name="rtext_esume">Resume</string>
+    <string name="text_na">N/A</string>
+    <string name="text_resume">Resume</string>
+    <string name="text_assigned">Assigned</string>
+    <string name="text_submitted">Submitted</string>
+    <string name="text_reviewed">Reviewed</string>
+    <string name="text_rejected">Rejected</string>
+    <string name="text_audit_option">Inspection</string>
+    <string name="text_prev">Prev</string>
+    <string name="text_next">Next</string>
+    <string name="you_can_not_upload">You can add upto 20 attachments and\ \n select only 5 images at a time</string>
+    <string name="text_enter_desc">Enter Description</string>
+
+    <string name="text_image_choose">Upload from</string>
+
+    <string name="text_video">Video</string>
+    <string name="text_gallery">Gallery</string>
+    <string name="text_camera">Camera</string>
+    <string name="text_edit">Edit</string>
+
+    <string name="text_attachment_name">Attachment Name</string>
+    <string name="text_critical">Critical</string>
+    <string name="text_staff_name">Staff name</string>
+    <string name="text_reservation">Reservation</string>
+    <string name="text_attachment">Attachment</string>
+    <string name="text_clear_pad">Clear</string>
+    <string name="text_signature_pad">Signature Pad</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
+
+    <string name="text_logout">Sign Out</string>
+    <string name="text_alert_dialog_logout_msg">Are you sure you want to Sign Out ?</string>
+
+    <string name="text_re_enter_password">Re-enter password..</string>
+    <string name="text_password_not_same"> Password did not match.</string>
+    <string name="text_enter_pass">Enter Password</string>
+
+
+    <!--SignIn strings-->
+    <string name="text_resetpassword">Reset Password</string>
+    <string name="text_enteryourotp">Enter the OTP sent to your Email</string>
+    <string name="text_enteryourpassword">Enter your password</string>
+    <string name="text_reenteredpassword">Confirm your password</string>
+    <string name="s_view">View</string>
+    <string name="text_auditname">Inspection Name</string>
+    <string name="text_auditname_a">Audit Name</string>
+    <string name="text_enter_comment">Enter Comment (50 characters minimum)</string>
+    <string name="text_title">Title</string>
+    <string name="text_action">Action</string>
+    <string name="text_plandate">Planned Date</string>
+    <string name="text_details">Details</string>
+    <string name="text_assignedto">Assiggned To</string>
+    <string name="text_ccemail">CC Email</string>
+    <string name="text_douwanttoexit">Do you want to exit from App?</string>
+    <string name="text_coming_soon">Coming soon..</string>
+    <string name="s_entervallidotp">Enter Correct OTP</string>
+    <string name="text_brush">Brush</string>
+    <string name="text_opacity">Opacity</string>
+    <string name="text_done">Done</string>
+    <string name="text_emoji">Emoii</string>
+    <string name="text_sticker">Sticker</string>
+    <string name="text_filter">Filter</string>
+    <string name="text_eraser">Eraser</string>
+    <string name="text_text">Text</string>
+    <string name="s_no_action_found">No Action Found</string>
+    <string name="inspection_option">Inspection-Department</string>
+    <string name="text_pleasemark">Please only mark this file as critical if you want to highlight this file out of all the file</string>
+    <string name="s_loading">Loading...</string>
+    <string name="text_invalidpass">Invalid Password</string>
+    <string name="s_na">N/A</string>
+    <string name="text_time">Time</string>
+
+
+    <!--Executive Summary strings-->
+    <string name="text_summary_n">Summary :</string>
+    <string name="text_key_positive">Key Positive :</string>
+    <string name="text_key_negative">Key Negative :</string>
+    <string name="text_recommendation">Recommendation :</string>
+    <string name="text_date">Date</string>
+    <string name="text_executive_summary_s">Executive Summary</string>
+    <string name="text_approveby">Approved By</string>
+    <string name="text_approveto">Approve To</string>
+    <string name="text_comment_error">Please enter atleast 50 characters</string>
+    <string name="text_support">Support</string>
+    <string name="text_support_text">We will get back to you shortly</string>
+    <string name="text_please_reachus">Please reach us on any of the following channels:</string>
+    <string name="text_email">Email:</string>
+    <string name="text_whatsapp">Whatsapp:</string>
+    <string name="text_callus">Call Us:</string>
+    <string name="text_wechat">WeChat ID:</string>
+    <string name="text_lineid">Line ID:</string>
+    <string name="text_youremail">Your Email:</string>
+    <string name="text_media">Media</string>
+    <string name="text_this_audit_could">This Action plan is not ready to be mark as complete</string>
+    <string name="s_french">French</string>
+    <string name="text_spanish">Spanish</string>
+    <string name="text_chinies">Chinese</string>qgit init
+    <string name="text_english">English</string>
+    <string name="text_invite">Invite</string>
+    <string name="text_select_member">Please select atleast one member</string>
+    <string name="text_view_team">View</string>
+    <string name="text_team_member">Team Members</string>
+    <string name="text_audit_id_name">Audit ID, Audit Name, Auditor Name, Email ID</string>
+    <string name="text_noncomplence">Non Compliances</string>
+    <string name="text_auditscore">Audit Score</string>
+    <string name="text_completedate">Completion Date</string>
+    <string name="text_startdate">Start Date</string>
+    <string name="text_assignedby">Assigned By</string>
+    <string name="text_checklist">Checklist</string>
+    <string name="text_audit_type">Audit Type</string>
+    <string name="text_audit_id">Audit ID</string>
+    <string name="text_share">Share</string>
+    <string name="text_export">Export</string>
+    <string name="text_view">View</string>
+    <string name="textx_reset_seletion">Reset Selection</string>
+    <string name="text_all">All</string>
+    <string name="text_team">Team</string>
+    <string name="text_addnew_member">Add a new member</string>
+    <string name="text_name_emaili_roll">Name, Email ID, Role</string>
+    <string name="text_entor_data">Please enter search data</string>
+    <string name="text_selet_filter">Select Filters</string>
+    <string name="text_date_range">Date Range</string>
+    <string name="text_date_from">From Date</string>
+    <string name="text_date_to">To Date</string>
+    <string name="text_top_five_audit">Top/Worst 5 Audits</string>
+    <string name="text_auditorname">Auditor Name</string>
+    <string name="text_download_report">Please download report to view</string>
+    <string name="text_no_viewer">No PDF viewer found</string>
+    <string name="text_add">Add</string>
+    <string name="text_not_allowed_team">You are not allowed to add team</string>
+    <string name="text_auditor_name">Auditor Name</string>
+    <string name="text_template">Template</string>
+    <string name="text_designation">Designation</string>
+    <string name="text_not_applicable">N/A</string>
+    <string name="text_username">User Name</string>
+    <string name="s_entervallidname">Enter vallid name</string>
+    <string name="enter_name_team">Enter Team Name</string>
+    <string name="text_create">Create</string>
+    <string name="text_enter_team_name">Please enter the team name</string>
+
+
+</resources>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:focusable="false"
+    android:focusableInTouchMode="true"
+    android:padding="@dimen/d_15dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_white"
+        android:layout_centerInParent="true"
+        >
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/app_name_small"
+            android:textColor="@color/c_blue"
+            android:fontFamily="@font/comfortaa_bold"
+            android:textSize="22sp"
+
+            />
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tv_title"
+            android:visibility="invisible"
+            android:background="@color/c_light_gray" />
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:paddingBottom="@dimen/d_10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="@dimen/d_15dp"
+            android:paddingTop="@dimen/d_10dp"
+            android:text="Please Enter your Email to get OTP"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textColor="@color/c_dark_gray"
+
+             />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/c_blue"
+            android:layout_below="@id/tv_message"
+            android:visibility="visible"
+            android:layout_marginTop="@dimen/d_20dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/EditTextTheme"
+                android:paddingTop="@dimen/d_10dp"
+                android:inputType="textEmailAddress"
+                android:paddingBottom="@dimen/d_10dp"
+                android:hint="@string/enter_email" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/tv_emailerror"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s_entervallidemail"
+            android:visibility="gone"
+            android:gravity="left"
+            android:layout_below="@+id/ti_email"
+            android:padding="@dimen/d_2dp"
+            android:layout_marginTop="-5dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textColor="@color/c_red"
+            android:textSize="@dimen/text_size_14"/>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/ti_email"
+            android:visibility="invisible"
+            android:layout_marginTop="15dp"
+            android:background="@color/c_light_gray_max" />
+
+        <LinearLayout
+            android:id="@+id/ll_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider"
+            android:background="@drawable/tv_shape_corner_blue_border"
+            android:layout_marginTop="@dimen/d_20dp"
+            android:layout_marginLeft="@dimen/d_2dp"
+            android:layout_marginRight="@dimen/d_2dp"
+            android:layout_marginBottom="@dimen/d_2dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/tv_shape_corner_blue_border"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_size_18"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/c_blue"/>
+
+
+            <TextView
+                android:id="@+id/tv_send"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/c_blue"
+                android:text="@string/send"
+                android:textSize="@dimen/text_size_18"
+                android:textAllCaps="false"
+                android:textColor="@color/c_white"
+                android:fontFamily="@font/nunitosans_regular"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

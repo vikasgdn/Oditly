@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<style name="Theme_1" parent="ZAppTheme">
+        <item name="mainLayoutBGColor">@color/fragmentBgColor</item>
+        <item name="cardBGColor">@color/white</item>
+        <item name="listItemBGColor">@color/white</item>
+        <item name="headerTextColor">@color/white</item>
+        <item name="textColor">@color/mild_black</item>
+        <item name="textColorSubtitle">@color/thick_gray</item>
+        <item name="textColorPrice">@color/red</item>
+        <item name="textColorTimeStamp">@color/white</item>
+        <item name="hintColor">@color/gray</item>
+        <item name="textColorSpecial">@color/blue</item>
+        <item name="buttonTextColorSpecial">@color/white</item>
+        <item name="buttonBGColorSpecial">@color/gray</item>
+        <item name="buttonBGColor">@android:color/holo_green_dark</item>
+        <item name="buttonTextColor">@color/white</item>
+        <item name="tabLayoutBGColor">@color/blue_dark</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabNormalTextColor">@color/black</item>
+        <item name="popupBGColor">@color/white</item>
+        <item name="popupHeaderBGColor">@color/colorAccent</item>
+        <item name="popupHeaderTextColor">@color/white</item>
+        <item name="popupTextColor">@color/mild_black</item>
+        <item name="popupHintColor">@color/gray</item>
+        <item name="dividerColor">@color/light_gray</item>
+
+        <item name="inputLayoutStyle">@style/TextInputLayoutStyle</item>
+        <item name="inputLayoutOutlineColor">@color/blue_dark</item>
+    </style>
+
+    <style name="Theme_2" parent="ZAppTheme">
+        <item name="mainLayoutBGColor">@color/fragmentBgColor</item>
+        <item name="cardBGColor">@color/white</item>
+        <item name="listItemBGColor">@color/white</item>
+        <item name="headerTextColor">@color/white</item>
+        <item name="textColor">@color/mild_black</item>
+        <item name="textColorSubtitle">@color/thick_gray</item>
+        <item name="textColorPrice">@color/red</item>
+        <item name="textColorTimeStamp">@color/white</item>
+        <item name="hintColor">@color/gray</item>
+        <item name="textColorSpecial">@color/blue_dark</item>
+        <item name="buttonTextColorSpecial">@color/white</item>
+        <item name="buttonBGColorSpecial">@color/sky</item>
+        <item name="buttonBGColor">@android:color/holo_green_dark</item>
+        <item name="buttonTextColor">@color/white</item>
+        <item name="tabLayoutBGColor">@color/red</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabNormalTextColor">@color/green</item>
+        <item name="popupBGColor">@color/white</item>
+        <item name="popupHeaderBGColor">@color/colorAccent</item>
+        <item name="popupHeaderTextColor">@color/white</item>
+        <item name="popupTextColor">@color/mild_black</item>
+        <item name="popupHintColor">@color/gray</item>
+        <item name="dividerColor">@color/light_gray</item>
+
+        <item name="inputLayoutStyle">@style/TextInputLayoutStyle</item>
+        <item name="inputLayoutOutlineColor">@color/thick_gray</item>
+    </style>-->
+
+</resources>

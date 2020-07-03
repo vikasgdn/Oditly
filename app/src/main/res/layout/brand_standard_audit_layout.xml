@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/c_white"
+    android:paddingTop="@dimen/d_5dp"
+    android:paddingStart="@dimen/d_5dp"
+    android:paddingBottom="@dimen/d_5dp"
+    android:paddingEnd="@dimen/d_5dp">
+
+    <LinearLayout
+        android:id="@+id/bs_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/brandstandard_border"
+            android:padding="@dimen/d_10dp">
+
+            <TextView
+                android:id="@+id/tv_bs_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d_5dp"
+                android:textColor="@color/c_dark_gray"
+                android:textSize="@dimen/text_size_14"
+                android:textStyle="normal|bold" />
+
+            <LinearLayout
+                android:id="@+id/ll_note_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/d_5dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Note:"
+                    android:textSize="@dimen/text_size_14"
+                    android:textColor="@color/c_dark_gray"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_bs_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_5dp"
+                    android:textSize="@dimen/text_size_14"
+                    android:textColor="@color/c_dark_gray" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_bs_rejected_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/d_5dp"
+                android:layout_marginEnd="@dimen/d_5dp"
+                android:maxLines="3"
+                android:textSize="@dimen/text_size_14"
+                android:padding="@dimen/d_5dp"
+                android:textColor="@color/c_red"
+                android:visibility="gone" />
+
+
+            <LinearLayout
+                android:id="@+id/rv_brand_standard_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/d_5dp"
+                android:layout_marginEnd="@dimen/d_5dp"
+                android:layout_marginTop="@dimen/d_5dp"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_na_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d_5dp"
+                android:background="@drawable/brand_standard_unselect_btn"
+                android:text="N/A"
+                android:textSize="@dimen/text_size_14"
+                android:layout_marginTop="@dimen/d_1dp"
+                android:layout_marginStart="@dimen/d_5dp"
+                android:layout_marginEnd="@dimen/d_5dp"
+                android:gravity="center"
+                android:textColor="@color/c_dark_gray" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_imagelist"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/d_5dp"
+                android:layout_height="130dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/d_5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/ic_comment"/>
+                    <TextView
+                        android:id="@+id/tv_comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/d_35dp"
+                        android:padding="@dimen/d_3dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:background="@color/c_white"
+                        android:text="@string/text_comment"
+                        android:gravity="left|center_vertical"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:textSize="12sp"
+                        android:textColor="@color/c_gray_text" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_bs_add_file_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/ic_camera"/>
+                    <TextView
+                        android:id="@+id/bs_add_file_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/d_35dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="@dimen/d_2dp"
+                        android:background="@color/c_white"
+                        android:gravity="left|center_vertical"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:padding="@dimen/d_3dp"
+                        android:text="@string/text_media"
+                        android:textColor="@color/c_gray_text"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/bs_reference_image_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:visibility="visible"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/ic_info_brand"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/d_35dp"
+                        android:padding="@dimen/d_3dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="@dimen/d_2dp"
+                        android:background="@color/c_white"
+                        android:text="@string/text_ref_image"
+                        android:gravity="left|center_vertical"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:textColor="@color/c_gray_text" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/tv_bs_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginStart="@dimen/d_5dp"
+                android:layout_marginEnd="@dimen/d_5dp"
+                android:padding="@dimen/d_5dp"
+                android:background="@drawable/comment_border"
+                android:hint="Type your comment"
+                android:textSize="@dimen/text_size_14"
+                android:gravity="top"
+                android:minLines="2"
+                android:layout_marginTop="@dimen/d_5dp"
+                android:layout_marginBottom="@dimen/d_5dp"
+                android:textColor="@color/c_dark_gray" />
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/reference_btn_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/bs_reference_image_tab_old"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/d_5dp"
+                    android:background="@drawable/button_border_blue"
+                    android:maxLines="3"
+                    android:padding="@dimen/d_5dp"
+                    android:textSize="@dimen/text_size_14"
+                    android:visibility="gone"
+                    android:text="Reference Image"
+                    android:textColor="@color/c_white" />
+
+
+
+            </RelativeLayout>
+
+
+
+            !
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

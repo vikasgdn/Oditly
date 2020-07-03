@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+
+    <color name="colorAccent">#0B87E4</color>
+
+    <color name="c_gray">#616161</color>
+    <color name="c_dark_gray">#212121</color>
+    <color name="c_gray_text">#616161</color>
+    <color name="c_light_gray">#BDBDBD </color>
+    <color name="c_light_gray_nav">#D5D4D4</color>
+    <color name="c_light_gray_max">#E0E0E0 </color>
+    <color name="c_white">#FFFFFF</color>
+    <color name="c_red">#C60022</color>
+    <color name="c_yellow">#FFBA15 </color>
+    <color name="c_green">#13855F</color>
+    <color name="c_blue">#0B87E4</color>
+    <color name="c_blue_light">#ABD2EF</color>
+    <color name="c_light_yello">#fef6e6</color>
+
+    <color name="c_green_light">#AFE4B1</color>
+    <color name="c_red_light">#F1D8D6</color>
+
+
+    <color name="c_green_dark">#0c9b0c</color>
+    <color name="c_orange">#eba142</color>
+    <color name="colorOrange">#eba142</color>
+
+    <color name="dullBlack">#707070</color>
+    <color name="scoreRed">#C60022</color>
+
+    <color name="scoreGreen">#0c9b0c</color>
+    <color name="colorBlack">#212121</color>
+
+    statusRed
+    <color name="textGrey">#616161</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="c_white_nav">#F4F1F1</color>
+    <color name="reviewedColor">#5bc0de</color>
+
+
+// for color picker
+    <color name="tool_bg">#151414</color>
+    <color name="blue_color_picker">#0066FF</color>
+    <color name="brown_color_picker">#AF593E</color>
+    <color name="green_color_picker">#01A368</color>
+    <color name="orange_color_picker">#FF861F</color>
+    <color name="red_color_picker">#ED0A3F</color>
+    <color name="red_orange_color_picker">#FF3F34</color>
+    <color name="sky_blue_color_picker">#76D7EA</color>
+    <color name="violet_color_picker">#8359A3</color>
+    <color name="yellow_color_picker">#FBE870</color>
+    <color name="yellow_green_color_picker">#C5E17A</color>
+
+
+</resources>

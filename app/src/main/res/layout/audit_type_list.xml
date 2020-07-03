@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_margin="10dp"
+    android:background="@drawable/button_border_blue"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_margin="5dp"
+        android:src="@mipmap/audit" />
+
+    <TextView
+        android:id="@+id/tv_auditname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_auditname"
+        android:textAlignment="center"
+        android:padding="8dp"
+        android:textColor="@color/c_white"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="@dimen/text_size_16" />
+
+</LinearLayout>

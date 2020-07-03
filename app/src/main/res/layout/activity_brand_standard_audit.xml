@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_white"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/include_header_text" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/d_5dp"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:text="00:00"
+            android:layout_width="wrap_content"
+            android:minWidth="70dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/d_5dp"
+            android:gravity="center"
+            android:id="@+id/timertext"
+            android:background="@color/c_light_gray"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/c_white" />
+
+        <TextView
+            android:id="@+id/score_text"
+            android:text="Score: 0% (0/0)"
+            android:layout_width="wrap_content"
+            android:minWidth="70dp"
+            android:background="@color/c_light_gray"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/d_5dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:textColor="@color/c_white" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_subsection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/ns_nestedscroolview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/bottom_layout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/d_5dp"
+                android:layout_marginEnd="@dimen/d_5dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_bs_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true">
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <LinearLayout
+                    android:id="@+id/ll_bs_sub_section_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/brand_standard_btn_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d_10dp">
+                <Button
+                    android:id="@+id/bs_add_file_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_photo"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/button_border_green_dark"
+                    android:layout_marginStart="@dimen/d_5dp"
+                    android:layout_marginEnd="@dimen/d_5dp"
+                    android:minHeight="@dimen/search_btn_height"/>
+
+                <Button
+                    android:id="@+id/bs_save_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_save"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/button_border_blue"
+                    android:layout_marginStart="@dimen/d_5dp"
+                    android:layout_marginEnd="@dimen/d_5dp"
+                    android:minHeight="@dimen/search_btn_height"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/next_previous_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/d_50dp"
+                android:orientation="horizontal"
+                >
+
+                <Button
+                    android:id="@+id/prev_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/text_prev"
+                    android:layout_marginRight="@dimen/d_2dp"
+                    android:textSize="@dimen/text_size_14"
+                    android:maxLines="2"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:padding="@dimen/d_4dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/c_light_gray"
+                    />
+
+                <Button
+                    android:id="@+id/next_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/text_size_14"
+                    android:text="@string/text_next"
+                    android:layout_weight="1"
+                    android:padding="4dp"
+                    android:maxLines="2"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:ellipsize="end"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/c_light_gray"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <include
+            android:layout_width="@dimen/d_progressbar"
+            android:layout_height="@dimen/d_progressbar"
+            android:layout_centerInParent="true"
+            layout="@layout/spunk_view"
+            />
+
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

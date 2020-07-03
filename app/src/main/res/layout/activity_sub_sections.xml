@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+  >
+
+    <include layout="@layout/include_header_text" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_white">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/btn_layout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/d_10dp">
+
+                <ImageView
+                    android:layout_width="@dimen/d_120dp"
+                    android:layout_height="@dimen/d_120dp"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/d_10dp"
+                    android:src="@mipmap/sub_section_logo"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_your_goal"
+                    android:textSize="@dimen/text_size_18"
+                    android:padding="@dimen/d_5dp"
+                    android:fontFamily="@font/nunitosans_semibold"
+                    android:gravity="center"
+                    android:textColor="@color/c_blue" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_you_need_assignmnt"
+                    android:textColor="@color/c_dark_gray"
+                    android:textSize="@dimen/text_size_16"
+                    android:gravity="center"
+                    android:padding="@dimen/d_5dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/d_10dp">
+
+                    <ProgressBar
+                        android:id="@+id/completeProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:visibility="gone"
+                        android:progressTint="@color/c_green"
+                        android:scaleY="5"
+                        android:progress="0" />
+
+                    <ProgressBar
+                        android:id="@+id/simpleProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:scaleY="5"
+                        android:progress="0" />
+
+                    <TextView
+                        android:id="@+id/tv_status_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/c_blue"
+                        android:textSize="@dimen/text_size_14"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:padding="@dimen/d_5dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rejected_comment_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Rejected : Full Report"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="bold"
+                        android:padding="@dimen/d_5dp"
+                        android:textColor="@color/c_red" />
+
+                    <TextView
+                        android:id="@+id/tv_rejected_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/c_dark_gray"
+                        android:textSize="@dimen/text_size_14"
+                        android:background="@drawable/rejected_comment_border"
+                        android:padding="@dimen/d_5dp"/>
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_auditname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_audit_name"
+                    android:textSize="@dimen/text_size_16"
+                    android:padding="@dimen/d_10dp"
+                    android:fontFamily="@font/nunitosans_semibold"
+                    android:gravity="center"
+                    android:textColor="@color/c_blue" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_sub_section_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false">
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:id="@+id/btn_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/d_5dp"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/continue_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_submit"
+                android:minHeight="@dimen/search_btn_height"
+                android:padding="@dimen/d_10dp"
+                android:textColor="@color/c_white"
+                android:background="@drawable/button_border_blue" />
+
+        </RelativeLayout>
+        <include
+            android:layout_width="@dimen/d_progressbar"
+            android:layout_height="@dimen/d_progressbar"
+            android:layout_centerInParent="true"
+            layout="@layout/spunk_view"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

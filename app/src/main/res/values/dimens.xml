@@ -1,0 +1,53 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">200dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="d_10dp">10dp</dimen>
+    <dimen name="text_size_48">48sp</dimen>
+    <dimen name="d_5dp">5dp</dimen>
+    <dimen name="d_20dp">20dp</dimen>
+    <dimen name="size_2dp">2dp</dimen>
+    <dimen name="d_1dp">1dp</dimen>
+    <dimen name="d_8dp">8dp</dimen>
+    <dimen name="size_5">5dp</dimen>
+    <dimen name="d_30dp">30dp</dimen>
+    <dimen name="d_2dp">2dp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="d_40dp">40dp</dimen>
+    <dimen name="size_8dp">8dp</dimen>
+    <dimen name="d_4dp">4dp</dimen>
+    <dimen name="d_15dp">15dp</dimen>
+    <dimen name="d_12dp">12dp</dimen>
+    <dimen name="d_14dp">14dp</dimen>
+    <dimen name="d_35dp">35dp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
+    <dimen name="d_100dp">100dp</dimen>
+    <dimen name="d_80dp">80dp</dimen>
+    <dimen name="search_btn_height">35dp</dimen>
+    <dimen name="d_90dp">90dp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="list_text_size">14sp</dimen>
+    <dimen name="d_120dp">120dp</dimen>
+    <dimen name="icon_size">80dp</dimen>
+    <dimen name="d_3dp">3dp</dimen>
+    <dimen name="d_6dp">6dp</dimen>
+    <dimen name="d_70dp">70dp</dimen>
+    <dimen name="d_150dp">150dp</dimen>
+    <dimen name="d_250dp">250dp</dimen>
+    <dimen name="d_25dp">25dp</dimen>
+    <dimen name="editor_size">35dp</dimen>
+    <dimen name="d_50dp">50dp</dimen>
+    <dimen name="d_progressbar">160dp</dimen>
+    <dimen name="d_130dp">130dp</dimen>
+
+</resources>
