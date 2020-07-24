@@ -80,6 +80,7 @@
     <string name="text_detailed_summary_s">Detailed Summary</string>
     <string name="text_auditor">AUDITOR NAME</string>
     <string name="text_reviewer">REVIEWER NAME</string>
+    <string name="text_reviewersmall">Reviewer Name</string>
     <string name="text_overdue">OVERDUE</string>
 
     <string name="text_location">Location</string>
@@ -200,7 +201,7 @@
     <string name="text_startdate">Start Date</string>
     <string name="text_assignedby">Assigned By</string>
     <string name="text_checklist">Checklist</string>
-    <string name="text_audit_type">Audit Type</string>
+    <string name="text_audit_type">Inspection Type</string>
     <string name="text_audit_id">Audit ID</string>
     <string name="text_share">Share</string>
     <string name="text_export">Export</string>
@@ -230,6 +231,43 @@
     <string name="enter_name_team">Enter Team Name</string>
     <string name="text_create">Create</string>
     <string name="text_enter_team_name">Please enter the team name</string>
+    <string name="text_goto">Go To</string>
+    <string name="text_noofaudits">No of Audits</string>
+    <string name="text_noofnon">Non Compliances</string>
+    <string name="text_nooflocation">Locations</string>
+    <string name="text_average_non_com">Average NCs</string>
+    <string name="text_count">0</string>
+    <string name="text_auditbenchmark">BENCHMARKING</string>
+    <string name="text_inspection">Inspection</string>
+    <string name="text_sheduled">Scheduled</string>
+    <string name="text_more_option">More Options</string>
+    <string name="text_create_audit">Create Inspection</string>
+    <string name="text_duedate">Due Date</string>
+    <string name="text_select_date">Please Select Date</string>
+    <string name="text_benchmark">Benchmark(%)</string>
+    <string name="text_doyouneed">Do you need a reviewer?</string>
+    <string name="text_instruction_note">Instruction/Note</string>
+    <string name="text_addd_attachment">Add Attachment(s)</string>
+    <string name="text_total">Total</string>
+    <string name="text_failed">Failed</string>
+    <string name="text_complete">Completed</string>
+    <string name="text_open">Open</string>
+    <string name="text_inprogress">In Progress</string>
+    <string name="text_overduesmall">Overdue</string>
+    <string name="text_inspectioncaps">INSPECTIONS</string>
+    <string name="text_actionplan">ACTION PLAN</string>
+    <string name="text_audit">Inspection</string>
+    <string name="text_create_action">Create Action</string>
+    <string name="text_selectreviwer">Select atleast one Assignee</string>
+    <string name="text_users">Users</string>
+    <string name="text_assignee">Assignee</string>
+    <string name="text_assigneeselect">Select Assignee(s)</string>
+    <string name="text_reviewerselect">Select Reviewer</string>
+    <string name="text_inspectionnote">Enter inspection notes or instructions, if any</string>
+    <string name="text_totalinspection">TOTAL INSPECTION</string>
+    <string name="text_pendigapr">Pending Approval</string>
+    <string name="text_aproved">Approved</string>
+    <string name="text_benchmarkerror">Please enter benchmark between 0 to 100</string>
 
 
 </resources>

@@ -8,8 +8,8 @@ android {
         applicationId "com.oditly.audit.inspection"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1005
-        versionName "105"
+        versionCode 1009
+        versionName "109"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,8 +42,8 @@ dependencies {
 
     implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
     implementation 'com.github.abumoallim:Android-Multi-Select-Dialog:v1.9'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-   // implementation 'com.github.manishkummar21:AndroidPdfViewer:1.0'
 
 
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
@@ -58,7 +58,11 @@ dependencies {
     implementation 'ja.burhanrashid52:photoeditor:0.4.0'
 
     implementation 'com.github.manishkummar21:AndroidPdfViewer:1.0'
-    
+    implementation 'tech.hibk.searchablespinnerlibrary:searchablespinnerlibrary:1.0.1'
+    implementation 'com.github.DonMat:searchablespinner:v1.0.1'
+
+
+
 
 
 

@@ -22,15 +22,20 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,6 +43,43 @@ import java.util.regex.Pattern;
 public class AppUtils {
 
 
+
+    public static JSONArray getOptionIdArray (ArrayList<Integer> arrayList){
+        JSONArray jsArray = null;
+        if (arrayList==null || arrayList.size()==0)
+            return jsArray;
+        try
+        {
+            if (arrayList!=null && arrayList.size()>0)
+                jsArray=  new JSONArray(arrayList);
+            else
+                jsArray=  new JSONArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsArray;
+    }
+
+    public static JSONArray getQuestionsArray (ArrayList<BrandStandardQuestion> brandStandardQuestions){
+        JSONArray jsonArray = new JSONArray();
+        if (brandStandardQuestions==null || brandStandardQuestions.size()==0)
+            return jsonArray;
+
+        for (int i = 0 ; i < brandStandardQuestions.size() ; i++) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("question_id", brandStandardQuestions.get(i).getQuestion_id());
+                jsonObject.put("audit_answer_na", brandStandardQuestions.get(i).getAudit_answer_na());
+                jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
+                jsonObject.put("audit_option_id", AppUtils.getOptionIdArray(brandStandardQuestions.get(i).getAudit_option_id()));
+                jsonObject.put("audit_answer", brandStandardQuestions.get(i).getAudit_answer());
+                jsonArray.put(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return jsonArray;
+    }
     public static void toast(Activity activity, String message) {
         if (message != null && !message.equals("") && activity != null) {
             Snackbar snack = Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
@@ -88,7 +130,7 @@ public class AppUtils {
 
     public static String getFormatedDate(String dateS)
     {
-        String resultDate="";
+        String resultDate="N/A";
         try {
             if (TextUtils.isEmpty(dateS))
                 return resultDate;
@@ -107,7 +149,7 @@ public class AppUtils {
 
     public static String getFormatedDateDayMonth(String dateS)
     {
-        String resultDate="";
+        String resultDate="N/A";
         try {
             if (TextUtils.isEmpty(dateS))
                 return resultDate;
@@ -150,15 +192,15 @@ public class AppUtils {
         return check;
     }
 
-  /*  public  static  boolean isVallidPassword(String password)
-    {
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}";
-       // final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\\]).{8,32}$";
+    /*  public  static  boolean isVallidPassword(String password)
+      {
+          final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}";
+         // final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\\]).{8,32}$";
 
-        return PASSWORD_PATTERN.matches(password);
+          return PASSWORD_PATTERN.matches(password);
 
-    }
-*/
+      }
+  */
     public static boolean isValidPassword(final String password) {
 
         Pattern pattern;
@@ -197,6 +239,43 @@ public class AppUtils {
             InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+
+    }
+    public static List<String> getLocationListID()
+    {
+        List<String> mLocationListID= new ArrayList();
+        mLocationListID.add("6");
+        mLocationListID.add("3");
+        mLocationListID.add("7");
+        mLocationListID.add("1");
+
+        mLocationListID.add("8");
+        mLocationListID.add("71");
+        mLocationListID.add("70");
+        mLocationListID.add("9");
+        mLocationListID.add("4");
+        mLocationListID.add("10");
+        mLocationListID.add("5");
+        return  mLocationListID;
+
+    }
+    public static List<String> getLocationList()
+    {
+        List<String> mLocationList= new ArrayList();
+
+        mLocationList.add("Economy Hotel Greece");
+        mLocationList.add("Economy Hotel New york");
+        mLocationList.add("Luxury Hotel LA");
+        mLocationList.add("Luxury Hotel Singapore");
+        mLocationList.add("Midscale Hotel California");
+        mLocationList.add("Midscale Hotel Hong Kong");
+        mLocationList.add("Retail Store London");
+        mLocationList.add("Singapore-London");
+        mLocationList.add("Upper Upscale Hotel Milan");
+        mLocationList.add("Upper Upscale Hotel Paris");
+        mLocationList.add("Upscale Hotel Rome");
+        mLocationList.add("Upscale Hotel Spain");
+        return mLocationList;
 
     }
 

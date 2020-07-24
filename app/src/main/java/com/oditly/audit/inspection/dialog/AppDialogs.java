@@ -20,12 +20,16 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
+import com.oditly.audit.inspection.ui.activty.ActionCreateActivity;
 import com.oditly.audit.inspection.ui.activty.AddTeamMemberActivity;
+import com.oditly.audit.inspection.ui.activty.AuditCreateActivity;
 import com.oditly.audit.inspection.ui.activty.AuditTypeActivity;
 import com.oditly.audit.inspection.ui.activty.AuditTypeActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
+import com.oditly.audit.inspection.ui.activty.MainActivity;
 import com.oditly.audit.inspection.ui.activty.SignInEmailActivity;
 import com.oditly.audit.inspection.ui.activty.SignInPasswordActivity;
+import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
@@ -112,22 +116,20 @@ public class AppDialogs {
         try {
 
 
-            dialog.findViewById(R.id.tv_o).setOnClickListener(new View.OnClickListener() {
+            dialog.findViewById(R.id.iv_audit).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
+                    Intent  intent =new Intent(activity, AuditCreateActivity.class);
+                    activity.startActivity(intent);
                 }
             });
-            dialog.findViewById(R.id.tv_t).setOnClickListener(new View.OnClickListener() {
+            dialog.findViewById(R.id.iv_action).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
-                }
-            });
-            dialog.findViewById(R.id.tv_i).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
+                    Intent  intent =new Intent(activity, ActionCreateActivity.class);
+                    activity.startActivity(intent);
                 }
             });
 
@@ -400,6 +402,39 @@ public class AppDialogs {
         dialog.create().show();
     }
 
+    public static   void messageDialogWithOKButton(final Activity activity,String message) {
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_with_okbutton);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        TextView textView=dialog.findViewById(R.id.tv_dialog_message);
+        textView.setText(""+message);
 
+        try {
+            dialog.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (activity instanceof AuditCreateActivity)
+                    {
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        intent.putExtra(AppConstant.FROMWHERE, AppConstant.AUDIT);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    }
+                    dialog.dismiss();
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dialog.show();
+
+    }
 
 }

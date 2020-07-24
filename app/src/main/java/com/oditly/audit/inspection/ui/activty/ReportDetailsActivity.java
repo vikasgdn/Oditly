@@ -8,8 +8,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,8 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
     private TextView mScoreTV;
     private TextView mStartDateTV;
     private TextView mNoncomplencecTV;
+    private RelativeLayout mProgressBarRL;
+
     private  int mAuditID=0;
     private String mAuditName="";
     private String mPdfFileUrl="";
@@ -70,6 +74,7 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
         mScoreTV=(TextView)findViewById(R.id.tv_auditscore);
         mStartDateTV=(TextView)findViewById(R.id.tv_startdate);
         mNoncomplencecTV=(TextView)findViewById(R.id.tv_noncomplence);
+        mProgressBarRL=(RelativeLayout) findViewById(R.id.ll_parent_progress);
 
         findViewById(R.id.iv_header_left).setOnClickListener(this);
 
@@ -113,7 +118,7 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
             case R.id.tv_view:
                 File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + AppConstant.ODITLY + "/" + mAuditID + ".pdf");
                 if(file.exists())
-                    viewPdf();
+                    viewDownLoadedPdf();
                 else
                     AppUtils.toast(this,"Please export report to view");
                 break;
@@ -134,12 +139,11 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
     }
 
     public void downloadPdf() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
-            ActivityCompat.requestPermissions(ReportDetailsActivity.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_PDF);
+            ActivityCompat.requestPermissions(ReportDetailsActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_PDF);
         } else {
+            mProgressBarRL.setVisibility(View.VISIBLE);
             DownloadPdfTask downloadTask = new DownloadPdfTask(this, mPdfFileUrl,mAuditID, this);
         }
     }
@@ -157,12 +161,14 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
     }
     @Override
     public void onPDFDownloadFinished(String path) {
-
-        // AppUtils.toast(this,"File downloaded successfully");
-        viewPdf();
+        mProgressBarRL.setVisibility(View.GONE);
+           if (TextUtils.isEmpty(path))
+               AppUtils.toast(this,getString(R.string.oops));
+            else
+               viewDownLoadedPdf();
     }
 
-    private void viewPdf() {
+    private void viewDownLoadedPdf() {
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + AppConstant.ODITLY + "/" + mAuditID + ".pdf");
         Uri excelPath;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)

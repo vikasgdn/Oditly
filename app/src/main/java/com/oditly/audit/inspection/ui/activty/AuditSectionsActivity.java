@@ -276,6 +276,7 @@ public class AuditSectionsActivity extends BaseActivity implements View.OnClickL
         Intent  intent=new Intent(this,AuditSubmitSignatureActivity.class);
         intent.putExtra(AppConstant.AUDIT_ID,auditId);
         startActivity(intent);
+        finish();
     }
 
 

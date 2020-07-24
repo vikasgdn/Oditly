@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,7 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuesti
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRootObject;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
+import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.network.apirequest.BSSaveSubmitJsonRequest;
 import com.oditly.audit.inspection.network.apirequest.GetReportRequest;
@@ -50,7 +52,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SubSectionsActivity extends BaseActivity implements SubSectionTabAdapter.CustomItemClickListener {
+public class SubSectionsActivity extends BaseActivity implements SubSectionTabAdapter.CustomItemClickListener, INetworkEvent {
 
     @BindView(R.id.tv_header_title)
     TextView mHeaderTitleTV;
@@ -70,7 +72,6 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
     TextView rejectedComment;
     @BindView(R.id.ll_parent_progress)
     RelativeLayout mSpinKitView;
-
     @BindView(R.id.tv_auditname)
     TextView mAuditNameTV;
 
@@ -80,15 +81,14 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
     private String auditId = "";
     private String auditDate = "";
     private String editable = "";
-    private String bsStatus = "";
-    private int totalQuestionCount = 0;
-    private int filledQuestionCount = 0;
-    Context context;
-    private static final int FillQuestionRequest = 101;
-    JSONArray answerArray ;
-    ArrayList<BrandStandardSection> brandStandardSections;
-    private static final String TAG = SubSectionsActivity.class.getSimpleName();
     private String mAuditName="";
+
+    // private String bsStatus = "";
+    private  Context context;
+    private static final int FillQuestionRequest = 101;
+    private  JSONArray answerArray ;
+    private ArrayList<BrandStandardSection> brandStandardSections;
+    private static final String TAG = SubSectionsActivity.class.getSimpleName();
 
 
     @Override
@@ -108,9 +108,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
     @Override
     protected void initView() {
         super.initView();
-
         mHeaderTitleTV = findViewById(R.id.tv_header_title);
-        // setActionBar();
         subSectionTabList = findViewById(R.id.rv_sub_section_tab);
         continueBtn = findViewById(R.id.continue_btn);
         statusProgressBar= findViewById(R.id.simpleProgressBar);
@@ -152,8 +150,8 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
             if (isDataSaved)
                 setBrandStandardQuestion();
         }else {
-           AppUtils.toastDisplayForLong(this,getString(R.string.internet_error));
-           finish();
+            AppUtils.toastDisplayForLong(this,getString(R.string.internet_error));
+            finish();
         }
 
     }
@@ -173,8 +171,8 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
         }
     }
 
+    private String messsage="";
     private void setBrandStandardQuestion(){
-        // showProgressDialog();
         mSpinKitView.setVisibility(View.VISIBLE);
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
@@ -183,10 +181,9 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                 AppLogger.e(TAG, "BrandStandardResponse: " + response);
                 try {
                     JSONObject object = new JSONObject(response);
-
+                    messsage =  object.getString(AppConstant.RES_KEY_MESSAGE);
                     if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
+                        BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create().fromJson(object.toString(), BrandStandardRootObject.class);
                         if (brandStandardRootObject.getData() != null && brandStandardRootObject.getData().toString().length() > 0) {
                             auditDate = brandStandardRootObject.getData().getAudit_date();
                             status = "" + brandStandardRootObject.getData().getBrand_std_status();
@@ -204,8 +201,9 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                         AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
+                    AppUtils.toast((BaseActivity) context,messsage);
                 }
                 //   hideProgressDialog();
                 mSpinKitView.setVisibility(View.GONE);
@@ -232,7 +230,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
         brandStandardSections = new ArrayList<>();
         brandStandardSections.addAll(info.getSections());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,3,LinearLayoutManager.VERTICAL,false);
-        SubSectionTabAdapter subSectionTabAdapter = new SubSectionTabAdapter(context, brandStandardSections, editable, SubSectionsActivity.this);
+        SubSectionTabAdapter subSectionTabAdapter = new SubSectionTabAdapter(this, brandStandardSections, editable, SubSectionsActivity.this);
         subSectionTabList.setLayoutManager(gridLayoutManager);
         subSectionTabList.setAdapter(subSectionTabAdapter);
     }
@@ -248,8 +246,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
 
     private void setProgressBar(float filledQuestionCount, float totalQuestionCount){
         try {
-            float divide = filledQuestionCount / totalQuestionCount;
-            float dpercent = divide * 100;
+
             float percent = (filledQuestionCount / totalQuestionCount) * 100;
             DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
@@ -313,10 +310,8 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                     totalCount += 1;
                 }
             }
-
         }
-        filledQuestionCount = count;
-        totalQuestionCount = totalCount;
+
         return new int[]{count, totalCount};
 
     }
@@ -359,8 +354,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
             for (int j = 0; j < brandStandardQuestion.size(); j++) {
                 count += 1;
                 brandStandardQuestionsSubmissions.add(brandStandardQuestion.get(j));
-                if (brandStandardQuestion.get(j).getQuestion_type().equals("textarea")||
-                        brandStandardQuestion.get(j).getQuestion_type().equals("text")){
+                if (brandStandardQuestion.get(j).getQuestion_type().equals("textarea")|| brandStandardQuestion.get(j).getQuestion_type().equals("text")){
                     if (AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())
                             && brandStandardQuestion.get(j).getAudit_answer_na() == 0) {
                         AppUtils.toastDisplayForLong(SubSectionsActivity.this, "You have not answered " +
@@ -381,19 +375,22 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
 
             ArrayList<BrandStandardSubSection> brandStandardSubSections = brandStandardSection.get(i).getSub_sections();
             try {
-                for (int k = 0; k < brandStandardSubSections.size(); k++) {
+                for (int k = 0; k < brandStandardSubSections.size(); k++)
+                {
                     ArrayList<BrandStandardQuestion> brandStandardSubQuestion = brandStandardSubSections.get(k).getQuestions();
                     for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
                         brandStandardQuestionsSubmissions.add(brandStandardSubQuestion.get(j));
                         count += 1;
-                        if (brandStandardSubQuestion.get(j).getQuestion_type().equals("textarea") || brandStandardQuestion.get(j).getQuestion_type().equals("text")) {
+                        if (brandStandardQuestion.size()>0 && (brandStandardSubQuestion.get(j).getQuestion_type().equalsIgnoreCase("textarea") || brandStandardQuestion.get(j).getQuestion_type().equalsIgnoreCase("text")))
+                        {
+
                             if (AppUtils.isStringEmpty(brandStandardSubQuestion.get(j).getAudit_answer()) && brandStandardSubQuestion.get(j).getAudit_answer_na() == 0) {
                                 AppUtils.toastDisplayForLong(SubSectionsActivity.this, "You have not answered " + "question no " + count + " in " + brandStandardSection.get(i).getSection_group_title() + " of section " + brandStandardSection.get(i).getSection_title());
                                 return false;
                             }
                         } else {
-                            if (brandStandardSubQuestion.get(j).getAudit_option_id().size() == 0
-                                    && brandStandardSubQuestion.get(j).getAudit_answer_na() == 0) {
+                            if (brandStandardSubQuestion.size()>0 &&(brandStandardSubQuestion.get(j).getAudit_option_id().size() == 0 && brandStandardSubQuestion.get(j).getAudit_answer_na() == 0))
+                            {
                                 AppUtils.toastDisplayForLong(SubSectionsActivity.this, "You have not answered " +
                                         "question no " + count + " in " + brandStandardSection.get(i).getSection_group_title()
                                         + " of section " + brandStandardSection.get(i).getSection_title());
@@ -406,51 +403,14 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
             catch (Exception e){e.printStackTrace();}
 
         }
-
-        answerArray = getQuestionsArray (brandStandardQuestionsSubmissions);
-
-
+        answerArray = AppUtils.getQuestionsArray (brandStandardQuestionsSubmissions);
         return validate;
-
-    }
-
-    private JSONArray getQuestionsArray (ArrayList<BrandStandardQuestion> brandStandardQuestions){
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0 ; i < brandStandardQuestions.size() ; i++) {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("question_id", brandStandardQuestions.get(i).getQuestion_id());
-                jsonObject.put("audit_answer_na", brandStandardQuestions.get(i).getAudit_answer_na());
-                jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
-                jsonObject.put("audit_option_id", getOptionIdArray(brandStandardQuestions.get(i).getAudit_option_id()));
-                jsonObject.put("audit_answer", brandStandardQuestions.get(i).getAudit_answer());
-                jsonArray.put(jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return jsonArray;
     }
 
 
-    private JSONArray getOptionIdArray (ArrayList<Integer> arrayList){
-        JSONArray jsArray = null;
-        try
-        {
-            if (arrayList!=null && arrayList.size()>0)
-                jsArray=  new JSONArray(arrayList);
-            else
-                jsArray=  new JSONArray();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return jsArray;
-    }
-
-    private void submitBrandStandardQuestion(){
-        // showProgressDialog();
+    private void submitBrandStandardQuestion()
+    {
         mSpinKitView.setVisibility(View.VISIBLE);
         JSONObject object = BSSaveSubmitJsonRequest.createInput(auditId, auditDate, "0", answerArray);
         AppLogger.e(TAG, "" + object);
@@ -474,14 +434,12 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //   hideProgressDialog();
                 mSpinKitView.setVisibility(View.GONE);
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // hideProgressDialog();
                 mSpinKitView.setVisibility(View.GONE);
                 NetworkResponse response = error.networkResponse;
                 if (error instanceof ServerError && response != null) {
@@ -491,8 +449,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                         JSONObject obj = new JSONObject(res);
                         String message = obj.getString("message");
                         AppLogger.e("Error: ", "" + obj);
-                        AppUtils.toast((BaseActivity) context,
-                                message);
+                        AppUtils.toast((BaseActivity) context, message);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -505,4 +462,55 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
 
     }
 
+    public void saveBrandStandardQuestionForNA(JSONArray jsonArray) {
+        mSpinKitView.setVisibility(View.VISIBLE);
+        if (TextUtils.isEmpty(auditDate))
+            auditDate=AppUtils.getAuditDateCurrent();
+        JSONObject object = BSSaveSubmitJsonRequest.createInput(auditId, auditDate, "1", jsonArray);
+        AppLogger.e(TAG, "" + object);
+        Response.Listener stringListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                AppLogger.e(TAG, "BSResponse: " + response);
+                try {
+                    if (!response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+                        setBrandStandardQuestion();    // for updating score and refresing adapter
+                    }
+                    else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mSpinKitView.setVisibility(View.GONE);
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mSpinKitView.setVisibility(View.GONE);
+                AppUtils.toast((BaseActivity) context, getString(R.string.oops));
+            }
+        };
+        BSSaveSubmitJsonRequest bsSaveSubmitJsonRequest = new BSSaveSubmitJsonRequest(AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BRANDSTANDARD, object, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(bsSaveSubmitJsonRequest);
+
+    }
+
+    @Override
+    public void onNetworkCallInitiated(String service) {
+
+    }
+
+    @Override
+    public void onNetworkCallCompleted(String type, String service, String response) {
+
+    }
+
+    @Override
+    public void onNetworkCallError(String service, String errorMessage) {
+
+    }
 }

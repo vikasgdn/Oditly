@@ -21,6 +21,17 @@ public class NetworkConstant
     public static final String REQ_PARAM_AUDIT_ID = "audit_id";
     public static final String REQ_PARAM_ACTION_PLANID = "action_plan_id";
     public static final String REQ_PARAM_COMMENT = "complete_comment";
+    public static final String REQ_PARAM_LOCATIONID = "location_id";
+    public static final String REQ_PARAM_TEMPLATEID = "questionnaire_id";
+    public static final String REQ_PARAM_AUDITTYPEID = "audit_type_id";
+    public static final String REQ_PARAM_AUDITORID = "auditor_id";
+    public static final String REQ_PARAM_AUDITNAME = "audit_name";
+    public static final String REQ_PARAM_REVIEWERID = "reviewer_id";
+    public static final String REQ_PARAM_DUEDATE = "due_date";
+    public static final String REQ_PARAM_INSTRUCTION = "instructions";
+    public static final String REQ_PARAM_BENCHMARK = "benchmark_per";
+    public static final String REQ_PARAM_AUDITSTARTDATE = "auditstartdate";
+
 
     //"audit_id": 1,"action_plan_id": 1,"complete_comment": ""
 }

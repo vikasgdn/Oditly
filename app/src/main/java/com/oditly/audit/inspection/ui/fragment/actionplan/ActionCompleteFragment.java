@@ -108,12 +108,12 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
     {
        String comment=mCommentET.getText().toString();
 
-       if(TextUtils.isEmpty(comment) || comment.length()<50)
-           mCommentErrorTV.setVisibility(View.VISIBLE);
-       else {
+      // if(TextUtils.isEmpty(comment))
+      //     mCommentErrorTV.setVisibility(View.VISIBLE);
+      // else {
            postCommentAndCompleteAction(comment);
            // AppUtils.toast(mActivity,"Comment Submitted");
-       }
+       //}
 
     }
 

@@ -63,6 +63,8 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
     private EditText mDesignationET;
     private EditText mTemplateET;
 
+    private ArrayList<Integer> mSelectedAuditID,mSelectedUserNameID,mSelectedLocationID,mSelectedTemplateID,mSelectedDesignationID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +122,12 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
         mAuditorNameList=new ArrayList();
         mDesignationList=new ArrayList();
         mTemplteList=new ArrayList();
+
+        mSelectedAuditID=new ArrayList();
+        mSelectedUserNameID=new ArrayList();
+        mSelectedLocationID=new ArrayList();
+        mSelectedTemplateID=new ArrayList();
+        mSelectedDesignationID=new ArrayList();
     }
 
     @Override
@@ -194,6 +202,22 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
                 finish();
                 break;
             case R.id.tv_done:
+             //   audit_type_id,location_id,custom_role_id(designation),questionnaire_id(template),auditor_id,audit_to_date,audit_from_date
+
+
+              /*  try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put(NetworkConstant.REQ_PARAM_TODATE, mDateToET.getText().toString());
+                    jsonObject.put(NetworkConstant.REQ_PARAM_FROMDATE, mDateToET.getText().toString());
+                    jsonObject.put(NetworkConstant.REQ_PARAM_AUDIT_ID, mDateToET.getText().toString());
+                    jsonObject.put(NetworkConstant.REQ_PARAM_LOCATIONID, mDateToET.getText().toString());
+                    jsonObject.put(NetworkConstant.REQ_PARAM_TEMPLATEID, mDateToET.getText().toString());
+                    jsonObject.put(NetworkConstant.REQ_PARAM_DESIGID, mDateToET.getText().toString());
+                }
+                catch (Exception e){
+
+                }*/
+
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra(AppConstant.FROM_DATE,mDateFromTV.getText().toString());
                 returnIntent.putExtra(AppConstant.TO_DATE,mDateToET.getText().toString());
@@ -255,22 +279,32 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
 
         if(mClick==1)
         {
+            mSelectedAuditID.clear();
+            mSelectedAuditID.addAll(selectedIds);
             mAuditTypeET.setText(selectedNames.toString());
         }
         else  if(mClick==2)
         {
+            mSelectedUserNameID.clear();
+            mSelectedUserNameID.addAll(selectedIds);
             mAuditorNameET.setText(selectedNames.toString());
         }
         else if(mClick==3)
         {
+            mSelectedLocationID.clear();
+            mSelectedLocationID.addAll(selectedIds);
             mLocationListET.setText(selectedNames.toString());
         }
         else if(mClick==4)
         {
+            mSelectedTemplateID.clear();
+            mSelectedTemplateID.addAll(selectedIds);
             mTemplateET.setText(selectedNames.toString());
         }
         else
         {
+            mSelectedDesignationID.clear();
+            mSelectedDesignationID.addAll(selectedIds);
             mDesignationET.setText(selectedNames.toString());
         }
     }
@@ -336,41 +370,4 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
         mProgressBarRL.setVisibility(View.VISIBLE);
         AppUtils.toast(this, getString(R.string.oops));
     }
-
-
-/*    private void getMultiSelectionDialog()
-    {
-        MultiSelectDialog multiSelectDialog = new MultiSelectDialog()
-                .title(getResources().getString(R.string.app_name)) //setting title for dialog
-                .titleSize(25)
-                .positiveText("Done")
-                .negativeText("Cancel")
-                .setMinSelectionLimit(1) //you can set minimum checkbox selection limit (Optional)
-                .setMaxSelectionLimit(dArray.size()) //you can set maximum checkbox selection limit (Optional)
-                // .preSelectIDsList(alreadySelectedCountries) //List of ids that you need to be selected
-                .multiSelectList(dArray) // the multi select model list with ids and name
-                .onSubmit(new MultiSelectDialog.SubmitCallbackListener() {
-                    @Override
-                    public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString) {
-                        //will return list of selected IDS
-                        for (int i = 0; i < selectedIds.size(); i++) {
-                            Toast.makeText(ReportFilterActivity.this, "Selected Ids : " + selectedIds.get(i) + "\n" +
-                                    "Selected Names : " + selectedNames.get(i) + "\n" +
-                                    "DataString : " + dataString, Toast.LENGTH_SHORT).show();
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        Log.d("TAG","Dialog cancelled");
-                    }
-
-
-                });
-
-        multiSelectDialog.show(getSupportFragmentManager(), "multiSelectDialog");
-
-    }*/
 }

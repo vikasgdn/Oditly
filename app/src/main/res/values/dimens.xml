@@ -49,5 +49,7 @@
     <dimen name="d_50dp">50dp</dimen>
     <dimen name="d_progressbar">160dp</dimen>
     <dimen name="d_130dp">130dp</dimen>
+    <dimen name="d_circlesize">17dp</dimen>
+    <dimen name="text_size_10sp">10sp</dimen>
 
 </resources>

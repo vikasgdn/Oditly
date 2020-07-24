@@ -65,6 +65,14 @@ public class AppConstant {
     public static final String TEAM = "team";
     public static final String FROM_DATE = "from_date";
     public static final String TO_DATE = "to_date";
+    public static final String REVIEWRLIST = "reviewerlist";
+    public static final String REVIEWRLISTID = "reviewerlistid";
+    public static final String AUDIT_INSTRUCTION = "instruction";
+    public static final String AUDIT_DATE = "auditdate";
+    public static final String AUDIT_REVIEWERID = "reviewerid";
+    public static final String AUDIT_BENCHMARK = "benchmark";
+    public static final String AUDIT = "audit";
+
 
     public static String DEVICE_ID = "";
 

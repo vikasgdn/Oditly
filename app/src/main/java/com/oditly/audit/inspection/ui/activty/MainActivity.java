@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.dialog.AppDialogs;
+import com.oditly.audit.inspection.ui.fragment.AnalyticsFragment;
+import com.oditly.audit.inspection.ui.fragment.GoToFragment;
 import com.oditly.audit.inspection.ui.fragment.LandingFragment;
 import com.oditly.audit.inspection.ui.fragment.ReportFragment;
 import com.oditly.audit.inspection.ui.fragment.TeamListFragment;
@@ -67,9 +70,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(R.drawable.ic_schedule_png,"Schedule").setActiveColorResource(R.color.c_blue))
+                .addItem(new BottomNavigationItem(R.drawable.ic_analytics_png, "Analytics").setActiveColorResource(R.color.c_blue))
+                .addItem(new BottomNavigationItem(R.drawable.ic_goto_png, "Go To").setActiveColorResource(R.color.c_blue))
                 .addItem(new BottomNavigationItem(R.drawable.ic_report_png, "Report").setActiveColorResource(R.color.c_blue))
-              //  .addItem(new BottomNavigationItem(R.drawable.ic_goto_png, "").setActiveColorResource(R.color.c_blue))
-                //.addItem(new BottomNavigationItem(R.drawable.ic_analytics_png, "").setActiveColorResource(R.color.c_blue))
                 .addItem(new BottomNavigationItem(R.drawable.ic_adduser_png, "Team").setActiveColorResource(R.color.c_blue))
                 .setFirstSelectedPosition(lastSelectedPosition)
                 .initialise();
@@ -118,23 +121,20 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.container,LandingFragment.newInstance(mAuditTypeID)).commitAllowingStateLoss();
                 break;
             case 1:
-                mTitleTV.setText(getResources().getString(R.string.s_reports));
-               // AppUtils.toast(this, getString(R.string.text_coming_soon));
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, ReportFragment.newInstance("")).commitAllowingStateLoss();
+                mTitleTV.setText(getResources().getString(R.string.s_analytics));
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, AnalyticsFragment.newInstance(0)).commitAllowingStateLoss();
                 break;
             case 2:
-                mTitleTV.setText(getResources().getString(R.string.text_team));
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, TeamListFragment.newInstance(4)).commitAllowingStateLoss();
-                //  AppDialogs.showOtpValidateDialog(this);
+              //  mTitleTV.setText(getResources().getString(R.string.text_goto));
+               // getSupportFragmentManager().beginTransaction().replace(R.id.container, GoToFragment.newInstance(4)).commitAllowingStateLoss();
+                AppDialogs.showOtpValidateDialog(this);
                 break;
             case 3:
-                mTitleTV.setText(getResources().getString(R.string.s_analytics));
-                AppUtils.toast(this, getString(R.string.text_coming_soon));
-               // getSupportFragmentManager().beginTransaction().replace(R.id.container, AnalyticsFragment.newInstance(3)).commitAllowingStateLoss();
+                mTitleTV.setText(getResources().getString(R.string.s_reports));
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, ReportFragment.newInstance("")).commitAllowingStateLoss();
                 break;
             case 4:
                 mTitleTV.setText(getResources().getString(R.string.s_user));
-              //  AppUtils.toast(this, getString(R.string.text_coming_soon));
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, TeamListFragment.newInstance(4)).commitAllowingStateLoss();
                 break;
             default:

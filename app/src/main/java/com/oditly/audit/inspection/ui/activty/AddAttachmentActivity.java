@@ -40,6 +40,7 @@ import com.asksira.bsimagepicker.BSImagePicker;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.GsonBuilder;
+import com.oditly.audit.inspection.BuildConfig;
 import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.adapter.AddAttachmentAdapter;
@@ -309,7 +310,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         System.gc();
 
         //Select from Gallery with multi selection
-        BSImagePicker pickerDialog = new BSImagePicker.Builder("com.oditly.android.fileprovider")
+        BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
                 .setMaximumDisplayingImages(Integer.MAX_VALUE)
                 .isMultiSelect()
                 .setTag("")
@@ -374,7 +375,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this, "com.oditly.android.fileprovider", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", photoFile);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null)
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);

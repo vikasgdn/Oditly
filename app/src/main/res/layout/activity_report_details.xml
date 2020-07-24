@@ -339,4 +339,11 @@
             android:textColor="@color/text_selector"
             android:textSize="@dimen/text_size_14"/>
     </LinearLayout>
+
+    <include
+        android:layout_width="@dimen/d_progressbar"
+        android:layout_height="@dimen/d_progressbar"
+        android:layout_centerInParent="true"
+        layout="@layout/spunk_view"
+        />
 </RelativeLayout>

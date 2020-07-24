@@ -45,8 +45,10 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
     private RelativeLayout mNoDataFoundRL;
     private String mAuditTYpeID="";
     private RelativeLayout mSpinKitView;
-    private String mOverDue="";
-    private int mSkipOverDue=1;
+   // private String mOverDue="";
+   // private int mSkipOverDue=1;
+
+     private String mAuditURL="";
 
     public static AuditFragment newInstance(String auditType) {
         Bundle args = new Bundle();
@@ -75,8 +77,11 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
 
         initView(getView());
         initVar();
-        getAuditListFromServer(1); //scheduled
+        mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=1&assigned=1&page=1&skip_overdue=1";
+        getAuditListFromServer(); //scheduled
     }
+
+
 
     @Override
     protected void initView(View view) {
@@ -118,12 +123,15 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
 
 
 
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId())
         {
             case R.id.tv_schedule:
-                 mOverDue="";
+                status =1;
+                mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=1&assigned=1&page=1&skip_overdue=1";
                 if(mSheduleTv.isSelected())
                     mSheduleTv.setSelected(false);
                 else
@@ -131,46 +139,51 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                     removeAllSelection();
                     mSheduleTv.setSelected(true);
                 }
-                status=1;
-                mSkipOverDue=1;
-                getAuditListFromServer(status); //scheduled
+                getAuditListFromServer(); //scheduled
                 break;
             case R.id.tv_progress:
-                mOverDue="";
-                status=2;
-                mSkipOverDue=1;
+                status =2;
+                mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=2&action_plan_status%5B%5D=3&assigned=1&page=1&skip_overdue=1";
                 if(mResumeTv.isSelected())
                     mResumeTv.setSelected(false);
                 else {
                     removeAllSelection();
                     mResumeTv.setSelected(true);
                 }
-                getAuditListFromServer(status); //scheduled
+                getAuditListFromServer(); //scheduled
 
                 break;
             case R.id.tv_overdue:
-                mOverDue="1";
-                mSkipOverDue=0;
-                status=3;
+                status =3;
+                mAuditURL= NetworkURL.AUDIT_LIST+"?assigned=1&page=1&overdue=1";
                 if(mOverDueTV.isSelected())
                     mOverDueTV.setSelected(false);
                 else {
                     removeAllSelection();
                     mOverDueTV.setSelected(true);
                 }
-                getAuditListFromServer(status); //scheduled
+                getAuditListFromServer(); //scheduled
                 break;
         }
     }
 
+   /* Scheduled:
+    filter_brand_std_status: [1]
+    skip_overdue: 1
 
-    private void getAuditListFromServer(int status)
+    In Progress:
+    filter_brand_std_status: [2, 3]
+    skip_overdue: 1
+
+    Overdue:
+    overdue: 1*/
+
+    private void getAuditListFromServer()
     {
         if (NetworkStatus.isNetworkConnected(mActivity)) {
             mSpinKitView.setVisibility(View.VISIBLE);
-            String auditUrl = NetworkURL.AUDIT_LIST + "?" + "filter_audit_status=0&" + "filter_exec_sum_status=" + "" + "&" + "status=" + status + "&" + "type=" + "0" + "&" + "page=" + "1" + "&" + "overdue=" + ""+mOverDue+"&assigned=1&skip_overdue="+mSkipOverDue;
-            System.out.println("==> mAuditTYpeID "+auditUrl);
-            NetworkService networkService = new NetworkService(auditUrl, NetworkConstant.METHOD_GET, this,mActivity);
+            System.out.println("==> mAuditTYpeID "+mAuditURL);
+            NetworkService networkService = new NetworkService(mAuditURL, NetworkConstant.METHOD_GET, this,mActivity);
             networkService.call( new HashMap<String, String>());
         } else
         {

@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
     private Button mSaveButton;
     private TextView mHeaderTitleTV;
     private String mAuditId="";
+    private RelativeLayout mProgressBarRL;
 
 
     @Override
@@ -73,6 +75,13 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
     protected void initView() {
         super.initView();
 
+        findViewById(R.id.iv_header_left).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        mProgressBarRL = (RelativeLayout) findViewById(R.id.ll_parent_progress);
         mHeaderTitleTV = findViewById(R.id.tv_header_title);
         mHeaderTitleTV.setText(getString(R.string.text_signature_pad));
         // setActionBar();
@@ -219,16 +228,16 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
             );
         }
     }
-   /* private void setActionBar() {
-        initToolbar(toolbar);
-        setTitle(getString(R.string.text_signature_pad));
-        enableBack(true);
-        enableBackPressed();
-    }*/
 
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 
     private void addAuditSignature(byte[] imageByteData) {
-        showProgressDialog();
+      //  showProgressDialog();
+        mProgressBarRL.setVisibility(View.VISIBLE);
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -238,6 +247,8 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
 
                     if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                         Toast.makeText(getApplicationContext(), "Signature Uploaded", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(AuditSubmitSignatureActivity.this,MainActivity.class);
+                        startActivity(intent);
                         finish();
                     } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
@@ -246,7 +257,8 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                hideProgressDialog();
+             //   hideProgressDialog();
+                mProgressBarRL.setVisibility(View.GONE);
             }
 
         };
@@ -254,6 +266,7 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //hideProgressDialog();
+                mProgressBarRL.setVisibility(View.GONE);
                 AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
                 //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
                 Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();

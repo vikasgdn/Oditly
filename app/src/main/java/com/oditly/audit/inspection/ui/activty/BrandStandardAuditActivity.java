@@ -128,6 +128,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     private  Map<Integer, List<String>> mListMap;
     public static boolean isAnswerCliked=false;
     private boolean isSaveButtonClick=false;
+    private boolean isBackButtonClick=false;
 
 
     @Override
@@ -199,6 +200,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         loadData();
     }
 
+    private boolean isCommentValidate= false;
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -225,20 +227,30 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 AppUtils.showHeaderDescription(context, sectionTitle);
                 break;
             case R.id.next_btn:
+                isSaveButtonClick=false;
                 if(isAnswerCliked)
-                {   isSaveButtonClick=false;
-                    isAnswerCliked=false;
-                    saveSectionOrPagewiseData();
+                {
+                    if (saveSectionOrPagewiseData()) {
+                        isAnswerCliked=false;
+                        setNextButtonSetUP();
+                    }
                 }
-                 setNextButtonSetUP();
+                else
+                    setNextButtonSetUP();
+
                 break;
             case R.id.prev_btn:
-                if(isAnswerCliked) {
-                    isAnswerCliked=false;
-                    isSaveButtonClick=false;
-                    saveSectionOrPagewiseData();
+                isSaveButtonClick=false;
+                if(isAnswerCliked)
+                {
+                    if (saveSectionOrPagewiseData()) {
+                        isAnswerCliked=false;
+                        setPreviousButtonSetUP();
+                    }
                 }
-               setPreviousButtonSetUP();
+                else
+                    setPreviousButtonSetUP();
+
                 break;
         }
     }
@@ -423,13 +435,15 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 AppLogger.e(TAG, "BSResponse: " + response);
                 try {
                     if (!response.getBoolean(AppConstant.RES_KEY_ERROR))
-                    {  // SubSectionsActivity.isDataSaved=false;
+                    {
                         AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
                         status = "" + response.getJSONObject("data").getInt("brand_std_status");
-                        /*Toast.makeText(context, "Answer Saved", Toast.LENGTH_SHORT).show();
-                        Intent result = new Intent();
-                        setResult(RESULT_OK, result);
-                        finish();*/
+
+                        if (isBackButtonClick)
+                        {
+                            isBackButtonClick=false; // This is only for showing progressBar
+                            finish();
+                        }
                     } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
                     }
@@ -664,7 +678,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 if (question.getOptions().get(j).getOption_mark() == 0) {
                     if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
                         if (question.getOptions().get(j).getOption_id() == question.getAudit_option_id().get(0)) {
-                            if (AppUtils.isStringEmpty(question.getAudit_comment())) {
+                            if ((AppUtils.isStringEmpty(question.getAudit_comment()) || question.getAudit_comment().length()<question.getHas_comment()) && question.getHas_comment() >0) {
                                 validate = false;
                                 AppUtils.toastDisplayForLong(BrandStandardAuditActivity.this,"Please enter  minimum required "+question.getHas_comment()+" characters comment for question No: "+count);
                                 return false;
@@ -684,7 +698,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     if (subQuestion.getAudit_option_id() != null && subQuestion.getAudit_option_id().size() > 0) {
                         if (subQuestion.getOptions().get(j).getOption_id() == subQuestion.getAudit_option_id().get(0))
                         {
-                            if (AppUtils.isStringEmpty(subQuestion.getAudit_comment())) {
+                            if ((AppUtils.isStringEmpty(subQuestion.getAudit_comment()) || subQuestion.getAudit_comment().length()<subQuestion.getHas_comment()) && subQuestion.getHas_comment() >0) {
                                 validate = false;
                                 AppUtils.toastDisplayForLong(BrandStandardAuditActivity.this,"Please enter  minimum required "+subQuestion.getHas_comment()+" characters comment for question No: "+count);
                                 return false;
@@ -723,6 +737,20 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
     };
 
+
+    @Override
+    public void onBackPressed() {
+        if(isAnswerCliked)
+        {
+            isBackButtonClick=true; // This is for saving last answer data and hold th page
+            isSaveButtonClick=true; // This is only for showing progressBar
+            isAnswerCliked=false;
+            saveSectionOrPagewiseData();
+
+        }
+        else
+            finish();
+    }
 
     private void setNextButtonSetUP() {
         mImageListRecent.clear();
@@ -791,7 +819,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         }
     }
 
-    private void saveSectionOrPagewiseData() {
+    private boolean saveSectionOrPagewiseData() {
         if (AppUtils.isNetworkConnected(context))
         {
             if (AppUtils.isStringEmpty(auditDate))
@@ -801,11 +829,14 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 SubSectionsActivity.isDataSaved=true;
                 saveBrandStandardQuestion();
             }
+            else
+                return false;
         } else {
             ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
             brandStandardSection.setQuestions(brandStandardQuestions);
             AppDialogs.localDataSaveDialog(brandStandardSection,this);
         }
+        return  true;
     }
 
 

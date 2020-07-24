@@ -1,6 +1,7 @@
 package com.oditly.audit.inspection.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,31 +18,26 @@ import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
+import com.oditly.audit.inspection.ui.activty.SubSectionsActivity;
 import com.oditly.audit.inspection.util.AppUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SubSectionTabAdapter extends
-        RecyclerView.Adapter<SubSectionTabAdapter.SubSectionTabViewHolder> {
-
+public class SubSectionTabAdapter extends RecyclerView.Adapter<SubSectionTabAdapter.SubSectionTabViewHolder> {
     private Context context;
     private ArrayList<BrandStandardSection> data;
     CustomItemClickListener customItemClickListener;
     private String editable = "";
-    /*private int totalCount;
-    private int count;
-    private int isPartiallyFilled;*/
-    //private boolean isPartiallyFilled = false;
 
-    public SubSectionTabAdapter(Context context, ArrayList<BrandStandardSection> data, String editable,
-                                CustomItemClickListener customItemClickListener) {
+    public SubSectionTabAdapter(Context context, ArrayList<BrandStandardSection> data, String editable, CustomItemClickListener customItemClickListener) {
         this.context = context;
         this.data = data;
         this.editable = editable;
         this.customItemClickListener = customItemClickListener;
-        /*this.totalCount = totalCount;
-        this.count = count;
-        this.isPartiallyFilled = isPartiallyFilled;*/
     }
 
     @Override
@@ -72,18 +69,15 @@ public class SubSectionTabAdapter extends
 
         if (isPartiallyFilled == 1 || count < totalCount && count != 0) {
             holder.tvSubSectionStatus.setText("Pending");
-            //holder.llSubSectionBorder.setBackground(context.getResources().getDrawable(R.drawable.resume_status_border));
             holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.pending_status));
             holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_orange));
 
         } else if (count == 0) {
             holder.tvSubSectionStatus.setText("Start");
-            //holder.llSubSectionBorder.setBackground(context.getResources().getDrawable(R.drawable.rejected_status_border));
             holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.start_status));
             holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_red));
         } else {
             holder.tvSubSectionStatus.setText("Completed");
-            //holder.llSubSectionBorder.setBackground(context.getResources().getDrawable(R.drawable.submitted_status_border));
             holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.complete_status));
             holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_green));
         }
@@ -95,16 +89,7 @@ public class SubSectionTabAdapter extends
         holder.llSubSectionBorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*customItemClickListener.onItemClick(brandStandardSection.getQuestions(),
-                        brandStandardSection.getSub_sections(),
-                        brandStandardSection.getSection_group_id(),
-                        brandStandardSection.getSection_id(),
-                        brandStandardSection.getSection_title(),
-                        brandStandardSection.getAudit_section_file_cnt());*/
-
                 customItemClickListener.onItemClick(data, brandStandardSection.getAudit_section_file_cnt(), position);
-
-
             }
         });
 
@@ -112,9 +97,10 @@ public class SubSectionTabAdapter extends
         holder.naCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                JSONArray jsonArray =new JSONArray();
                 if (holder.naCheckBox.isChecked()) {
+                  //  Toast.makeText(context,"IN SIDE CHECKED",Toast.LENGTH_SHORT).show();
                     holder.tvSubSectionStatus.setText("Completed");
-                    //holder.llSubSectionBorder.setBackground(context.getResources().getDrawable(R.drawable.submitted_status_border));
                     holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.complete_status));
                     holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_green));
                     if (brandStandardSection.getQuestions() != null && brandStandardSection.getQuestions().size() > 0) {
@@ -122,6 +108,19 @@ public class SubSectionTabAdapter extends
                             BrandStandardQuestion question = brandStandardSection.getQuestions().get(i);
                             question.setAudit_option_id(new ArrayList<Integer>());
                             question.setAudit_answer_na(1);
+
+                            JSONObject jsonObject = new JSONObject();
+                            try {
+                                jsonObject.put("question_id", question.getQuestion_id());
+                                jsonObject.put("audit_answer_na",question.getAudit_answer_na());
+                                jsonObject.put("audit_comment", question.getAudit_comment());
+                                jsonObject.put("audit_option_id", new JSONArray());
+                                jsonObject.put("audit_answer", question.getAudit_answer());
+                                jsonArray.put(jsonObject);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                     if (brandStandardSection.getSub_sections() != null && brandStandardSection.getSub_sections().size() > 0) {
@@ -132,13 +131,29 @@ public class SubSectionTabAdapter extends
                                     BrandStandardQuestion question = subSection.getQuestions().get(j);
                                     question.setAudit_option_id(new ArrayList<Integer>());
                                     question.setAudit_answer_na(1);
+
+                                    JSONObject jsonObject = new JSONObject();
+                                    try {
+                                        jsonObject.put("question_id", question.getQuestion_id());
+                                        jsonObject.put("audit_answer_na", question.getAudit_answer_na());
+                                        jsonObject.put("audit_comment", question.getAudit_comment());
+                                        jsonObject.put("audit_option_id", question.getAudit_option_id());
+                                        jsonObject.put("audit_answer", question.getAudit_answer());
+                                        jsonArray.put(jsonObject);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         }
                     }
+                     // saving N/A to the server
+                    ((SubSectionsActivity)context).saveBrandStandardQuestionForNA(jsonArray);
+                  //  Log.e("JSON ARRAY PRINT  ",""+jsonArray);
+
                 } else {
+                 //   Toast.makeText(context,"IN SIDE NO CHECKED",Toast.LENGTH_SHORT).show();
                     holder.tvSubSectionStatus.setText("Start");
-                    //holder.llSubSectionBorder.setBackground(context.getResources().getDrawable(R.drawable.rejected_status_border));
                     holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.start_status));
                     holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_red));
                     if (brandStandardSection.getQuestions() != null && brandStandardSection.getQuestions().size() > 0) {
@@ -253,9 +268,6 @@ public class SubSectionTabAdapter extends
     }
 
     public interface CustomItemClickListener {
-        /*void onItemClick(ArrayList<BrandStandardQuestion> questionArrayList,
-                         ArrayList<BrandStandardSubSection> subSectionArrayList,
-                         int sectionGroupId, int sectionId, String sectionTitle, int fileCount);*/
         void onItemClick(ArrayList<BrandStandardSection> brandStandardSections, int fileCount, int position);
     }
 

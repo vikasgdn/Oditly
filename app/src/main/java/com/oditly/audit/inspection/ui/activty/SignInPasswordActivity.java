@@ -174,6 +174,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                         AppPreferences.INSTANCE.setClientRoleId(signInRootObject.getData().getClient_role_id());
                         AppPreferences.INSTANCE.setClientRoleName(signInRootObject.getData().getClient_role_name());
                         Intent intent = new Intent(this, AnimationActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK); //new added
                         startActivity(intent);
                         finish();
                     }

@@ -22,7 +22,6 @@ public class NetworkURL {
     public static final String AUDIT_LIST = API_BASE_URL + "ia/audits";
     public static final String AUDIT_TYPE_LIST = API_BASE_URL + "ia/audit/types";
 
-
     public static final String AUDITDETAILEDSUMMARY = API_BASE_URL + "ia/detailed_summary";
     public static final String AUDITEXECUTIVESUMMARY = API_BASE_URL + "ia/executive_summary";
 
@@ -52,7 +51,15 @@ public class NetworkURL {
     public static final String GET_TEAM_MEMBER = API_BASE_URL_NEW+ "team?";
     public static final String GET_FILTER_DATA= API_BASE_URL_NEW+"ia/report/dashboard/filter";
     public static final String GET_REPORT_URL=API_BASE_URL_NEW+"report/ia/audit/dashboard/pdf?audit_id=";
-
+    public static final String GET_DASHBOARD_URL=API_BASE_URL_NEW+"ia/report/dashboard?";
+    public static final String AUDIT_LOCATION_LIST ="https://api.account.oditly.com/m/filter/location?";
+    public static final String GET_AUDITCREATEFILTER_URL=API_BASE_URL_NEW+ "/internal/audit/create?location_id=";
+    public static final String POST_AUDIT_ADD_URL=API_BASE_URL_NEW+ "internal/audit";
+    public static final String GET_ACTION_FILTER_URL=API_BASE_URL_NEW+ "ia/action-plan/create?audit_id=";
+    public static final String POST_ACTION_ADD_URL=API_BASE_URL_NEW+ "ia/action-plan";
+  //audit_id section_group_id , section_id, title   action_id, planned_date,assigned_user_id[],action_details,cc_emails 9 params
+  public static final String POST_ACTIONFILE_ADD_URL=API_BASE_URL_NEW+ "ia/action-plan/file";
+  // audit_id,action_plan_id,file
 
 
 

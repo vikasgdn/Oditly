@@ -20,7 +20,7 @@ public class DownloadPdfTask {
 
     private String downloadUrl = "";
     private String downloadFileName = "";
-    private ProgressDialog progressDialog;
+  //  private ProgressDialog progressDialog;
     private Context context;
     private static final String TAG = DownloadPdfTask.class.getSimpleName();
     private PDFDownloadFinishedListner pdfDownloadFinishedListner;
@@ -48,44 +48,22 @@ public class DownloadPdfTask {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog=new ProgressDialog(context);
-            progressDialog.setMessage("Downloading...");
-            progressDialog.show();
+        //    progressDialog=new ProgressDialog(context);
+          //  progressDialog.setMessage("Downloading...");
+           // progressDialog.show();
         }
 
         @Override
         protected void onPostExecute(Void result) {
             try {
                 if (outputFile != null) {
-                    progressDialog.dismiss();
+                  //  progressDialog.dismiss();
                     pdfDownloadFinishedListner.onPDFDownloadFinished(outputFile.getAbsolutePath());
-
-                    //Toast.makeText(context, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    }, 3000);
-
-                    Log.e(TAG, "Download Failed");
-
-                }
+                } else
+                        pdfDownloadFinishedListner.onPDFDownloadFinished("");
             } catch (Exception e) {
                 e.printStackTrace();
-
-                //Change button text if exception occurs
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 3000);
-                Log.e(TAG, "Download Failed with Exception - " + e.getLocalizedMessage());
-
+                pdfDownloadFinishedListner.onPDFDownloadFinished("");
             }
             super.onPostExecute(result);
         }

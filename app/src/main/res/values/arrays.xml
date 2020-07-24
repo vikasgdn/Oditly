@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="arr_dummy">
+        <item>vikas</item>
+        <item>Ram</item>
+        <item>Shyam</item>
+        <item>Rahim</item>
+        <item>vikas</item>
+    </string-array>
+</resources>

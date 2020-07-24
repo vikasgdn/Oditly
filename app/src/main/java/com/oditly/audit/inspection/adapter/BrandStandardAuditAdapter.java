@@ -181,9 +181,7 @@ public class BrandStandardAuditAdapter extends
         });
 
         AppLogger.e("QuestionType:", brandStandardQuestion.getQuestion_type());
-        if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) &&
-                (brandStandardQuestion.getQuestion_type().equals("textarea") ||
-                        brandStandardQuestion.getQuestion_type().equals("text"))) {
+        if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) && (brandStandardQuestion.getQuestion_type().equals("textarea") || brandStandardQuestion.getQuestion_type().equals("text"))) {
             if (brandStandardQuestion.getAudit_answer_na() == 0) {
                 holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
                 holder.naBtn.setTextColor(context.getResources().getColor(R.color.c_dark_gray));
@@ -547,7 +545,7 @@ public class BrandStandardAuditAdapter extends
     {
         data.get(pos).setAudit_question_file_cnt(count);
         //notifyDataSetChanged();
-          notifyItemChanged(pos);
+       //   notifyItemChanged(pos);
        // Toast.makeText(context,"position==>"+pos,Toast.LENGTH_SHORT).show();
         //((BrandStandardAuditActivity) context).questionCount = 0;
     }
