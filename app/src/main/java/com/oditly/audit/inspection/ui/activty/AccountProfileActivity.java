@@ -122,7 +122,8 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                  startActivity(intent);
                  break;
             case R.id.tv_privacy:
-                AppUtils.toast(this,getString(R.string.text_coming_soon));
+                Intent intent1=new Intent(this, PrivacyPolicyActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.tv_termservice:
                    AppUtils.toast(this,getString(R.string.text_coming_soon));

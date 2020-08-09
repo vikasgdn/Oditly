@@ -547,7 +547,7 @@ public class AppUtils {
 
 
     @SuppressLint("NewApi")
-    public static void datePicker(final Context context, final TextView editText, final boolean needTimePicker) {
+    public static void datePicker(final Context context, final TextView editText, final boolean needTimePicker,final BrandStandardQuestion brandStandardQuestion) {
         Calendar c = Calendar.getInstance();
         // Process to get Current Date
         final int currentYear = c.get(Calendar.YEAR);
@@ -568,8 +568,7 @@ public class AppUtils {
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         if (year <= (currentYear) /*&& monthOfYear<mMonth && dayOfMonth<mDay*/) {
                             String strYEAR = String.valueOf(year);
 
@@ -593,9 +592,11 @@ public class AppUtils {
                             String date = strYEAR + "-" + strMONTH + "-" + strDATE;
 
                             if (needTimePicker)
-                                timePicker(context,editText, date);
-                            else
+                                timePicker(context,editText, date,brandStandardQuestion);
+                            else {
                                 editText.setText(date);
+                                brandStandardQuestion.setAudit_answer(date);
+                            }
                         } else {
                             Log.e("","Invalid Date!");
                         }
@@ -606,7 +607,7 @@ public class AppUtils {
         //                (currentDay+1)+"/"+(currentMonth+1)+"/"+(currentYear), "dd/MM/yyyy"));
     }
 
-    public static void timePicker(Context context, final TextView editText, final String date) {
+    public static void timePicker(Context context, final TextView editText, final String date,final BrandStandardQuestion brandStandardQuestion) {
         String time="";
         Calendar c = Calendar.getInstance();
         // Process to get Current Date
@@ -617,14 +618,19 @@ public class AppUtils {
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
             @Override
-            public void onTimeSet(TimePicker view, int hourOfDay,
-                                  int minute) {
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 String strMinute = String.valueOf(minute);
+                String strHour = String.valueOf(hourOfDay);
+
+                if ((strHour).length() == 1) {
+                    strHour = "0" + strHour;
+                }
                 if ((strMinute).length() == 1) {
                     strMinute = "0" + strMinute;
                 }
-                String time = (date.isEmpty() ? date : (date + " ")) + hourOfDay + ":" + strMinute;
+                String time = (date.isEmpty() ? date : (date + " ")) + strHour + ":" + strMinute + ":00";
                 editText.setText(time);
+                brandStandardQuestion.setAudit_answer(""+time);
             }
         }, setHour, setMinute, true);
         timePickerDialog.show();

@@ -255,10 +255,7 @@ public class AuditSectionsActivity extends BaseActivity implements View.OnClickL
                 bsText.setTextColor(context.getResources().getColor(R.color.scoreGreen));
                 bsStartBtn.setText(getResources().getString(R.string.text_submitted));
                 bsStartBtn.setTextColor(context.getResources().getColor(R.color.scoreGreen));
-
-                // if ds and es both or in N/A case then sign from here
-                //  if(dsStatus.equalsIgnoreCase("0") && esStatus.equalsIgnoreCase("0"))
-                //          goForSignature();   // need to change in future
+                goForSignature();   // need to change in future
                 break;
             case "5":
                 llBrandStandard.setBackground(context.getResources().getDrawable(R.drawable.reviewed_status_border));

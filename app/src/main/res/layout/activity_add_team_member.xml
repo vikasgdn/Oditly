@@ -42,7 +42,7 @@
                 android:maxLines="1"
                 android:inputType="text"
                 android:imeOptions="actionDone"
-                android:background="@drawable/change_password_border"
+                android:background="@drawable/graydark_border_whitebg"
                 android:textSize="17sp"
                 android:hint="@string/text_name_emaili_roll"/>
 

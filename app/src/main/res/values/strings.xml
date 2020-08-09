@@ -22,8 +22,8 @@
     <string name="default_progress_dialog_message">Loading...</string>
     <string name="s_enter">Enter</string>
     <string name="h_password">Password</string>
-    <string name="s_description">This section contains all the actions that are scheduled, in progress or overdue</string>
-    <string name="s_description_insp">This section contains all the inspections that are scheduled, in progress or overdue</string>
+    <string name="s_description">This section contains all the actions that are Scheduled, In progress or Overdue</string>
+    <string name="s_description_insp">This section contains all the inspections that are Scheduled, In progress or Overdue</string>
 
     <string name="s_scheduled">Scheduled</string>
     <string name="s_progress">In Progress</string>
@@ -91,7 +91,7 @@
     <string name="text_photo">Media</string>
     <string name="text_summary">Summary</string>
     <string name="text_comment">Comment</string>
-    <string name="text_ref_image">Refrence</string>
+    <string name="text_ref_image">Reference</string>
     <string name="rtext_esume">Resume</string>
     <string name="text_na">N/A</string>
     <string name="text_resume">Resume</string>
@@ -139,6 +139,7 @@
     <string name="text_auditname">Inspection Name</string>
     <string name="text_auditname_a">Audit Name</string>
     <string name="text_enter_comment">Enter Comment (50 characters minimum)</string>
+    <string name="text_enter_commentaction">Enter Comment</string>
     <string name="text_title">Title</string>
     <string name="text_action">Action</string>
     <string name="text_plandate">Planned Date</string>
@@ -268,6 +269,9 @@
     <string name="text_pendigapr">Pending Approval</string>
     <string name="text_aproved">Approved</string>
     <string name="text_benchmarkerror">Please enter benchmark between 0 to 100</string>
+    <string name="text_datetime">Select Date Time</string>
+    <string name="text_alert_dialog_na">Are your sure to mark the section as Not Applicable (NA)? Doing so, will erase all the previously saved data, if any, in this section</string>
+    <string name="text_auditsubmited">" Report has been submitted successfully"</string>
 
 
 </resources>

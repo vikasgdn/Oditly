@@ -6,9 +6,16 @@ package com.oditly.audit.inspection.network;
 
 public class NetworkURL {
 
-    //API URL'S
+    //API URL'S LIVE SERVER
     public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
     public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
+
+
+    //API URL'S LIVE SERVER TEST SERVER
+  //  public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
+   // public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
+
+
 
 
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/include_header_text" />
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_below="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:contentDescription="Image View"
+        android:background="@color/colorBlack"/>
+
+    <include
+        android:layout_width="@dimen/d_progressbar"
+        android:layout_height="@dimen/d_progressbar"
+        android:layout_centerInParent="true"
+        layout="@layout/spunk_view"
+        />
+
+</RelativeLayout>

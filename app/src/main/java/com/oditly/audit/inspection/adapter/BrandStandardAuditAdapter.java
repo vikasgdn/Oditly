@@ -3,6 +3,7 @@ package com.oditly.audit.inspection.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
-import com.oditly.audit.inspection.ui.activty.ImageViewActivity;
+import com.oditly.audit.inspection.ui.activty.RefrenceImageActivity;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
@@ -65,7 +66,7 @@ public class BrandStandardAuditAdapter extends
     public void onBindViewHolder(final BrandStandardAuditViewHolder holder, final int position) {
         //TODO : Static data testing
     //    holderPub=holder;
-        Log.e("=========POSITION===>>",""+position);
+      //  Log.e("=========POSITION===>>",""+position);
         holder.mCommentHideShowLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,59 +130,99 @@ public class BrandStandardAuditAdapter extends
         holder.referenceImageTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Intent intent = new Intent(context, ImageViewActivity.class);
+               Intent intent = new Intent(context, RefrenceImageActivity.class);
                 intent.putExtra("fileUrl", brandStandardQuestion.getRef_image_url());
                 context.startActivity(intent);
            }
         });
 
-        holder.comment.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) && brandStandardQuestion.getQuestion_type().equals("textarea")) {
-                    if (brandStandardQuestion.getAudit_answer_na() == 0) {
-                        AppLogger.e("AuditCommment", "" + editable.toString());
-                        brandStandardQuestion.setAudit_answer("" + editable.toString());
-                    } else {
-                        AppLogger.e("AuditCommment", "" + editable.toString());
-                        brandStandardQuestion.setAudit_comment("" + editable.toString());
-                    }
-                } else {
-                    AppLogger.e("AuditCommment", "" + editable.toString());
-                    brandStandardQuestion.setAudit_comment("" + editable.toString());
-                }
-                holder.comment.clearFocus();
-            }
-        });
-
-        addAnswerList(brandStandardQuestion, holder, brandStandardQuestion.getQuestion_type(), brandStandardQuestion.getAudit_option_id());
-
-        holder.brandStandardAddFileLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.comment.requestFocus();
-                int count = Integer.parseInt(holder.questionTitle.getText().toString().substring(0, holder.questionTitle.getText().toString().indexOf(".")));
-                AppLogger.e("Count", "" + count);
-                AppLogger.e("position", "" + position);
-                AppLogger.e("Count_position", "" + (count - position - 1));
-                customItemClickListener.onItemClick(count - 1,
-                        BrandStandardAuditAdapter.this, brandStandardQuestion.getQuestion_id(), "bsQuestion", position);
-
-            }
-        });
 
         AppLogger.e("QuestionType:", brandStandardQuestion.getQuestion_type());
-        if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) && (brandStandardQuestion.getQuestion_type().equals("textarea") || brandStandardQuestion.getQuestion_type().equals("text"))) {
+
+        if(brandStandardQuestion.getQuestion_type().equalsIgnoreCase("datetime"))
+        {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer()))
+            holder.mDateTimePickerTV.setText(brandStandardQuestion.getAudit_answer());
+
+            holder.mRadioSectionLL.setVisibility(View.GONE);
+            holder.mTextAnswerET.setVisibility(View.GONE);
+            holder.mDateTimePickerTV.setVisibility(View.VISIBLE);
+            holder.mDateTimePickerTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  //  brandStandardQuestion.setAudit_answer_na(1);
+                    BrandStandardAuditActivity.isAnswerCliked=true;
+                    AppUtils.datePicker(context,holder.mDateTimePickerTV,true,brandStandardQuestion);
+                    Log.e("date time==> ",""+holder.mDateTimePickerTV.getText());
+                   // ((BrandStandardAuditActivity) context).countNA_Answers();
+                }
+            });
+
+        }
+       else if(brandStandardQuestion.getQuestion_type().equalsIgnoreCase("date"))
+        {
+
+            holder.mDateTimePickerTV.setText("Select Date");
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer()))
+                holder.mDateTimePickerTV.setText(brandStandardQuestion.getAudit_answer());
+
+            holder.mRadioSectionLL.setVisibility(View.GONE);
+            holder.mTextAnswerET.setVisibility(View.GONE);
+            holder.mDateTimePickerTV.setVisibility(View.VISIBLE);
+            holder.mDateTimePickerTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  //  brandStandardQuestion.setAudit_answer_na(1);
+                    BrandStandardAuditActivity.isAnswerCliked=true;
+                    AppUtils.datePicker(context,holder.mDateTimePickerTV,false,brandStandardQuestion);
+                    Log.e("date time==> ",""+holder.mDateTimePickerTV.getText());
+                  //  ((BrandStandardAuditActivity) context).countNA_Answers();
+                }
+            });
+
+        }
+      else  if(brandStandardQuestion.getQuestion_type().equalsIgnoreCase("textarea") || brandStandardQuestion.getQuestion_type().equalsIgnoreCase("text") )
+        {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer()))
+                holder.mTextAnswerET.setText(brandStandardQuestion.getAudit_answer());
+
+           // holder.mRadioSectionLL.setVisibility(View.GONE);
+            holder.naBtn.setVisibility(View.GONE);
+            holder.mCommentHideShowLL.setVisibility(View.GONE);
+            holder.referenceImageTab.setVisibility(View.GONE);
+            holder.mTextAnswerET.setVisibility(View.VISIBLE);
+            holder.mDateTimePickerTV.setVisibility(View.GONE);
+            holder.mTextAnswerET.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable)
+                {
+                   // brandStandardQuestion.setAudit_answer_na(1);
+                    BrandStandardAuditActivity.isAnswerCliked=true;
+                        AppLogger.e("Audit Text Answer", "" + editable.toString());
+                        brandStandardQuestion.setAudit_answer("" + editable.toString());
+                    //((BrandStandardAuditActivity) context).countNA_Answers();
+                      //  holder.mTextAnswerET.clearFocus();
+                }
+            });
+
+        }
+      else
+          {
+              // for radio type question
+              holder.mRadioSectionLL.setVisibility(View.VISIBLE);
+              holder.mTextAnswerET.setVisibility(View.GONE);
+              holder.mDateTimePickerTV.setVisibility(View.GONE);
+              addAnswerList(brandStandardQuestion, holder, brandStandardQuestion.getQuestion_type(), brandStandardQuestion.getAudit_option_id());
+
+          }
+
+
+       /* if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) && (brandStandardQuestion.getQuestion_type().equals("textarea") || brandStandardQuestion.getQuestion_type().equals("text"))) {
             if (brandStandardQuestion.getAudit_answer_na() == 0) {
                 holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
                 holder.naBtn.setTextColor(context.getResources().getColor(R.color.c_dark_gray));
@@ -219,7 +260,52 @@ public class BrandStandardAuditAdapter extends
               //  holder.comment.setVisibility(View.VISIBLE);
                 holder.comment.setText(brandStandardQuestion.getAudit_comment());
             }
-        }
+        }*/
+        if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_comment()))
+            holder.comment.setText(brandStandardQuestion.getAudit_comment());
+
+        holder.comment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) && brandStandardQuestion.getQuestion_type().equals("textarea")) {
+                    if (brandStandardQuestion.getAudit_answer_na() == 0) {
+                        AppLogger.e("AuditCommment", "" + editable.toString());
+                        brandStandardQuestion.setAudit_answer("" + editable.toString());
+                    } else {
+                        AppLogger.e("AuditCommment", "" + editable.toString());
+                        brandStandardQuestion.setAudit_comment("" + editable.toString());
+                    }
+                } else {
+                    AppLogger.e("AuditCommment", "" + editable.toString());
+                    brandStandardQuestion.setAudit_comment("" + editable.toString());
+                }
+               // holder.comment.clearFocus();
+            }
+        });
+
+        holder.brandStandardAddFileLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.comment.requestFocus();
+                int count = Integer.parseInt(holder.questionTitle.getText().toString().substring(0, holder.questionTitle.getText().toString().indexOf(".")));
+                AppLogger.e("Count", "" + count);
+                AppLogger.e("position", "" + position);
+                AppLogger.e("Count_position", "" + (count - position - 1));
+                customItemClickListener.onItemClick(count - 1,
+                        BrandStandardAuditAdapter.this, brandStandardQuestion.getQuestion_id(), "bsQuestion", position);
+
+            }
+        });
     }
 
     @Override
@@ -247,10 +333,16 @@ public class BrandStandardAuditAdapter extends
         LinearLayout hintLayout;
         RecyclerView mRecyclerView;
 
+        TextView mDateTimePickerTV;
+        EditText mTextAnswerET;
+        LinearLayout mRadioSectionLL;
+
 
         public BrandStandardAuditViewHolder(View itemView) {
             super(itemView);
-           // mCommentHideShow=itemView.findViewById(R.id.tv_comment);
+            mRadioSectionLL=itemView.findViewById(R.id.ll_radiosetion);
+            mTextAnswerET=itemView.findViewById(R.id.et_textanswer);
+            mDateTimePickerTV=itemView.findViewById(R.id.tv_datetimepicker);
             mCommentHideShowLL=itemView.findViewById(R.id.ll_comment);
             questionTitle = itemView.findViewById(R.id.tv_bs_title);
             note = itemView.findViewById(R.id.tv_bs_note);
@@ -286,9 +378,7 @@ public class BrandStandardAuditAdapter extends
       //  holder.addBtn.setText("");
     }
 
-    private void addAnswerList(final BrandStandardQuestion brandStandardQuestion,
-                               final BrandStandardAuditViewHolder holder, final String questionType,
-                               final ArrayList<Integer> answerOptionId) {
+    private void addAnswerList(final BrandStandardQuestion brandStandardQuestion, final BrandStandardAuditViewHolder holder, final String questionType, final ArrayList<Integer> answerOptionId) {
 
         final ArrayList<BrandStandardQuestionsOption> arrayList = new ArrayList<>();
         arrayList.addAll(brandStandardQuestion.getOptions());
@@ -346,7 +436,7 @@ public class BrandStandardAuditAdapter extends
                     public void onClick(View view) {
                         BrandStandardAuditActivity.isAnswerCliked=true;
                         holder.comment.requestFocus();
-                    //    Toast.makeText(context,"Click on Answer yes no",Toast.LENGTH_SHORT).show();
+                       Toast.makeText(context,"Click on Answer yes no",Toast.LENGTH_SHORT).show();
                         int optionId = brandStandardQuestionsOption.getOption_id();
                         for (int j = 0; j < arrayList.size(); j++)
                         {
@@ -474,7 +564,8 @@ public class BrandStandardAuditAdapter extends
                                 // textCheckBox.setEnabled(true);
                             }
                         }
-                    } else {
+                    }
+                    else {
                         holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_na_select_btn));
                         holder.naBtn.setTextColor(context.getResources().getColor(R.color.c_white));
                         answerOptionId.clear();

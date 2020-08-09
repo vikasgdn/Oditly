@@ -6,6 +6,8 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,6 +35,7 @@ import java.util.Map;
 
 public class PrivacyPolicyActivity extends BaseActivity  {
 
+    public  static final String PRIVACYPOLICY =  "https://www.oditly.com/pdf/PrivacyPolicy.pdf";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,10 @@ public class PrivacyPolicyActivity extends BaseActivity  {
         findViewById(R.id.iv_header_left).setOnClickListener(this);
         TextView textView=(TextView)findViewById(R.id.tv_header_title);
         textView.setText(getString(R.string.s_privacy_policy));
+
+        WebView wb = (WebView) findViewById(R.id.webview);
+        wb.getSettings().setJavaScriptEnabled(true);
+        wb.loadUrl("https://docs.google.com/gview?embedded=true&url="+PRIVACYPOLICY);
 
     }
 

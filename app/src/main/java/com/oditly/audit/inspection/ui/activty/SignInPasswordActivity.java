@@ -156,6 +156,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
     public void onNetworkCallCompleted(String type, String service, String response)
     {
 
+        Log.e("Response",""+response);
         if(service.equalsIgnoreCase(NetworkURL.SIGNIN)) {
             try {
                 JSONObject object = new JSONObject(response);
@@ -167,6 +168,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                         AppPreferences.INSTANCE.setLogin(true,this);
                         AppPreferences.INSTANCE.setAccessToken(signInRootObject.getData().getAccess_token(),this);
                         AppPreferences.INSTANCE.setUserRole(signInRootObject.getData().getRole_id(), this);
+                        AppPreferences.INSTANCE.setUserId(signInRootObject.getData().getUser_id(), this);
                         AppPreferences.INSTANCE.setUserPic(signInRootObject.getData().getImage());
                         AppPreferences.INSTANCE.setUserEmail(signInRootObject.getData().getEmail());
                         AppPreferences.INSTANCE.setUserFName(signInRootObject.getData().getFname());

@@ -143,7 +143,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                 break;
             case R.id.tv_progress:
                 status =2;
-                mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=2&action_plan_status%5B%5D=3&assigned=1&page=1&skip_overdue=1";
+                mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=2&filter_brand_std_status%5B%5D=3&assigned=1&page=1&skip_overdue=1";
                 if(mResumeTv.isSelected())
                     mResumeTv.setSelected(false);
                 else {

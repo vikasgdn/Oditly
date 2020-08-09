@@ -308,7 +308,8 @@ public class AnalyticsFragment extends BaseFragment implements INetworkEvent {
         }
         catch (Exception e)
         {
-            AppUtils.toast(mActivity, getString(R.string.oops));
+            if(mActivity!=null)
+                AppUtils.toast(mActivity, getString(R.string.oops));
         }
         mSpinKitView.setVisibility(View.GONE);
 

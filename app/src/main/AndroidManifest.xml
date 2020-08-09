@@ -22,6 +22,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activty.SplashActivity"
@@ -155,7 +156,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".ui.activty.ImageViewActivity"
+            android:name=".ui.activty.RefrenceImageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"

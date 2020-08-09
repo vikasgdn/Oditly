@@ -103,13 +103,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     private String fileCount = "";
     public LayoutInflater inflater;
     public int questionCount = 0;
-  //  private int totalQuestionCount = 0;
-  //  private int naCount = 0;
-  //  private int answerCount = 0;
-   // private int positiveAnswerCount = 0;
     private float totalMarks = 0;
     public float marksObtained = 0;
-   // public ArrayList<Integer> optionId = new ArrayList<>();
     private static final String TAG = BrandStandardAuditActivity.class.getSimpleName();
     private ArrayList<BrandStandardSection> brandStandardSectionArrayList = new ArrayList<>();
     BrandStandardSection brandStandardSection;
@@ -179,6 +174,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         mHeaderDescriptionIV.setVisibility(View.VISIBLE);
         mHeaderDescriptionIV.setImageResource(R.drawable.ic_info);
         mHeaderDescriptionIV.setOnClickListener(this);
+       mTitleTV.setSelected(true);  // for morque
 
     }
 
@@ -188,7 +184,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         AppPreferences.INSTANCE.initAppPreferences(this);
         handler = new Handler();
         brandStandardSectionArrayList = new ArrayList<>();
-        brandStandardSectionArrayList = getIntent().getParcelableArrayListExtra("sectionObject");
+      //  brandStandardSectionArrayList = getIntent().getParcelableArrayListExtra("sectionObject");
+        brandStandardSectionArrayList = ((OditlyApplication)getApplication()).getmBrandStandardSectionList();
         currentSectionPosition = getIntent().getIntExtra("position", 0);
         brandStandardSection = brandStandardSectionArrayList.get(currentSectionPosition);
 
@@ -432,6 +429,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         Response.Listener stringListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                isAnswerCliked=false; // because question is saved
+                SubSectionsActivity.isDataSaved=true;
                 AppLogger.e(TAG, "BSResponse: " + response);
                 try {
                     if (!response.getBoolean(AppConstant.RES_KEY_ERROR))
@@ -744,7 +743,6 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         {
             isBackButtonClick=true; // This is for saving last answer data and hold th page
             isSaveButtonClick=true; // This is only for showing progressBar
-            isAnswerCliked=false;
             saveSectionOrPagewiseData();
 
         }
@@ -825,10 +823,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             if (AppUtils.isStringEmpty(auditDate))
                 auditDate=AppUtils.getAuditDateCurrent();
             if (validateSaveQuestion())
-            {
-                SubSectionsActivity.isDataSaved=true;
                 saveBrandStandardQuestion();
-            }
             else
                 return false;
         } else {

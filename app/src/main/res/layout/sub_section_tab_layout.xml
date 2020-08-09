@@ -28,12 +28,13 @@
             android:layout_height="wrap_content"
             android:text="@string/text_brand_standard"
             android:gravity="center"
-            android:minLines="2"
-            android:maxLines="2"
-            android:textStyle="bold"
-            android:layout_marginStart="@dimen/d_3dp"
-            android:layout_marginEnd="@dimen/d_3dp"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:padding="@dimen/d_4dp"
+            android:layout_marginLeft="@dimen/d_4dp"
+            android:layout_marginRight="@dimen/d_4dp"
             android:textColor="@color/c_gray"
+            android:fontFamily="@font/nunitosans_bold"
             android:textSize="@dimen/text_size_12" />
 
         <TextView

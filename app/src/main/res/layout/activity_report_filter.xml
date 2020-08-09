@@ -61,7 +61,7 @@
                 android:text="@string/text_date_from"
                 android:drawablePadding="@dimen/d_5dp"
                 android:drawableLeft="@drawable/ic_date"
-                android:background="@drawable/change_password_border"
+                android:background="@drawable/gray_border_whitebg"
                 android:gravity="left"
                 android:padding="@dimen/d_5dp"
                 android:layout_marginRight="@dimen/d_2dp"
@@ -75,7 +75,7 @@
                 android:layout_weight="1"
                 android:drawablePadding="@dimen/d_5dp"
                 android:drawableLeft="@drawable/ic_date"
-                android:background="@drawable/change_password_border"
+                android:background="@drawable/gray_border_whitebg"
                 android:text="@string/text_date_to"
                 android:gravity="left"
                 android:layout_marginLeft="@dimen/d_2dp"
@@ -109,7 +109,7 @@
             android:fontFamily="@font/nunitosans_regular"
             android:drawableRight="@drawable/ic_drop_down_blue"
             android:drawablePadding="@dimen/d_5dp"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/gray_border_whitebg"
             android:textSize="14sp"
             android:text="@string/text_all"/>
         <TextView
@@ -134,7 +134,7 @@
             android:drawableRight="@drawable/ic_dropdown_gray"
             android:drawablePadding="@dimen/d_5dp"
             android:focusable="false"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/gray_border_whitebg"
             android:textSize="14sp"
             android:text="@string/text_all"/>
 
@@ -161,7 +161,7 @@
             android:fontFamily="@font/nunitosans_regular"
             android:drawableRight="@drawable/ic_dropdown_gray"
             android:drawablePadding="@dimen/d_5dp"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/gray_border_whitebg"
             android:textSize="14sp"
             android:text="@string/text_all"/>
         <TextView
@@ -186,7 +186,7 @@
             android:drawableRight="@drawable/ic_dropdown_gray"
             android:drawablePadding="@dimen/d_5dp"
             android:focusable="false"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/gray_border_whitebg"
             android:textSize="14sp"
             android:text="@string/text_all"/>
         <TextView
@@ -210,7 +210,7 @@
             android:drawableRight="@drawable/ic_dropdown_gray"
             android:drawablePadding="@dimen/d_5dp"
             android:focusable="false"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/gray_border_whitebg"
             android:textSize="14sp"
             android:text="@string/text_all"/>
 
@@ -238,7 +238,7 @@
             android:drawableRight="@drawable/ic_dropdown_gray"
             android:drawablePadding="@dimen/d_5dp"
             android:focusable="false"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/gray_border_whitebg"
             android:textSize="14sp"
             android:text="@string/text_all"/>
 

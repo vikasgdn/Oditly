@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
@@ -58,7 +59,7 @@ public class SubSectionTabAdapter extends RecyclerView.Adapter<SubSectionTabAdap
         int isPartiallyFilled = result[2];
         int naFilled = result[3];
         holder.tvSubSectionTitle.setText(brandStandardSection.getSection_title());
-
+        holder.tvSubSectionTitle.setSelected(true);
         holder.tvQuestionCount.setText("Question: " + count + "/" + totalCount);
 
         if (editable.equals("0")) {
@@ -97,60 +98,8 @@ public class SubSectionTabAdapter extends RecyclerView.Adapter<SubSectionTabAdap
         holder.naCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONArray jsonArray =new JSONArray();
                 if (holder.naCheckBox.isChecked()) {
-                  //  Toast.makeText(context,"IN SIDE CHECKED",Toast.LENGTH_SHORT).show();
-                    holder.tvSubSectionStatus.setText("Completed");
-                    holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.complete_status));
-                    holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_green));
-                    if (brandStandardSection.getQuestions() != null && brandStandardSection.getQuestions().size() > 0) {
-                        for (int i = 0; i < brandStandardSection.getQuestions().size(); i++) {
-                            BrandStandardQuestion question = brandStandardSection.getQuestions().get(i);
-                            question.setAudit_option_id(new ArrayList<Integer>());
-                            question.setAudit_answer_na(1);
-
-                            JSONObject jsonObject = new JSONObject();
-                            try {
-                                jsonObject.put("question_id", question.getQuestion_id());
-                                jsonObject.put("audit_answer_na",question.getAudit_answer_na());
-                                jsonObject.put("audit_comment", question.getAudit_comment());
-                                jsonObject.put("audit_option_id", new JSONArray());
-                                jsonObject.put("audit_answer", question.getAudit_answer());
-                                jsonArray.put(jsonObject);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    if (brandStandardSection.getSub_sections() != null && brandStandardSection.getSub_sections().size() > 0) {
-                        for (int i = 0; i < brandStandardSection.getSub_sections().size(); i++) {
-                            BrandStandardSubSection subSection = brandStandardSection.getSub_sections().get(i);
-                            if (subSection.getQuestions() != null && subSection.getQuestions().size() > 0) {
-                                for (int j = 0; j < subSection.getQuestions().size(); j++) {
-                                    BrandStandardQuestion question = subSection.getQuestions().get(j);
-                                    question.setAudit_option_id(new ArrayList<Integer>());
-                                    question.setAudit_answer_na(1);
-
-                                    JSONObject jsonObject = new JSONObject();
-                                    try {
-                                        jsonObject.put("question_id", question.getQuestion_id());
-                                        jsonObject.put("audit_answer_na", question.getAudit_answer_na());
-                                        jsonObject.put("audit_comment", question.getAudit_comment());
-                                        jsonObject.put("audit_option_id", question.getAudit_option_id());
-                                        jsonObject.put("audit_answer", question.getAudit_answer());
-                                        jsonArray.put(jsonObject);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                     // saving N/A to the server
-                    ((SubSectionsActivity)context).saveBrandStandardQuestionForNA(jsonArray);
-                  //  Log.e("JSON ARRAY PRINT  ",""+jsonArray);
-
+                    AppDialogs.messageDialogWithNA(holder,brandStandardSection,SubSectionTabAdapter.this,(SubSectionsActivity)context);
                 } else {
                  //   Toast.makeText(context,"IN SIDE NO CHECKED",Toast.LENGTH_SHORT).show();
                     holder.tvSubSectionStatus.setText("Start");
@@ -176,6 +125,63 @@ public class SubSectionTabAdapter extends RecyclerView.Adapter<SubSectionTabAdap
                 }
             }
         });
+    }
+    public void markSectionAsNotApplicableCancel(SubSectionTabViewHolder holder)
+    {
+        holder.naCheckBox.setChecked(false);
+    }
+
+        public void markSectionAsNotApplicable(SubSectionTabViewHolder holder, BrandStandardSection brandStandardSection) {
+        JSONArray jsonArray =new JSONArray();
+        holder.tvSubSectionStatus.setText("Completed");
+        holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.complete_status));
+        holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_green));
+        if (brandStandardSection.getQuestions() != null && brandStandardSection.getQuestions().size() > 0) {
+            for (int i = 0; i < brandStandardSection.getQuestions().size(); i++) {
+                BrandStandardQuestion question = brandStandardSection.getQuestions().get(i);
+                question.setAudit_option_id(new ArrayList<Integer>());
+                question.setAudit_answer_na(1);
+
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("question_id", question.getQuestion_id());
+                    jsonObject.put("audit_answer_na",question.getAudit_answer_na());
+                    jsonObject.put("audit_comment", question.getAudit_comment());
+                    jsonObject.put("audit_option_id", new JSONArray());
+                    jsonObject.put("audit_answer", question.getAudit_answer());
+                    jsonArray.put(jsonObject);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (brandStandardSection.getSub_sections() != null && brandStandardSection.getSub_sections().size() > 0) {
+            for (int i = 0; i < brandStandardSection.getSub_sections().size(); i++) {
+                BrandStandardSubSection subSection = brandStandardSection.getSub_sections().get(i);
+                if (subSection.getQuestions() != null && subSection.getQuestions().size() > 0) {
+                    for (int j = 0; j < subSection.getQuestions().size(); j++) {
+                        BrandStandardQuestion question = subSection.getQuestions().get(j);
+                        question.setAudit_option_id(new ArrayList<Integer>());
+                        question.setAudit_answer_na(1);
+
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("question_id", question.getQuestion_id());
+                            jsonObject.put("audit_answer_na", question.getAudit_answer_na());
+                            jsonObject.put("audit_comment", question.getAudit_comment());
+                            jsonObject.put("audit_option_id", question.getAudit_option_id());
+                            jsonObject.put("audit_answer", question.getAudit_answer());
+                            jsonArray.put(jsonObject);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        // saving N/A to the server
+        ((SubSectionsActivity)context).saveBrandStandardQuestionForNA(jsonArray);
     }
 
     @Override

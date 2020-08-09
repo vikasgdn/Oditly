@@ -138,6 +138,25 @@ public enum AppPreferences
         mEditor.putInt(SharedPreferencesKeys.client_role_id.toString(), value);
         mEditor.commit();
     }
+
+
+
+
+    public int getUserId(Context context)
+    {
+        if(mPreferences==null)
+            mPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+
+        return mPreferences.getInt(SharedPreferencesKeys.userId.toString(), 0);
+    }
+
+    public void setUserId(int value,Context context)
+    {
+        if(mEditor==null)
+            initAppPreferences(context);
+        mEditor.putInt(SharedPreferencesKeys.userId.toString(), value);
+        mEditor.commit();
+    }
     public String getUserEmail(Context context)
     {
         if(mPreferences==null)

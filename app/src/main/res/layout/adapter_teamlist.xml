@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
+            android:layout_weight="7.5"
             android:orientation="vertical">
 
             <LinearLayout
@@ -41,15 +41,15 @@
 
                 <TextView
                     android:id="@+id/tv_teamname"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="6"
                     android:text="Name"
                     android:gravity="left"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:fontFamily="@font/nunitosans_regular"
                     android:padding="@dimen/d_2dp"
-                    android:maxLines="1"
                     android:textColor="@color/c_gray_text"
                     android:textSize="@dimen/text_size_16"/>
 
@@ -95,9 +95,8 @@
                     android:textSize="@dimen/text_size_16"/>
             <TextView
                 android:id="@+id/tv_count"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
                 android:text="Team Count"
                 android:gravity="left"
                 android:fontFamily="@font/nunitosans_regular"
@@ -111,7 +110,7 @@
             android:id="@+id/tv_viewteam"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="2.5"
             android:text="@string/text_view_team"
             android:gravity="center"
             android:layout_marginRight="3dp"

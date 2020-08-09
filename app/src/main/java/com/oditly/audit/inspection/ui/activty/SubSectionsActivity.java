@@ -24,6 +24,7 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.GsonBuilder;
+import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.adapter.SubSectionTabAdapter;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
@@ -89,6 +90,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
     private  JSONArray answerArray ;
     private ArrayList<BrandStandardSection> brandStandardSections;
     private static final String TAG = SubSectionsActivity.class.getSimpleName();
+    public  static  ArrayList<BrandStandardSection> brandStandardSectionsStatic;
 
 
     @Override
@@ -127,6 +129,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
     @Override
     protected void initVar() {
         super.initVar();
+        brandStandardSectionsStatic=new ArrayList<>();
         mHeaderTitleTV.setText(R.string.inspection_option);
         auditId = getIntent().getStringExtra(AppConstant.AUDIT_ID);
         mAuditName = getIntent().getStringExtra(AppConstant.AUDIT_NAME);
@@ -289,9 +292,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
             ArrayList<BrandStandardQuestion> brandStandardQuestion = brandStandardSection.get(i).getQuestions();
             for (int j = 0; j < brandStandardQuestion.size(); j++) {
 
-                if (brandStandardQuestion.get(j).getAudit_option_id().size() != 0
-                        || brandStandardQuestion.get(j).getAudit_answer_na() == 1
-                        || !AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())) {
+                if (brandStandardQuestion.get(j).getAudit_option_id().size() != 0 || brandStandardQuestion.get(j).getAudit_answer_na() == 1 || !AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())) {
                     count += 1;
                 }
                 totalCount += 1;
@@ -302,9 +303,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
             for (int k = 0; k < brandStandardSubSections.size(); k++) {
                 ArrayList<BrandStandardQuestion> brandStandardSubQuestion = brandStandardSubSections.get(k).getQuestions();
                 for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
-                    if (brandStandardSubQuestion.get(j).getAudit_option_id().size() != 0
-                            || brandStandardSubQuestion.get(j).getAudit_answer_na() == 1
-                            || !AppUtils.isStringEmpty(brandStandardSubQuestion.get(j).getAudit_comment())) {
+                    if (brandStandardSubQuestion.get(j).getAudit_option_id().size() != 0 || brandStandardSubQuestion.get(j).getAudit_answer_na() == 1 || !AppUtils.isStringEmpty(brandStandardSubQuestion.get(j).getAudit_answer())) {
                         count += 1;
                     }
                     totalCount += 1;
@@ -312,16 +311,18 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
             }
         }
 
+        Log.e("count || Total Count ",""+count + "|| "+totalCount);
         return new int[]{count, totalCount};
 
     }
 
     @Override
     public void onItemClick(ArrayList<BrandStandardSection> brandStandardSections, int fileCount, int pos) {
-        // Toast.makeText(this," Internal Audit",Toast.LENGTH_SHORT).show();
+       //  Toast.makeText(this," Internal Audit",Toast.LENGTH_SHORT).show();
 
         Intent startAudit = new Intent(context, BrandStandardAuditActivity.class);
-        startAudit.putParcelableArrayListExtra("sectionObject", brandStandardSections);
+       // startAudit.putParcelableArrayListExtra("sectionObject", brandStandardSections);
+        ((OditlyApplication)getApplication()).setmBrandStandardSectionList(brandStandardSections);
         startAudit.putExtra("position", pos);
         startAudit.putExtra("editable", editable);
         startAudit.putExtra("auditId", auditId);
@@ -354,17 +355,15 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
             for (int j = 0; j < brandStandardQuestion.size(); j++) {
                 count += 1;
                 brandStandardQuestionsSubmissions.add(brandStandardQuestion.get(j));
-                if (brandStandardQuestion.get(j).getQuestion_type().equals("textarea")|| brandStandardQuestion.get(j).getQuestion_type().equals("text")){
-                    if (AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())
-                            && brandStandardQuestion.get(j).getAudit_answer_na() == 0) {
+                if (brandStandardQuestion.size()>0 && (brandStandardQuestion.get(j).getQuestion_type().equals("textarea")|| brandStandardQuestion.get(j).getQuestion_type().equals("text") || brandStandardQuestion.get(j).getQuestion_type().equals("datetime") || brandStandardQuestion.get(j).getQuestion_type().equalsIgnoreCase("date"))){
+                    if (AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer()) && brandStandardQuestion.get(j).getAudit_answer_na() == 0) {
                         AppUtils.toastDisplayForLong(SubSectionsActivity.this, "You have not answered " +
                                 "question no " + count + " in " + brandStandardSection.get(i).getSection_group_title()
                                 + " of section " + brandStandardSection.get(i).getSection_title());
                         return false;
                     }
                 }else {
-                    if (brandStandardQuestion.get(j).getAudit_option_id().size() == 0
-                            && brandStandardQuestion.get(j).getAudit_answer_na() == 0) {
+                    if (brandStandardQuestion.get(j).getAudit_option_id().size() == 0 && brandStandardQuestion.get(j).getAudit_answer_na() == 0) {
                         AppUtils.toastDisplayForLong(SubSectionsActivity.this, "You have not answered " +
                                 "question no " + count + " in " + brandStandardSection.get(i).getSection_group_title()
                                 + " of section " + brandStandardSection.get(i).getSection_title());
@@ -381,7 +380,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                     for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
                         brandStandardQuestionsSubmissions.add(brandStandardSubQuestion.get(j));
                         count += 1;
-                        if (brandStandardQuestion.size()>0 && (brandStandardSubQuestion.get(j).getQuestion_type().equalsIgnoreCase("textarea") || brandStandardQuestion.get(j).getQuestion_type().equalsIgnoreCase("text")))
+                        if (brandStandardSubQuestion.size()>0 && (brandStandardSubQuestion.get(j).getQuestion_type().equalsIgnoreCase("textarea") || brandStandardSubQuestion.get(j).getQuestion_type().equalsIgnoreCase("text") || brandStandardSubQuestion.get(j).getQuestion_type().equalsIgnoreCase("datetime") || brandStandardSubQuestion.get(j).getQuestion_type().equalsIgnoreCase("date")))
                         {
 
                             if (AppUtils.isStringEmpty(brandStandardSubQuestion.get(j).getAudit_answer()) && brandStandardSubQuestion.get(j).getAudit_answer_na() == 0) {
@@ -421,12 +420,13 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                 try {
                     if (!response.getBoolean(AppConstant.RES_KEY_ERROR)) {
                         //AppUtils.toast((BaseActivity) context, response.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        Toast.makeText(context, "Answer Submitted", Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(context, "Answer Submitted", Toast.LENGTH_SHORT).show();
                         status = "" + response.getJSONObject("data").getInt("brand_std_status");
-                        Intent result = new Intent();
-                        result.putExtra("status", status);
-                        setResult(RESULT_OK, result);
-                        finish();
+                     //   Intent result = new Intent();
+                      //  result.putExtra("status", status);
+                        //setResult(RESULT_OK, result);
+                       // finish();
+                        goForSignature();
                     } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
                     }
@@ -460,6 +460,13 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
         BSSaveSubmitJsonRequest bsSaveSubmitJsonRequest = new BSSaveSubmitJsonRequest(AppPreferences.INSTANCE.getAccessToken(this), NetworkURL.BRANDSTANDARD, object, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(bsSaveSubmitJsonRequest);
 
+    }
+
+    private void goForSignature() {
+        Intent  intent=new Intent(this,AuditSubmitSignatureActivity.class);
+        intent.putExtra(AppConstant.AUDIT_ID,auditId);
+        startActivity(intent);
+        finish();
     }
 
     public void saveBrandStandardQuestionForNA(JSONArray jsonArray) {

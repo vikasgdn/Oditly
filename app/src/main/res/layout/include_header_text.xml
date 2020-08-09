@@ -18,11 +18,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/iv_header_left"
+        android:layout_toLeftOf="@+id/iv_header_right"
         android:gravity="center"
-        android:maxLines="1"
         android:layout_marginLeft="@dimen/d_10dp"
+        android:paddingLeft="@dimen/d_10dp"
+        android:paddingRight="@dimen/d_10dp"
         android:layout_marginRight="@dimen/d_10dp"
         android:textSize="22sp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
         android:text="@string/app_name"
         android:textColor="@color/c_blue"
         android:fontFamily="@font/nunitosans_semibold"
@@ -35,7 +40,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/d_10dp"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:src="@drawable/ic_notifications" />
 
 

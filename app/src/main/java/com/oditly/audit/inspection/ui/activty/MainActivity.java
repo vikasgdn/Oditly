@@ -53,7 +53,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
         bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         ivNotification=(ImageView)findViewById(R.id.iv_header_right);
-        ivNotification.setVisibility(View.GONE);
+        ivNotification.setVisibility(View.INVISIBLE);
         ivNotification.setOnClickListener(this);
 
         ImageView imgMenu=(ImageView)findViewById(R.id.iv_header_left);
@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
        String location= getIntent().getStringExtra(AppConstant.FROMWHERE)==null?"":getIntent().getStringExtra(AppConstant.FROMWHERE);
        if(!TextUtils.isEmpty(location) && location.equalsIgnoreCase(AppConstant.TEAM))
-           lastSelectedPosition=2;
+           lastSelectedPosition=4;
 
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED_NO_TITLE);
         bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
@@ -134,7 +134,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, ReportFragment.newInstance("")).commitAllowingStateLoss();
                 break;
             case 4:
-                mTitleTV.setText(getResources().getString(R.string.s_user));
+                mTitleTV.setText(getResources().getString(R.string.text_team));
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, TeamListFragment.newInstance(4)).commitAllowingStateLoss();
                 break;
             default:

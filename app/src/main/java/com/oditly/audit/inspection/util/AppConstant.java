@@ -72,6 +72,7 @@ public class AppConstant {
     public static final String AUDIT_REVIEWERID = "reviewerid";
     public static final String AUDIT_BENCHMARK = "benchmark";
     public static final String AUDIT = "audit";
+    public static final String JSON_DATA = "jsondata";
 
 
     public static String DEVICE_ID = "";

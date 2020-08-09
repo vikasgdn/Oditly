@@ -130,6 +130,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                 int versionServer = object.getJSONObject("data").getInt("version");
                 boolean status = object.getJSONObject("data").getBoolean("force_update");
+                Log.e("version  ","||||||"+getVersionCode(this));
                 if (versionServer>getVersionCode(this))
                     AppDialogs.openPlayStoreDialog(SplashActivity.this);
                 else

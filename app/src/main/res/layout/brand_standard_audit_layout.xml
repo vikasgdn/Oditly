@@ -9,16 +9,20 @@
     android:paddingBottom="@dimen/d_5dp"
     android:paddingEnd="@dimen/d_5dp">
 
+
+
     <LinearLayout
         android:id="@+id/bs_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:visibility="visible"
             android:background="@drawable/brandstandard_border"
             android:padding="@dimen/d_10dp">
 
@@ -31,6 +35,39 @@
                 android:textSize="@dimen/text_size_14"
                 android:textStyle="normal|bold" />
 
+
+            <TextView
+                android:id="@+id/tv_datetimepicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/d_5dp"
+                android:background="@drawable/brand_standard_unselect_btn"
+                android:text="@string/text_datetime"
+                android:textSize="@dimen/text_size_14"
+                android:layout_margin="@dimen/d_5dp"
+                android:gravity="center"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/c_dark_gray" />
+            <EditText
+                android:id="@+id/et_textanswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:padding="@dimen/d_5dp"
+                android:background="@drawable/comment_border"
+                android:hint="Type your Answer"
+                android:textSize="@dimen/text_size_14"
+                android:gravity="top"
+                android:minLines="2"
+                android:layout_margin="@dimen/d_5dp"
+                android:textColor="@color/c_dark_gray" />
+
+            <LinearLayout
+                android:id="@+id/ll_radiosetion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
             <LinearLayout
                 android:id="@+id/ll_note_layout"
                 android:layout_width="match_parent"
@@ -104,6 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/d_5dp"
+                android:visibility="visible"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -205,7 +243,7 @@
                 android:layout_marginBottom="@dimen/d_5dp"
                 android:textColor="@color/c_dark_gray" />
 
-
+        </LinearLayout>
 
 
             <RelativeLayout
@@ -231,8 +269,6 @@
             </RelativeLayout>
 
 
-
-            !
         </LinearLayout>
 
     </LinearLayout>

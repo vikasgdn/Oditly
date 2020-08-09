@@ -31,6 +31,7 @@ import com.oditly.audit.inspection.model.audit.AuditRootObject;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkService;
+import com.oditly.audit.inspection.network.NetworkServiceJSON;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
@@ -44,6 +45,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReportFragment extends BaseFragment implements View.OnClickListener , OnRecyclerViewItemClickListener, INetworkEvent {
     private static final int FILTER_CODE = 1001;
@@ -157,15 +159,34 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         {
             if(data!=null)
             {
-                String fromDate= data.getStringExtra(AppConstant.FROM_DATE);
-                String toDate= data.getStringExtra(AppConstant.TO_DATE);
-              //  Toast.makeText(mActivity,"onActivityResult "+toDate+" || "+fromDate,Toast.LENGTH_SHORT).show();
-
+                try {
+                   // getAuditListFromServerPostForFilter(new JSONObject(data.getStringExtra(AppConstant.JSON_DATA)));
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
-        Log.e("IN SIDE ON ACTIVITY ","result");
+
     }
 
+
+    private void getAuditListFromServerPostForFilter(JSONObject params)
+    {
+        Log.e("IN SIDE ON ACTIVITY ","result"+params);
+        //   audit_type_id,location_id,custom_role_id(designation),questionnaire_id(template),auditor_id,audit_to_date,audit_from_date
+
+        if (NetworkStatus.isNetworkConnected(mActivity)) {
+            mSpinKitView.setVisibility(View.VISIBLE);
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.AUDIT_LIST, NetworkConstant.METHOD_POST, this,mActivity);
+            networkService.call(params);
+        } else
+        {
+            AppUtils.toast(mActivity, getString(R.string.internet_error));
+
+        }
+    }
     private void getAuditListFromServer()
     {
         if (NetworkStatus.isNetworkConnected(mActivity)) {
@@ -195,9 +216,11 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
             mAuditLisBean.clear();
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
 
+
                 AuditRootObject auditRootObject = new GsonBuilder().create().fromJson(object.toString(), AuditRootObject.class);
                 Log.e("auditRootObject","=====> size "+auditRootObject.getData().size());
                 if (auditRootObject.getData() != null && auditRootObject.getData().size() > 0) {
+                    mAuditLisBean.clear();
                     mAuditLisBean.addAll(auditRootObject.getData());
                     mReportListAdapter.notifyDataSetChanged();
                 }else {

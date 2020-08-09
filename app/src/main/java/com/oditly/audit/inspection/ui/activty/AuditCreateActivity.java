@@ -24,6 +24,7 @@ import com.abdeveloper.library.MultiSelectModel;
 import com.google.gson.GsonBuilder;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.adapter.team.TeamMemberListAdapter;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.model.audit.createaudit.AditorReviewBean;
 import com.oditly.audit.inspection.model.audit.createaudit.AuditFilterRootObject;
@@ -98,6 +99,8 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
         mTemplateSPN=(Spinner) findViewById(R.id.spn_template);
         mAuditorNameET=(EditText) findViewById(R.id.et_auditor_name);
         mAuditorNameET.setOnClickListener(this);
+
+        mAuditorNameET.setText(AppPreferences.INSTANCE.getUserFname(this)+" "+AppPreferences.INSTANCE.getUserLName(this));
     }
 
     @Override
@@ -117,13 +120,6 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
         mTemplateTypeList=new ArrayList<>();
         mAuditorsIDSelected=new ArrayList<>();
 
-
-     //   mLocationList.addAll(AppUtils.getLocationList());
-      //  mLocationListID.addAll(AppUtils.getLocationListID());
-
-       /* mLocationAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, mLocationList);
-        mLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mLocationSPN.setAdapter(mLocationAdapter);*/
         mLocationSPN.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -181,9 +177,13 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
                     AppUtils.toast(this,getString(R.string.text_selectreviwer));
                 break;
             case R.id.btn_create:
+                Log.e("USER ID ",""+AppPreferences.INSTANCE.getUserId(this));
                 String auditorname = mAuditorNameET.getText().toString();
-                if (!TextUtils.isEmpty(auditorname) && !auditorname.equalsIgnoreCase("All"))
+                if (!TextUtils.isEmpty(auditorname) && !auditorname.equalsIgnoreCase("All")) {
+                    if (mAuditorsIDSelected.size()==0)
+                        mAuditorsIDSelected.add(AppPreferences.INSTANCE.getUserId(this));
                     postAuditCreateServerData();
+                }
                 else
                     AppUtils.toast(this,getString(R.string.text_selectreviwer));
                 break;

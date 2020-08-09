@@ -32,12 +32,14 @@ import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReportFilterActivity extends BaseActivity implements MultiSelectDialog.SubmitCallbackListener, INetworkEvent {
 
@@ -204,25 +206,23 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
             case R.id.tv_done:
              //   audit_type_id,location_id,custom_role_id(designation),questionnaire_id(template),auditor_id,audit_to_date,audit_from_date
 
-
-              /*  try {
+                try {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put(NetworkConstant.REQ_PARAM_TODATE, mDateToET.getText().toString());
                     jsonObject.put(NetworkConstant.REQ_PARAM_FROMDATE, mDateToET.getText().toString());
-                    jsonObject.put(NetworkConstant.REQ_PARAM_AUDIT_ID, mDateToET.getText().toString());
-                    jsonObject.put(NetworkConstant.REQ_PARAM_LOCATIONID, mDateToET.getText().toString());
-                    jsonObject.put(NetworkConstant.REQ_PARAM_TEMPLATEID, mDateToET.getText().toString());
-                    jsonObject.put(NetworkConstant.REQ_PARAM_DESIGID, mDateToET.getText().toString());
+                    jsonObject.put(NetworkConstant.REQ_PARAM_AUDITTYPEID,new JSONArray(mSelectedAuditID));
+                    jsonObject.put(NetworkConstant.REQ_PARAM_LOCATIONID,new JSONArray(mSelectedLocationID));
+                    jsonObject.put(NetworkConstant.REQ_PARAM_TEMPLATEID,new JSONArray(mSelectedTemplateID));
+                    jsonObject.put(NetworkConstant.REQ_PARAM_DESIGNATION, new JSONArray(mSelectedDesignationID));
+                    jsonObject.put(NetworkConstant.REQ_PARAM_AUDITORID, new JSONArray(mSelectedUserNameID));
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(AppConstant.JSON_DATA, jsonObject.toString());
+                    setResult(Activity.RESULT_OK,returnIntent);
+                    finish();
                 }
                 catch (Exception e){
-
-                }*/
-
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(AppConstant.FROM_DATE,mDateFromTV.getText().toString());
-                returnIntent.putExtra(AppConstant.TO_DATE,mDateToET.getText().toString());
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                  e.printStackTrace();
+                }
                 break;
             case R.id.tv_reset:
                 mLocationListET.setText("All");

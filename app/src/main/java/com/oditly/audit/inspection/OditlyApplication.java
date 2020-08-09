@@ -55,7 +55,7 @@ public class OditlyApplication extends Application {
     }
 
 
-   /* public static void handleSSLHandshake() {
+    public static void handleSSLHandshake() {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
                 public X509Certificate[] getAcceptedIssuers() {
@@ -78,13 +78,13 @@ public class OditlyApplication extends Application {
                 @Override
                 public boolean verify(String arg0, SSLSession session) {
                     Log.e("host", arg0+":"+session.getCipherSuite());
-                    return arg0.compareTo("api.account.oditly.com")==0;
+                    return arg0.compareTo("api.dev.account.oditly.com")==0;
 
                 }
             });
         } catch (Exception ignored) {
         }
-    }*/
+    }
 
 
     public ActionInfo getmActionPlanData() {
