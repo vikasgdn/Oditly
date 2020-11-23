@@ -3,7 +3,6 @@ package com.oditly.audit.inspection.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -15,24 +14,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.oditly.audit.inspection.R;
-import com.oditly.audit.inspection.adapter.SubSectionTabAdapter;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.ui.activty.ActionCreateActivity;
 import com.oditly.audit.inspection.ui.activty.AddTeamMemberActivity;
 import com.oditly.audit.inspection.ui.activty.AuditCreateActivity;
 import com.oditly.audit.inspection.ui.activty.AuditSubmitSignatureActivity;
-import com.oditly.audit.inspection.ui.activty.AuditTypeActivity;
-import com.oditly.audit.inspection.ui.activty.AuditTypeActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
 import com.oditly.audit.inspection.ui.activty.MainActivity;
 import com.oditly.audit.inspection.ui.activty.SignInEmailActivity;
 import com.oditly.audit.inspection.ui.activty.SignInPasswordActivity;
-import com.oditly.audit.inspection.ui.activty.SubSectionsActivity;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
@@ -44,40 +38,15 @@ import java.util.HashSet;
  * @author Madstech App dialog class use for application related dialog
  *         displaying feature
  */
-public class AppDialogs {
-
-
-
+public class AppDialogs
+{
     /**
      * This method is use to show progress dialog when hit web service
      *
      * @param activity
      * @return void
      */
-
-
-
-    public static void localDataSaveDialog(final BrandStandardSection brandStandardSection,final BrandStandardAuditActivity activity) {
-
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-
-        dialog.setTitle(activity.getString(R.string.app_name));
-        dialog.setMessage("No Internet Connection. Do you want to save data locally?");
-
-        dialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                activity.saveLocalDB(brandStandardSection);
-            }
-        });
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                dialog.dismiss();
-            }
-        });
-        dialog.create().show();
-    }
+/*
     public static void answerShowDialog(final BrandStandardSection brandStandardSection,final BrandStandardAuditActivity activity) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
         dialog.setTitle(activity.getString(R.string.app_name));
@@ -85,8 +54,10 @@ public class AppDialogs {
         dialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                /*questionArrayList = brandStandardSection.getQuestions();
-                subSectionArrayList = brandStandardSection.getSub_sections();*/
+                */
+/*questionArrayList = brandStandardSection.getQuestions();
+                subSectionArrayList = brandStandardSection.getSub_sections();*//*
+
                 activity.setQuestionList(brandStandardSection.getQuestions());
                 activity.setSubSectionQuestionList(brandStandardSection.getSub_sections());
                 AppLogger.e("TAG", "Replace it in adapter");
@@ -102,6 +73,7 @@ public class AppDialogs {
         });
         dialog.create().show();
     }
+*/
 
 
     public static void showOtpValidateDialog(final Activity activity) {
@@ -144,6 +116,77 @@ public class AppDialogs {
 
     }
 
+
+    public static void passwordResetMessageDialog(final Activity activity,String message) {
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_password_rule);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        TextView textView=dialog.findViewById(R.id.tv_dialog_message);
+        dialog.findViewById(R.id.tv_pass_rule).setVisibility(View.GONE);
+        textView.setText(""+message);
+
+        try {
+
+
+            dialog.findViewById(R.id.tv_no).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    activity.finish();
+                    dialog.dismiss();
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dialog.show();
+
+    }
+
+    public static void brandstandardTitleMessageDialog(final Activity activity,String title,String location,String checklist) {
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_location_title_checklist);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        TextView titleTV=(TextView)dialog.findViewById(R.id.tv_titleheader);
+        TextView locationTV=(TextView)dialog.findViewById(R.id.tv_location);
+        TextView checklistTV=(TextView)dialog.findViewById(R.id.tv_checklist);
+
+        try {
+
+            titleTV.setText(""+title);
+            locationTV.setText(":"+location);
+            checklistTV.setText(""+checklist);
+
+            dialog.findViewById(R.id.iv_cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dialog.show();
+
+    }
 
     public static void showForgotPassword(final Activity activity) {
         final Dialog dialog = new Dialog(activity);
@@ -240,7 +283,7 @@ public class AppDialogs {
     }
 
 
-    public static void exitDialog(final AuditTypeActivity activity) {
+    public static void exitDialog(final Activity activity) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_exit);
@@ -448,7 +491,7 @@ public class AppDialogs {
 
     }
 
-    public static   void messageDialogWithNA(SubSectionTabAdapter.SubSectionTabViewHolder holder, BrandStandardSection brandStandardSection,SubSectionTabAdapter tabAdapter, final Activity activity) {
+  /*  public static   void messageDialogWithNA(SubSectionTabAdapter.SubSectionTabViewHolder holder, BrandStandardSection brandStandardSection,SubSectionTabAdapter tabAdapter, final Activity activity) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_confirm_na);
@@ -480,7 +523,7 @@ public class AppDialogs {
         }
         dialog.show();
 
-    }
+    }*/
 
 
 }

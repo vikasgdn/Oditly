@@ -30,10 +30,12 @@ public class NetworkConstant
     public static final String REQ_PARAM_DUEDATE = "due_date";
     public static final String REQ_PARAM_INSTRUCTION = "instructions";
     public static final String REQ_PARAM_BENCHMARK = "benchmark_per";
-    public static final String REQ_PARAM_AUDITSTARTDATE = "auditstartdate";
+    public static final String REQ_PARAM_AUDITSTARTDATE = "start_date";
+    public static final String REQ_PARAM_AUDITSTARTHOUR = "hour";
     public static final String REQ_PARAM_TODATE = "to_audit_date";
     public static final String REQ_PARAM_FROMDATE = "from_audit_date";
     public static final String REQ_PARAM_DESIGNATION = "custom_role_id";
+    public static final String REQ_PARAM_FILE = "file";
 
 
     //"audit_id": 1,"action_plan_id": 1,"complete_comment": ""

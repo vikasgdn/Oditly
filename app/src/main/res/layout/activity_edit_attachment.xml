@@ -241,7 +241,7 @@
                         android:padding="@dimen/d_5dp"
                         android:enabled="false"
                         android:textColor="@color/c_dark_gray"
-                        android:background="@drawable/brandstandard_border"
+                        android:background="@drawable/brandstandard_question_bg"
                         android:textSize="@dimen/text_size_16"
                         android:layout_weight="2" />
 

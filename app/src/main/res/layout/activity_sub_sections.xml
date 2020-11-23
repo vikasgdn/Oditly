@@ -133,6 +133,8 @@
                     android:id="@+id/rv_sub_section_tab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
                     android:nestedScrollingEnabled="false">
                 </androidx.recyclerview.widget.RecyclerView>
 
@@ -151,7 +153,7 @@
                 android:id="@+id/continue_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_submit"
+                android:text="@string/text_submitfinal"
                 android:minHeight="@dimen/search_btn_height"
                 android:padding="@dimen/d_10dp"
                 android:textColor="@color/c_white"

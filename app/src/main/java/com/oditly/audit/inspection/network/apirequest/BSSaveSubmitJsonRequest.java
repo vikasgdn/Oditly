@@ -35,7 +35,7 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
     public BSSaveSubmitJsonRequest(String accessToken, String url, JSONObject jsonRequest,
                                    Response.Listener<JSONObject> listener,
                                    Response.ErrorListener errorListener) {
-        super(Request.Method.POST, url, jsonRequest, listener, errorListener);
+        super(Method.POST, url, jsonRequest, listener, errorListener);
 
         headers.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
         headers.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);

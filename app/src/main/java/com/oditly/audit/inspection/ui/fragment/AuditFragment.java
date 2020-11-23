@@ -1,5 +1,6 @@
 package com.oditly.audit.inspection.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.oditly.audit.inspection.adapter.AuditListAdapter;
 
 import com.oditly.audit.inspection.adapter.AuditListAdapter;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.localDB.bsoffline.BsOfflineDBImpl;
 import com.oditly.audit.inspection.model.audit.AuditInfo;
 import com.oditly.audit.inspection.model.audit.AuditRootObject;
 import com.oditly.audit.inspection.network.INetworkEvent;
@@ -24,6 +26,7 @@ import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkService;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.services.QuestionData;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
@@ -43,12 +46,10 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
     private TextView mSheduleTv,mResumeTv,mOverDueTV;
     private int status=1;
     private RelativeLayout mNoDataFoundRL;
-    private String mAuditTYpeID="";
     private RelativeLayout mSpinKitView;
-   // private String mOverDue="";
-   // private int mSkipOverDue=1;
-
-     private String mAuditURL="";
+    private String mAuditURL="";
+    private BsOfflineDBImpl mBsOfflineDB;
+    private String mAudityType=AppConstant.SCHEDULE;
 
     public static AuditFragment newInstance(String auditType) {
         Bundle args = new Bundle();
@@ -61,7 +62,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuditTYpeID = getArguments().getString(AppConstant.AUDIT_TYPE_ID);
+
     }
 
     @Override
@@ -74,7 +75,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         AppPreferences.INSTANCE.initAppPreferences(mActivity);
-
+        mBsOfflineDB= BsOfflineDBImpl.getInstance(mActivity);
         initView(getView());
         initVar();
         mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=1&assigned=1&page=1&skip_overdue=1";
@@ -110,7 +111,6 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
 
        // mAuditListAdapter=new AuditActionAdapter(mActivity,mAuditLisBean,status);
        // mAuditListRV.setAdapter(mAuditListAdapter);
-
     }
 
     private void removeAllSelection()
@@ -120,16 +120,12 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
         mOverDueTV.setSelected(false);
     }
 
-
-
-
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId())
         {
             case R.id.tv_schedule:
+                mAudityType= AppConstant.SCHEDULE;
                 status =1;
                 mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=1&assigned=1&page=1&skip_overdue=1";
                 if(mSheduleTv.isSelected())
@@ -142,6 +138,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                 getAuditListFromServer(); //scheduled
                 break;
             case R.id.tv_progress:
+                mAudityType= AppConstant.INPROGRESS;
                 status =2;
                 mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=2&filter_brand_std_status%5B%5D=3&assigned=1&page=1&skip_overdue=1";
                 if(mResumeTv.isSelected())
@@ -154,6 +151,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
 
                 break;
             case R.id.tv_overdue:
+                mAudityType= AppConstant.OVERDUE;
                 status =3;
                 mAuditURL= NetworkURL.AUDIT_LIST+"?assigned=1&page=1&overdue=1";
                 if(mOverDueTV.isSelected())
@@ -166,18 +164,6 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                 break;
         }
     }
-
-   /* Scheduled:
-    filter_brand_std_status: [1]
-    skip_overdue: 1
-
-    In Progress:
-    filter_brand_std_status: [2, 3]
-    skip_overdue: 1
-
-    Overdue:
-    overdue: 1*/
-
     private void getAuditListFromServer()
     {
         if (NetworkStatus.isNetworkConnected(mActivity)) {
@@ -187,20 +173,35 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
             networkService.call( new HashMap<String, String>());
         } else
         {
-            AppUtils.toast(mActivity, getString(R.string.internet_error));
+            AppUtils.toast(mActivity, mActivity.getString(R.string.internet_error));
+          //  processAuditListResponse(mBsOfflineDB.getAuditListJSONFromDB(mAudityType));
 
         }
     }
 
     @Override
-    public void onNetworkCallInitiated(String service) {
+    public void onNetworkCallInitiated(String service)
+    {
 
     }
-
     @Override
     public void onNetworkCallCompleted(String type, String service, String response)
     {
+        mBsOfflineDB.deleteAuditListJSONToDB(mAudityType);
+        mBsOfflineDB.saveAuditListJSONToDB(mAudityType,response);
+        processAuditListResponse(response);
+
+    }
+    @Override
+    public void onNetworkCallError(String service, String errorMessage) {
+        Log.e("onNetworkCallError","===>"+errorMessage);
+        if (mActivity!=null)
+           AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
+        mSpinKitView.setVisibility(View.GONE);
+    }
+    private void processAuditListResponse(String response) {
         try {
+
             JSONObject object = new JSONObject(response);
             mNoDataFoundRL.setVisibility(View.GONE);
             mAuditLisBean.clear();
@@ -211,9 +212,24 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                 if (auditRootObject.getData() != null && auditRootObject.getData().size() > 0) {
 
                     mAuditLisBean.addAll(auditRootObject.getData());
-                   // mAuditListAdapter.notifyDataSetChanged();
+                    // mAuditListAdapter.notifyDataSetChanged();
                     mAuditListAdapter=new AuditListAdapter(mActivity,mAuditLisBean,status);
                     mAuditListRV.setAdapter(mAuditListAdapter);
+                    switch (status)
+                    {
+                        case 1:
+                            mSheduleTv.setText(getString(R.string.s_scheduled)+"("+mAuditLisBean.size()+")");
+                            break;
+                        case 2:
+                            mResumeTv.setText(getString(R.string.s_progress)+"("+mAuditLisBean.size()+")");
+                            break;
+                        case 3:
+                            mOverDueTV.setText(getString(R.string.s_overdue)+"("+mAuditLisBean.size()+")");
+                            break;
+
+                    }
+                    //if (NetworkStatus.isNetworkConnected(mActivity))
+                        //fetchQuestionJsonDataInBackground(mAuditLisBean);
                 }else {
                     mNoDataFoundRL.setVisibility(View.VISIBLE);
                 }
@@ -222,23 +238,25 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                 mNoDataFoundRL.setVisibility(View.VISIBLE);
                 AppUtils.toast((BaseActivity) mActivity, object.getString(AppConstant.RES_KEY_MESSAGE));
             }
-
-
         }
         catch (Exception e)
         {
-            AppUtils.toast(mActivity, getString(R.string.oops));
+            AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         }
-       // ((BaseActivity)mActivity).hideProgressDialog();
         mSpinKitView.setVisibility(View.GONE);
+    }
+
+    private void fetchQuestionJsonDataInBackground(List<AuditInfo> mAuditLisBean)
+    {
+        for (int j=0;j<mAuditLisBean.size();j++)
+        {
+            String auditID=""+mAuditLisBean.get(j).getAudit_id();
+            Intent intent = new Intent(mActivity,QuestionData.class);
+            intent.putExtra(AppConstant.AUDIT_ID,auditID);
+            mActivity.startService(intent);
+        }
 
     }
 
-    @Override
-    public void onNetworkCallError(String service, String errorMessage) {
-        Log.e("onNetworkCallError","===>"+errorMessage);
-        AppUtils.toast(mActivity, getString(R.string.oops));
-       // ((BaseActivity)mActivity).hideProgressDialog();
-        mSpinKitView.setVisibility(View.GONE);
-    }
+
 }

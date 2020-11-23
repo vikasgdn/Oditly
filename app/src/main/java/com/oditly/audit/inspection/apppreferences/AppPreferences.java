@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.oditly.audit.inspection.ui.activty.SplashActivity;
 
 
 /**

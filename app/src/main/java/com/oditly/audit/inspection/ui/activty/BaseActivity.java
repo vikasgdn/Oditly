@@ -119,10 +119,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public boolean requestPermission(String permission) {
         boolean isGranted = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
         if (!isGranted) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{permission},
-                    READ_WRITE_STORAGE);
+            ActivityCompat.requestPermissions(this, new String[]{permission}, READ_WRITE_STORAGE);
         }
         return isGranted;
     }

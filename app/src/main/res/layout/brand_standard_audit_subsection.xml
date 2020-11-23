@@ -31,6 +31,7 @@
             android:id="@+id/rv_bs_sub_section_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:nestedScrollingEnabled="false">
         </androidx.recyclerview.widget.RecyclerView>
 

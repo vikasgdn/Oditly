@@ -22,6 +22,8 @@
     <color name="c_green_light">#AFE4B1</color>
     <color name="c_red_light">#F1D8D6</color>
 
+    <color name="c_transparent_black">#64000000</color>
+
 
     <color name="c_green_dark">#0c9b0c</color>
     <color name="c_orange">#eba142</color>

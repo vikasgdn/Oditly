@@ -3,31 +3,25 @@ package com.oditly.audit.inspection.ui.activty;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.dialog.AppDialogs;
-import com.oditly.audit.inspection.ui.fragment.AnalyticsFragment;
-import com.oditly.audit.inspection.ui.fragment.GoToFragment;
+import com.oditly.audit.inspection.ui.fragment.DashboardFragment;
 import com.oditly.audit.inspection.ui.fragment.LandingFragment;
-import com.oditly.audit.inspection.ui.fragment.ReportFragment;
+import com.oditly.audit.inspection.ui.fragment.ReportListFragment;
 import com.oditly.audit.inspection.ui.fragment.TeamListFragment;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
 import com.volcaniccoder.bottomify.BottomifyNavigationView;
 import com.volcaniccoder.bottomify.OnNavigationItemChangeListener;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener
+
+public class MainActivity extends BaseActivity
 {
     private   int lastSelectedPosition = 0;
-    private BottomNavigationBar bottomNavigationBar;
     private TextView mTitleTV;
-    private String mAuditTypeName="";
     private String mAuditTypeID="";
     private ImageView ivNotification;
 
@@ -53,7 +47,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
         initToolbar(mToolbar);
 
-        bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         ivNotification=(ImageView)findViewById(R.id.iv_header_right);
         ivNotification.setVisibility(View.INVISIBLE);
         ivNotification.setOnClickListener(this);
@@ -65,22 +58,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
        String location= getIntent().getStringExtra(AppConstant.FROMWHERE)==null?"":getIntent().getStringExtra(AppConstant.FROMWHERE);
        if(!TextUtils.isEmpty(location) && location.equalsIgnoreCase(AppConstant.TEAM))
            lastSelectedPosition=4;
-
-        bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED_NO_TITLE);
-        bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        bottomNavigationBar.setBarBackgroundColor("#F4F1F1");
-
-        bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.mipmap.schedule08,"Schedule").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.mipmap.analytics08, "Analytics").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.mipmap.goto08, "Go To").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.drawable.report09, "Report").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.mipmap.team08, "Team").setActiveColorResource(R.color.c_blue))
-                .setFirstSelectedPosition(lastSelectedPosition)
-                .initialise();
-
-        bottomNavigationBar.setTabSelectedListener(this);
-
         BottomifyNavigationView navigationView=(BottomifyNavigationView)findViewById(R.id.bottomify_nav);
         navigationView.setActiveNavigationIndex(lastSelectedPosition);
 
@@ -88,8 +65,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         navigationView.setOnNavigationItemChangedListener(new OnNavigationItemChangeListener() {
             @Override
             public void onNavigationItemChanged(BottomifyNavigationView.NavigationItem navigationItem) {
-                // navigationView.setActiveNavigationIndex(lastSelectedPosition);
-                 setScrollableText(navigationItem.getPosition());
+               // navigationView.setActiveNavigationIndex(lastSelectedPosition);
+                setScrollableText(navigationItem.getPosition());
             }
         });
 
@@ -106,28 +83,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         super.onResume();
         setScrollableText(lastSelectedPosition);
     }*/
-
-    @Override
-    public void onTabSelected(int position) {
-        lastSelectedPosition = position;
-
-        setScrollableText(position);
-        Log.e("========>","onTabSelected");
-    }
-
-    @Override
-    public void onTabUnselected(int position) {
-        Log.e("=======>","onTabSelected");
-    }
-
-    @Override
-    public void onTabReselected(int position)
-    {
-        setScrollableText(position);
-        Log.e("======> ","onTabReselect");
-    }
-
-
     private void setScrollableText(int position) {
         switch (position) {
             case 0:
@@ -136,7 +91,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 break;
             case 1:
                 mTitleTV.setText(getResources().getString(R.string.s_analytics));
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, AnalyticsFragment.newInstance(0)).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, DashboardFragment.newInstance(0)).commitAllowingStateLoss();
                 break;
             case 2:
               //  mTitleTV.setText(getResources().getString(R.string.text_goto));
@@ -145,7 +100,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 break;
             case 3:
                 mTitleTV.setText(getResources().getString(R.string.s_reports));
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, ReportFragment.newInstance("")).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, ReportListFragment.newInstance("")).commitAllowingStateLoss();
                 break;
             case 4:
                 mTitleTV.setText(getResources().getString(R.string.text_team));

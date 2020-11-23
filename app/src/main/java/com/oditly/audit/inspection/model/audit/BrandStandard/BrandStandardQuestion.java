@@ -1,6 +1,7 @@
 package com.oditly.audit.inspection.model.audit.BrandStandard;
 
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,7 +14,7 @@ public class BrandStandardQuestion implements Parcelable {
     private String question_title = "";
     private int question_type_id = 0;
     private String question_type = "";
-    private String hint = "";
+    private String question_hint = "";
     private int is_required = 0;
     private int is_visible = 0;
     private int has_na = 0;
@@ -27,12 +28,16 @@ public class BrandStandardQuestion implements Parcelable {
     private String reviewer_answer_comment = "";
     private int obtained_mark = 0;
     private int audit_question_file_cnt = 0;
-    private String ref_image_name = "";
-    private String ref_image_url = "";
-    private String ref_image_thumb = "";
+  //  private String ref_image_name = "";
+    //private String ref_image_url = "";
+   // private String ref_image_thumb = "";
     ArrayList<BrandStandardQuestionsOption> options;
     ArrayList<Integer> audit_option_id;
-    List<String> mImageList;
+    List<Uri> mImageList;
+    private BrandStandardSlider slider;
+    private int media_count = 0;
+    private BrandStandardRefrence ref_file;
+
 
 
     protected BrandStandardQuestion(Parcel in) {
@@ -40,7 +45,7 @@ public class BrandStandardQuestion implements Parcelable {
         question_title = in.readString();
         question_type_id = in.readInt();
         question_type = in.readString();
-        hint = in.readString();
+        question_hint = in.readString();
         is_required = in.readInt();
         is_visible = in.readInt();
         has_na = in.readInt();
@@ -54,9 +59,9 @@ public class BrandStandardQuestion implements Parcelable {
         reviewer_answer_comment = in.readString();
         obtained_mark = in.readInt();
         audit_question_file_cnt = in.readInt();
-        ref_image_name = in.readString();
-        ref_image_url = in.readString();
-        ref_image_thumb = in.readString();
+       // ref_image_name = in.readString();
+       // ref_image_url = in.readString();
+       // ref_image_thumb = in.readString();
         if (in.readByte() == 0x01) {
             options = new ArrayList<BrandStandardQuestionsOption>();
             in.readList(options, BrandStandardQuestionsOption.class.getClassLoader());
@@ -70,11 +75,16 @@ public class BrandStandardQuestion implements Parcelable {
             audit_option_id = null;
         }
         if (in.readByte() == 0x01) {
-            mImageList = new ArrayList<String>();
+            mImageList = new ArrayList<Uri>();
             in.readList(mImageList, String.class.getClassLoader());
         } else {
             mImageList = null;
         }
+        this.slider= in.readParcelable(BrandStandardSlider.class.getClassLoader()); //retrieving from parcel
+        this.media_count=in.readInt();
+        this.ref_file= in.readParcelable(BrandStandardRefrence.class.getClassLoader()); //retrieving from parcel
+
+
     }
 
     @Override
@@ -88,7 +98,7 @@ public class BrandStandardQuestion implements Parcelable {
         dest.writeString(question_title);
         dest.writeInt(question_type_id);
         dest.writeString(question_type);
-        dest.writeString(hint);
+        dest.writeString(question_hint);
         dest.writeInt(is_required);
         dest.writeInt(is_visible);
         dest.writeInt(has_na);
@@ -102,9 +112,9 @@ public class BrandStandardQuestion implements Parcelable {
         dest.writeString(reviewer_answer_comment);
         dest.writeInt(obtained_mark);
         dest.writeInt(audit_question_file_cnt);
-        dest.writeString(ref_image_name);
-        dest.writeString(ref_image_url);
-        dest.writeString(ref_image_thumb);
+      //  dest.writeString(ref_image_name);
+      //  dest.writeString(ref_image_url);
+      //  dest.writeString(ref_image_thumb);
         if (options == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -123,10 +133,14 @@ public class BrandStandardQuestion implements Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mImageList);
         }
+        dest.writeParcelable(slider, flags); // saving object
+        dest.writeInt(media_count);
+        dest.writeParcelable(ref_file, flags); // saving object
+
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<BrandStandardQuestion> CREATOR = new Parcelable.Creator<BrandStandardQuestion>() {
+    public static final Creator<BrandStandardQuestion> CREATOR = new Creator<BrandStandardQuestion>() {
         @Override
         public BrandStandardQuestion createFromParcel(Parcel in) {
             return new BrandStandardQuestion(in);
@@ -171,11 +185,11 @@ public class BrandStandardQuestion implements Parcelable {
     }
 
     public String getHint() {
-        return hint;
+        return question_hint;
     }
 
     public void setHint(String hint) {
-        this.hint = hint;
+        this.question_hint = hint;
     }
 
     public int getIs_required() {
@@ -282,7 +296,7 @@ public class BrandStandardQuestion implements Parcelable {
         this.audit_question_file_cnt = audit_question_file_cnt;
     }
 
-    public String getRef_image_name() {
+  /*  public String getRef_image_name() {
         return ref_image_name;
     }
 
@@ -304,7 +318,7 @@ public class BrandStandardQuestion implements Parcelable {
 
     public void setRef_image_thumb(String ref_image_thumb) {
         this.ref_image_thumb = ref_image_thumb;
-    }
+    }*/
 
     public ArrayList<BrandStandardQuestionsOption> getOptions() {
         return options;
@@ -322,12 +336,37 @@ public class BrandStandardQuestion implements Parcelable {
         this.audit_option_id = audit_option_id;
     }
 
-    public List<String> getmImageList() {
+    public List<Uri> getmImageList() {
         return mImageList;
     }
 
-    public void setmImageList(List<String> mImageList) {
+    public void setmImageList(List<Uri> mImageList) {
         this.mImageList = mImageList;
     }
+
+    public BrandStandardSlider getSlider() {
+        return slider;
+    }
+
+    public void setSlider(BrandStandardSlider slider) {
+        this.slider = slider;
+    }
+
+    public int getMedia_count() {
+        return media_count;
+    }
+
+    public void setMedia_count(int media_count) {
+        this.media_count = media_count;
+    }
+
+    public BrandStandardRefrence getRef_file() {
+        return ref_file;
+    }
+
+    public void setRef_file(BrandStandardRefrence ref_file) {
+        this.ref_file = ref_file;
+    }
+
 
 }

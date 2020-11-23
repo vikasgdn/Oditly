@@ -43,7 +43,7 @@ public class BrandStandardSubSection implements Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<BrandStandardSubSection> CREATOR = new Parcelable.Creator<BrandStandardSubSection>() {
+    public static final Creator<BrandStandardSubSection> CREATOR = new Creator<BrandStandardSubSection>() {
         @Override
         public BrandStandardSubSection createFromParcel(Parcel in) {
             return new BrandStandardSubSection(in);

@@ -88,10 +88,12 @@
     <string name="text_audit_name">Inspection Name</string>
     <string name="text_save">Save</string>
     <string name="text_submit">Submit</string>
+    <string name="text_submitgoto">Go To Submit</string>
+    <string name="text_submitfinal">Final Submit</string>
     <string name="text_photo">Media</string>
     <string name="text_summary">Summary</string>
     <string name="text_comment">Comment</string>
-    <string name="text_ref_image">Reference</string>
+    <string name="text_ref_image">Show how</string>
     <string name="rtext_esume">Resume</string>
     <string name="text_na">N/A</string>
     <string name="text_resume">Resume</string>
@@ -102,7 +104,7 @@
     <string name="text_audit_option">Inspection</string>
     <string name="text_prev">Prev</string>
     <string name="text_next">Next</string>
-    <string name="you_can_not_upload">You can add upto 20 attachments and\ \n select only 5 images at a time</string>
+    <string name="you_can_not_upload">You can add upto 20 attachments and\ \n select only 10 images at a time</string>
     <string name="text_enter_desc">Enter Description</string>
 
     <string name="text_image_choose">Upload from</string>
@@ -210,7 +212,7 @@
     <string name="textx_reset_seletion">Reset Selection</string>
     <string name="text_all">All</string>
     <string name="text_team">Team</string>
-    <string name="text_addnew_member">Add a new member</string>
+    <string name="text_addnew_member">Create a new team</string>
     <string name="text_name_emaili_roll">Name, Email ID, Role</string>
     <string name="text_entor_data">Please enter search data</string>
     <string name="text_selet_filter">Select Filters</string>
@@ -272,6 +274,18 @@
     <string name="text_datetime">Select Date Time</string>
     <string name="text_alert_dialog_na">Are your sure to mark the section as Not Applicable (NA)? Doing so, will erase all the previously saved data, if any, in this section</string>
     <string name="text_auditsubmited">" Report has been submitted successfully"</string>
+    <string name="text_updatedsuccessfully">Uploaded Successfully</string>
+    <string name="expand_string">more</string>
+    <string name="collapsed_string">less</string>
 
+    <string name="dummytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="text_chatsupport"><![CDATA[Chat & Support]]></string>
+
+    <string name="text_titleh">Title: </string>
+    <string name="text_locationh">Location:  </string>
+    <string name="text_checklisth">Checklist: </string>
+    <string name="text_selecttemplet">Select Template</string>
+    <string name="text_videogallery">Gallery Video</string>
+    <string name="text_starttime">Start Time</string>
 
 </resources>

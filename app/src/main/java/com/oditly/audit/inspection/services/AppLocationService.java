@@ -1,4 +1,4 @@
-package com.oditly.services;
+package com.oditly.audit.inspection.services;
 
 import android.app.Activity;
 import android.app.Service;

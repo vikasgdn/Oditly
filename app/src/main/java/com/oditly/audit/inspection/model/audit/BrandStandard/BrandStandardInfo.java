@@ -17,6 +17,9 @@ public class BrandStandardInfo {
     private String country_name = "";
     private int city_id = 0;
     private String city_name = "";
+    private int auditTimer= 0;
+    private int has_gallery_access = 1;
+
     private String reviewer_brand_std_comment = "";
     private int audit_questionnaire_file_cnt = 0;
     ArrayList<BrandStandardSection> sections;
@@ -131,5 +134,22 @@ public class BrandStandardInfo {
 
     public void setSections(ArrayList<BrandStandardSection> sections) {
         this.sections = sections;
+    }
+
+
+    public int isGalleryDisable() {
+        return has_gallery_access;
+    }
+
+    public void setGalleryDisable(int galleryDisable) {
+        has_gallery_access = galleryDisable;
+    }
+
+    public int getAuditTimer() {
+        return auditTimer;
+    }
+
+    public void setAuditTimer(int auditTimer) {
+        this.auditTimer = auditTimer;
     }
 }

@@ -1,6 +1,5 @@
 package com.oditly.audit.inspection.ui.activty;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,13 +30,10 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
-import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentInfo;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.network.apirequest.EditBSAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.EditBSQuestionAttachmentRequest;
-import com.oditly.audit.inspection.network.apirequest.EditDSAttachmentRequest;
-import com.oditly.audit.inspection.network.apirequest.EditESAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
@@ -60,8 +56,6 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     ImageView attachmentImage;
     @BindView(R.id.edit_image)
     ImageButton editImage;
-
-
     @BindView(R.id.tv_attachment_name)
     TextView attachmentName;
     @BindView(R.id.cb_add_attachment_critical)
@@ -131,10 +125,12 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
 
         mFromWhere=getIntent().getStringExtra("LOCATION");
         editable = getIntent().getStringExtra("editable");
+
         auditId = getIntent().getStringExtra("auditId");
         sectionGroupId = getIntent().getStringExtra("sectionGroupId");
         sectionId = getIntent().getStringExtra("sectionId");
         questionId = getIntent().getStringExtra("questionId");
+
         attachType = getIntent().getStringExtra("attachType");
         addAttachmentInfo = getIntent().getParcelableExtra("attachmentDetail");
      //   progressDialog = new ProgressDialog(context);
@@ -175,7 +171,14 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
 
             case R.id.edit_image:
                 Intent intent = new Intent(context, EditImageActivity.class);
-                intent.putExtra("location","EDIT");
+                intent.putExtra(AppConstant.FROMWHERE,"EDIT");
+                intent.putExtra(AppConstant.AUDIT_ID, auditId);
+                intent.putExtra(AppConstant.SECTION_GROUPID, sectionGroupId);
+                intent.putExtra(AppConstant.SECTION_ID, sectionId);
+                intent.putExtra(AppConstant.QUESTION_ID, questionId);
+                intent.putExtra(AppConstant.QUESTION_FILEID, ""+addAttachmentInfo.getAudit_question_file_id());
+                intent.putExtra(AppConstant.SECTION_FILEID, ""+addAttachmentInfo.getAudit_section_file_id());
+                intent.putExtra("attachType", attachType);
                 startActivityForResult(intent,123);
                 break;
 
@@ -286,7 +289,6 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     }
 
     private void addBsFileAttachment() {
-      //  showProgressDialog();
         mRparenProgressRL.setVisibility(View.VISIBLE);
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
@@ -295,29 +297,20 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
                 try {
                     JSONObject object = new JSONObject(response);
 
-                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
+                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR))
+                    {
+                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                         attachmentDescription.setEnabled(false);
                         criticalCheckBox.setEnabled(false);
                         saveBtn.setVisibility(View.GONE);
                         editBtn.setVisibility(View.VISIBLE);
                     } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
+                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-               // hideProgressDialog();
                 mRparenProgressRL.setVisibility(View.GONE);
             }
 
@@ -325,7 +318,6 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-              //  hideProgressDialog();
                 mRparenProgressRL.setVisibility(View.GONE);
                 AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
                 AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
@@ -341,7 +333,6 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     }
 
     private void addQuestionFileAttachment() {
-       // showProgressDialog();
         mRparenProgressRL.setVisibility(View.VISIBLE);
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
@@ -351,28 +342,18 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
+                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                         attachmentDescription.setEnabled(false);
                         criticalCheckBox.setEnabled(false);
                         saveBtn.setVisibility(View.GONE);
                         editBtn.setVisibility(View.VISIBLE);
                     } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
+                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-               // hideProgressDialog();
                 mRparenProgressRL.setVisibility(View.GONE);
             }
 

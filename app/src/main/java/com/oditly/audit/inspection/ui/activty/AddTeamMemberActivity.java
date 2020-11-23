@@ -145,7 +145,7 @@ public class AddTeamMemberActivity extends BaseActivity implements INetworkEvent
             case R.id.tv_reset_selection:
                 mSelectAllCB.setChecked(false);
                     mAddTeamListAdapter.unselectall();
-                    break;
+                break;
             case R.id.iv_header_left:
                finish();
                 break;

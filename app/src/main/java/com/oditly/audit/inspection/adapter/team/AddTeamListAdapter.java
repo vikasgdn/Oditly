@@ -6,14 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.teamData.TeamInfo;
-import com.oditly.audit.inspection.ui.activty.AddTeamMemberActivity;
 
 import java.util.HashSet;
 import java.util.List;

@@ -1,24 +1,18 @@
 package com.oditly.audit.inspection.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.interfaces.OnRecyclerViewItemClickListener;
 import com.oditly.audit.inspection.model.audit.AuditInfo;
-import com.oditly.audit.inspection.ui.activty.AuditSectionsActivity;
-import com.oditly.audit.inspection.ui.activty.AuditSubmitSignatureActivity;
-import com.oditly.audit.inspection.util.AppConstant;
-import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
 import java.util.List;
@@ -57,6 +51,24 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Au
         holder.mAuditorNameTV.setText(auditInfo.getCreator_name());
         holder.mDateTV.setText(AppUtils.getFormatedDate(auditInfo.getAudit_due_date()));
 
+        if (!TextUtils.isEmpty(auditInfo.getCompleted_late_key()))
+            holder.mCompletedLateTV.setVisibility(View.VISIBLE);
+        else
+            holder.mCompletedLateTV.setVisibility(View.GONE);
+
+        if (!TextUtils.isEmpty(auditInfo.getIs_passed())) {
+            holder.mAuditStatusTV.setVisibility(View.VISIBLE);
+            if (auditInfo.getIs_passed().equalsIgnoreCase("true")) {
+                holder.mAuditStatusTV.setText("Passed");
+                holder.mAuditStatusTV.setBackgroundResource(R.drawable.tv_shape_green_bg);
+            } else if (auditInfo.getIs_passed().equalsIgnoreCase("false")) {
+                holder.mAuditStatusTV.setText("Failed");
+                holder.mAuditStatusTV.setBackgroundResource(R.drawable.tv_shape_red_bg);
+            }
+        }
+        else{
+            holder.mAuditStatusTV.setVisibility(View.GONE);
+        }
 
 
     }
@@ -75,7 +87,8 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Au
         TextView mDateTV;
         TextView mScoreTV;
         TextView mAuditorNameTV;
-        LinearLayout reviewerContainer;
+        TextView mAuditStatusTV;
+        TextView mCompletedLateTV;
 
         public AuditActionViewHolder (View itemView) {
             super(itemView);
@@ -87,7 +100,8 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Au
             mDateTV = itemView.findViewById(R.id.tv_date);
             mScoreTV = itemView.findViewById(R.id.tv_score);
             mAuditorNameTV = itemView.findViewById(R.id.tv_auditorname);
-
+            mAuditStatusTV= itemView.findViewById(R.id.tv_auditstatus);
+            mCompletedLateTV= itemView.findViewById(R.id.tv_completelate);
 
         }
 

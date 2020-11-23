@@ -1,6 +1,9 @@
 package com.oditly.audit.inspection;
 
 import android.app.Application;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 
 
@@ -23,20 +26,21 @@ import javax.net.ssl.X509TrustManager;
 
 public class OditlyApplication extends Application {
 
-    private List<String> mAttachImageList;
+    private List<Uri> mAttachImageList;
     private ActionInfo mActionPlanData;
     private AuditInfo mAuditData;
     private List<BrandStandardSectionNew> mSubSectionList;
     private ArrayList<BrandStandardSection> mBrandStandardSectionList;
+    private Context mContext;
+    private boolean isGalleryDisable;
 
 
-
-    public List<String> getmAttachImageList()
+    public List<Uri> getmAttachImageList()
     {
         return mAttachImageList;
     }
 
-    public void setmAttachImageList(List<String> mAttachImageList) {
+    public void setmAttachImageList(List<Uri> mAttachImageList) {
         this.mAttachImageList = mAttachImageList;
     }
 
@@ -51,7 +55,8 @@ public class OditlyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-       // handleSSLHandshake();
+        mContext=this;
+      //  handleSSLHandshake();
     }
 
 
@@ -101,5 +106,18 @@ public class OditlyApplication extends Application {
 
     public void setmAuditData(AuditInfo mAuditData) {
         this.mAuditData = mAuditData;
+    }
+
+    public Context getmContext() {
+        return mContext;
+    }
+
+
+    public boolean isGalleryDisable() {
+        return isGalleryDisable;
+    }
+
+    public void setGalleryDisable(boolean galleryDisable) {
+        isGalleryDisable = galleryDisable;
     }
 }

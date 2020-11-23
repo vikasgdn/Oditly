@@ -6,6 +6,17 @@ package com.oditly.audit.inspection.util;
 
 public class AppConstant {
 
+
+    public static final int REQUEST_FOR_CAMERA = 100;
+    public static final int REQUEST_TAKE_PHOTO = 101;
+    public static final int REQUEST_TAKE_VDO = 102;
+    public static final int GALLERY_PERMISSION_REQUEST = 103;
+    public static final int EDIT_IMAGE = 123;
+
+    public static final String SCHEDULE = "schedule";
+    public static final String INPROGRESS = "inprogress";
+    public static final String OVERDUE = "overdue";
+
     public static final int ERROR = 500;
     public static final int RESULT_FAILED = 400;
     public static final int CROPPED_IMAGE_QUALITY = 50;
@@ -73,6 +84,16 @@ public class AppConstant {
     public static final String AUDIT_BENCHMARK = "benchmark";
     public static final String AUDIT = "audit";
     public static final String JSON_DATA = "jsondata";
+    public static final String QUESTION_FILEID = "audit_question_file_id";
+    public static final String SECTION_FILEID = "audit_section_file_id";
+    public static final String SECTION_GROUPID = "sectiongroupId";
+    public static final String SECTION_ID = "sectionId";
+    public static final String QUESTION_ID = "questionId";
+    public static final String QUESTION_LIST = "questionlist";
+    public static final String FILE_URL = "fileUrl";
+    public static final String AUDIT_TIMER = "audittimer";
+    public static final String GALLERY_DISABLE = "gallerydisable";
+    public static final String AUDIT_STARTHOUR = "hour";
 
 
     public static String DEVICE_ID = "";

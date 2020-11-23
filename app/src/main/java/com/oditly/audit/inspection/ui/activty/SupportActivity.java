@@ -34,6 +34,7 @@ public class SupportActivity extends BaseActivity {
         findViewById(R.id.iv_header_left).setOnClickListener(this);
         findViewById(R.id.tv_callus).setOnClickListener(this);
         findViewById(R.id.tv_email).setOnClickListener(this);
+        findViewById(R.id.fb_chatsupport).setOnClickListener(this);
         TextView textView=(TextView)findViewById(R.id.tv_header_title);
         textView.setText(getResources().getString(R.string.s_support));
 
@@ -58,8 +59,10 @@ public class SupportActivity extends BaseActivity {
             case R.id.tv_callus:
                  openDialPad(this);
                 break;
-            case R.id.tv_email:
-                openEmailComposer(this);
+
+            case R.id.fb_chatsupport:
+                Intent callIntent = new Intent(this, ChatSupportActivity.class);
+                startActivity(callIntent);
                 break;
 
         }
@@ -93,4 +96,8 @@ public class SupportActivity extends BaseActivity {
         }
     }
 
+    public void support(View view) {
+        Intent callIntent = new Intent(this, ChatSupportActivity.class);
+        startActivity(callIntent);
+    }
 }

@@ -164,7 +164,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
             networkService.call(new HashMap<String, String>());
         } else
         {
-            AppUtils.toast(mActivity, getString(R.string.internet_error));
+            AppUtils.toast(mActivity, mActivity.getString(R.string.internet_error));
 
         }
     }
@@ -191,6 +191,21 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
                     //  mAuditListAdapter.notifyDataSetChanged();
                     mAuditListAdapter=new ActionPlanListAdapter(mActivity,mAuditLisBean,status);
                     mAuditListRV.setAdapter(mAuditListAdapter);
+
+                    switch (status)
+                    {
+                        case 1:
+                            mSheduleTv.setText(getString(R.string.s_scheduled)+"("+mAuditLisBean.size()+")");
+                            break;
+                        case 2:
+                            mResumeTv.setText(getString(R.string.s_progress)+"("+mAuditLisBean.size()+")");
+                            break;
+                        case 4:
+                            mOverDueTV.setText(getString(R.string.s_overdue)+"("+mAuditLisBean.size()+")");
+                            break;
+
+                    }
+
                 }else {
                     mNoDataFoundRL.setVisibility(View.VISIBLE);
                 }
@@ -204,9 +219,8 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
         }
         catch (Exception e)
         {
-            AppUtils.toast(mActivity, getString(R.string.oops));
+            AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         }
-        //  ((BaseActivity)mActivity).hideProgressDialog();
         mSpinKitView.setVisibility(View.GONE);
 
     }
@@ -214,8 +228,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onNetworkCallError(String service, String errorMessage) {
         Log.e("onNetworkCallError","===>"+errorMessage);
-        AppUtils.toast(mActivity, getString(R.string.oops));
-        // ((BaseActivity)mActivity).hideProgressDialog();
+        AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         mSpinKitView.setVisibility(View.GONE);
     }
 }

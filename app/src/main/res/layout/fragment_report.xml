@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_devider"
         android:layout_marginTop="@dimen/d_4dp"
-        android:layout_marginBottom="@dimen/d_50dp"
+        android:layout_marginBottom="@dimen/d_70dp"
         android:fadeScrollbars="false"
         tools:listitem="@layout/adapter_report_list"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

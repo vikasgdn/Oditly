@@ -35,17 +35,16 @@
             android:layout_marginTop="@dimen/d_10dp"
             android:textColor="@color/c_blue"
             android:textSize="@dimen/text_size_18" />
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nunitosans_semibold"
-            android:text="@string/text_duedate"
+            android:text="@string/text_startdate"
             android:layout_marginTop="@dimen/d_10dp"
             android:textColor="@color/c_dark_gray"
             android:textSize="@dimen/text_size_16" />
         <TextView
-            android:id="@+id/tv_duedate"
+            android:id="@+id/tv_startdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/text_select_date"
@@ -59,6 +58,122 @@
             android:fontFamily="@font/nunitosans_regular"
             android:textColor="@color/c_gray_text"
             android:textSize="@dimen/text_size_16"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:text="@string/text_starttime"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:textColor="@color/c_dark_gray"
+            android:textSize="@dimen/text_size_16" />
+        <LinearLayout
+            android:id="@+id/ll_timeampm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/rl_hour"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:background="@drawable/gray_border_whitebg"
+                android:visibility="visible"
+                >
+                <Spinner
+                    android:id="@+id/spn_hour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/d_10dp"
+                    android:background="@null"
+                    android:entries="@array/arr_hour"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitXY"
+                    android:padding="@dimen/d_10dp"
+                    android:background="@drawable/ic_dropdown_gray"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_ampm"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/d_2dp"
+                android:background="@drawable/gray_border_whitebg"
+                android:visibility="visible"
+                >
+                <Spinner
+                    android:id="@+id/spn_ampm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/d_10dp"
+                    android:background="@null"
+                    android:entries="@array/arr_ampm"
+                />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitXY"
+                    android:padding="@dimen/d_10dp"
+                    android:background="@drawable/ic_dropdown_gray"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:text="@string/text_duedate"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:textColor="@color/c_dark_gray"
+            android:textSize="@dimen/text_size_16" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_duedate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:hint="@string/text_select_date"
+                android:drawablePadding="@dimen/d_5dp"
+                android:drawableLeft="@drawable/ic_date"
+                android:background="@drawable/gray_border_whitebg"
+                android:gravity="left"
+                android:padding="@dimen/d_10dp"
+                android:layout_marginTop="@dimen/d_10dp"
+                android:layout_marginRight="@dimen/d_2dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/c_gray_text"
+                android:textSize="@dimen/text_size_16"/>
+            <TextView
+                android:id="@+id/tv_duetime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:hint="@string/text_time"
+                android:drawablePadding="@dimen/d_5dp"
+                android:drawableLeft="@drawable/ic_date"
+                android:background="@drawable/gray_border_whitebg"
+                android:gravity="left"
+                android:padding="@dimen/d_10dp"
+                android:layout_marginTop="@dimen/d_10dp"
+                android:layout_marginRight="@dimen/d_2dp"
+                android:layout_marginLeft="@dimen/d_2dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/c_gray_text"
+                android:textSize="@dimen/text_size_16"/>
+        </LinearLayout>
+
 
         <TextView
             android:layout_width="match_parent"

@@ -233,7 +233,7 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+        Toast.makeText(this,"Please save your signature",Toast.LENGTH_SHORT).show();
     }
 
     private void addAuditSignature(byte[] imageByteData) {
@@ -276,4 +276,5 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
         AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId,stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
     }
+
 }
