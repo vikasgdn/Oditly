@@ -19,6 +19,8 @@ import com.oditly.audit.inspection.ui.fragment.ReportFragment;
 import com.oditly.audit.inspection.ui.fragment.TeamListFragment;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
+import com.volcaniccoder.bottomify.BottomifyNavigationView;
+import com.volcaniccoder.bottomify.OnNavigationItemChangeListener;
 
 public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener
 {
@@ -69,15 +71,27 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         bottomNavigationBar.setBarBackgroundColor("#F4F1F1");
 
         bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.drawable.ic_schedule_png,"Schedule").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.drawable.ic_analytics_png, "Analytics").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.drawable.ic_goto_png, "Go To").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.drawable.ic_report_png, "Report").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.drawable.ic_adduser_png, "Team").setActiveColorResource(R.color.c_blue))
+                .addItem(new BottomNavigationItem(R.mipmap.schedule08,"Schedule").setActiveColorResource(R.color.c_blue))
+                .addItem(new BottomNavigationItem(R.mipmap.analytics08, "Analytics").setActiveColorResource(R.color.c_blue))
+                .addItem(new BottomNavigationItem(R.mipmap.goto08, "Go To").setActiveColorResource(R.color.c_blue))
+                .addItem(new BottomNavigationItem(R.drawable.report09, "Report").setActiveColorResource(R.color.c_blue))
+                .addItem(new BottomNavigationItem(R.mipmap.team08, "Team").setActiveColorResource(R.color.c_blue))
                 .setFirstSelectedPosition(lastSelectedPosition)
                 .initialise();
 
         bottomNavigationBar.setTabSelectedListener(this);
+
+        BottomifyNavigationView navigationView=(BottomifyNavigationView)findViewById(R.id.bottomify_nav);
+        navigationView.setActiveNavigationIndex(lastSelectedPosition);
+
+        setScrollableText(lastSelectedPosition);
+        navigationView.setOnNavigationItemChangedListener(new OnNavigationItemChangeListener() {
+            @Override
+            public void onNavigationItemChanged(BottomifyNavigationView.NavigationItem navigationItem) {
+                // navigationView.setActiveNavigationIndex(lastSelectedPosition);
+                 setScrollableText(navigationItem.getPosition());
+            }
+        });
 
     }
 

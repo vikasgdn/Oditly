@@ -184,8 +184,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         AppPreferences.INSTANCE.initAppPreferences(this);
         handler = new Handler();
         brandStandardSectionArrayList = new ArrayList<>();
-      //  brandStandardSectionArrayList = getIntent().getParcelableArrayListExtra("sectionObject");
-        brandStandardSectionArrayList = ((OditlyApplication)getApplication()).getmBrandStandardSectionList();
+        brandStandardSectionArrayList = getIntent().getParcelableArrayListExtra("sectionObject");
+       // brandStandardSectionArrayList = ((OditlyApplication)getApplication()).getmBrandStandardSectionList();
         currentSectionPosition = getIntent().getIntExtra("position", 0);
         brandStandardSection = brandStandardSectionArrayList.get(currentSectionPosition);
 

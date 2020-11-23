@@ -321,8 +321,8 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
        //  Toast.makeText(this," Internal Audit",Toast.LENGTH_SHORT).show();
 
         Intent startAudit = new Intent(context, BrandStandardAuditActivity.class);
-       // startAudit.putParcelableArrayListExtra("sectionObject", brandStandardSections);
-        ((OditlyApplication)getApplication()).setmBrandStandardSectionList(brandStandardSections);
+        startAudit.putParcelableArrayListExtra("sectionObject", brandStandardSections);
+       // ((OditlyApplication)getApplication()).setmBrandStandardSectionList(brandStandardSections);
         startAudit.putExtra("position", pos);
         startAudit.putExtra("editable", editable);
         startAudit.putExtra("auditId", auditId);

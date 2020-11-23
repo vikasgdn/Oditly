@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.teamData.TeamInfo;
+import com.oditly.audit.inspection.ui.activty.AddTeamMemberActivity;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +23,6 @@ public class AddTeamListAdapter extends RecyclerView.Adapter<AddTeamListAdapter.
     private Context context;
     private List<TeamInfo> mAuditList;
     private HashSet<Integer> mHashSet;
-    private boolean isSelectedAll=false;
 
 
     public AddTeamListAdapter(Context context, List<TeamInfo> auditInfoList)
@@ -52,35 +52,24 @@ public class AddTeamListAdapter extends RecyclerView.Adapter<AddTeamListAdapter.
         holder.mRoleTV.setText(auditInfo.getRole_name());
         holder.mSelectMemberCB.setTag(auditInfo);
 
-        if (isSelectedAll){
+        if (auditInfo.isSelected())
             holder.mSelectMemberCB.setChecked(true);
-            for(int i=0;i<mAuditList.size();i++)
-              mHashSet.add(mAuditList.get(i).getUser_id());
-        }
         else
-        {
-            mHashSet.clear();
             holder.mSelectMemberCB.setChecked(false);
-        }
-
 
         holder.mSelectMemberCB.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 CheckBox cb = (CheckBox) v;
-                TeamInfo contact = (TeamInfo) cb.getTag();
                 if(cb.isChecked())
-                    mHashSet.add(contact.getUser_id());
+                    mAuditList.get(position).setSelected(true);
                 else
-                    mHashSet.remove(contact.getUser_id());
-
-
-              //  Toast.makeText(v.getContext(), "Clicked on Checkbox: " +  cb.isChecked()+" userid  "+contact.getUser_id(), Toast.LENGTH_LONG).show();
+                    mAuditList.get(position).setSelected(false);
+              //  Toast.makeText(v.getContext(), "Clicked on Checkbox: " + position, Toast.LENGTH_LONG).show();
             }
         });
 
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -88,6 +77,7 @@ public class AddTeamListAdapter extends RecyclerView.Adapter<AddTeamListAdapter.
 
 
     }
+
 
     public class AuditViewHolder extends RecyclerView.ViewHolder {
 
@@ -106,15 +96,19 @@ public class AddTeamListAdapter extends RecyclerView.Adapter<AddTeamListAdapter.
             mRoleTV = itemView.findViewById(R.id.tv_role);
             mSelectMemberCB = itemView.findViewById(R.id.cb_select);
 
-
         }
+
     }
     public void selectAll(){
-        isSelectedAll=true;
+
+        for (TeamInfo teamInfo : mAuditList)
+            teamInfo.setSelected(true);
         notifyDataSetChanged();
     }
     public void unselectall(){
-        isSelectedAll=false;
+        mHashSet.clear();
+        for (TeamInfo teamInfo : mAuditList)
+            teamInfo.setSelected(false);
         notifyDataSetChanged();
     }
     public void filterList(List<TeamInfo> filterdNames) {
@@ -123,6 +117,9 @@ public class AddTeamListAdapter extends RecyclerView.Adapter<AddTeamListAdapter.
     }
     public HashSet getInvitedMember()
     {
+        for (TeamInfo teamInfo : mAuditList)
+             if (teamInfo.isSelected())
+                 mHashSet.add(teamInfo.getUser_id());
         return mHashSet;
     }
 

@@ -20,6 +20,7 @@ public class TeamInfo {
     private int user_status = 0;
     private String created_on = "";
     private String role_name = "";
+    private boolean isSelected = false;
 
 
 
@@ -118,5 +119,13 @@ public class TeamInfo {
 
     public void setRole_name(String role_name) {
         this.role_name = role_name;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

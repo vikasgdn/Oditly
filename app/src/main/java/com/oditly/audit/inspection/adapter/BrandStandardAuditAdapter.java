@@ -301,8 +301,7 @@ public class BrandStandardAuditAdapter extends
                 AppLogger.e("Count", "" + count);
                 AppLogger.e("position", "" + position);
                 AppLogger.e("Count_position", "" + (count - position - 1));
-                customItemClickListener.onItemClick(count - 1,
-                        BrandStandardAuditAdapter.this, brandStandardQuestion.getQuestion_id(), "bsQuestion", position);
+                customItemClickListener.onItemClick(count - 1, BrandStandardAuditAdapter.this, brandStandardQuestion.getQuestion_id(), "bsQuestion", position);
 
             }
         });
@@ -436,7 +435,7 @@ public class BrandStandardAuditAdapter extends
                     public void onClick(View view) {
                         BrandStandardAuditActivity.isAnswerCliked=true;
                         holder.comment.requestFocus();
-                       Toast.makeText(context,"Click on Answer yes no",Toast.LENGTH_SHORT).show();
+                     //  Toast.makeText(context,"Click on Answer yes no",Toast.LENGTH_SHORT).show();
                         int optionId = brandStandardQuestionsOption.getOption_id();
                         for (int j = 0; j < arrayList.size(); j++)
                         {
