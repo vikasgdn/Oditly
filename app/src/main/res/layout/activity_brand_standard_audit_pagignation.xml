@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_white"
+    android:keepScreenOn="true"
+    >
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/include_header_text" />
+    <RelativeLayout
+        android:id="@+id/rl_score"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/d_5dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        >
+
+        <TextView
+            tools:text="00:00"
+            android:layout_width="wrap_content"
+            android:minWidth="70dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/d_5dp"
+            android:gravity="center"
+            android:id="@+id/timertext"
+            android:background="@color/c_light_gray"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/c_white" />
+
+        <TextView
+            android:id="@+id/score_text"
+            tools:text="Score: 0% (0/0)"
+            android:layout_width="wrap_content"
+            android:minWidth="70dp"
+            android:background="@color/c_light_gray"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/d_5dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:textColor="@color/c_white" />
+
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bs_question"
+        android:layout_below="@+id/rl_score"
+        android:layout_above="@+id/brand_standard_btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        >
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/brand_standard_btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/d_10dp">
+        <Button
+            android:id="@+id/bs_add_file_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_photo"
+            android:layout_weight="1"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/button_border_green_dark"
+            android:layout_marginStart="@dimen/d_5dp"
+            android:layout_marginEnd="@dimen/d_5dp"
+            android:minHeight="@dimen/search_btn_height"/>
+
+        <Button
+            android:id="@+id/bs_save_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_save"
+            android:layout_weight="1"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/button_border_blue"
+            android:layout_marginStart="@dimen/d_5dp"
+            android:layout_marginEnd="@dimen/d_5dp"
+            android:minHeight="@dimen/search_btn_height"/>
+
+    </LinearLayout>
+
+
+    <include
+        android:layout_width="@dimen/d_progressbar"
+        android:layout_height="@dimen/d_progressbar"
+        android:layout_centerInParent="true"
+        layout="@layout/spunk_view"
+        />
+
+
+</RelativeLayout>
