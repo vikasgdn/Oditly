@@ -24,6 +24,7 @@ import com.abdeveloper.library.MultiSelectModel;
 import com.google.gson.GsonBuilder;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.adapter.team.TeamMemberListAdapter;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.model.audit.createaudit.AditorReviewBean;
 import com.oditly.audit.inspection.model.audit.createaudit.AuditFilterRootObject;
@@ -69,6 +70,8 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
     private String mTemplateID="";
     private ArrayAdapter mLocationAdapter;
     private String mAuditStartDate="";
+    private ArrayList<MultiSelectModel> mMultiSelectModelsList;
+    private String mAuditStartHour="";
 
 
     @Override
@@ -98,6 +101,8 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
         mTemplateSPN=(Spinner) findViewById(R.id.spn_template);
         mAuditorNameET=(EditText) findViewById(R.id.et_auditor_name);
         mAuditorNameET.setOnClickListener(this);
+
+        mAuditorNameET.setText(AppPreferences.INSTANCE.getUserFname(this)+" "+AppPreferences.INSTANCE.getUserLName(this));
     }
 
     @Override
@@ -106,6 +111,7 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
         mAuditorNameList =new ArrayList<>();
         mLocationList=new ArrayList<>();
         mLocationListID=new ArrayList<>();
+        mMultiSelectModelsList=new ArrayList<>();
 
         mReviewerList=new ArrayList<>();
         getmReviewerListID=new ArrayList<>();
@@ -117,18 +123,13 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
         mTemplateTypeList=new ArrayList<>();
         mAuditorsIDSelected=new ArrayList<>();
 
-
-     //   mLocationList.addAll(AppUtils.getLocationList());
-      //  mLocationListID.addAll(AppUtils.getLocationListID());
-
-       /* mLocationAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, mLocationList);
-        mLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mLocationSPN.setAdapter(mLocationAdapter);*/
         mLocationSPN.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (mLocationListID!=null && mLocationListID.size()>0) {
                     mLocatioID = mLocationListID.get(position);
+                    mTemplateID ="";
+                    mAuditID ="";
                     getFilterListFromServer(mLocatioID);
                 }
             }
@@ -170,6 +171,9 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
             case R.id.tv_moreoptions:
                 String auditorname1 = mAuditorNameET.getText().toString();
                 if (!TextUtils.isEmpty(auditorname1) && !auditorname1.equalsIgnoreCase("All")) {
+                    if (mMultiSelectModelsList.size()<=0)
+                        populateMultiSelectData();
+
                     Intent intent = new Intent(this, AuditCreateMoreActivity.class);
                     Bundle args = new Bundle();
                     args.putStringArrayList(AppConstant.REVIEWRLIST, mReviewerList);
@@ -181,26 +185,39 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
                     AppUtils.toast(this,getString(R.string.text_selectreviwer));
                 break;
             case R.id.btn_create:
+                Log.e("USER ID ",""+AppPreferences.INSTANCE.getUserId(this));
                 String auditorname = mAuditorNameET.getText().toString();
-                if (!TextUtils.isEmpty(auditorname) && !auditorname.equalsIgnoreCase("All"))
+                String locationName = mAuditorNameET.getText().toString();
+
+                if (!TextUtils.isEmpty(mTemplateID)) {
+                    if (mAuditorsIDSelected.size()==0)
+                        mAuditorsIDSelected.add(AppPreferences.INSTANCE.getUserId(this));
                     postAuditCreateServerData();
+                }
                 else
-                    AppUtils.toast(this,getString(R.string.text_selectreviwer));
+                    AppUtils.toast(this,getString(R.string.text_selecttemplet));
                 break;
             case R.id.et_auditor_name:
-                ArrayList<MultiSelectModel> dArray1 = new ArrayList<>();
-                for(int i=0;i<mAuditorNameList.size();i++)
-                {
-                    AditorReviewBean bean=mAuditorNameList.get(i);
-                    mReviewerList.add(bean.getName());
-                    getmReviewerListID.add(""+bean.getUser_id());
-                    MultiSelectModel data1=new MultiSelectModel(bean.getUser_id(),bean.getName());
-                    dArray1.add(data1);
-                }
-                getMultiSelectionDialog(dArray1,getString(R.string.text_assigneeselect));
+                populateMultiSelectData();
+                getMultiSelectionDialog(mMultiSelectModelsList,getString(R.string.text_assigneeselect));
                 break;
         }
 
+    }
+
+    private void populateMultiSelectData()
+    {
+        mMultiSelectModelsList.clear();
+        mReviewerList.clear();
+        getmReviewerListID.clear();
+        for(int i=0;i<mAuditorNameList.size();i++)
+        {
+            AditorReviewBean bean=mAuditorNameList.get(i);
+            mReviewerList.add(bean.getName());
+            getmReviewerListID.add(""+bean.getUser_id());
+            MultiSelectModel data1=new MultiSelectModel(bean.getUser_id(),bean.getName());
+            mMultiSelectModelsList.add(data1);
+        }
     }
 
     private void getMultiSelectionDialog(ArrayList<MultiSelectModel> model,String filterName)
@@ -229,8 +246,9 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
             {
                 mInstruction=data.getStringExtra(AppConstant.AUDIT_INSTRUCTION);
                 mAuditName=data.getStringExtra(AppConstant.AUDIT_NAME);
-                mAuditDate=data.getStringExtra(AppConstant.AUDIT_DATE);
+                mAuditDate=data.getStringExtra(AppConstant.AUDIT_DATE).trim();
                 mAuditStartDate=data.getStringExtra(AppConstant.AUDIT_STARTDATE);
+                mAuditStartHour=data.getStringExtra(AppConstant.AUDIT_STARTHOUR);
                 mReviewerID=data.getStringExtra(AppConstant.AUDIT_REVIEWERID);
                 mBenchMark=data.getStringExtra(AppConstant.AUDIT_BENCHMARK);
             }
@@ -285,8 +303,10 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
                     params.put(NetworkConstant.REQ_PARAM_REVIEWERID, mReviewerID);
                 if(!TextUtils.isEmpty(mAuditDate))
                     params.put(NetworkConstant.REQ_PARAM_DUEDATE,mAuditDate);
-              /*  if(!TextUtils.isEmpty(mAuditStartDate))
-                    params.put(NetworkConstant.REQ_PARAM_AUDITSTARTDATE, mAuditStartDate);*/
+                if(!TextUtils.isEmpty(mAuditStartDate))
+                    params.put(NetworkConstant.REQ_PARAM_AUDITSTARTDATE, mAuditStartDate);
+                if(!TextUtils.isEmpty(mAuditStartHour) && !TextUtils.isEmpty(mAuditStartDate))
+                    params.put(NetworkConstant.REQ_PARAM_AUDITSTARTHOUR, mAuditStartHour);
                 if(!TextUtils.isEmpty(mBenchMark))
                     params.put(NetworkConstant.REQ_PARAM_BENCHMARK,mBenchMark);
                 if(!TextUtils.isEmpty(mInstruction))
@@ -342,7 +362,11 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
                 if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                   //  AppUtils.toastDisplayForLong(this, message);
-                    AppDialogs.messageDialogWithOKButton(this,mAuditName+" inspection has been created and assigned to the auditor");
+                    if (TextUtils.isEmpty(mAuditStartDate))
+                        AppDialogs.messageDialogWithOKButton(this,mAuditName+" inspection has been created and assigned to the auditor");
+                    else
+                        AppDialogs.messageDialogWithOKButton(this,mAuditName+" inspection has been scheduled and will be assigned to the auditor at the scheduled time");
+
                 } else
                     AppUtils.toastDisplayForLong(this, message);
             } catch (Exception e) {
@@ -362,6 +386,7 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
                     mTemplateTypeIDList.clear();
                     mTemplateTypeList.clear();
                     mAuditorNameList.clear();
+                    mMultiSelectModelsList.clear();
 
                     AuditFilterRootObject teamRootObject = new GsonBuilder().create().fromJson(object.toString(), AuditFilterRootObject.class);
                     if (teamRootObject.getData().getAuditors() != null && teamRootObject.getData().getAuditors().size() > 0) {

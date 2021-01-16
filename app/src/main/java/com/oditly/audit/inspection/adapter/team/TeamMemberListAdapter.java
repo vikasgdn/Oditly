@@ -53,8 +53,6 @@ public class TeamMemberListAdapter extends RecyclerView.Adapter<TeamMemberListAd
     @Override
     public int getItemCount() {
         return mAuditList.size();
-
-
     }
 
     public class AuditViewHolder extends RecyclerView.ViewHolder {

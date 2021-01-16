@@ -2,6 +2,7 @@ package com.oditly.audit.inspection.network.apirequest;
 
 import android.content.Context;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -12,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 
 public class VolleyNetworkRequest {
 
+    private static final int MY_SOCKET_TIMEOUT_MS = 30000;
     private static VolleyNetworkRequest mInstance;
     private RequestQueue mRequestQueue;
     private static Context mContext;
@@ -43,6 +45,9 @@ public class VolleyNetworkRequest {
     }
 
     public<T> void addToRequestQueue(Request<T> request){
+        request.setRetryPolicy(new DefaultRetryPolicy(MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add the specified request to the request queue
         getRequestQueue().add(request);
     }

@@ -1,12 +1,12 @@
 package com.oditly.audit.inspection.ui.activty;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -29,13 +30,10 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
-import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentInfo;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.network.apirequest.EditBSAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.EditBSQuestionAttachmentRequest;
-import com.oditly.audit.inspection.network.apirequest.EditDSAttachmentRequest;
-import com.oditly.audit.inspection.network.apirequest.EditESAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
@@ -58,8 +56,6 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     ImageView attachmentImage;
     @BindView(R.id.edit_image)
     ImageButton editImage;
-
-
     @BindView(R.id.tv_attachment_name)
     TextView attachmentName;
     @BindView(R.id.cb_add_attachment_critical)
@@ -76,6 +72,8 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     TextView attachment_name;
     @BindView(R.id.attachment_name_layout)
     LinearLayout attachmentNameLayout;
+    @BindView(R.id.ll_parent_progress)
+    RelativeLayout mRparenProgressRL;
     String attachType = "";
     String auditId = "";
     String sectionGroupId = "";
@@ -84,7 +82,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     int isCritical = 0;
     private String editable = "";
     Context context;
-    private ProgressDialog progressDialog;
+  //  private ProgressDialog progressDialog;
     private AddAttachmentInfo addAttachmentInfo;
     private static final String TAG = EditAttachmentActivity.class.getSimpleName();
 
@@ -108,7 +106,9 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         mHeaderTitle.setText(R.string.text_attachment);
         findViewById(R.id.iv_header_left).setOnClickListener(this);
 
-        editBtn = findViewById(R.id.tv_edit_btn);
+        editBtn= findViewById(R.id.tv_edit_btn);
+
+        mRparenProgressRL = findViewById(R.id.ll_parent_progress);
         attachmentName = findViewById(R.id.tv_attachment_name);
         criticalCheckBox = findViewById(R.id.cb_add_attachment_critical);
         descriptionBtn = findViewById(R.id.tv_critical_decription_btn);
@@ -122,18 +122,19 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         attachment_name = findViewById(R.id.attachment_name);
         attachmentNameLayout = findViewById(R.id.attachment_name_layout);
 
-        //  setActionBar();
 
         mFromWhere=getIntent().getStringExtra("LOCATION");
         editable = getIntent().getStringExtra("editable");
+
         auditId = getIntent().getStringExtra("auditId");
         sectionGroupId = getIntent().getStringExtra("sectionGroupId");
         sectionId = getIntent().getStringExtra("sectionId");
         questionId = getIntent().getStringExtra("questionId");
+
         attachType = getIntent().getStringExtra("attachType");
         addAttachmentInfo = getIntent().getParcelableExtra("attachmentDetail");
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Loading...");
+     //   progressDialog = new ProgressDialog(context);
+      //  progressDialog.setMessage("Loading...");
         if (editable.equals("0")){
             editBtn.setVisibility(View.VISIBLE);
         }else {
@@ -170,24 +171,32 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
 
             case R.id.edit_image:
                 Intent intent = new Intent(context, EditImageActivity.class);
-                intent.putExtra("location","EDIT");
+                intent.putExtra(AppConstant.FROMWHERE,"EDIT");
+                intent.putExtra(AppConstant.AUDIT_ID, auditId);
+                intent.putExtra(AppConstant.SECTION_GROUPID, sectionGroupId);
+                intent.putExtra(AppConstant.SECTION_ID, sectionId);
+                intent.putExtra(AppConstant.QUESTION_ID, questionId);
+                intent.putExtra(AppConstant.QUESTION_FILEID, ""+addAttachmentInfo.getAudit_question_file_id());
+                intent.putExtra(AppConstant.SECTION_FILEID, ""+addAttachmentInfo.getAudit_section_file_id());
+                intent.putExtra("attachType", attachType);
                 startActivityForResult(intent,123);
                 break;
 
             case R.id.attachment_save_btn:
                 switch (attachType) {
                     case "bsSection":
-                        addBsFileAttachment();
+                        if (!TextUtils.isEmpty(attachmentDescription.getText()))
+                            addBsFileAttachment();
+                        else
+                            AppUtils.toast(this,getString(R.string.text_enter_desc));
                         break;
                     case "bsQuestion":
-                        addQuestionFileAttachment();
+                        if (!TextUtils.isEmpty(attachmentDescription.getText()))
+                          addQuestionFileAttachment();
+                        else
+                            AppUtils.toast(this,getString(R.string.text_enter_desc));
                         break;
-                    case "dsSection":
-                        addDsFileAttachment();
-                        break;
-                    case "esSection":
-                        addEsFileAttachment();
-                        break;
+
                 }
                 break;
             case R.id.tv_critical_decription_btn:
@@ -214,21 +223,24 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
 
     private void setData() {
         if (!AppUtils.isStringEmpty(addAttachmentInfo.getFile_url())) {
-            progressDialog.show();
+          //  progressDialog.show();
+            mRparenProgressRL.setVisibility(View.VISIBLE);
             Glide.with(context)
                     .load(Headers.getUrlWithHeaders(addAttachmentInfo.getFile_url(),
                             AppPreferences.INSTANCE.getAccessToken(context)))
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            progressDialog.dismiss();
+                          //  progressDialog.dismiss();
+                            mRparenProgressRL.setVisibility(View.GONE);
                             AppUtils.toast(EditAttachmentActivity.this, "Image not available");
                             return false;
                         }
 
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            progressDialog.dismiss();
+                          //  progressDialog.dismiss();
+                            mRparenProgressRL.setVisibility(View.GONE);
                             sDrawable=resource;
                             return false;
                         }
@@ -256,23 +268,9 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
                 attachmentNameLayout.setVisibility(View.VISIBLE);
                 attachment_name.setVisibility(View.GONE);
                 break;
-            case "dsSection":
-                attachmentNameLayout.setVisibility(View.GONE);
-                attachment_name.setVisibility(View.VISIBLE);
-                break;
-            case "esSection":
-                attachmentNameLayout.setVisibility(View.GONE);
-                attachment_name.setVisibility(View.VISIBLE);
-                break;
+
         }
     }
-
-  /*  private void setActionBar() {
-        initToolbar(toolbar);
-        setTitle("Attachments");
-        enableBack(true);
-        enableBackPressed();
-    }*/
 
     private void notificationDialog() {
 
@@ -291,7 +289,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     }
 
     private void addBsFileAttachment() {
-        showProgressDialog();
+        mRparenProgressRL.setVisibility(View.VISIBLE);
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -299,36 +297,28 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
                 try {
                     JSONObject object = new JSONObject(response);
 
-                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
+                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR))
+                    {
+                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                         attachmentDescription.setEnabled(false);
                         criticalCheckBox.setEnabled(false);
                         saveBtn.setVisibility(View.GONE);
                         editBtn.setVisibility(View.VISIBLE);
                     } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
+                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                hideProgressDialog();
+                mRparenProgressRL.setVisibility(View.GONE);
             }
 
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
+                mRparenProgressRL.setVisibility(View.GONE);
                 AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
                 AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
 
@@ -338,12 +328,12 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         String url = NetworkURL.BSEDITATTACHMENT;
         EditBSAttachmentRequest editBSAttachmentRequest = new EditBSAttachmentRequest(
                 AppPreferences.INSTANCE.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getDescription(), isCritical, stringListener, errorListener);
+                addAttachmentInfo.getAudit_section_file_id(), attachmentDescription.getText().toString(), isCritical, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
     }
 
     private void addQuestionFileAttachment() {
-        showProgressDialog();
+        mRparenProgressRL.setVisibility(View.VISIBLE);
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -352,35 +342,27 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
+                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                         attachmentDescription.setEnabled(false);
                         criticalCheckBox.setEnabled(false);
                         saveBtn.setVisibility(View.GONE);
                         editBtn.setVisibility(View.VISIBLE);
                     } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
+                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                hideProgressDialog();
+                mRparenProgressRL.setVisibility(View.GONE);
             }
 
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
+               // hideProgressDialog();
+                mRparenProgressRL.setVisibility(View.GONE);
                 AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
                 AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
 
@@ -390,111 +372,9 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         String url = NetworkURL.BSEDITATTACHMENT;
         EditBSQuestionAttachmentRequest editBSAttachmentRequest = new EditBSQuestionAttachmentRequest(
                 AppPreferences.INSTANCE.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), addAttachmentInfo.getDescription(), isCritical, stringListener, errorListener);
+                addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), attachmentDescription.getText().toString(), isCritical, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
     }
 
-    private void addDsFileAttachment() {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
-                        attachmentDescription.setEnabled(false);
-                        criticalCheckBox.setEnabled(false);
-                        saveBtn.setVisibility(View.GONE);
-                        editBtn.setVisibility(View.VISIBLE);
-                    } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
-
-            }
-        };
-
-        String url = NetworkURL.DSEDITATTACHMENT;
-        EditDSAttachmentRequest addBSAttachmentRequest = new EditDSAttachmentRequest(
-                AppPreferences.INSTANCE.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                sectionGroupId, sectionId, addAttachmentInfo.getDescription(), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-    }
-
-    private void addEsFileAttachment() {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
-                        attachmentDescription.setEnabled(false);
-                        criticalCheckBox.setEnabled(false);
-                        saveBtn.setVisibility(View.GONE);
-                        editBtn.setVisibility(View.VISIBLE);
-                    } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(AppConstant.RES_KEY_MESSAGE));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
-
-            }
-        };
-
-        String url = NetworkURL.ESEDITATTACHMENT;
-        EditESAttachmentRequest addBSAttachmentRequest = new EditESAttachmentRequest(
-                AppPreferences.INSTANCE.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId, addAttachmentInfo.getDescription(), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-    }
 
 }

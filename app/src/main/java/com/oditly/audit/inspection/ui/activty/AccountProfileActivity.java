@@ -70,6 +70,8 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
         findViewById(R.id.tv_version).setOnClickListener(this);
         findViewById(R.id.tv_language).setOnClickListener(this);
         findViewById(R.id.tv_termservice).setOnClickListener(this);
+        findViewById(R.id.tv_feedback).setOnClickListener(this);
+        findViewById(R.id.tv_upcomingfeature).setOnClickListener(this);
 
     }
     @Override
@@ -77,28 +79,8 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
         super.initVar();
         mNameTV.setText(AppPreferences.INSTANCE.getUserFname(this)+AppPreferences.INSTANCE.getUserLName(this));
         mEmailTV.setText(AppPreferences.INSTANCE.getUserEmail(this));
-        mNameLetterTV.setText(returnFirstLetter());
+        mNameLetterTV.setText(AppUtils.returnFirstLetter(this));
     }
-
-    private String returnFirstLetter() {
-        String name = "";
-        try {
-
-            String fName = AppPreferences.INSTANCE.getUserFname(this);
-            String lName = AppPreferences.INSTANCE.getUserLName(this);
-            if (fName.length() > 0)
-                name = fName.substring(0, 1);
-            if (lName.length() > 0)
-                name = name + lName.substring(0, 1);
-            return name;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return name;
-        }
-    }
-
 
     @Override
     public void onClick(View view) {
@@ -122,7 +104,8 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                  startActivity(intent);
                  break;
             case R.id.tv_privacy:
-                AppUtils.toast(this,getString(R.string.text_coming_soon));
+                Intent intent1=new Intent(this, PrivacyPolicyActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.tv_termservice:
                    AppUtils.toast(this,getString(R.string.text_coming_soon));
@@ -130,7 +113,14 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
             case R.id.tv_changepass:
                    setOTPServer();
                 break;
-
+            case R.id.tv_feedback:
+                Intent intent2=new Intent(this,FeedbackActivity.class);
+                startActivity(intent2);
+                break;
+            case R.id.tv_upcomingfeature:
+                Intent intent3=new Intent(this,UpComingFeatureActivity.class);
+                startActivity(intent3);
+                break;
         }
 
 

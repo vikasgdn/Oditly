@@ -51,7 +51,7 @@ public class ActionPlanListAdapter extends RecyclerView.Adapter<ActionPlanListAd
 
         final ActionInfo auditInfo = mAuditList.get(position);
         holder.tvAuditName.setText(auditInfo.getAction_name()+"( ID: "+auditInfo.getAudit_id()+")");
-        holder.tvLocation.setText(auditInfo.getCity_name());
+        holder.tvLocation.setText(auditInfo.getCountry_name());
         holder.mDateTV.setText(AppUtils.getFormatedDate(auditInfo.getPlanned_date()));
       //  holder.mDeartmentTV.setText(auditInfo.getD);
         holder.mTitleTV.setText(auditInfo.getTitle());

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_white"
+    android:orientation="vertical"
+    >
+    <include android:id="@+id/header"
+        layout="@layout/include_header_text"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/d_20dp"
+        android:layout_marginRight="@dimen/d_20dp"
+        android:layout_marginTop="@dimen/d_80dp"
+        android:layout_below="@id/header"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_appname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_teamoditlyisworking"
+            android:layout_below="@+id/header"
+            android:gravity="left"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:layout_marginBottom="@dimen/d_10dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_18"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hazard and incident management"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:drawableLeft="@drawable/ic_check_green"
+            android:drawablePadding="@dimen/d_10dp"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_16"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Training"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:drawableLeft="@drawable/ic_check_green"
+            android:drawablePadding="@dimen/d_10dp"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_16"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="License Management"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:drawableLeft="@drawable/ic_check_green"
+            android:drawablePadding="@dimen/d_10dp"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_16"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Public Library of Templates"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:drawableLeft="@drawable/ic_check_green"
+            android:drawablePadding="@dimen/d_10dp"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_16"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Any many more extensive features to come..."
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/d_20dp"
+            android:layout_marginLeft="@dimen/d_5dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:drawablePadding="@dimen/d_10dp"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_16"/>
+    </LinearLayout>
+
+    <include
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_centerInParent="true"
+        layout="@layout/spunk_view"
+        />
+</RelativeLayout>

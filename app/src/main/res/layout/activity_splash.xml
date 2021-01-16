@@ -55,15 +55,31 @@
         android:fontFamily="@font/nunitosans_semibold"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/d_170dp"
         app:elevation="@dimen/d_5dp"
         android:gravity="center"
         android:focusable="false"
-        android:layout_alignParentBottom="true"
         android:textSize="@dimen/text_size_20"
         android:textAllCaps="false"
         android:text="@string/s_signin"/>
 
+
+    <TextView
+        android:id="@+id/tv_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunitosans_regular"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="@dimen/d_10dp"
+        android:visibility="visible"
+        android:layout_marginLeft="@dimen/d_10dp"
+        android:layout_marginRight="@dimen/d_10dp"
+        android:layout_marginBottom="@dimen/d_100dp"
+        android:text="@string/text_schedule_demo_oditly"
+        android:textColor="@color/c_white"
+        android:textSize="@dimen/text_size_16" />
 
 
 </RelativeLayout>

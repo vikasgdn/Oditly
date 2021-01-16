@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.oditly.audit.inspection.ui.activty.SplashActivity;
 
 
 /**
@@ -136,6 +135,25 @@ public enum AppPreferences
     public void setClientRoleId(int value)
     {
         mEditor.putInt(SharedPreferencesKeys.client_role_id.toString(), value);
+        mEditor.commit();
+    }
+
+
+
+
+    public int getUserId(Context context)
+    {
+        if(mPreferences==null)
+            mPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+
+        return mPreferences.getInt(SharedPreferencesKeys.userId.toString(), 0);
+    }
+
+    public void setUserId(int value,Context context)
+    {
+        if(mEditor==null)
+            initAppPreferences(context);
+        mEditor.putInt(SharedPreferencesKeys.userId.toString(), value);
         mEditor.commit();
     }
     public String getUserEmail(Context context)

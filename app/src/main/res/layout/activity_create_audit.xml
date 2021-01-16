@@ -32,7 +32,7 @@
             android:id="@+id/rl_location"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/gray_border_whitebg"
             android:visibility="visible"
             android:layout_marginTop="10dp"
             >
@@ -68,7 +68,7 @@
             android:id="@+id/rl_staytple"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/gray_border_whitebg"
             android:visibility="visible"
             android:layout_marginTop="10dp"
             >
@@ -102,7 +102,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/gray_border_whitebg"
             android:visibility="visible"
             android:layout_marginTop="10dp"
             >
@@ -147,7 +147,7 @@
             android:focusable="false"
             android:fontFamily="@font/nunitosans_semibold"
             android:drawableRight="@drawable/ic_dropdown_gray"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/graydark_border_whitebg"
             android:textSize="14sp"
             android:text="@string/text_all"/>
 

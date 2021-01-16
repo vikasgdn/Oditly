@@ -50,6 +50,7 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
     @Override
     protected void initView() {
         super.initView();
+        findViewById(R.id.tv_scheduledemo).setOnClickListener(this);
         findViewById(R.id.rl_password).setVisibility(View.GONE);
         findViewById(R.id.tv_passerror).setVisibility(View.GONE);
         findViewById(R.id.tv_forgotpass).setOnClickListener(this);
@@ -91,6 +92,10 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
                 break;
             case R.id.iv_header_left:
                 finish();
+                break;
+            case R.id.tv_scheduledemo:
+                Intent intent=new Intent(this,ScheduleDemoActivity.class);
+                startActivity(intent);
                 break;
 
         }

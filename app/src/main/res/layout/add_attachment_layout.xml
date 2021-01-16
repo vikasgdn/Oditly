@@ -36,7 +36,7 @@
         android:layout_height="55dp"
         android:visibility="gone"
         android:layout_centerInParent="true"
-        android:src="@mipmap/playbutton"/>
+        android:src="@drawable/ic_play_circle"/>
     <RelativeLayout
         android:id="@+id/iv_remove_attachment_icon"
         android:layout_width="wrap_content"

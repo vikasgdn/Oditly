@@ -82,7 +82,7 @@ public class ActionDetailsFragment extends BaseFragment {
             String userEmail="N/A",assignTo="";
             if(mAuditInfoActionPlanData.getAssigned_user_email()!=null && mAuditInfoActionPlanData.getAssigned_user_email().length()>0)
                 userEmail=mAuditInfoActionPlanData.getAssigned_user_email();
-            if(mAuditInfoActionPlanData.getAssigned_users()!=null && mAuditInfoActionPlanData.getAssigned_users().size()>0)
+           if(mAuditInfoActionPlanData.getAssigned_users()!=null && mAuditInfoActionPlanData.getAssigned_users().size()>0)
             {
                 for(int i=0;i<mAuditInfoActionPlanData.getAssigned_users().size();i++)
                 {

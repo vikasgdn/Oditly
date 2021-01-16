@@ -1,12 +1,23 @@
 package com.oditly.audit.inspection.util;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -22,13 +33,21 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
+import com.oditly.audit.inspection.ui.activty.AuditSubSectionsActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,7 +61,84 @@ import java.util.regex.Pattern;
 
 public class AppUtils {
 
+    public static JSONArray validateSubmitQuestionFinalSubmission(Activity  activity,ArrayList<BrandStandardSection> brandStandardSection){
+        // boolean validate = true;
+        int count = 0;
+        ArrayList<BrandStandardQuestion> brandStandardQuestionsSubmissions = new ArrayList<>();
+        for (int i = 0 ; i < brandStandardSection.size() ; i++ ) {
+            ArrayList<BrandStandardQuestion> brandStandardQuestion = brandStandardSection.get(i).getQuestions();
+            count = 0;
+            for (int j = 0; j < brandStandardQuestion.size(); j++) {
+                count += 1;
+                BrandStandardQuestion question = brandStandardQuestion.get(j);
+                brandStandardQuestionsSubmissions.add(question);
+                String questionType=question.getQuestion_type();
+                if (brandStandardQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea")|| questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number")|| questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") )){
+                    if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
+                        AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section "+ brandStandardSection.get(i).getSection_title());
+                        return null;
+                    }
+                }else {
+                    if (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
+                        AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section "+ brandStandardSection.get(i).getSection_title());
+                        return null;
+                    }
+                }
+                if (question.getAudit_answer_na()==0 && (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()))
+                {
+                    if (question.getAudit_question_file_cnt()<question.getMedia_count())
+                    {
+                        // validate = false;
+                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                        return null;
+                    }
+                }
+            }
 
+            ArrayList<BrandStandardSubSection> brandStandardSubSections = brandStandardSection.get(i).getSub_sections();
+            try {
+                for (int k = 0; k < brandStandardSubSections.size(); k++)
+                {
+                    ArrayList<BrandStandardQuestion> brandStandardSubQuestion = brandStandardSubSections.get(k).getQuestions();
+                    for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
+                        brandStandardQuestionsSubmissions.add(brandStandardSubQuestion.get(j));
+                        count += 1;
+                        BrandStandardQuestion question = brandStandardSubQuestion.get(j);
+                        String questionType=question.getQuestion_type();
+                        if (brandStandardSubQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider")))
+                        {
+                            if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
+                                AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                                return null;
+                            }
+                        } else
+                        {
+                            if (brandStandardSubQuestion.size()>0 &&(question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required()==1))
+                            {
+                                AppUtils.toastDisplayForLong(activity, "You have not answered " +
+                                        "question no " + count + " in section "+ brandStandardSection.get(i).getSection_title());
+                                return null;
+                            }
+                        }
+                        if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || (question.getAudit_answer()!= null && question.getAudit_answer().length()>0))
+                        {
+                            if (question.getAudit_question_file_cnt()<question.getMedia_count())
+                            {
+                                // validate = false;
+                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " +brandStandardSection.get(i).getSection_title());
+                                return null;
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e){e.printStackTrace();}
+
+        }
+        // answerArray = AppUtils.getQuestionsArray (brandStandardQuestionsSubmissions);
+        return AppUtils.getQuestionsArray (brandStandardQuestionsSubmissions);
+    }
 
     public static JSONArray getOptionIdArray (ArrayList<Integer> arrayList){
         JSONArray jsArray = null;
@@ -127,6 +223,72 @@ public class AppUtils {
         }
         return 0;
     }
+    public static String returnFirstLetter(Context context) {
+        String name = "";
+        try {
+
+            String fName = AppPreferences.INSTANCE.getUserFname(context);
+            String lName = AppPreferences.INSTANCE.getUserLName(context);
+            if (fName.length() > 0)
+                name = fName.substring(0, 1);
+            if (lName.length() > 0)
+                name = name + lName.substring(0, 1);
+            return name;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return name;
+        }
+    }
+
+    public Bitmap drawTextToBitmap(Context gContext, Bitmap bitmap, String gText) {
+        Log.e("BITMAP TEXT",""+gText);
+        Bitmap drawBitmap=null;
+        try {
+            Resources resources = gContext.getResources();
+            float scale = resources.getDisplayMetrics().density;
+
+            Bitmap.Config bitmapConfig = bitmap.getConfig();
+            // set default bitmap config if none
+            if (bitmapConfig == null) {
+                bitmapConfig = Bitmap.Config.ARGB_8888;
+            }
+            drawBitmap = bitmap.copy(bitmapConfig, true);
+
+            Canvas canvas = new Canvas(drawBitmap);
+            // new antialised Paint
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            // text color - #3D3D3D
+            paint.setColor(Color.WHITE);
+            // text size in pixels
+            paint.setTextSize((int) (25 * scale));
+            // text shadow
+            paint.setShadowLayer(1f, 0f, 1f, Color.WHITE);
+            // draw text to the Canvas center
+            Rect bounds = new Rect();
+
+            paint.getTextBounds(gText, 0, gText.length(), bounds);
+            int x = 20;
+            int y = (drawBitmap.getHeight() - bounds.height() * 1);
+
+            Paint mPaint = new Paint();
+            mPaint.setColor(gContext.getResources().getColor(R.color.c_transparent_black));
+            int left = 0;
+            int top = (drawBitmap.getHeight() - bounds.height() * (1 + 1));
+            int right = drawBitmap.getWidth();
+            int bottom = drawBitmap.getHeight();
+            canvas.drawRect(left, top, right, bottom, mPaint);
+            canvas.drawText(gText, x, y, paint);
+        }
+        catch (Exception e)
+        {
+            drawBitmap =bitmap;
+            e.printStackTrace();
+        }
+
+        return drawBitmap;
+    }
 
     public static String getFormatedDate(String dateS)
     {
@@ -146,6 +308,28 @@ public class AppUtils {
             return  resultDate;
         }
     }
+
+    public static String getFormatedDateWithTime(String dateS)
+    {
+        //2020-09-16 15:48:25
+
+        String resultDate="N/A";
+        try {
+            if (TextUtils.isEmpty(dateS))
+                return resultDate;
+            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            Date date = dt.parse(dateS);
+            SimpleDateFormat dt1 = new SimpleDateFormat("EEE, d MMM yyyy, hh:mm aa");
+            resultDate=dt1.format(date);
+            return  resultDate;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return  resultDate;
+        }
+    }
+
 
     public static String getFormatedDateDayMonth(String dateS)
     {
@@ -241,43 +425,7 @@ public class AppUtils {
         }
 
     }
-    public static List<String> getLocationListID()
-    {
-        List<String> mLocationListID= new ArrayList();
-        mLocationListID.add("6");
-        mLocationListID.add("3");
-        mLocationListID.add("7");
-        mLocationListID.add("1");
 
-        mLocationListID.add("8");
-        mLocationListID.add("71");
-        mLocationListID.add("70");
-        mLocationListID.add("9");
-        mLocationListID.add("4");
-        mLocationListID.add("10");
-        mLocationListID.add("5");
-        return  mLocationListID;
-
-    }
-    public static List<String> getLocationList()
-    {
-        List<String> mLocationList= new ArrayList();
-
-        mLocationList.add("Economy Hotel Greece");
-        mLocationList.add("Economy Hotel New york");
-        mLocationList.add("Luxury Hotel LA");
-        mLocationList.add("Luxury Hotel Singapore");
-        mLocationList.add("Midscale Hotel California");
-        mLocationList.add("Midscale Hotel Hong Kong");
-        mLocationList.add("Retail Store London");
-        mLocationList.add("Singapore-London");
-        mLocationList.add("Upper Upscale Hotel Milan");
-        mLocationList.add("Upper Upscale Hotel Paris");
-        mLocationList.add("Upscale Hotel Rome");
-        mLocationList.add("Upscale Hotel Spain");
-        return mLocationList;
-
-    }
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -381,6 +529,24 @@ public class AppUtils {
     }
 
 
+    public static byte[] convertImageURIToByte(Uri uri,Context context){
+        byte[] data = null;
+        try {
+            ContentResolver cr = context.getContentResolver();
+            InputStream inputStream = cr.openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            data = baos.toByteArray();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
     public static void deleteDirFiles(File dir) {
         try {
             if (dir != null && dir.isDirectory()) {
@@ -401,6 +567,33 @@ public class AppUtils {
         System.out.println(""+date);
 
         return dateFormat1.format(date);
+
+    }
+    public static String getCurrentDateImage(){
+
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat1 = new SimpleDateFormat("dd-MMM-yy hh:mm");
+        System.out.println(""+date);
+
+        return dateFormat1.format(date);
+
+    }
+    public static String getFormateDateYYYYMMMDD(String dateS){
+        String resultDate="";
+        try {
+            if (TextUtils.isEmpty(dateS))
+                return resultDate;
+            SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = dt.parse(dateS);
+            SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
+            resultDate=dt1.format(date);
+            return  resultDate;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return  resultDate;
+        }
 
     }
 
@@ -545,9 +738,8 @@ public class AppUtils {
         }
     }
 
-
     @SuppressLint("NewApi")
-    public static void datePicker(final Context context, final TextView editText, final boolean needTimePicker) {
+    public static void datePicker(final Context context, final TextView editText, final boolean needTimePicker,final BrandStandardQuestion brandStandardQuestion) {
         Calendar c = Calendar.getInstance();
         // Process to get Current Date
         final int currentYear = c.get(Calendar.YEAR);
@@ -568,8 +760,7 @@ public class AppUtils {
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         if (year <= (currentYear) /*&& monthOfYear<mMonth && dayOfMonth<mDay*/) {
                             String strYEAR = String.valueOf(year);
 
@@ -593,9 +784,11 @@ public class AppUtils {
                             String date = strYEAR + "-" + strMONTH + "-" + strDATE;
 
                             if (needTimePicker)
-                                timePicker(context,editText, date);
-                            else
+                                timePicker(context,editText, date,brandStandardQuestion);
+                            else {
                                 editText.setText(date);
+                                brandStandardQuestion.setAudit_answer(date);
+                            }
                         } else {
                             Log.e("","Invalid Date!");
                         }
@@ -606,7 +799,7 @@ public class AppUtils {
         //                (currentDay+1)+"/"+(currentMonth+1)+"/"+(currentYear), "dd/MM/yyyy"));
     }
 
-    public static void timePicker(Context context, final TextView editText, final String date) {
+    public static void timePicker(Context context, final TextView editText, final String date,final BrandStandardQuestion brandStandardQuestion) {
         String time="";
         Calendar c = Calendar.getInstance();
         // Process to get Current Date
@@ -617,19 +810,55 @@ public class AppUtils {
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
             @Override
-            public void onTimeSet(TimePicker view, int hourOfDay,
-                                  int minute) {
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 String strMinute = String.valueOf(minute);
+                String strHour = String.valueOf(hourOfDay);
+
+                if ((strHour).length() == 1) {
+                    strHour = "0" + strHour;
+                }
                 if ((strMinute).length() == 1) {
                     strMinute = "0" + strMinute;
                 }
-                String time = (date.isEmpty() ? date : (date + " ")) + hourOfDay + ":" + strMinute;
+                String time = (date.isEmpty() ? date : (date + " ")) + strHour + ":" + strMinute + ":00";
                 editText.setText(time);
+                brandStandardQuestion.setAudit_answer(""+time);
             }
         }, setHour, setMinute, true);
         timePickerDialog.show();
     }
+    public static Bitmap resizeImage(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
 
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            return image;
+        } else {
+            return image;
+        }
+    }
+
+    public static  byte[] readBytes(Uri uri,Context context) throws IOException {
+        InputStream inputStream = context.getContentResolver().openInputStream(uri);
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
    /* public static String getText(View view) {
         String s = "";
         if (view instanceof TextView) {
@@ -640,5 +869,24 @@ public class AppUtils {
 
         return s;
     }*/
+
+    public static boolean checkAndRequestGalleryPermissions(Activity context) {
+
+        int permissionStorageWrite = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionStorageRead = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (permissionStorageWrite != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (permissionStorageRead != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            PermissionUtils.requestPermission(context, listPermissionsNeeded, AppConstant.GALLERY_PERMISSION_REQUEST);
+            return false;
+        }
+        return true;
+    }
+
 }
 

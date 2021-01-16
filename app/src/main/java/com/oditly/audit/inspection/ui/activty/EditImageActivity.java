@@ -1,8 +1,10 @@
 package com.oditly.audit.inspection.ui.activty;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,20 +18,30 @@ import android.view.WindowManager;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
 
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.network.INetworkEvent;
+import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.network.apirequest.AddQuestionAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.UpdateQuestionAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.photoeditor.EditingToolsAdapter;
 import com.oditly.audit.inspection.photoeditor.EmojiBSFragment;
@@ -39,11 +51,19 @@ import com.oditly.audit.inspection.photoeditor.PropertiesBSFragment;
 import com.oditly.audit.inspection.photoeditor.StickerBSFragment;
 import com.oditly.audit.inspection.photoeditor.TextEditorDialogFragment;
 import com.oditly.audit.inspection.photoeditor.ToolType;
+import com.oditly.audit.inspection.util.AppConstant;
+import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
@@ -54,13 +74,11 @@ import ja.burhanrashid52.photoeditor.SaveSettings;
 import ja.burhanrashid52.photoeditor.TextStyleBuilder;
 import ja.burhanrashid52.photoeditor.ViewType;
 
-public class EditImageActivity extends BaseActivity implements OnPhotoEditorListener,  View.OnClickListener,
+public class EditImageActivity extends BaseActivity implements OnPhotoEditorListener, View.OnClickListener,
         PropertiesBSFragment.Properties,
-        EmojiBSFragment.EmojiListener,
-        StickerBSFragment.StickerListener, EditingToolsAdapter.OnItemSelected, FilterListener
-{
-        private static final String TAG = EditImageActivity.class.getSimpleName();
-    public static final String EXTRA_IMAGE_PATHS = "extra_image_paths";
+        EmojiBSFragment.EmojiListener, INetworkEvent,
+        StickerBSFragment.StickerListener, EditingToolsAdapter.OnItemSelected, FilterListener {
+    private static final String TAG = EditImageActivity.class.getSimpleName();
     private static final int CAMERA_REQUEST = 52;
     private static final int PICK_REQUEST = 53;
     private PhotoEditor mPhotoEditor;
@@ -69,14 +87,15 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private EmojiBSFragment mEmojiBSFragment;
     private StickerBSFragment mStickerBSFragment;
     private TextView mTxtCurrentTool;
-  //  private Typeface mWonderFont;
     private RecyclerView mRvTools, mRvFilters;
     private EditingToolsAdapter mEditingToolsAdapter = new EditingToolsAdapter(this);
     private FilterViewAdapter mFilterViewAdapter = new FilterViewAdapter(this);
     private ConstraintLayout mRootView;
     private ConstraintSet mConstraintSet = new ConstraintSet();
     private boolean mIsFilterVisible;
-
+    private RelativeLayout mProgressBarRL;
+    private String mLocation;
+    private String mAuditId,mSectionGroupID,mSectionID,mQuestionFileID,mSectionFileID,mQuestionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +108,6 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
         initViews();
 
-      //  mWonderFont = Typeface.createFromAsset(getAssets(), "beyond_wonderland.ttf");
-
         mPropertiesBSFragment = new PropertiesBSFragment();
         mEmojiBSFragment = new EmojiBSFragment();
         mStickerBSFragment = new StickerBSFragment();
@@ -98,6 +115,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         mEmojiBSFragment.setEmojiListener(this);
         mPropertiesBSFragment.setPropertiesChangeListener(this);
 
+        mProgressBarRL=(RelativeLayout)findViewById(R.id.ll_parent_progress);
         LinearLayoutManager llmTools = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRvTools.setLayoutManager(llmTools);
         mRvTools.setAdapter(mEditingToolsAdapter);
@@ -107,20 +125,26 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         mRvFilters.setAdapter(mFilterViewAdapter);
 
 
-        //Typeface mTextRobotoTf = ResourcesCompat.getFont(this, R.font.roboto_medium);
-        //Typeface mEmojiTypeFace = Typeface.createFromAsset(getAssets(), "emojione-android.ttf");
-
         mPhotoEditor = new PhotoEditor.Builder(this, mPhotoEditorView)
                 .setPinchTextScalable(true) // set flag to make text scalable when pinch
-                //.setDefaultTextTypeface(mTextRobotoTf)
-                //.setDefaultEmojiTypeface(mEmojiTypeFace)
                 .build(); // build photo editor sdk
 
         mPhotoEditor.setOnPhotoEditorListener(this);
 
-        String location=getIntent().getStringExtra("location")==null?"":getIntent().getStringExtra("location");
+        Intent intent = getIntent();
+        if (intent!=null) {
+            mLocation = intent.getStringExtra(AppConstant.FROMWHERE) == null ? "" : intent.getStringExtra(AppConstant.FROMWHERE);
+            mAuditId= intent.getStringExtra(AppConstant.AUDIT_ID) == null ? "" : intent.getStringExtra(AppConstant.AUDIT_ID);
+            mSectionGroupID= intent.getStringExtra(AppConstant.SECTION_GROUPID) == null ? "" : intent.getStringExtra(AppConstant.SECTION_GROUPID);
+            mSectionID= intent.getStringExtra(AppConstant.SECTION_ID) == null ? "" : intent.getStringExtra(AppConstant.SECTION_ID);
+            mQuestionID= intent.getStringExtra(AppConstant.QUESTION_ID) == null ? "" : intent.getStringExtra(AppConstant.QUESTION_ID);
+            mQuestionFileID= intent.getStringExtra(AppConstant.QUESTION_FILEID) == null ? "" : intent.getStringExtra(AppConstant.QUESTION_FILEID);
+            mSectionFileID= intent.getStringExtra(AppConstant.SECTION_FILEID) == null ? "" : intent.getStringExtra(AppConstant.SECTION_ID);
+
+        }
+        Log.e("","question file id "+mQuestionFileID+"  ||  section file id "+mSectionFileID);
         //Set Image Dynamically
-        if(!TextUtils.isEmpty(location) && location.equalsIgnoreCase("EDIT"))
+        if (!TextUtils.isEmpty(mLocation) && mLocation.equalsIgnoreCase("EDIT"))
             mPhotoEditorView.getSource().setImageDrawable(EditAttachmentActivity.sDrawable);
         else
             mPhotoEditorView.getSource().setImageURI(Uri.parse(getIntent().getStringExtra("bitmap")));
@@ -211,7 +235,12 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 break;
 
             case R.id.imgSave:
-                saveImage();
+                if (ActivityCompat.checkSelfPermission(EditImageActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(EditImageActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
+                } else {
+                    saveImage();
+                }
+
                 break;
 
             case R.id.imgClose:
@@ -219,7 +248,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 break;
 
             case R.id.imgCamera:
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 break;
 
@@ -232,12 +261,23 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         }
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+
+            case AppConstant.GALLERY_PERMISSION_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                     saveImage();
+                }
+                else
+                    AppUtils.toast(this,"Permission Denied");
+                break;
+        }
+    }
+    @SuppressLint("MissingPermission")
     private void saveImage() {
-        if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            showProgressDialog("Save Image","Saving...", true);
-            /*File file = new File(Environment.getExternalStorageDirectory()
-                    + File.separator + ""
-                    + System.currentTimeMillis() + ".png");*/
+            mProgressBarRL.setVisibility(View.VISIBLE);
             File file = null;
             try {
 
@@ -256,28 +296,73 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 mPhotoEditor.saveAsFile(file.getAbsolutePath(), saveSettings, new PhotoEditor.OnSaveListener() {
                     @Override
                     public void onSuccess(@NonNull String imagePath) {
-                        hideProgressDialog();
-                        AppUtils.toast(EditImageActivity.this,"Image Saved Successfully");
+                        try {
+                            if (!TextUtils.isEmpty(mLocation) && mLocation.equalsIgnoreCase("EDIT"))
+                            {
+                                byte[] byteData = AppUtils.readBytes(Uri.fromFile(new File(imagePath)), EditImageActivity.this);
+                                addQuestionFileAttachment(byteData);
+                            }
+                        }
+                        catch (Exception e){e.printStackTrace();}
+                        mProgressBarRL.setVisibility(View.GONE);
+                        AppUtils.toast(EditImageActivity.this, "Image Saved Successfully");
                         Intent result = new Intent();
-                        result.putExtra("path",imagePath);
-                        setResult(RESULT_OK,result);
+                        result.putExtra("path", imagePath);
+                        setResult(RESULT_OK, result);
                         finish();
                         //mPhotoEditorView.getSource().setImageURI(Uri.fromFile(new File(imagePath)));
                     }
 
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        hideProgressDialog();
-                        AppUtils.toast(EditImageActivity.this,"Failed to save Image");
+                       // hideProgressDialog();
+                        mProgressBarRL.setVisibility(View.GONE);
+                        AppUtils.toast(EditImageActivity.this, "Failed to save Image");
                     }
                 });
             } catch (IOException e) {
                 e.printStackTrace();
-                hideProgressDialog();
+               // hideProgressDialog();
+                mProgressBarRL.setVisibility(View.GONE);
                 AppUtils.toast(EditImageActivity.this,e.getMessage());
             }
-        }
+
     }
+
+    private void addQuestionFileAttachment(byte[] imageByteData) {
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.text_updatedsuccessfully), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),object.getString(AppConstant.RES_KEY_MESSAGE), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
+                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        String url = NetworkURL.BSATTACHMENT_UPDATE;
+        String fileName = "Oditly-"+AppUtils.getDate(Calendar.getInstance().getTime());
+        UpdateQuestionAttachmentRequest addBSAttachmentRequest = new UpdateQuestionAttachmentRequest(
+                AppPreferences.INSTANCE.getAccessToken(this), url, fileName, imageByteData, mAuditId,
+                mSectionGroupID, mSectionID, mQuestionID, mQuestionFileID,stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(this).addToRequestQueue(addBSAttachmentRequest);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -457,4 +542,18 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         }
     }
 
+    @Override
+    public void onNetworkCallInitiated(String service) {
+
+    }
+
+    @Override
+    public void onNetworkCallCompleted(String type, String service, String response) {
+
+    }
+
+    @Override
+    public void onNetworkCallError(String service, String errorMessage) {
+
+    }
 }

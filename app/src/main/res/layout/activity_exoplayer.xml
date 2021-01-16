@@ -5,12 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+  <include
+      android:id="@+id/header"
+      layout="@layout/include_header_text"/>
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+    <com.oditly.audit.inspection.view.CustomVideoPlayer
+        android:id="@+id/customVideoPlayer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/exo_playerview">
-
-    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/header"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

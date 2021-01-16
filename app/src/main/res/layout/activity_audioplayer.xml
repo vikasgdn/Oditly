@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    >
+
+    <FrameLayout
+        android:id="@+id/contFrm"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:layout_margin="@dimen/d_10dp"
+        android:background="@drawable/side_nav_bar"
+        android:orientation="vertical">
+    <com.example.jean.jcplayer.view.JcPlayerView
+        android:id="@+id/jcplayer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:play_icon_color="@color/c_blue"
+        app:pause_icon_color="@color/c_blue"
+        app:seek_bar_color="@color/c_blue"
+        android:gravity="center"
+        app:text_audio_title_color="@color/c_blue"
+        app:text_audio_current_duration_color="@color/c_gray_text"
+        app:text_audio_duration_color="@color/c_gray_text"
+        android:layout_centerInParent="true"
+        />
+        <ImageView
+            android:id="@+id/iv_cancel"
+            android:layout_width="@dimen/d_30dp"
+            android:layout_height="@dimen/d_30dp"
+            android:src="@drawable/ic_cancel_blue"
+            android:layout_gravity="top|right"
+            />
+    </FrameLayout>
+
+
+</RelativeLayout>

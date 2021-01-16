@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     android:background="@color/c_white"
     >
     <RelativeLayout
@@ -24,7 +25,7 @@
             android:inputType="text"
             android:imeOptions="actionSearch"
             android:fontFamily="@font/nunitosans_regular"
-            android:background="@drawable/change_password_border"
+            android:background="@drawable/graydark_border_whitebg"
             android:textSize="14sp"
             android:hint="@string/text_audit_id_name"/>
 
@@ -63,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_devider"
         android:layout_marginTop="@dimen/d_4dp"
-        android:layout_marginBottom="@dimen/d_50dp"
+        android:layout_marginBottom="@dimen/d_70dp"
         android:fadeScrollbars="false"
         tools:listitem="@layout/adapter_report_list"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

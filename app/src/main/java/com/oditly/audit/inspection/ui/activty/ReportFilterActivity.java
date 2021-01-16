@@ -32,12 +32,14 @@ import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReportFilterActivity extends BaseActivity implements MultiSelectDialog.SubmitCallbackListener, INetworkEvent {
 
@@ -168,6 +170,7 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
                     dArray2.add(data);
                 }
                 getMultiSelectionDialog(dArray2,getString(R.string.text_location));
+                break;
             case R.id.et_template:
                 mClick=4;
                 ArrayList<MultiSelectModel> dArrayTem = new ArrayList<>();
@@ -192,37 +195,41 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
                 break;
             case R.id.tv_date_to:
                 DatePickerDialog datePickerDialog1=  new DatePickerDialog(this, (datePicker, i, i1, i2) ->((TextView) view).setText(String.format("%02d/%02d",i2,(datePicker.getMonth() + 1))+"/" + datePicker.getYear()),startYear,startMonth,startDay);
+                datePickerDialog1.getDatePicker().setMaxDate(System.currentTimeMillis());
                 datePickerDialog1.show();
                 break;
             case R.id.tv_date_from:
                 DatePickerDialog datePickerDialog=  new DatePickerDialog(this, (datePicker, i, i1, i2) ->((TextView) view).setText(String.format("%02d/%02d",i2,(datePicker.getMonth() + 1))+"/" + datePicker.getYear()),startYear,startMonth,startDay);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                 datePickerDialog.show();
                 break;
             case R.id.iv_header_left:
-                finish();
+               // finish();
+                onBackPressed();
                 break;
             case R.id.tv_done:
              //   audit_type_id,location_id,custom_role_id(designation),questionnaire_id(template),auditor_id,audit_to_date,audit_from_date
 
-
-              /*  try {
+                try {
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put(NetworkConstant.REQ_PARAM_TODATE, mDateToET.getText().toString());
-                    jsonObject.put(NetworkConstant.REQ_PARAM_FROMDATE, mDateToET.getText().toString());
-                    jsonObject.put(NetworkConstant.REQ_PARAM_AUDIT_ID, mDateToET.getText().toString());
-                    jsonObject.put(NetworkConstant.REQ_PARAM_LOCATIONID, mDateToET.getText().toString());
-                    jsonObject.put(NetworkConstant.REQ_PARAM_TEMPLATEID, mDateToET.getText().toString());
-                    jsonObject.put(NetworkConstant.REQ_PARAM_DESIGID, mDateToET.getText().toString());
+                    jsonObject.put("filter_report_status","1");
+                    jsonObject.put("assigned","0");
+                    jsonObject.put("page","1");
+                    jsonObject.put(NetworkConstant.REQ_PARAM_TODATE,AppUtils.getFormateDateYYYYMMMDD(mDateToET.getText().toString()));
+                    jsonObject.put(NetworkConstant.REQ_PARAM_FROMDATE, AppUtils.getFormateDateYYYYMMMDD(mDateFromTV.getText().toString()));
+                    jsonObject.put(NetworkConstant.REQ_PARAM_AUDITTYPEID,new JSONArray(mSelectedAuditID));
+                    jsonObject.put(NetworkConstant.REQ_PARAM_LOCATIONID,new JSONArray(mSelectedLocationID));
+                    jsonObject.put(NetworkConstant.REQ_PARAM_TEMPLATEID,new JSONArray(mSelectedTemplateID));
+                    jsonObject.put(NetworkConstant.REQ_PARAM_DESIGNATION, new JSONArray(mSelectedDesignationID));
+                    jsonObject.put(NetworkConstant.REQ_PARAM_AUDITORID, new JSONArray(mSelectedUserNameID));
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(AppConstant.JSON_DATA, jsonObject.toString());
+                    setResult(Activity.RESULT_OK,returnIntent);
+                    finish();
                 }
                 catch (Exception e){
-
-                }*/
-
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(AppConstant.FROM_DATE,mDateFromTV.getText().toString());
-                returnIntent.putExtra(AppConstant.TO_DATE,mDateToET.getText().toString());
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                  e.printStackTrace();
+                }
                 break;
             case R.id.tv_reset:
                 mLocationListET.setText("All");
@@ -271,12 +278,6 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
     @Override
     public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString)
     {
-       /* for (int i = 0; i < selectedIds.size(); i++) {
-            Toast.makeText(ReportFilterActivity.this, "Selected Ids : " + selectedIds.get(i) + "\n" +
-                    "Selected Names : " + selectedNames.get(i) + "\n" +
-                    "DataString : " + dataString, Toast.LENGTH_SHORT).show();
-        }*/
-
         if(mClick==1)
         {
             mSelectedAuditID.clear();
@@ -334,8 +335,13 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
     public void onNetworkCallCompleted(String type, String service, String response)
     {
         try {
-            JSONObject object = new JSONObject(response);
+            mAuditorNameList.clear();
+            mAuditTypeList.clear();
+            mLocationList.clear();
+            mTemplteList.clear();
+            mDesignationList.clear();
 
+            JSONObject object = new JSONObject(response);
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
 
                 FilterRootObject teamRootObject = new GsonBuilder().create().fromJson(object.toString(), FilterRootObject.class);
@@ -363,6 +369,13 @@ public class ReportFilterActivity extends BaseActivity implements MultiSelectDia
             AppUtils.toast(this, getString(R.string.oops));
         }
         mProgressBarRL.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED,returnIntent);
+        finish();
     }
 
     @Override

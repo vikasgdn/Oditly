@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.network.apirequest.AddAuditSignatureRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
@@ -232,7 +233,7 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+        Toast.makeText(this,"Please save your signature",Toast.LENGTH_SHORT).show();
     }
 
     private void addAuditSignature(byte[] imageByteData) {
@@ -246,10 +247,7 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        Toast.makeText(getApplicationContext(), "Signature Uploaded", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(AuditSubmitSignatureActivity.this,MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        AppDialogs.messageDialogWithOKButton(AuditSubmitSignatureActivity.this,getString(R.string.text_auditsubmited));
                     } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                     }
@@ -278,4 +276,5 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
         AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId,stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
     }
+
 }

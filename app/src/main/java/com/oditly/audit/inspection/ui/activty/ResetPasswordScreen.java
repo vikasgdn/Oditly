@@ -220,7 +220,7 @@ public class ResetPasswordScreen extends BaseActivity implements INetworkEvent {
             JSONObject object = new JSONObject(response);
             String message = object.getString(AppConstant.RES_KEY_MESSAGE);
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                passwordResetMessageDialog(this,"Password changed successfully, please login again to continue");
+                AppDialogs.passwordResetMessageDialog(this,"Password changed successfully, please login again to continue");
                 //  AppUtils.toast(ResetPasswordScreen.this, message);
                // finish();
             }else
@@ -240,43 +240,7 @@ public class ResetPasswordScreen extends BaseActivity implements INetworkEvent {
         mSpinKitView.setVisibility(View.GONE);
     }
 
-    private  void passwordResetMessageDialog(final Activity activity,String message) {
-        final Dialog dialog = new Dialog(activity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_password_rule);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
-        dialog.getWindow().setAttributes(lp);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        TextView textView=dialog.findViewById(R.id.tv_dialog_message);
-        dialog.findViewById(R.id.tv_pass_rule).setVisibility(View.GONE);
-        textView.setText(""+message);
 
-        try {
-
-
-            dialog.findViewById(R.id.tv_no).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            dialog.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    activity.finish();
-                    dialog.dismiss();
-                }
-            });
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        dialog.show();
-
-    }
 
 
 }

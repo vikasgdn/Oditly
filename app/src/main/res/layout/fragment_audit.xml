@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_parent"
         android:layout_marginTop="@dimen/d_4dp"
-        android:layout_marginBottom="@dimen/d_50dp"
+        android:layout_marginBottom="@dimen/d_60dp"
         android:fadeScrollbars="false"
         tools:listitem="@layout/adapter_auditlist"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -49,6 +49,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         AppPreferences.INSTANCE.initAppPreferences(this);
         initView();
         initVar();
+
     }
 
     @Override
@@ -58,6 +59,9 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         setStatusBarColor("#0B87E4");
 
         findViewById(R.id.btn_signin).setOnClickListener(this);
+        findViewById(R.id.tv_schedule).setOnClickListener(this);
+
+
         mLogoImageIV = (ImageView) findViewById(R.id.iv_logoimage);
         mAppNameTv = (TextView) findViewById(R.id.tv_appname);
         mSloglanTV = (TextView) findViewById(R.id.tv_slogan);
@@ -93,17 +97,37 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        sendToNewActivity();
+        switch (view.getId())
+        {
+            case R.id.tv_schedule:
+                Intent intent=new Intent(this,ScheduleDemoActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.btn_signin:
+                if (AppPreferences.INSTANCE.isLogin(this)) {
+                    Intent intent2 = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(intent2);
+                }else {
+                    Intent intent1 = new Intent(this, SignInEmailActivity.class);
+                    startActivity(intent1);
+                }
+
+                break;
+
+        }
+
+
     }
 
     private void sendToNewActivity() {
         if (AppPreferences.INSTANCE.isLogin(this)) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
-        } else {
+        }/* else {
             Intent intent = new Intent(this, SignInEmailActivity.class);
             startActivity(intent);
-        }
+        }*/
     }
 
     private void getAppUpdateStatusFromServer() {
@@ -130,12 +154,13 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                 int versionServer = object.getJSONObject("data").getInt("version");
                 boolean status = object.getJSONObject("data").getBoolean("force_update");
+                Log.e("version  ","||||||"+getVersionCode(this));
                 if (versionServer>getVersionCode(this))
                     AppDialogs.openPlayStoreDialog(SplashActivity.this);
                 else
                     sendToNewActivity();
             } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                 sendToNewActivity();
+                sendToNewActivity();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -156,7 +181,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(getPackageName(), 0);
             if(pInfo!=null)
-            return pInfo.versionCode;
+                return pInfo.versionCode;
 
         } catch(PackageManager.NameNotFoundException e)
         {

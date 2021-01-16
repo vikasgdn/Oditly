@@ -2,4 +2,6 @@
 <resources>
     <item type="id" name="pos_tag" />
     <item type="id" name="marks" />
+    <item type="id" name="optn_type" />
+
 </resources>

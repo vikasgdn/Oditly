@@ -3,6 +3,7 @@ package com.oditly.audit.inspection.network;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -42,22 +43,19 @@ public class DownloadPdfTask {
 
     private class DownloadingTask extends AsyncTask<Void, Void, Void> {
 
-        File apkStorage = null;
+        File pdfStorage = null;
         File outputFile = null;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-        //    progressDialog=new ProgressDialog(context);
-          //  progressDialog.setMessage("Downloading...");
-           // progressDialog.show();
+
         }
 
         @Override
         protected void onPostExecute(Void result) {
             try {
                 if (outputFile != null) {
-                  //  progressDialog.dismiss();
                     pdfDownloadFinishedListner.onPDFDownloadFinished(outputFile.getAbsolutePath());
                 } else
                         pdfDownloadFinishedListner.onPDFDownloadFinished("");
@@ -80,30 +78,28 @@ public class DownloadPdfTask {
 
                 //If Connection response is not OK then show Logs
                 if (httpURLConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    Log.e(TAG, "Server returned HTTP " + httpURLConnection.getResponseCode()
-                            + " " + httpURLConnection.getResponseMessage());
+                    Log.e(TAG, "Server returned HTTP " + httpURLConnection.getResponseCode() + " " + httpURLConnection.getResponseMessage());
 
                 }
 
-
-                //Create directory
-                apkStorage = new File(Environment.getExternalStorageDirectory() +File.separator+ AppConstant.ODITLY);
-
-
-                //If File is not present create directory
-                if (!apkStorage.exists()) {
-                    apkStorage.mkdir();
-                    Log.e(TAG, "Directory Created.");
+            if(Build.VERSION.SDK_INT >= 29) {
+                String downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+                outputFile = new File(downloadDir, mAuditID + ".pdf");
+            }
+            else
+            {
+                pdfStorage = new File(Environment.getExternalStorageDirectory() +File.separator+ AppConstant.ODITLY);
+                if (!pdfStorage.exists()) {
+                  boolean diectoryCreate = pdfStorage.mkdirs();
+                    Log.e(TAG, "Directory Created."+diectoryCreate);
                 }
-
-                outputFile = new File(apkStorage, mAuditID+".pdf");//Create Output file in Main File
-
-                //Create New File if not present
+                outputFile = new File(pdfStorage, mAuditID+".pdf");//Create Output file in Main File
+                //Create New File if not presentCrea
                 if (!outputFile.exists()) {
                     outputFile.createNewFile();
                     Log.e(TAG, "File Created");
                 }
-
+            }
 
                 FileOutputStream fos = new FileOutputStream(outputFile);//Get OutputStream for NewFile Location
                 InputStream is = httpURLConnection.getInputStream();//Get InputStream for connection
@@ -119,7 +115,6 @@ public class DownloadPdfTask {
                 is.close();
 
             } catch (Exception e) {
-
                 //Read exception if something went wrong
                 e.printStackTrace();
                 outputFile = null;

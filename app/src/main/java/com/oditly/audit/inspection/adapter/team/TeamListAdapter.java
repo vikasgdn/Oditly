@@ -47,6 +47,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.AuditV
 
         final TeamList auditInfo = mAuditList.get(position);
         String dArray[]=auditInfo.getCreated_on().split(" ");
+        holder.mNameTV.setSelected(true);
         holder.mNameTV.setText(auditInfo.getTeam_name());
         if (dArray.length>1)
             holder.mCreateDateTV.setText(AppUtils.getFormatedDate(dArray[0]));

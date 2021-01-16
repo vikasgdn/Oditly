@@ -20,10 +20,10 @@ import java.util.List;
 public class AuditTypeAdapter extends RecyclerView.Adapter<AuditTypeAdapter.AddAttachmentViewHolder> {
 
     private List<AuditType> auditList;
-    AuditTypeAdapter.CustomItemClickListener customItemClickListener;
+    CustomItemClickListener customItemClickListener;
 
 
-    public AuditTypeAdapter(Context context, List<AuditType> imgList, AuditTypeAdapter.CustomItemClickListener customItemClickLis)
+    public AuditTypeAdapter(Context context, List<AuditType> imgList, CustomItemClickListener customItemClickLis)
     {
         this.auditList = imgList;
         this.customItemClickListener=customItemClickLis;

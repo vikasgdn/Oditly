@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="@dimen/d_5dp"
-                    android:background="@drawable/change_password_border"
+                    android:background="@drawable/gray_border_whitebg"
                     android:orientation="vertical">
 
                     <TextView
@@ -79,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/d_5dp"
-                    android:background="@drawable/change_password_border"
+                    android:background="@drawable/gray_border_whitebg"
                     android:layout_weight="1"
                     android:orientation="vertical">
                     <TextView
@@ -130,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="@dimen/d_5dp"
-                android:background="@drawable/change_password_border"
+                android:background="@drawable/gray_border_whitebg"
                 android:orientation="vertical">
 
                 <TextView
@@ -173,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/d_5dp"
-                android:background="@drawable/change_password_border"
+                android:background="@drawable/gray_border_whitebg"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <TextView

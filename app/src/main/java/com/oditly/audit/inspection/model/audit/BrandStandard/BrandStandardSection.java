@@ -13,6 +13,7 @@ public class BrandStandardSection implements Parcelable {
     private int section_group_id = 0;
     private String section_group_title = "";
     private int audit_section_file_cnt = 0;
+    private int answered_question_count = 0;
     ArrayList<BrandStandardQuestion> questions;
     ArrayList<BrandStandardSubSection> sub_sections;
 
@@ -25,6 +26,7 @@ public class BrandStandardSection implements Parcelable {
         section_group_id = in.readInt();
         section_group_title = in.readString();
         audit_section_file_cnt = in.readInt();
+        answered_question_count = in.readInt();
         if (in.readByte() == 0x01) {
             questions = new ArrayList<BrandStandardQuestion>();
             in.readList(questions, BrandStandardQuestion.class.getClassLoader());
@@ -51,6 +53,7 @@ public class BrandStandardSection implements Parcelable {
         dest.writeInt(section_group_id);
         dest.writeString(section_group_title);
         dest.writeInt(audit_section_file_cnt);
+        dest.writeInt(answered_question_count);
         if (questions == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -65,8 +68,9 @@ public class BrandStandardSection implements Parcelable {
         }
     }
 
+
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<BrandStandardSection> CREATOR = new Parcelable.Creator<BrandStandardSection>() {
+    public static final Creator<BrandStandardSection> CREATOR = new Creator<BrandStandardSection>() {
         @Override
         public BrandStandardSection createFromParcel(Parcel in) {
             return new BrandStandardSection(in);
@@ -132,5 +136,13 @@ public class BrandStandardSection implements Parcelable {
 
     public void setSub_sections(ArrayList<BrandStandardSubSection> sub_sections) {
         this.sub_sections = sub_sections;
+    }
+
+    public int getAnswered_question_count() {
+        return answered_question_count;
+    }
+
+    public void setAnswered_question_count(int answered_question_count) {
+        this.answered_question_count = answered_question_count;
     }
 }

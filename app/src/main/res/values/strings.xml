@@ -13,17 +13,17 @@
 
     <string name="home_second">Home Second</string>
     <string name="s_digitize">Automate Inspection Workflows</string>
-    <string name="s_signin">Sign In</string>
+    <string name="s_signin">Login</string>
     <string name="s_next">Next</string>
-    <string name="s_signin_to_oditly">Sign In to Oditly</string>
+    <string name="s_signin_to_oditly">Login to Oditly</string>
     <string name="h_email">Email</string>
     <string name="s_forgot_pass">Forgot Password?</string>
     <string name="s_remember">Remember Me</string>
     <string name="default_progress_dialog_message">Loading...</string>
     <string name="s_enter">Enter</string>
     <string name="h_password">Password</string>
-    <string name="s_description">This section contains all the actions that are scheduled, in progress or overdue</string>
-    <string name="s_description_insp">This section contains all the inspections that are scheduled, in progress or overdue</string>
+    <string name="s_description">This section contains all the actions that are Scheduled, In progress or Overdue</string>
+    <string name="s_description_insp">This section contains all the inspections that are Scheduled, In progress or Overdue</string>
 
     <string name="s_scheduled">Scheduled</string>
     <string name="s_progress">In Progress</string>
@@ -46,7 +46,7 @@
     <string name="s_user">Users</string>
     <string name="s_reports">Reports</string>
     <string name="app_name_small">oditly</string>
-    <string name="s_signout">Sign Out</string>
+    <string name="s_signout">Log Out</string>
     <string name="s_account">Account</string>
     <string name="s_entervallidemail">Enter valid email</string>
     <string name="s_entercorrectpass">Enter correct password</string>
@@ -88,10 +88,12 @@
     <string name="text_audit_name">Inspection Name</string>
     <string name="text_save">Save</string>
     <string name="text_submit">Submit</string>
+    <string name="text_submitgoto">Go To Submit</string>
+    <string name="text_submitfinal">Final Submit</string>
     <string name="text_photo">Media</string>
     <string name="text_summary">Summary</string>
     <string name="text_comment">Comment</string>
-    <string name="text_ref_image">Refrence</string>
+    <string name="text_ref_image">Show how</string>
     <string name="rtext_esume">Resume</string>
     <string name="text_na">N/A</string>
     <string name="text_resume">Resume</string>
@@ -102,7 +104,7 @@
     <string name="text_audit_option">Inspection</string>
     <string name="text_prev">Prev</string>
     <string name="text_next">Next</string>
-    <string name="you_can_not_upload">You can add upto 20 attachments and\ \n select only 5 images at a time</string>
+    <string name="you_can_not_upload">You can add upto 20 attachments and\ \n select only 10 images at a time</string>
     <string name="text_enter_desc">Enter Description</string>
 
     <string name="text_image_choose">Upload from</string>
@@ -122,8 +124,8 @@
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
 
-    <string name="text_logout">Sign Out</string>
-    <string name="text_alert_dialog_logout_msg">Are you sure you want to Sign Out ?</string>
+    <string name="text_logout">Log Out</string>
+    <string name="text_alert_dialog_logout_msg">Are you sure you want to Log Out ?</string>
 
     <string name="text_re_enter_password">Re-enter password..</string>
     <string name="text_password_not_same"> Password did not match.</string>
@@ -139,6 +141,7 @@
     <string name="text_auditname">Inspection Name</string>
     <string name="text_auditname_a">Audit Name</string>
     <string name="text_enter_comment">Enter Comment (50 characters minimum)</string>
+    <string name="text_enter_commentaction">Enter Comment</string>
     <string name="text_title">Title</string>
     <string name="text_action">Action</string>
     <string name="text_plandate">Planned Date</string>
@@ -209,7 +212,7 @@
     <string name="textx_reset_seletion">Reset Selection</string>
     <string name="text_all">All</string>
     <string name="text_team">Team</string>
-    <string name="text_addnew_member">Add a new member</string>
+    <string name="text_addnew_member">Create a new team</string>
     <string name="text_name_emaili_roll">Name, Email ID, Role</string>
     <string name="text_entor_data">Please enter search data</string>
     <string name="text_selet_filter">Select Filters</string>
@@ -231,7 +234,7 @@
     <string name="enter_name_team">Enter Team Name</string>
     <string name="text_create">Create</string>
     <string name="text_enter_team_name">Please enter the team name</string>
-    <string name="text_goto">Go To</string>
+    <string name="text_goto">Create</string>
     <string name="text_noofaudits">No of Audits</string>
     <string name="text_noofnon">Non Compliances</string>
     <string name="text_nooflocation">Locations</string>
@@ -268,6 +271,38 @@
     <string name="text_pendigapr">Pending Approval</string>
     <string name="text_aproved">Approved</string>
     <string name="text_benchmarkerror">Please enter benchmark between 0 to 100</string>
+    <string name="text_datetime">Select Date Time</string>
+    <string name="text_alert_dialog_na">Are your sure to mark the section as Not Applicable (NA)? Doing so, will erase all the previously saved data, if any, in this section</string>
+    <string name="text_auditsubmited">" Report has been submitted successfully"</string>
+    <string name="text_updatedsuccessfully">Uploaded Successfully</string>
+    <string name="expand_string">more</string>
+    <string name="collapsed_string">less</string>
 
+    <string name="dummytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="text_chatsupport"><![CDATA[Chat & Support]]></string>
+
+    <string name="text_titleh">Title: </string>
+    <string name="text_locationh">Location:  </string>
+    <string name="text_checklisth">Checklist: </string>
+    <string name="text_selecttemplet">Select Template</string>
+    <string name="text_videogallery">Gallery Video</string>
+    <string name="text_starttime">Start Time</string>
+    <string name="text_firstname">First  Name</string>
+    <string name="text_lastname">Last Name</string>
+    <string name="text_company">Company</string>
+    <string name="text_phone">Phone Number</string>
+    <string name="text_schedule_demo">Schedule Demo</string>
+    <string name="text_entervallidname">Please Enter First Name</string>
+    <string name="s_entervallidphone">Please enter vallid Mobile no</string>
+    <string name="text_upcominfeature">Upcoming Features</string>
+    <string name="text_feedback">Feedback</string>
+    <string name="text_enter_feedback">Describe your feedback</string>
+    <string name="text_demo">Schedule Demo</string>
+    <string name="s_entervalliddate">Enter Valid Date</string>
+    <string name="text_thanksforcontact">Thank You for contacting Team Oditly \n\n  Your message has been received and we will contact you shortly</string>
+    <string name="text_feedback_des">We should love to here your thoughts, suggestions, concerns or problems with anything so we can improve!</string>
+    <string name="text_schedule_demo_oditly">Don’t have an Oditly account? <b><u>Click here</u></b> to schedule a demo with us.</string>
+    <string name="text_teamoditlyisworking">Team Oditly is working continuously to add more features to the app, Have a look at some of the features that are planned to go live in the app in near future.</string>
+    <string name="text_passed">Passed</string>
 
 </resources>

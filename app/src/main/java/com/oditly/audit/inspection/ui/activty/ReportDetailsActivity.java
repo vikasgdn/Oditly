@@ -47,6 +47,7 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
     private  int mAuditID=0;
     private String mAuditName="";
     private String mPdfFileUrl="";
+    private TextView mCompleteDateTV;
 
 
     @Override
@@ -73,6 +74,7 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
         mAssignedByTV=(TextView)findViewById(R.id.tv_assignedby);
         mScoreTV=(TextView)findViewById(R.id.tv_auditscore);
         mStartDateTV=(TextView)findViewById(R.id.tv_startdate);
+        mCompleteDateTV=(TextView)findViewById(R.id.tv_completedate);
         mNoncomplencecTV=(TextView)findViewById(R.id.tv_noncomplence);
         mProgressBarRL=(RelativeLayout) findViewById(R.id.ll_parent_progress);
 
@@ -97,6 +99,7 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
 
             String url=intent.getStringExtra(AppConstant.AUDIT_DWNLD_URL);
             String startDate= intent.getStringExtra(AppConstant.AUDIT_STARTDATE);
+            String endDate= intent.getStringExtra(AppConstant.AUDIT_COMPLETION_DATE);
             mAuditNameTV.setText(mAuditName);
             mAuditIDTV.setText(""+mAuditID);
             mAuditTypeTV.setText(intent.getStringExtra(AppConstant.AUDIT_TYPE_NAME));
@@ -106,7 +109,8 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
             mAssignedByTV.setText(intent.getStringExtra(AppConstant.AUDIT_ASSIGNED_BY));
             mScoreTV.setText(intent.getStringExtra(AppConstant.AUDIT_SCORE));
             mNoncomplencecTV.setText(intent.getStringExtra(AppConstant.AUDIT_NON_COMPLIANCE));
-            mStartDateTV.setText(AppUtils.getFormatedDate(startDate));
+            mStartDateTV.setText(AppUtils.getFormatedDateWithTime(startDate));
+            mCompleteDateTV.setText(AppUtils.getFormatedDateWithTime(endDate));
 
         }
     }
@@ -139,22 +143,22 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
     }
 
     public void downloadPdf() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            ActivityCompat.requestPermissions(ReportDetailsActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_PDF);
-        } else {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
+        }  else {
             mProgressBarRL.setVisibility(View.VISIBLE);
             DownloadPdfTask downloadTask = new DownloadPdfTask(this, mPdfFileUrl,mAuditID, this);
         }
+
+        // ShowHowWebViewActivity.start(this,mPdfFileUrl);
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_FOR_WRITE_PDF) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { ;
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 downloadPdf();
             } else {
-
                 AppUtils.toast(this,"Permission Denied");
             }
         }
@@ -162,14 +166,21 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
     @Override
     public void onPDFDownloadFinished(String path) {
         mProgressBarRL.setVisibility(View.GONE);
-           if (TextUtils.isEmpty(path))
-               AppUtils.toast(this,getString(R.string.oops));
-            else
-               viewDownLoadedPdf();
+        if (TextUtils.isEmpty(path))
+            AppUtils.toast(this,getString(R.string.oops));
+        else
+            viewDownLoadedPdf();
     }
 
     private void viewDownLoadedPdf() {
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + AppConstant.ODITLY + "/" + mAuditID + ".pdf");
+        File file =null;
+        if(Build.VERSION.SDK_INT >= 29) {
+            String downloadDir = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+            file = new File(downloadDir, mAuditID+".pdf");
+        }
+        else
+            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + AppConstant.ODITLY + "/" + mAuditID + ".pdf");
+
         Uri excelPath;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             excelPath = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file);

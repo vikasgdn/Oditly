@@ -8,6 +8,8 @@ public class AuditRootObject {
     ArrayList<AuditInfo> data;
     String message = "";
 
+    private int rows;
+     private int limit;
     public boolean isError() {
         return error;
     }
@@ -30,5 +32,21 @@ public class AuditRootObject {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 }

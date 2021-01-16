@@ -118,7 +118,7 @@ public class TeamListFragment extends BaseFragment implements View.OnClickListen
             networkService.call( new HashMap<String, String>());
         } else
         {
-            AppUtils.toast(mActivity, getString(R.string.internet_error));
+            AppUtils.toast(mActivity, mActivity.getString(R.string.internet_error));
 
         }
     }
@@ -164,10 +164,10 @@ public class TeamListFragment extends BaseFragment implements View.OnClickListen
 
         } catch (JSONException e) {
             e.printStackTrace();
-            AppUtils.toast(mActivity, getString(R.string.oops));
+            AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         }catch (Exception e){
             e.printStackTrace();
-            AppUtils.toast(mActivity, getString(R.string.oops));
+            AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         }
 
         mProgressBarRL.setVisibility(View.GONE);
@@ -177,7 +177,7 @@ public class TeamListFragment extends BaseFragment implements View.OnClickListen
     public void onNetworkCallError(String service, String errorMessage)
     {
         Log.e("onNetworkCallError","===>"+errorMessage);
-        AppUtils.toast(mActivity, getString(R.string.oops));
+        AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         mProgressBarRL.setVisibility(View.GONE);
 
     }

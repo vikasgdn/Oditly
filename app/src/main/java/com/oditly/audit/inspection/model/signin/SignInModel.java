@@ -3,6 +3,7 @@ package com.oditly.audit.inspection.model.signin;
 public class SignInModel {
 
     int role_id = 0;
+    int user_id = 0;
     String fname = "";
     String lname = "";
     String email = "";
@@ -40,6 +41,15 @@ public class SignInModel {
     public void setRole_id(int role_id) {
         this.role_id = role_id;
     }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
 
     public String getFname() {
         return fname;

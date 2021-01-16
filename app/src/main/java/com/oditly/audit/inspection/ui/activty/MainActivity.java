@@ -2,30 +2,32 @@ package com.oditly.audit.inspection.ui.activty;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import androidx.annotation.Nullable;
+
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.dialog.AppDialogs;
-import com.oditly.audit.inspection.ui.fragment.AnalyticsFragment;
-import com.oditly.audit.inspection.ui.fragment.GoToFragment;
+import com.oditly.audit.inspection.ui.fragment.DashboardFragment;
 import com.oditly.audit.inspection.ui.fragment.LandingFragment;
-import com.oditly.audit.inspection.ui.fragment.ReportFragment;
+import com.oditly.audit.inspection.ui.fragment.ReportListFragment;
 import com.oditly.audit.inspection.ui.fragment.TeamListFragment;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
+import com.oditly.audit.inspection.util.LocationUtils;
+import com.volcaniccoder.bottomify.BottomifyNavigationView;
+import com.volcaniccoder.bottomify.OnNavigationItemChangeListener;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener
+
+public class MainActivity extends BaseActivity
 {
     private   int lastSelectedPosition = 0;
-    private BottomNavigationBar bottomNavigationBar;
     private TextView mTitleTV;
-    private String mAuditTypeName="";
     private String mAuditTypeID="";
     private ImageView ivNotification;
 
@@ -51,9 +53,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
         initToolbar(mToolbar);
 
-        bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         ivNotification=(ImageView)findViewById(R.id.iv_header_right);
-        ivNotification.setVisibility(View.GONE);
+        ivNotification.setVisibility(View.INVISIBLE);
         ivNotification.setOnClickListener(this);
 
         ImageView imgMenu=(ImageView)findViewById(R.id.iv_header_left);
@@ -62,29 +63,48 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
        String location= getIntent().getStringExtra(AppConstant.FROMWHERE)==null?"":getIntent().getStringExtra(AppConstant.FROMWHERE);
        if(!TextUtils.isEmpty(location) && location.equalsIgnoreCase(AppConstant.TEAM))
-           lastSelectedPosition=2;
+           lastSelectedPosition=4;
+        BottomifyNavigationView navigationView=(BottomifyNavigationView)findViewById(R.id.bottomify_nav);
+        navigationView.setActiveNavigationIndex(lastSelectedPosition);
 
-        bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED_NO_TITLE);
-        bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        bottomNavigationBar.setBarBackgroundColor("#F4F1F1");
-
-        bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.drawable.ic_schedule_png,"Schedule").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.drawable.ic_analytics_png, "Analytics").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.drawable.ic_goto_png, "Go To").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.drawable.ic_report_png, "Report").setActiveColorResource(R.color.c_blue))
-                .addItem(new BottomNavigationItem(R.drawable.ic_adduser_png, "Team").setActiveColorResource(R.color.c_blue))
-                .setFirstSelectedPosition(lastSelectedPosition)
-                .initialise();
-
-        bottomNavigationBar.setTabSelectedListener(this);
+        setScrollableText(lastSelectedPosition);
+        navigationView.setOnNavigationItemChangedListener(new OnNavigationItemChangeListener() {
+            @Override
+            public void onNavigationItemChanged(BottomifyNavigationView.NavigationItem navigationItem) {
+               // navigationView.setActiveNavigationIndex(lastSelectedPosition);
+                setScrollableText(navigationItem.getPosition());
+            }
+        });
 
     }
+
 
     @Override
     protected void initVar() {
         super.initVar();
         setScrollableText(lastSelectedPosition);
+        checkLocationEnable();
+    }
+
+    private void checkLocationEnable()
+    {
+        if (!new LocationUtils(this).hasLocationEnabled()) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivityForResult(intent,1010);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1010)
+        {
+            if (new LocationUtils(this).hasLocationEnabled())
+                AppUtils.toastDisplayForLong(this, "Location enabled successfully");
+            else
+                AppUtils.toastDisplayForLong(this, "Location not enabled ");
+        }
+
     }
 
   /*  @Override
@@ -92,28 +112,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         super.onResume();
         setScrollableText(lastSelectedPosition);
     }*/
-
-    @Override
-    public void onTabSelected(int position) {
-        lastSelectedPosition = position;
-
-        setScrollableText(position);
-        Log.e("========>","onTabSelected");
-    }
-
-    @Override
-    public void onTabUnselected(int position) {
-        Log.e("=======>","onTabSelected");
-    }
-
-    @Override
-    public void onTabReselected(int position)
-    {
-        setScrollableText(position);
-        Log.e("======> ","onTabReselect");
-    }
-
-
     private void setScrollableText(int position) {
         switch (position) {
             case 0:
@@ -122,7 +120,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 break;
             case 1:
                 mTitleTV.setText(getResources().getString(R.string.s_analytics));
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, AnalyticsFragment.newInstance(0)).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, DashboardFragment.newInstance(0)).commitAllowingStateLoss();
                 break;
             case 2:
               //  mTitleTV.setText(getResources().getString(R.string.text_goto));
@@ -131,10 +129,10 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 break;
             case 3:
                 mTitleTV.setText(getResources().getString(R.string.s_reports));
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, ReportFragment.newInstance("")).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, ReportListFragment.newInstance("")).commitAllowingStateLoss();
                 break;
             case 4:
-                mTitleTV.setText(getResources().getString(R.string.s_user));
+                mTitleTV.setText(getResources().getString(R.string.text_team));
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, TeamListFragment.newInstance(4)).commitAllowingStateLoss();
                 break;
             default:
