@@ -7,7 +7,7 @@
     android:padding="@dimen/d_15dp">
 
     <RelativeLayout
-        android:layout_width="450dp"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite">
 
@@ -48,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_dialog_message"
-            android:background="@drawable/tv_shape_corner_blue_border"
             android:layout_marginTop="@dimen/d_20dp"
             android:layout_marginLeft="@dimen/d_2dp"
             android:layout_marginRight="@dimen/d_2dp"
@@ -60,10 +59,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:layout_margin="@dimen/d_10dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@drawable/tv_shape_corner_blue_border"
-                android:text="Cancel"
+                android:text="No"
                 android:textAllCaps="false"
                 android:textSize="@dimen/text_size_18"
                 android:fontFamily="@font/nunitosans_regular"
@@ -75,10 +75,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:layout_margin="@dimen/d_10dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@color/c_blue"
-                android:text="@string/text_ok"
+                android:text="@string/text_yes"
                 android:textSize="@dimen/text_size_18"
                 android:textAllCaps="false"
                 android:textColor="@color/c_white"

@@ -284,13 +284,13 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                     switch (status)
                     {
                         case 1:
-                            mSheduleTv.setText(getString(R.string.s_scheduled)+"("+mAuditLisBean.size()+")");
+                            mSheduleTv.setText(getString(R.string.s_scheduled)+"("+object.optString("rows")+")");
                             break;
                         case 2:
-                            mResumeTv.setText(getString(R.string.s_progress)+"("+mAuditLisBean.size()+")");
+                            mResumeTv.setText(getString(R.string.s_progress)+"("+object.optString("rows")+")");
                             break;
                         case 3:
-                            mOverDueTV.setText(getString(R.string.s_overdue)+"("+mAuditLisBean.size()+")");
+                            mOverDueTV.setText(getString(R.string.s_overdue)+"("+object.optString("rows")+")");
                             break;
 
                     }

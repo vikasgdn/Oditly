@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -93,6 +94,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     private float totalMarks = 0, marksObtained = 0;
     private long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L,Seconds, Minutes;;
     private Handler handler;
+    private int mGalleryDisable=1;
 
     @Override
     protected void onResume() {
@@ -149,6 +151,8 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         auditDate = intent.getStringExtra("auditDate");
         mLocation = intent.getStringExtra(AppConstant.LOCATION_NAME);
         mChecklist = intent.getStringExtra(AppConstant.AUDIT_CHECKLIST);
+        mGalleryDisable = intent.getIntExtra(AppConstant.GALLERY_DISABLE,0);
+
 
         AppPreferences.INSTANCE.initAppPreferences(this);
         handler = new Handler();
@@ -200,6 +204,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         addAttachment.putExtra("sectionId", sectionId);
         addAttachment.putExtra("questionId", "" + bsQuestionId);
         addAttachment.putExtra("attachType", attachtype);
+        addAttachment.putExtra(AppConstant.GALLERY_DISABLE, mGalleryDisable);
         startActivityForResult(addAttachment, QuestionAttachmentRequest);
     }
     @Override
@@ -317,7 +322,10 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
             {
                 if (question.getHas_comment() > 0 && (AppUtils.isStringEmpty(question.getAudit_comment()) || question.getAudit_comment().length() < question.getHas_comment())) {
                     validate = false;
-                    AppUtils.toastDisplayForLong(BrandStandardAuditActivityPagingnation.this, "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count);
+                    String message="Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this,message);
+
+                 //   AppUtils.toastDisplayForLong(BrandStandardAuditActivityPagingnation.this, "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count);
                     return false;
                 }
             }

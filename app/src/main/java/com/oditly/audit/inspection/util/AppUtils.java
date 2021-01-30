@@ -14,8 +14,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -37,7 +39,6 @@ import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
-import com.oditly.audit.inspection.ui.activty.AuditSubSectionsActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,6 +94,14 @@ public class AppUtils {
                         return null;
                     }
                 }
+                if (question.getAudit_answer_na() == 0 && ((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer())))
+                {
+                    if (question.getHas_comment() > 0 && (AppUtils.isStringEmpty(question.getAudit_comment()) || question.getAudit_comment().length() < question.getHas_comment())) {
+                       // validate = false;
+                        AppUtils.toastDisplayForLong(activity, "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count);
+                        return null;
+                    }
+                }
             }
 
             ArrayList<BrandStandardSubSection> brandStandardSubSections = brandStandardSection.get(i).getSub_sections();
@@ -126,6 +135,13 @@ public class AppUtils {
                             {
                                 // validate = false;
                                 AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " +brandStandardSection.get(i).getSection_title());
+                                return null;
+                            }
+                        }
+                        if (question.getAudit_answer_na() == 0 && ((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()))) {
+                            if (question.getHas_comment() > 0 && (AppUtils.isStringEmpty(question.getAudit_comment()) || question.getAudit_comment().length() < question.getHas_comment())) {
+                               // validate = false;
+                                AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
                                 return null;
                             }
                         }
@@ -827,7 +843,7 @@ public class AppUtils {
         }, setHour, setMinute, true);
         timePickerDialog.show();
     }
-    public static Bitmap resizeImage(Bitmap image, int maxWidth, int maxHeight) {
+    public static Bitmap resizeImage(Uri uriImage, Bitmap image, int maxWidth, int maxHeight) throws IOException {
         if (maxHeight > 0 && maxWidth > 0) {
             int width = image.getWidth();
             int height = image.getHeight();
@@ -841,12 +857,41 @@ public class AppUtils {
             } else {
                 finalHeight = (int) ((float)maxWidth / ratioBitmap);
             }
+
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
-            return image;
+           // image= rotateImageIfRequired(image,uriImage);
+            return rotateImageIfRequired(image,uriImage);
         } else {
             return image;
         }
     }
+
+    private static Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException
+    {
+        ExifInterface ei = new ExifInterface(selectedImage.getPath());
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotateImage(img, 90);
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotateImage(img, 180);
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotateImage(img, 270);
+            default:
+                return img;
+        }
+    }
+
+    private static Bitmap rotateImage(Bitmap img, int degree)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
+    }
+
 
     public static  byte[] readBytes(Uri uri,Context context) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(uri);

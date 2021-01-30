@@ -16,21 +16,14 @@ public class BrandStandardQuestion implements Parcelable {
     private String question_type = "";
     private String question_hint = "";
     private int is_required = 0;
-    private int is_visible = 0;
-    private int has_na = 0;
     private int has_comment = 0;
-    private int is_numbered = 0;
-    private int max_mark = 0;
+   // private int is_numbered = 0;
+//    private int max_mark = 0;
     private String audit_answer = "";
     private int audit_answer_na = 0;
     private String audit_comment = "";
-    private int answer_status = 0;
-    private String reviewer_answer_comment = "";
-    private int obtained_mark = 0;
+   // private int answer_status = 0;
     private int audit_question_file_cnt = 0;
-  //  private String ref_image_name = "";
-    //private String ref_image_url = "";
-   // private String ref_image_thumb = "";
     ArrayList<BrandStandardQuestionsOption> options;
     ArrayList<Integer> audit_option_id;
     List<Uri> mImageList;
@@ -47,21 +40,14 @@ public class BrandStandardQuestion implements Parcelable {
         question_type = in.readString();
         question_hint = in.readString();
         is_required = in.readInt();
-        is_visible = in.readInt();
-        has_na = in.readInt();
         has_comment = in.readInt();
-        is_numbered = in.readInt();
-        max_mark = in.readInt();
+     //   is_numbered = in.readInt();
+      //  max_mark = in.readInt();
         audit_answer = in.readString();
         audit_answer_na = in.readInt();
         audit_comment = in.readString();
-        answer_status = in.readInt();
-        reviewer_answer_comment = in.readString();
-        obtained_mark = in.readInt();
+       // answer_status = in.readInt();
         audit_question_file_cnt = in.readInt();
-       // ref_image_name = in.readString();
-       // ref_image_url = in.readString();
-       // ref_image_thumb = in.readString();
         if (in.readByte() == 0x01) {
             options = new ArrayList<BrandStandardQuestionsOption>();
             in.readList(options, BrandStandardQuestionsOption.class.getClassLoader());
@@ -100,21 +86,14 @@ public class BrandStandardQuestion implements Parcelable {
         dest.writeString(question_type);
         dest.writeString(question_hint);
         dest.writeInt(is_required);
-        dest.writeInt(is_visible);
-        dest.writeInt(has_na);
         dest.writeInt(has_comment);
-        dest.writeInt(is_numbered);
-        dest.writeInt(max_mark);
+       // dest.writeInt(is_numbered);
+        //dest.writeInt(max_mark);
         dest.writeString(audit_answer);
         dest.writeInt(audit_answer_na);
         dest.writeString(audit_comment);
-        dest.writeInt(answer_status);
-        dest.writeString(reviewer_answer_comment);
-        dest.writeInt(obtained_mark);
+      //  dest.writeInt(answer_status);
         dest.writeInt(audit_question_file_cnt);
-      //  dest.writeString(ref_image_name);
-      //  dest.writeString(ref_image_url);
-      //  dest.writeString(ref_image_thumb);
         if (options == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -200,21 +179,6 @@ public class BrandStandardQuestion implements Parcelable {
         this.is_required = is_required;
     }
 
-    public int getIs_visible() {
-        return is_visible;
-    }
-
-    public void setIs_visible(int is_visible) {
-        this.is_visible = is_visible;
-    }
-
-    public int getHas_na() {
-        return has_na;
-    }
-
-    public void setHas_na(int has_na) {
-        this.has_na = has_na;
-    }
 
     public int getHas_comment() {
         return has_comment;
@@ -224,21 +188,21 @@ public class BrandStandardQuestion implements Parcelable {
         this.has_comment = has_comment;
     }
 
-    public int getIs_numbered() {
+  /*  public int getIs_numbered() {
         return is_numbered;
     }
 
     public void setIs_numbered(int is_numbered) {
         this.is_numbered = is_numbered;
     }
-
-    public int getMax_mark() {
+*/
+  /*  public int getMax_mark() {
         return max_mark;
     }
 
     public void setMax_mark(int max_mark) {
         this.max_mark = max_mark;
-    }
+    }*/
 
     public String getAudit_answer() {
         return audit_answer;
@@ -264,30 +228,14 @@ public class BrandStandardQuestion implements Parcelable {
         this.audit_comment = audit_comment;
     }
 
-    public int getAnswer_status() {
+  /*  public int getAnswer_status() {
         return answer_status;
     }
 
     public void setAnswer_status(int answer_status) {
         this.answer_status = answer_status;
     }
-
-    public String getReviewer_answer_comment() {
-        return reviewer_answer_comment;
-    }
-
-    public void setReviewer_answer_comment(String reviewer_answer_comment) {
-        this.reviewer_answer_comment = reviewer_answer_comment;
-    }
-
-    public int getObtained_mark() {
-        return obtained_mark;
-    }
-
-    public void setObtained_mark(int obtained_mark) {
-        this.obtained_mark = obtained_mark;
-    }
-
+*/
     public int getAudit_question_file_cnt() {
         return audit_question_file_cnt;
     }
@@ -295,30 +243,6 @@ public class BrandStandardQuestion implements Parcelable {
     public void setAudit_question_file_cnt(int audit_question_file_cnt) {
         this.audit_question_file_cnt = audit_question_file_cnt;
     }
-
-  /*  public String getRef_image_name() {
-        return ref_image_name;
-    }
-
-    public void setRef_image_name(String ref_image_name) {
-        this.ref_image_name = ref_image_name;
-    }
-
-    public String getRef_image_url() {
-        return ref_image_url;
-    }
-
-    public void setRef_image_url(String ref_image_url) {
-        this.ref_image_url = ref_image_url;
-    }
-
-    public String getRef_image_thumb() {
-        return ref_image_thumb;
-    }
-
-    public void setRef_image_thumb(String ref_image_thumb) {
-        this.ref_image_thumb = ref_image_thumb;
-    }*/
 
     public ArrayList<BrandStandardQuestionsOption> getOptions() {
         return options;

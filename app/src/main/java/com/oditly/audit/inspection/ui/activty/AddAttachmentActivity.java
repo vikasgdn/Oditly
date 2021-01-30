@@ -131,8 +131,8 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 10);
         }
-        else
-            mLocationUtils.beginUpdates(this);
+       /* else
+            mLocationUtils.beginUpdates(this);*/
 
         //appLocationService = new AppLocationService(context);
         mMediaDB = MediaDBImpl.getInstance(context);
@@ -304,11 +304,11 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             if (isVideoPermission)
                 takeVideoFromCamera();
             else {
-                 takePhotoFromCamera();
+                takePhotoFromCamera();
             }
 
+        }
     }
-}
     private void takeVideoFromCamera()
     {
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -335,18 +335,18 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             catch (Exception e){e.printStackTrace();}
         }*/
 
-     //   Intent intent=new Intent(AddAttachmentActivity.this,CameraActivity.class);
-     //   startActivityForResult(intent,AppConstant.REQUEST_TAKE_PHOTO);
-     //   overridePendingTransition(R.anim.pull_in_left,R.anim.pull_from_right);
+        Intent intent=new Intent(AddAttachmentActivity.this,CameraActivity.class);
+        startActivityForResult(intent,AppConstant.REQUEST_TAKE_PHOTO);
+        overridePendingTransition(R.anim.pull_in_left,R.anim.pull_from_right);
 
-        Intent intent = new Intent(this, CameraControllerActivity.class);
+      /*  Intent intent = new Intent(this, CameraControllerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("inputData", new CameraBundleBuilder()
                 .setFullscreenMode(false)
                 .setDoneButtonString("Add")
                 .setDoneButtonDrawable(R.drawable.circle_color_green)
                 .setSinglePhotoMode(true)
-                .setMax_photo(3)
+                .setMax_photo(1)
                 .setManualFocus(true)
                 .setBucketName(getClass().getName()+""+System.currentTimeMillis())
                 .setPreviewEnableCount(false)
@@ -355,7 +355,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 .setEnableDone(false)
                 .setClearBucket(false)
                 .createCameraBundle());
-        startActivityForResult(intent, AppConstant.REQUEST_TAKE_PHOTO);
+        startActivityForResult(intent, AppConstant.REQUEST_TAKE_PHOTO);*/
 
         // photoEasy = PhotoEasy.builder().setActivity(this).build();
 
@@ -406,7 +406,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
 
         if (requestCode == AppConstant.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             try{
-             /*   String dataPath= data.getStringExtra("camerax");
+                String dataPath= data.getStringExtra("camerax");
                 // String dataURI= data.getStringExtra("cameraURI");
                 // AppLogger.e("Addattachment uri", "  "+dataURI);
                 AppLogger.e("Addattachment path", "  "+dataPath);
@@ -415,15 +415,15 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 if (uri != null && uri.toString().length()>10) {
                     mURIimageList.add(uri);
                     addDescriptionDialog();
-                }*/
-                String[] list = data.getStringArrayExtra("resultData");
+                }
+               /* String[] list = data.getStringArrayExtra("resultData");
                 if (list!=null && list.length>0) {
                     for (int i = 0; i < list.length; i++)
                         mURIimageList.add(Uri.fromFile(new File(list[i])));
                     addDescriptionDialog();
                 } else {
                     AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" );
-                }
+                }*/
             }catch (Exception e){
                 e.printStackTrace();
                 AppUtils.toast(AddAttachmentActivity.this, "Result Some technical error. Please try again." );
@@ -620,141 +620,147 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     }
 
 
-public class AddAttachmentListAdapter extends RecyclerView.Adapter<AddAttachmentListAdapter.AddAttachmentListViewHolder> {
-    private ArrayList<Uri> imageURI;
-    Context context;
-    byte[] imageByteData = new byte[0];
-    public AddAttachmentListAdapter(Context context, ArrayList<Uri> imageListURI) {
-        this.imageURI = imageListURI;
-        this.context = context;
-    }
-    public void updateImage(int pos, Uri uri){
-        imageURI.set(pos,uri);
-        notifyItemChanged(pos);
-    }
-
-    @NonNull
-    @Override
-    public AddAttachmentListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_add_attachment, parent, false);
-
-        return new AddAttachmentListViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull final AddAttachmentListViewHolder holder, final int position) {
-        try
-        {
-            Bitmap bitmapPlain  = MediaStore.Images.Media.getBitmap(context.getContentResolver(),mURIimageList.get(position));
-            if (bitmapPlain!=null)
-            {
-                String newText=""+latitude+","+longitude+","+AppUtils.getCurrentDateImage();
-                Bitmap bitmap = AppUtils.resizeImage(bitmapPlain, 1400, 1400);
-                Bitmap drawBitmap=new AppUtils().drawTextToBitmap(context,bitmap,newText);
-                holder.imageView.setImageBitmap(drawBitmap);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                drawBitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
-                imageByteData = byteArrayOutputStream.toByteArray();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            AppUtils.toast((AddAttachmentActivity)context,"Some technical error. Please try again.");
+    public class AddAttachmentListAdapter extends RecyclerView.Adapter<AddAttachmentListAdapter.AddAttachmentListViewHolder> {
+        private ArrayList<Uri> imageURI;
+        Context context;
+        byte[] imageByteData = new byte[0];
+        public AddAttachmentListAdapter(Context context, ArrayList<Uri> imageListURI) {
+            this.imageURI = imageListURI;
+            this.context = context;
+        }
+        public void updateImage(int pos, Uri uri){
+            imageURI.set(pos,uri);
+            notifyItemChanged(pos);
         }
 
-        holder.description.setText("");
+        @NonNull
+        @Override
+        public AddAttachmentListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_add_attachment, parent, false);
 
-        holder.submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mImageCounter++;
-                if (imageURI.size() == 1) {
-                    AppUtils.hideKeyboard(context, view);
+            return new AddAttachmentListViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull final AddAttachmentListViewHolder holder, final int position) {
+            try
+            {
+                Bitmap bitmapPlain  = MediaStore.Images.Media.getBitmap(context.getContentResolver(),mURIimageList.get(position));
+                if (bitmapPlain!=null)
+                {
+                    getLatLong();
+                    String imageText="";
+                    if(!new LocationUtils(AddAttachmentActivity.this).hasLocationEnabled())
+                        imageText="location disabled, "+AppUtils.getCurrentDateImage();
+                    else
+                        imageText=""+latitude+","+longitude+","+AppUtils.getCurrentDateImage();
+
+                    Bitmap bitmap = AppUtils.resizeImage(mURIimageList.get(position),bitmapPlain, 1400, 1400);
+                    Bitmap drawBitmap=new AppUtils().drawTextToBitmap(context,bitmap,imageText);
+                    holder.imageView.setImageBitmap(drawBitmap);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    drawBitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+                    imageByteData = byteArrayOutputStream.toByteArray();
                 }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                AppUtils.toast((AddAttachmentActivity)context,"Some technical error. Please try again.");
+            }
+
+            holder.description.setText("");
+
+            holder.submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mImageCounter++;
+                    if (imageURI.size() == 1) {
+                        AppUtils.hideKeyboard(context, view);
+                    }
                    /* String text = "";
                     if (holder.description.getText().toString().length() > 0) {
                         text = holder.description.getText().toString();
                     }*/
 
-                if (attachType.equalsIgnoreCase("bsQuestion"))
-                    attachmentCount++;
+                    if (attachType.equalsIgnoreCase("bsQuestion"))
+                        attachmentCount++;
 
-                uploadMediaFileAttachment(mURIimageList.get(position).toString(),imageByteData, holder.description.getText().toString(),"image");
-                imageURI.remove(position);
-                //  int size = imageURI.size();
-                if (imageURI.size() > 0)
-                    AppUtils.toast((AddAttachmentActivity) context, "" + imageURI.size() + " images left");
-
-                notifyDataSetChanged();
-
-                if(imageURI.size()==0){
-                    customDialog.dismiss();
-                    Intent result = new Intent();
-                    result.putExtra("attachmentCount", ""+attachmentCount);
-                    setResult(RESULT_OK, result);
-                    finish();
-                }
-            }
-        });
-        holder.cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // mImageCounter
-                listOfImageString.remove(mImageCounter);
-                if (imageURI.size() <= 1) {
-                    Intent result = new Intent();
-                    result.putExtra("attachmentCount", ""+attachmentCount);
-                    setResult(RESULT_OK, result);
-                    finish();
-                    customDialog.dismiss();
-                } else {
+                    uploadMediaFileAttachment(mURIimageList.get(position).toString(),imageByteData, holder.description.getText().toString(),"image");
                     imageURI.remove(position);
-                    int size = imageURI.size();
-                    if (size > 0) {
-                        AppUtils.toast((AddAttachmentActivity) context, "" + size + " images left");
-                    }
+                    //  int size = imageURI.size();
+                    if (imageURI.size() > 0)
+                        AppUtils.toast((AddAttachmentActivity) context, "" + imageURI.size() + " images left");
+
                     notifyDataSetChanged();
+
+                    if(imageURI.size()==0){
+                        customDialog.dismiss();
+                        Intent result = new Intent();
+                        result.putExtra("attachmentCount", ""+attachmentCount);
+                        setResult(RESULT_OK, result);
+                        finish();
+                    }
                 }
+            });
+            holder.cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // mImageCounter
+                    listOfImageString.remove(mImageCounter);
+                    if (imageURI.size() <= 1) {
+                        Intent result = new Intent();
+                        result.putExtra("attachmentCount", ""+attachmentCount);
+                        setResult(RESULT_OK, result);
+                        finish();
+                        customDialog.dismiss();
+                    } else {
+                        imageURI.remove(position);
+                        int size = imageURI.size();
+                        if (size > 0) {
+                            AppUtils.toast((AddAttachmentActivity) context, "" + size + " images left");
+                        }
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+
+            holder.editImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EDIT_IMAGE_POS = position;
+                    Intent intent = new Intent(context, EditImageActivity.class);
+                    intent.putExtra("bitmap", imageURI.get(position).toString());
+                    startActivityForResult(intent,AppConstant.EDIT_IMAGE);
+                }
+            });
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return imageURI.size();
+        }
+
+        public class AddAttachmentListViewHolder extends RecyclerView.ViewHolder {
+
+            ImageView imageView;
+            EditText description;
+            TextView submitButton;
+            TextView cancelButton;
+            ImageButton editImage;
+
+            public AddAttachmentListViewHolder(View itemView) {
+                super(itemView);
+
+                imageView = itemView.findViewById(R.id.iv_attached_image);
+                description = itemView.findViewById(R.id.et_description);
+                submitButton = itemView.findViewById(R.id.tv_submit_btn);
+                cancelButton = itemView.findViewById(R.id.tv_cancel_btn);
+                editImage = itemView.findViewById(R.id.edit_image);
             }
-        });
-
-        holder.editImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EDIT_IMAGE_POS = position;
-                Intent intent = new Intent(context, EditImageActivity.class);
-                intent.putExtra("bitmap", imageURI.get(position).toString());
-                startActivityForResult(intent,AppConstant.EDIT_IMAGE);
-            }
-        });
-
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return imageURI.size();
-    }
-
-    public class AddAttachmentListViewHolder extends RecyclerView.ViewHolder {
-
-        ImageView imageView;
-        EditText description;
-        TextView submitButton;
-        TextView cancelButton;
-        ImageButton editImage;
-
-        public AddAttachmentListViewHolder(View itemView) {
-            super(itemView);
-
-            imageView = itemView.findViewById(R.id.iv_attached_image);
-            description = itemView.findViewById(R.id.et_description);
-            submitButton = itemView.findViewById(R.id.tv_submit_btn);
-            cancelButton = itemView.findViewById(R.id.tv_cancel_btn);
-            editImage = itemView.findViewById(R.id.edit_image);
         }
     }
-}
 
 
     @Override

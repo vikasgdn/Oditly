@@ -73,10 +73,6 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     ProgressBar completeProgressBar;
     @BindView(R.id.tv_status_text)
     TextView statusText;
-    @BindView(R.id.rejected_comment_layout)
-    LinearLayout rejectedCommentLayout;
-    @BindView(R.id.tv_rejected_comment)
-    TextView rejectedComment;
     @BindView(R.id.ll_parent_progress)
     RelativeLayout mSpinKitView;
     @BindView(R.id.tv_auditname)
@@ -112,8 +108,6 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         statusProgressBar= findViewById(R.id.simpleProgressBar);
         completeProgressBar= findViewById(R.id.completeProgressBar);
         statusText= findViewById(R.id.tv_status_text);
-        rejectedComment= findViewById(R.id.tv_rejected_comment);
-        rejectedCommentLayout= findViewById(R.id.rejected_comment_layout);
         mSpinKitView=findViewById(R.id.ll_parent_progress);
         mAuditNameTV=findViewById(R.id.tv_auditname);
 
@@ -275,8 +269,9 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
                     mCheckListName = brandStandardRootObject.getData().getQuestionnaire_title();
                     status = "" + brandStandardRootObject.getData().getBrand_std_status();
                     mAuditTimerSecond=brandStandardRootObject.getData().getAuditTimer();  //new added
-                    isGalleryDisable=brandStandardRootObject.getData().isGalleryDisable();  //new added for particular client
-                    setRejectedComment(brandStandardRootObject.getData());
+                    isGalleryDisable=brandStandardRootObject.getData().isGalleryDisable();
+                    //new added for particular client 0 disable  1 enable
+                    Log.e("Gallery disbale","==> "+isGalleryDisable);
                     setQuestionList(brandStandardRootObject.getData());
                     float count = 0;
                     float totalCount = 0;
@@ -351,16 +346,6 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
             }
         }catch (Exception e){
             e.printStackTrace();
-        }
-    }
-
-
-    private void setRejectedComment(BrandStandardInfo brandStandardInfo){
-        if (!AppUtils.isStringEmpty(brandStandardInfo.getReviewer_brand_std_comment())){
-            rejectedCommentLayout.setVisibility(View.VISIBLE);
-            rejectedComment.setText(brandStandardInfo.getReviewer_brand_std_comment());
-        }else {
-            rejectedCommentLayout.setVisibility(View.GONE);
         }
     }
 

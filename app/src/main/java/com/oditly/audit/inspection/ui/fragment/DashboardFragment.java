@@ -251,7 +251,7 @@ public class DashboardFragment extends BaseFragment implements INetworkEvent {
                         mInProressByTV.setText(""+obj.optInt("status_count")+"/"+auditCount);
                         mInprogressPerTV.setText(""+(obj.optInt("status_count")*100)/auditCount+"%");
                     }
-                    if(obj.optInt("status_id")==4)
+                    if(obj.optInt("status_id")==5)
                     {
                         mCompleteByTV.setText(""+obj.optInt("status_count")+"/"+auditCount);
                         mCompletePerTV.setText(""+(obj.optInt("status_count")*100)/auditCount+"%");

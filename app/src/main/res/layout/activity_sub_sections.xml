@@ -92,32 +92,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/rejected_comment_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Rejected : Full Report"
-                        android:textSize="@dimen/text_size_14"
-                        android:textStyle="bold"
-                        android:padding="@dimen/d_5dp"
-                        android:textColor="@color/c_red" />
-
-                    <TextView
-                        android:id="@+id/tv_rejected_comment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/c_dark_gray"
-                        android:textSize="@dimen/text_size_14"
-                        android:background="@drawable/rejected_comment_border"
-                        android:padding="@dimen/d_5dp"/>
-
-                </LinearLayout>
                 <TextView
                     android:id="@+id/tv_auditname"
                     android:layout_width="match_parent"

@@ -2,8 +2,10 @@ package com.oditly.audit.inspection.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.util.AppUtils;
 
 import java.util.List;
 
@@ -44,15 +47,24 @@ public class AddBSMediaAdapter extends RecyclerView.Adapter<AddBSMediaAdapter.Ad
     @Override
     public void onBindViewHolder(@NonNull AddAttachmentViewHolder holder, int position)
     {
-        Log.e("image",";;;;;;;;;;;  "+orderData.get(position));
-        holder.imageName.setImageURI(orderData.get(position));
-        holder.imageName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                showFullImageDialog(context,orderData.get(position));
-            }
-        });
+        try {
+            Log.e("image in addABP ", ";;;;;;;;;;;  " + orderData.get(position));
+            Bitmap bitmapPlain  = MediaStore.Images.Media.getBitmap(context.getContentResolver(),orderData.get(position));
+            Bitmap bitmap = AppUtils.resizeImage(orderData.get(position), bitmapPlain, 1400, 1400);
+
+            holder.imageName.setImageBitmap(bitmap);
+            holder.imageName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showFullImageDialog(context,bitmap);
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            Log.e("image ERROR ", e.getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -77,7 +89,7 @@ public class AddBSMediaAdapter extends RecyclerView.Adapter<AddBSMediaAdapter.Ad
 
 
 
-    public static void showFullImageDialog(final Context activity,Uri bitmap) {
+    public static void showFullImageDialog(final Context activity,Bitmap bitmap) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_fullimage);
@@ -94,7 +106,7 @@ public class AddBSMediaAdapter extends RecyclerView.Adapter<AddBSMediaAdapter.Ad
 
            // String uri ="file:///storage/emulated/0/Android/data/com.oditly.audit.inspection/files/Oditly/com.oditly.audit.inspection.ui.activty.AddAttachmentActivity1599040075852/Captured_1599040080529.jpg";
 
-            imageView.setImageURI(bitmap);
+            imageView.setImageBitmap(bitmap);
 
             dialog.findViewById(R.id.iv_cancel).setOnClickListener(new View.OnClickListener() {
                 @Override

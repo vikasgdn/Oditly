@@ -24,6 +24,7 @@ import com.oditly.audit.inspection.ui.activty.AddTeamMemberActivity;
 import com.oditly.audit.inspection.ui.activty.AuditCreateActivity;
 import com.oditly.audit.inspection.ui.activty.AuditSubmitSignatureActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
+import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
 import com.oditly.audit.inspection.ui.activty.MainActivity;
 import com.oditly.audit.inspection.ui.activty.ScheduleDemoActivity;
 import com.oditly.audit.inspection.ui.activty.SignInEmailActivity;
@@ -80,7 +81,7 @@ public class AppDialogs
 
     public static void showOtpValidateDialog(final Activity activity) {
         final Dialog dialog = new Dialog(activity);
-      // final BottomSheetDialog dialog = new BottomSheetDialog(activity);
+        // final BottomSheetDialog dialog = new BottomSheetDialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_bottomui);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -310,7 +311,7 @@ public class AppDialogs
                     Intent homeIntent = new Intent(Intent.ACTION_MAIN);
                     homeIntent.addCategory( Intent.CATEGORY_HOME );
                     homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                   activity.startActivity(homeIntent);
+                    activity.startActivity(homeIntent);
                 }
             });
 
@@ -412,7 +413,7 @@ public class AppDialogs
             dialog.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  dialog.dismiss();
+                    dialog.dismiss();
                 }
             });
 
@@ -500,7 +501,7 @@ public class AppDialogs
 
     }
 
-  /*  public static   void messageDialogWithNA(SubSectionTabAdapter.SubSectionTabViewHolder holder, BrandStandardSection brandStandardSection,SubSectionTabAdapter tabAdapter, final Activity activity) {
+    public static   void messageDialogWithYesNo(final Activity activity,String message) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_confirm_na);
@@ -509,19 +510,23 @@ public class AppDialogs
         lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
         dialog.getWindow().setAttributes(lp);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        TextView textView=dialog.findViewById(R.id.tv_dialog_message);
+        textView.setText(message+"\n  Do you want to continue?");
 
         try {
             dialog.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    tabAdapter.markSectionAsNotApplicable(holder,brandStandardSection);
                     dialog.dismiss();
                 }
             });
             dialog.findViewById(R.id.tv_no).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    tabAdapter.markSectionAsNotApplicableCancel(holder);
+                    if (activity instanceof BrandStandardAuditActivity)
+                        ((BrandStandardAuditActivity)activity).saveBrandStandardQuestion();
+                    else
+                        ((BrandStandardAuditActivityPagingnation)activity).saveBrandStandardQuestion();
                     dialog.dismiss();
                 }
             });
@@ -532,7 +537,7 @@ public class AppDialogs
         }
         dialog.show();
 
-    }*/
+    }
 
 
 }

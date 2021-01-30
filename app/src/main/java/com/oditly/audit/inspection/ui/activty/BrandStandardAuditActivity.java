@@ -362,6 +362,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     }
 
 
+
     private boolean validateCommentOfQuestion() {
         boolean validate = true;
         int count = 0;
@@ -377,7 +378,9 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             {
                 if (question.getHas_comment() > 0 && (AppUtils.isStringEmpty(question.getAudit_comment()) || question.getAudit_comment().length() < question.getHas_comment())) {
                     validate = false;
-                    AppUtils.toastDisplayForLong(BrandStandardAuditActivity.this, "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count);
+                  //  AppUtils.toastDisplayForLong(BrandStandardAuditActivity.this, "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count);
+                    String message="Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
                     return false;
                 }
             }
@@ -389,7 +392,9 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             if (subQuestion.getAudit_answer_na() == 0 && ((subQuestion.getAudit_option_id()!=null && subQuestion.getAudit_option_id().size()>0) || !TextUtils.isEmpty(subQuestion.getAudit_answer()))) {
                 if (subQuestion.getHas_comment() > 0 && (AppUtils.isStringEmpty(subQuestion.getAudit_comment()) || subQuestion.getAudit_comment().length() < subQuestion.getHas_comment())) {
                     validate = false;
-                    AppUtils.toastDisplayForLong(BrandStandardAuditActivity.this, "Please enter the minimum required " + subQuestion.getHas_comment() + " characters comment for question no." + count);
+                    String message="Please enter the  minimum required " + subQuestion.getHas_comment() + " characters comment for question no. " + count;
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
+                   // AppUtils.toastDisplayForLong(BrandStandardAuditActivity.this, "Please enter the minimum required " + subQuestion.getHas_comment() + " characters comment for question no." + count);
                     return false;
                 }
             }
@@ -397,6 +402,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         return validate;
 
     }
+
 
 
 

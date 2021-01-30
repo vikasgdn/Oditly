@@ -72,7 +72,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
 
         if (brandStandardQuestion.getMedia_count()>0)
             holder.mMediaLabelTV.setText(context.getString(R.string.text_photo)+ " (" + brandStandardQuestion.getAudit_question_file_cnt()+"/"+brandStandardQuestion.getMedia_count()+")");
-         else
+        else
             holder.mMediaLabelTV.setText(context.getString(R.string.text_photo)+ " (" + brandStandardQuestion.getAudit_question_file_cnt() + ")");
 
         if (brandStandardQuestion.getMedia_count()>0)
@@ -102,7 +102,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
 
 
         String questionType = brandStandardQuestion.getQuestion_type();
-          AppLogger.e("QuestionType:", ""+questionType +" || "+ brandStandardQuestion.getQuestion_title());
+        AppLogger.e("QuestionType:", ""+questionType +" || "+ brandStandardQuestion.getQuestion_title());
 
         if(questionType.equalsIgnoreCase("datetime"))
         {
@@ -112,7 +112,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
             }
             setOtherViewHide(holder);
             holder.mDateTimePickerTV.setVisibility(View.VISIBLE);
-            holder.mCommentMediaShowLayout.setVisibility(View.GONE);
+          //  holder.mCommentMediaShowLayout.setVisibility(View.GONE);
             holder.mDateTimePickerTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -130,7 +130,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
             setOtherViewHide(holder);
-            holder.mCommentMediaShowLayout.setVisibility(View.GONE);
+           // holder.mCommentMediaShowLayout.setVisibility(View.GONE);
             holder.mDateTimePickerTV.setVisibility(View.VISIBLE);
             holder.mDateTimePickerTV.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -265,6 +265,9 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
 
         if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_comment()))
             holder.mCommentET.setText(brandStandardQuestion.getAudit_comment());
+        else
+            holder.mCommentET.setText("");
+
 
         holder.mCommentET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -273,6 +276,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override
             public void afterTextChanged(Editable editable) {
+                clickedOnAnswerTpye();
                 brandStandardQuestion.setAudit_comment("" + editable.toString());
             }
         });
@@ -325,19 +329,13 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
             holder.hintLayout.setVisibility(View.GONE);
 
 
-        if (AppUtils.isStringEmpty(brandStandardQuestion.getReviewer_answer_comment()))
-            holder.rejectedComment.setVisibility(View.GONE);
-        else {
-            holder.rejectedComment.setVisibility(View.VISIBLE);
-            holder.rejectedComment.setText("Reviewer Comment:- " + brandStandardQuestion.getReviewer_answer_comment());
-        }
 
         if (brandStandardQuestion.getRef_file()!=null && !AppUtils.isStringEmpty(brandStandardQuestion.getRef_file().getFile_url())) {
             holder.mShowHowLL.setVisibility(View.VISIBLE);
             holder.mShowHowLL.setEnabled(true);
             holder.mShowHowLL.setTag(brandStandardQuestion.getRef_file());
             holder.mShowHowLL.setOnClickListener((BrandStandardAuditActivityPagingnation)context);
-       } else {
+        } else {
             holder.mShowHowLL.setVisibility(View.INVISIBLE);
             holder.mShowHowLL.setEnabled(false);
         }
@@ -363,7 +361,15 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
         holder.mCommentMediaShowLayout.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public int getItemCount() {
         return data.size();
@@ -374,7 +380,6 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
 
         TextView questionTitle;
         TextView note;
-        TextView rejectedComment;
         TextView mCommentLabelTV;
         TextView mMediaLabelTV;
         EditText mCommentET;
@@ -411,7 +416,6 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
             questionTitle = itemView.findViewById(R.id.tv_bs_title);
             note = (TextView) itemView.findViewById(R.id.tv_bs_note);
             hintLayout = itemView.findViewById(R.id.ll_note_layout);
-            rejectedComment = itemView.findViewById(R.id.tv_bs_rejected_comment);
             mCommentET = itemView.findViewById(R.id.et_comment);
             mCommentLenthTV = itemView.findViewById(R.id.tv_commentlenth);
 
@@ -591,12 +595,12 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                     }
                     else
                     {
-                      /*  for (int j = 0; j < arrayList.size(); j++)
+                       for (int j = 0; j < arrayList.size(); j++)
                         {
                             TextView radio_text = holder.optionListLinearLayout.findViewById(j);
                             if (radio_text.getText().toString().equalsIgnoreCase("None of the above") || radio_text.getText().toString().equalsIgnoreCase("No")|| radio_text.getText().toString().equalsIgnoreCase("NA")|| radio_text.getText().toString().equalsIgnoreCase("N/A"))
                                 backToNormalState(radio_text, answerOptionId);
-                        }*/
+                        }
                         if (answerOptionId.contains(new Integer(optionId))) {
                             backToNormalState(answerText, answerOptionId);
                         }

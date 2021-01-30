@@ -178,18 +178,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible">
-            <TextView
-                android:id="@+id/tv_bs_rejected_comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/d_5dp"
-                android:layout_marginEnd="@dimen/d_5dp"
-                android:maxLines="3"
-                android:textSize="@dimen/text_size_14"
-                android:padding="@dimen/d_5dp"
-                android:textColor="@color/c_red"
-                android:visibility="gone" />
-
 
             <LinearLayout
                 android:id="@+id/rv_brand_standard_answer"

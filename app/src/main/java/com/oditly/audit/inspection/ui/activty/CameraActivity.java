@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,6 +41,8 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import static androidx.camera.core.AspectRatio.RATIO_4_3;
 
 public class CameraActivity extends AppCompatActivity{
     private Executor executor =null;
@@ -99,7 +102,11 @@ public class CameraActivity extends AppCompatActivity{
             // Enable the extension if available.
             hdrImageCaptureExtender.enableExtension(cameraSelector);
         }
-        final ImageCapture imageCapture = builder.setTargetRotation(this.getWindowManager().getDefaultDisplay().getRotation()).build();
+
+        final ImageCapture imageCapture = builder
+                .setTargetAspectRatio(RATIO_4_3)
+                .setTargetRotation(Surface.ROTATION_0)
+                .build();
         preview.setSurfaceProvider(mPreviewView.createSurfaceProvider());
         Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview, imageAnalysis, imageCapture);
 
@@ -114,10 +121,15 @@ public class CameraActivity extends AppCompatActivity{
                 }
                 catch (Exception e){e.printStackTrace();}
 
+              //  imageCapture.setTargetRotation(Surface.ROTATION_0);
                 ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
                 imageCapture.takePicture(outputFileOptions, executor, new ImageCapture.OnImageSavedCallback () {
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+
+
+
+
 
                         Intent intent=new Intent();
                         intent.putExtra("camerax",mCurrentPhotoPath);
@@ -141,6 +153,10 @@ public class CameraActivity extends AppCompatActivity{
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
+
+
+
+
 
 
 }

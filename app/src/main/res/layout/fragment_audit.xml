@@ -46,6 +46,8 @@
                 android:layout_marginBottom="@dimen/d_1dp"
                 android:layout_marginLeft="@dimen/d_1dp"
                 android:gravity="center"
+                android:ellipsize="marquee"
+                android:singleLine="true"
                 android:fontFamily="@font/nunitosans_regular"
                 android:background="@drawable/auditbn_selector"
                 android:padding="@dimen/d_8dp"
@@ -68,6 +70,8 @@
                 android:background="@drawable/auditbn_selector"
                 android:fontFamily="@font/nunitosans_regular"
                 android:padding="@dimen/d_8dp"
+                android:ellipsize="marquee"
+                android:singleLine="true"
                 android:textColor="@color/text_selector"
                 android:textSize="@dimen/text_size_14"/>
             <View
@@ -85,6 +89,8 @@
                 android:layout_marginTop="@dimen/d_1dp"
                 android:layout_marginBottom="1dp"
                 android:layout_marginRight="1dp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
                 android:background="@drawable/auditbn_selector"
                 android:fontFamily="@font/nunitosans_regular"
                 android:padding="@dimen/d_8dp"

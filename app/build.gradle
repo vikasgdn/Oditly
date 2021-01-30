@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -8,8 +9,8 @@ android {
         applicationId "com.oditly.audit.inspection"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1016
-        versionName "116"
+        versionCode 1017
+        versionName "117"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -75,6 +76,7 @@ dependencies {
     implementation 'com.github.MohammedAlaaMorsi:RangeSeekBar:1.0.6'
     implementation 'com.github.thorny84:PhotoEasy:1.0.2'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
 
 
     def camerax_version = "1.0.0-beta05"
