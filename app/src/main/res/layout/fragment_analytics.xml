@@ -71,11 +71,14 @@
                         android:layout_margin="@dimen/d_5dp"
                         android:orientation="vertical">
                         <TextView
+                            android:id="@+id/tv_noofnoncompliancestext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/d_5dp"
                             android:text="@string/text_noofnon"
                             android:textSize="@dimen/text_size_14"
+                            android:singleLine="true"
+                            android:ellipsize="marquee"
                             android:drawableLeft="@mipmap/noncompliance"
                             android:drawablePadding="@dimen/d_5dp"
                             android:fontFamily="@font/nunitosans_regular"

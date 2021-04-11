@@ -74,18 +74,18 @@ public class AppUtils {
                 BrandStandardQuestion question = brandStandardQuestion.get(j);
                 brandStandardQuestionsSubmissions.add(question);
                 String questionType=question.getQuestion_type();
-                if (brandStandardQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea")|| questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number")|| questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") )){
+                if (brandStandardQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea")|| questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number")|| questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") | questionType.equalsIgnoreCase("temperature") | questionType.equalsIgnoreCase("measurement") )){
                     if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
                         AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section "+ brandStandardSection.get(i).getSection_title());
                         return null;
                     }
                 }else {
-                    if (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
+                    if (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required()==1 && !questionType.equalsIgnoreCase("media")) {
                         AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section "+ brandStandardSection.get(i).getSection_title());
                         return null;
                     }
                 }
-                if (question.getAudit_answer_na()==0 && (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()))
+                if (question.getAudit_answer_na()==0 && (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media"))
                 {
                     if (question.getAudit_question_file_cnt()<question.getMedia_count())
                     {
@@ -94,7 +94,7 @@ public class AppUtils {
                         return null;
                     }
                 }
-                if (question.getAudit_answer_na() == 0 && ((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer())))
+                if (question.getAudit_answer_na() == 0 && ((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media")))
                 {
                     if (question.getHas_comment() > 0 && (AppUtils.isStringEmpty(question.getAudit_comment()) || question.getAudit_comment().length() < question.getHas_comment())) {
                        // validate = false;
@@ -860,7 +860,8 @@ public class AppUtils {
 
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
            // image= rotateImageIfRequired(image,uriImage);
-            return rotateImageIfRequired(image,uriImage);
+            return image;
+           // return rotateImageIfRequired(image,uriImage);
         } else {
             return image;
         }

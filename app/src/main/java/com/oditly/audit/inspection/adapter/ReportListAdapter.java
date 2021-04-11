@@ -43,13 +43,13 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Au
         //TODO : Static data testing
 
         final AuditInfo auditInfo = data.get(position);
-        holder.mAuditTypeTV.setText(""+auditInfo.getAudit_type());
+        holder.mAuditTypeTV.setText(""+auditInfo.getAudit_name());
         holder.mAuditNameTV.setText(auditInfo.getAudit_name());
         holder.mAuditIDTV.setText("Audit ID: "+auditInfo.getAudit_id());
         holder.mLocationTV.setText(auditInfo.getLocation_title());
         holder.mScoreTV.setText(auditInfo.getScore_text());
-        holder.mAuditorNameTV.setText(auditInfo.getCreator_name());
-        holder.mDateTV.setText(AppUtils.getFormatedDate(auditInfo.getAudit_due_date()));
+        holder.mAuditorNameTV.setText("By "+auditInfo.getCreator_name());
+        holder.mDateTV.setText("Completed On "+AppUtils.getFormatedDate(auditInfo.getAudit_date()));
 
         if (!TextUtils.isEmpty(auditInfo.getCompleted_late_key()))
             holder.mCompletedLateTV.setVisibility(View.VISIBLE);
@@ -59,11 +59,11 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Au
         if (!TextUtils.isEmpty(auditInfo.getIs_passed())) {
             holder.mAuditStatusTV.setVisibility(View.VISIBLE);
             if (auditInfo.getIs_passed().equalsIgnoreCase("true")) {
-                holder.mAuditStatusTV.setText("Passed");
-                holder.mAuditStatusTV.setBackgroundResource(R.drawable.tv_shape_green_bg);
+                holder.mAuditStatusTV.setText("  Passed");
+                holder.mAuditStatusTV.setTextColor(context.getResources().getColor(R.color.c_green));
             } else if (auditInfo.getIs_passed().equalsIgnoreCase("false")) {
-                holder.mAuditStatusTV.setText("Failed");
-                holder.mAuditStatusTV.setBackgroundResource(R.drawable.tv_shape_red_bg);
+                holder.mAuditStatusTV.setText("  Failed");
+                holder.mAuditStatusTV.setTextColor(context.getResources().getColor(R.color.c_red));
             }
         }
         else{

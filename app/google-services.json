@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "739722738543",
+    "project_id": "oditly",
+    "storage_bucket": "oditly.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739722738543:android:c6c0adfea7ea726966069a",
+        "android_client_info": {
+          "package_name": "com.oditly.audit.inspection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739722738543-9vet4fehj642hc8ov522d93u9b548mq0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.oditly.audit.inspection",
+            "certificate_hash": "a99b5afd1539b4cc7e22d7d643761a0bfa84518d"
+          }
+        },
+        {
+          "client_id": "739722738543-hhav6po72r5erdovfleg6b6l2hlndv27.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb9LCCCI468IGduob8p5bem1emnS-4kBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739722738543-hhav6po72r5erdovfleg6b6l2hlndv27.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

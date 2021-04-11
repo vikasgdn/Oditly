@@ -27,6 +27,7 @@ import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkService;
+import com.oditly.audit.inspection.network.NetworkServiceJSON;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
@@ -34,10 +35,12 @@ import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class SplashActivity extends BaseActivity implements INetworkEvent {
 
@@ -56,6 +59,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         //updateFCMNotification();
         initView();
         initVar();
+        updateFCMNotification();
 
     }
 
@@ -156,25 +160,31 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
 
     @Override
     public void onNetworkCallCompleted(String type, String service, String response) {
-        try {
-            JSONObject object = new JSONObject(response);
 
-            if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                int versionServer = object.getJSONObject("data").getInt("version");
-                boolean status = object.getJSONObject("data").getBoolean("force_update");
-                Log.e("version  ","||||||"+getVersionCode(this));
-                if (versionServer>getVersionCode(this))
-                    AppDialogs.openPlayStoreDialog(SplashActivity.this);
-                else
+        if (service.equalsIgnoreCase(NetworkURL.POST_FCM_TOKEN)) {
+            Log.e("TOKEN  ", "|||||| UPDATED "+AppPreferences.INSTANCE.getFCMToken());
+
+
+        } else {
+            try {
+                JSONObject object = new JSONObject(response);
+
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    int versionServer = object.getJSONObject("data").getInt("version");
+                    boolean status = object.getJSONObject("data").getBoolean("force_update");
+                    Log.e("version  ", "||||||" + getVersionCode(this));
+                    if (versionServer > getVersionCode(this))
+                        AppDialogs.openPlayStoreDialog(SplashActivity.this);
+                    else
+                        sendToNewActivity();
+                } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                     sendToNewActivity();
-            } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                }
+            } catch(JSONException e){
+                e.printStackTrace();
                 sendToNewActivity();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            sendToNewActivity();
         }
-
     }
 
     @Override
@@ -208,19 +218,41 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                          //  Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                            //  Log.w("TAG", "Fetching FCM registration token failed", task.getException());
                             return;
                         }
 
                         // Get new FCM registration token
                         String token = task.getResult();
-
+                        AppPreferences.INSTANCE.setFCMToken(token);
+                        postTokenToServer();
                         // Log and toast
                         Log.d("TAG", token);
-                       // Toast.makeText(SplashActivity.this, token, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(SplashActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
+
+    public void postTokenToServer()
+    {
+        if (NetworkStatus.isNetworkConnected(this))
+        {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put(AppConstant.TOKEN,AppPreferences.INSTANCE.getFCMToken());
+                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.POST_FCM_TOKEN, NetworkConstant.METHOD_POST, this, this);
+                networkService.call(jsonObject);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        } else
+        {
+            AppUtils.toast(this, getString(R.string.internet_error));
+
+        }
+    }
 
 }

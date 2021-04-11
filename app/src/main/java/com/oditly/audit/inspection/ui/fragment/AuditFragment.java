@@ -29,6 +29,7 @@ import com.oditly.audit.inspection.network.NetworkService;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.services.QuestionData;
+import com.oditly.audit.inspection.ui.activty.AuditCreateActivity;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
@@ -104,7 +105,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
         mResumeTv=(TextView)view.findViewById(R.id.tv_progress);
         mOverDueTV=(TextView)view.findViewById(R.id.tv_overdue);
         mSpinKitView=(RelativeLayout) view.findViewById(R.id.ll_parent_progress);
-
+        view.findViewById(R.id.fb_create).setOnClickListener(this);
 
         mSheduleTv.setOnClickListener(this);
         mResumeTv.setOnClickListener(this);
@@ -136,12 +137,6 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                 visibleItemCount = mAuditListRV.getChildCount();
                 totalItemCount = mLayoutManager.getItemCount();
                 firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
-              /*  Log.e("visibleItemCount", "|||| "+visibleItemCount);
-                Log.e("totalItemCount", "|||| "+totalItemCount);
-                Log.e("firstVisibleItem", "|||| "+firstVisibleItem);
-                Log.e("previousTotal", "|||| "+previousTotal);
-                Log.e("Total Page Current page", "|||| "+mTotalPage+" || "+mCurrentPage);
-*/
 
                 if (loading) {
                     if (totalItemCount > previousTotal) {
@@ -222,8 +217,11 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                 isPagingData=false;
                 previousTotal=0;
                 mCurrentPage=1;
-               // mAuditLisBean.clear();
                 getAuditListFromServer(); //scheduled
+                break;
+            case R.id.fb_create:
+                Intent  intent =new Intent(mActivity, AuditCreateActivity.class);
+                mActivity.startActivity(intent);
                 break;
         }
     }
@@ -284,10 +282,10 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                     switch (status)
                     {
                         case 1:
-                            mSheduleTv.setText(getString(R.string.s_scheduled)+"("+object.optString("rows")+")");
+                            mSheduleTv.setText(getString(R.string.s_scheduled_audit)+"("+object.optString("rows")+")");
                             break;
                         case 2:
-                            mResumeTv.setText(getString(R.string.s_progress)+"("+object.optString("rows")+")");
+                            mResumeTv.setText(getString(R.string.s_progress_audit)+"("+object.optString("rows")+")");
                             break;
                         case 3:
                             mOverDueTV.setText(getString(R.string.s_overdue)+"("+object.optString("rows")+")");

@@ -7,10 +7,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.oditly.audit.inspection.ui.fragment.actionplan.ActionCompleteFragment;
 import com.oditly.audit.inspection.ui.fragment.actionplan.ActionDetailsFragment;
+import com.oditly.audit.inspection.ui.fragment.actionplan.ActionUpdateFragment;
 
 public class ActionPlanPagerAdapter extends FragmentPagerAdapter {
-    final int PAGE_COUNT = 2;
-    private String tabTitles[] = new String[] { "Details", "Complete"};
+    final int PAGE_COUNT = 3;
+    private String tabTitles[] = new String[] { "Details","Update", "Complete"};
     private Context context;
 
     public ActionPlanPagerAdapter(FragmentManager fm, Context context) {
@@ -32,6 +33,9 @@ public class ActionPlanPagerAdapter extends FragmentPagerAdapter {
                 fragment= ActionDetailsFragment.newInstance(position);
                 break;
             case 1:
+                fragment= ActionUpdateFragment.newInstance(position);
+                break;
+            case 2:
                 fragment= ActionCompleteFragment.newInstance(position);
                 break;
             default:

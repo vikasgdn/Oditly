@@ -35,6 +35,7 @@ public class ApiRequest extends BaseStringRequest {
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, "android");
         headerParams.put(REQ_PARAM_DEVICE_VERSION, "2");
+        headerParams.put("Authorization","Bearer "+AppPreferences.INSTANCE.getAccessToken(context));
 
         AppLogger.e("API PARAMS URL ",url+" || "+ params.toString());
         AppLogger.e("API HEADERS", headerParams.toString());

@@ -48,16 +48,15 @@
         <com.volcaniccoder.bottomify.BottomifyNavigationView
             android:id="@+id/bottomify_nav"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F4F1F1"
+            android:layout_height="@dimen/d_60dp"
+            android:background="@color/colorPrimary"
             android:orientation="horizontal"
             app:menu="@menu/main"
             app:active_color="@color/c_blue"
-            app:passive_color="@color/bottomifyPassiveColor"
+            app:passive_color="@color/c_gray_nav"
             app:pressed_color="@color/c_blue"
             android:layout_alignParentBottom="true"
             app:item_text_size="10sp"
-            app:item_padding="8dp"
             app:animation_duration="300"
             app:scale_percent="5" />
 

@@ -44,7 +44,7 @@
             android:gravity="center"
             android:padding="25dp"
             android:textSize="14sp"
-            android:text="1016"
+            android:text="1020"
             android:textColor="@color/c_gray_text"
             android:fontFamily="@font/nunitosans_regular"
             />

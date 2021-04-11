@@ -9,9 +9,9 @@
     <dimen name="fab_margin">16dp</dimen>
 
 
-    <dimen name="text_size_22">22sp</dimen>
-    <dimen name="text_size_18">18sp</dimen>
-    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_22">20sp</dimen>
+    <dimen name="text_size_18">17sp</dimen>
+    <dimen name="text_size_16">15sp</dimen>
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="d_10dp">10dp</dimen>
@@ -56,5 +56,8 @@
     <dimen name="text_size_13">13sp</dimen>
     <dimen name="d_60dp">60dp</dimen>
     <dimen name="d_170dp">170dp</dimen>
+    <dimen name="d_24dp">24dp</dimen>
+    <dimen name="dp_3dp">3dp</dimen>
+    <dimen name="d_45dp">45dp</dimen>
 
 </resources>

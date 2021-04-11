@@ -227,7 +227,21 @@ public enum AppPreferences
 
     }
 
+    public void setFirebaseAccessToken(String accessToken,Context context)
+    {
+        if(mEditor==null)
+            initAppPreferences(context);
 
+        mEditor.putString(SharedPreferencesKeys.firebase_accessToken.toString(), accessToken);
+        mEditor.commit();
+    }
+
+    public String getFirebaseAccessToken(Context context)
+    {
+        if(mPreferences==null)
+            mPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        return mPreferences.getString(SharedPreferencesKeys.accessToken.toString(), "");
+    }
 
     public String getAccessToken(Context context)
     {
@@ -251,13 +265,13 @@ public enum AppPreferences
 
     }
 
-    public  void setDSLocalDB(String val) {
-        mEditor.putString(SharedPreferencesKeys.dsdatabase.toString(), val);
+    public  void setFCMToken(String val) {
+        mEditor.putString(SharedPreferencesKeys.fcm_token.toString(), val);
         mEditor.commit();
     }
-    public  String getESLocalDB()
+    public  String getFCMToken()
     {
-        return mPreferences.getString(SharedPreferencesKeys.esdatabase.toString(), "");
+        return mPreferences.getString(SharedPreferencesKeys.fcm_token.toString(), "");
 
     }
 
@@ -330,7 +344,9 @@ public enum AppPreferences
         fname,
         lname,
         last_hit_time,
-        esdatabase
+        esdatabase,
+        fcm_token,
+        firebase_accessToken
         ;
 
 

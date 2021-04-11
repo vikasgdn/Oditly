@@ -95,6 +95,7 @@ public class AppConstant {
     public static final String AUDIT_TIMER = "audittimer";
     public static final String GALLERY_DISABLE = "gallerydisable";
     public static final String AUDIT_STARTHOUR = "hour";
+    public static final String TOKEN = "token";
 
 
     public static String DEVICE_ID = "";

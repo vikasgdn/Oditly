@@ -22,11 +22,13 @@
     <string name="default_progress_dialog_message">Loading...</string>
     <string name="s_enter">Enter</string>
     <string name="h_password">Password</string>
-    <string name="s_description">This section contains all the actions that are Scheduled, In progress or Overdue</string>
-    <string name="s_description_insp">This section contains all the inspections that are Scheduled, In progress or Overdue</string>
+    <string name="s_description">This section contains all the actions that are Created, Open or Overdue</string>
+    <string name="s_description_insp">This section contains all the inspections that are Scheduled, In Progress or Overdue</string>
+    <string name="s_scheduled_audit">Scheduled</string>
+    <string name="s_progress_audit">In Progress</string>
 
-    <string name="s_scheduled">Scheduled</string>
-    <string name="s_progress">In Progress</string>
+    <string name="s_scheduled">Created</string>
+    <string name="s_progress">Open</string>
     <string name="s_overdue">Overdue</string>
     <string name="s_audit_des">"This Section Contain all the action that are in due period and under progress but incomplete. Please click resume to continue and complete assigned action. "</string>
     <string name="s_resume">Resume</string>
@@ -92,6 +94,7 @@
     <string name="text_submitfinal">Final Submit</string>
     <string name="text_photo">Media</string>
     <string name="text_summary">Summary</string>
+    <string name="text_comment_comp">Completion Comment</string>
     <string name="text_comment">Comment</string>
     <string name="text_ref_image">Show how</string>
     <string name="rtext_esume">Resume</string>
@@ -141,7 +144,7 @@
     <string name="text_auditname">Inspection Name</string>
     <string name="text_auditname_a">Audit Name</string>
     <string name="text_enter_comment">Enter Comment (50 characters minimum)</string>
-    <string name="text_enter_commentaction">Enter Comment</string>
+    <string name="text_enter_commentaction">Type your comment</string>
     <string name="text_title">Title</string>
     <string name="text_action">Action</string>
     <string name="text_plandate">Planned Date</string>
@@ -304,5 +307,20 @@
     <string name="text_schedule_demo_oditly">Don’t have an Oditly account? <b><u>Click here</u></b> to schedule a demo with us.</string>
     <string name="text_teamoditlyisworking">Team Oditly is working continuously to add more features to the app, Have a look at some of the features that are planned to go live in the app in near future.</string>
     <string name="text_passed">Passed</string>
+    <string name="text_priority">Priority</string>
+    <string name="s_entertitle">Please enter title</string>
+    <string name="s_enterdetails">Please enter details</string>
+    <string name="s_enterplandate">Enter plan date</string>
+    <string name="text_section">Section</string>
+    <string name="text_actioncreate">Action Create</string>
+    <string name="s_enterAssignee">Select Assignee</string>
+    <string name="text_action_title">Action Title</string>
+    <string name="text_department">Department</string>
+    <string name="text_correctiveaction">Corrective Action Required</string>
+    <string name="text_mediacount">Completion Media Count</string>
+    <string name="text_complition">Completion</string>
+    <string name="text_chatwithus">Chat with us</string>
+    <string name="text_entercount">Enter Count</string>
+    <string name="s_create">Create</string>
 
 </resources>

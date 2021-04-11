@@ -1,170 +1,71 @@
 package com.oditly.audit.inspection.model.audit.BrandStandard;
 
-
 import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
-
+import com.oditly.audit.inspection.adapter.BrandStandardAuditAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrandStandardQuestion implements Parcelable {
-
-    private int question_id = 0;
-    private String question_title = "";
-    private int question_type_id = 0;
-    private String question_type = "";
-    private String question_hint = "";
-    private int is_required = 0;
-    private int has_comment = 0;
-   // private int is_numbered = 0;
-//    private int max_mark = 0;
+public class BrandStandardQuestion {
+    private BrandStandardActionPlan action_plan;
     private String audit_answer = "";
     private int audit_answer_na = 0;
     private String audit_comment = "";
-   // private int answer_status = 0;
-    private int audit_question_file_cnt = 0;
-    ArrayList<BrandStandardQuestionsOption> options;
     ArrayList<Integer> audit_option_id;
+    private int audit_question_file_cnt = 0;
+    private boolean can_create_action_plan;
+    private int comment_req_type_id;
+    private int has_comment = 0;
+    private int is_required = 0;
+    private int mClickPosition = 0;
     List<Uri> mImageList;
-    private BrandStandardSlider slider;
     private int media_count = 0;
+    private int media_req_type_id;
+    private String obtained_mark;
+    ArrayList<BrandStandardQuestionsOption> options;
+    private String question_hint = "";
+    private int question_id = 0;
+    private String question_title = "";
+    private String question_type = "";
+    private int question_type_id = 0;
     private BrandStandardRefrence ref_file;
-
-
-
-    protected BrandStandardQuestion(Parcel in) {
-        question_id = in.readInt();
-        question_title = in.readString();
-        question_type_id = in.readInt();
-        question_type = in.readString();
-        question_hint = in.readString();
-        is_required = in.readInt();
-        has_comment = in.readInt();
-     //   is_numbered = in.readInt();
-      //  max_mark = in.readInt();
-        audit_answer = in.readString();
-        audit_answer_na = in.readInt();
-        audit_comment = in.readString();
-       // answer_status = in.readInt();
-        audit_question_file_cnt = in.readInt();
-        if (in.readByte() == 0x01) {
-            options = new ArrayList<BrandStandardQuestionsOption>();
-            in.readList(options, BrandStandardQuestionsOption.class.getClassLoader());
-        } else {
-            options = null;
-        }
-        if (in.readByte() == 0x01) {
-            audit_option_id = new ArrayList<Integer>();
-            in.readList(audit_option_id, Integer.class.getClassLoader());
-        } else {
-            audit_option_id = null;
-        }
-        if (in.readByte() == 0x01) {
-            mImageList = new ArrayList<Uri>();
-            in.readList(mImageList, String.class.getClassLoader());
-        } else {
-            mImageList = null;
-        }
-        this.slider= in.readParcelable(BrandStandardSlider.class.getClassLoader()); //retrieving from parcel
-        this.media_count=in.readInt();
-        this.ref_file= in.readParcelable(BrandStandardRefrence.class.getClassLoader()); //retrieving from parcel
-
-
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(question_id);
-        dest.writeString(question_title);
-        dest.writeInt(question_type_id);
-        dest.writeString(question_type);
-        dest.writeString(question_hint);
-        dest.writeInt(is_required);
-        dest.writeInt(has_comment);
-       // dest.writeInt(is_numbered);
-        //dest.writeInt(max_mark);
-        dest.writeString(audit_answer);
-        dest.writeInt(audit_answer_na);
-        dest.writeString(audit_comment);
-      //  dest.writeInt(answer_status);
-        dest.writeInt(audit_question_file_cnt);
-        if (options == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(options);
-        }
-        if (audit_option_id == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(audit_option_id);
-        }
-        if (mImageList == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(mImageList);
-        }
-        dest.writeParcelable(slider, flags); // saving object
-        dest.writeInt(media_count);
-        dest.writeParcelable(ref_file, flags); // saving object
-
-    }
-
-    @SuppressWarnings("unused")
-    public static final Creator<BrandStandardQuestion> CREATOR = new Creator<BrandStandardQuestion>() {
-        @Override
-        public BrandStandardQuestion createFromParcel(Parcel in) {
-            return new BrandStandardQuestion(in);
-        }
-
-        @Override
-        public BrandStandardQuestion[] newArray(int size) {
-            return new BrandStandardQuestion[size];
-        }
-    };
+    private BrandStandardSlider slider;
+    private BrandStandardAuditAdapter standardAuditAdapter;
+    private BrandStandardUnit unit;
 
     public int getQuestion_id() {
-        return question_id;
+        return this.question_id;
     }
 
-    public void setQuestion_id(int question_id) {
-        this.question_id = question_id;
+    public void setQuestion_id(int question_id2) {
+        this.question_id = question_id2;
     }
 
     public String getQuestion_title() {
-        return question_title;
+        return this.question_title;
     }
 
-    public void setQuestion_title(String question_title) {
-        this.question_title = question_title;
+    public void setQuestion_title(String question_title2) {
+        this.question_title = question_title2;
     }
 
     public int getQuestion_type_id() {
-        return question_type_id;
+        return this.question_type_id;
     }
 
-    public void setQuestion_type_id(int question_type_id) {
-        this.question_type_id = question_type_id;
+    public void setQuestion_type_id(int question_type_id2) {
+        this.question_type_id = question_type_id2;
     }
 
     public String getQuestion_type() {
-        return question_type;
+        return this.question_type;
     }
 
-    public void setQuestion_type(String question_type) {
-        this.question_type = question_type;
+    public void setQuestion_type(String question_type2) {
+        this.question_type = question_type2;
     }
 
     public String getHint() {
-        return question_hint;
+        return this.question_hint;
     }
 
     public void setHint(String hint) {
@@ -172,125 +73,158 @@ public class BrandStandardQuestion implements Parcelable {
     }
 
     public int getIs_required() {
-        return is_required;
+        return this.is_required;
     }
 
-    public void setIs_required(int is_required) {
-        this.is_required = is_required;
+    public void setIs_required(int is_required2) {
+        this.is_required = is_required2;
     }
-
 
     public int getHas_comment() {
-        return has_comment;
+        return this.has_comment;
     }
-
-    public void setHas_comment(int has_comment) {
-        this.has_comment = has_comment;
-    }
-
-  /*  public int getIs_numbered() {
-        return is_numbered;
-    }
-
-    public void setIs_numbered(int is_numbered) {
-        this.is_numbered = is_numbered;
-    }
-*/
-  /*  public int getMax_mark() {
-        return max_mark;
-    }
-
-    public void setMax_mark(int max_mark) {
-        this.max_mark = max_mark;
-    }*/
 
     public String getAudit_answer() {
-        return audit_answer;
+        return this.audit_answer;
     }
 
-    public void setAudit_answer(String audit_answer) {
-        this.audit_answer = audit_answer;
+    public void setAudit_answer(String audit_answer2) {
+        this.audit_answer = audit_answer2;
     }
 
     public int getAudit_answer_na() {
-        return audit_answer_na;
+        return this.audit_answer_na;
     }
 
-    public void setAudit_answer_na(int audit_answer_na) {
-        this.audit_answer_na = audit_answer_na;
+    public void setAudit_answer_na(int audit_answer_na2) {
+        this.audit_answer_na = audit_answer_na2;
     }
 
     public String getAudit_comment() {
-        return audit_comment;
+        return this.audit_comment;
     }
 
-    public void setAudit_comment(String audit_comment) {
-        this.audit_comment = audit_comment;
+    public void setAudit_comment(String audit_comment2) {
+        this.audit_comment = audit_comment2;
     }
 
-  /*  public int getAnswer_status() {
-        return answer_status;
-    }
-
-    public void setAnswer_status(int answer_status) {
-        this.answer_status = answer_status;
-    }
-*/
     public int getAudit_question_file_cnt() {
-        return audit_question_file_cnt;
+        return this.audit_question_file_cnt;
     }
 
-    public void setAudit_question_file_cnt(int audit_question_file_cnt) {
-        this.audit_question_file_cnt = audit_question_file_cnt;
+    public void setAudit_question_file_cnt(int audit_question_file_cnt2) {
+        this.audit_question_file_cnt = audit_question_file_cnt2;
     }
 
     public ArrayList<BrandStandardQuestionsOption> getOptions() {
-        return options;
+        return this.options;
     }
 
-    public void setOptions(ArrayList<BrandStandardQuestionsOption> options) {
-        this.options = options;
+    public void setOptions(ArrayList<BrandStandardQuestionsOption> options2) {
+        this.options = options2;
     }
 
     public ArrayList<Integer> getAudit_option_id() {
-        return audit_option_id;
+        return this.audit_option_id;
     }
 
-    public void setAudit_option_id(ArrayList<Integer> audit_option_id) {
-        this.audit_option_id = audit_option_id;
+    public void setAudit_option_id(ArrayList<Integer> audit_option_id2) {
+        this.audit_option_id = audit_option_id2;
     }
 
     public List<Uri> getmImageList() {
-        return mImageList;
+        return this.mImageList;
     }
 
-    public void setmImageList(List<Uri> mImageList) {
-        this.mImageList = mImageList;
+    public void setmImageList(List<Uri> mImageList2) {
+        this.mImageList = mImageList2;
     }
 
     public BrandStandardSlider getSlider() {
-        return slider;
+        return this.slider;
     }
 
-    public void setSlider(BrandStandardSlider slider) {
-        this.slider = slider;
+    public void setSlider(BrandStandardSlider slider2) {
+        this.slider = slider2;
     }
 
     public int getMedia_count() {
-        return media_count;
+        return this.media_count;
     }
 
-    public void setMedia_count(int media_count) {
-        this.media_count = media_count;
+    public void setMedia_count(int media_count2) {
+        this.media_count = media_count2;
     }
 
     public BrandStandardRefrence getRef_file() {
-        return ref_file;
+        return this.ref_file;
     }
 
-    public void setRef_file(BrandStandardRefrence ref_file) {
-        this.ref_file = ref_file;
+    public void setRef_file(BrandStandardRefrence ref_file2) {
+        this.ref_file = ref_file2;
     }
 
+    public BrandStandardUnit getUnit() {
+        return this.unit;
+    }
 
+    public void setUnit(BrandStandardUnit unit2) {
+        this.unit = unit2;
+    }
+
+    public int getComment_req_type_id() {
+        return this.comment_req_type_id;
+    }
+
+    public void setComment_req_type_id(int comment_req_type_id2) {
+        this.comment_req_type_id = comment_req_type_id2;
+    }
+
+    public int getMedia_req_type_id() {
+        return this.media_req_type_id;
+    }
+
+    public void setMedia_req_type_id(int media_req_type_id2) {
+        this.media_req_type_id = media_req_type_id2;
+    }
+
+    public String getObtainMarksForQuestion() {
+        return this.obtained_mark;
+    }
+
+    public void setObtainMarksForQuestion(String obtainMarksForQuestion) {
+        this.obtained_mark = obtainMarksForQuestion;
+    }
+
+    public boolean isCan_create_action_plan() {
+        return this.can_create_action_plan;
+    }
+
+    public void setCan_create_action_plan(boolean can_create_action_plan2) {
+        this.can_create_action_plan = can_create_action_plan2;
+    }
+
+    public BrandStandardActionPlan getAction_plan() {
+        return this.action_plan;
+    }
+
+    public void setAction_plan(BrandStandardActionPlan action_plan2) {
+        this.action_plan = action_plan2;
+    }
+
+    public int getmClickPosition() {
+        return this.mClickPosition;
+    }
+
+    public void setmClickPosition(int mClickPosition2) {
+        this.mClickPosition = mClickPosition2;
+    }
+
+    public BrandStandardAuditAdapter getStandardAuditAdapter() {
+        return this.standardAuditAdapter;
+    }
+
+    public void setStandardAuditAdapter(BrandStandardAuditAdapter standardAuditAdapter2) {
+        this.standardAuditAdapter = standardAuditAdapter2;
+    }
 }

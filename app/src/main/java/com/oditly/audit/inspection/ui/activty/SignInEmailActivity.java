@@ -24,6 +24,7 @@ import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -88,7 +89,7 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
                 //  overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                 break;
             case R.id.tv_forgotpass:
-                AppDialogs.showForgotPassword(this);
+                AppDialogs.showForgotPassword(mEmailET.getText().toString(),this);
                 break;
             case R.id.iv_header_left:
                 finish();
@@ -122,7 +123,7 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
 
     }
 
-    public void setOTPServer(String userEmail)
+  /*  public void setOTPServer(String userEmail)
     {
         if (NetworkStatus.isNetworkConnected(this)) {
             mSpinKitView.setVisibility(View.VISIBLE);
@@ -133,6 +134,24 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
             NetworkService networkService = new NetworkService(NetworkURL.SENDOTP, NetworkConstant.METHOD_POST, this,this);
             networkService.call(params);
         } else
+            AppUtils.toast(this, getString(R.string.internet_error));
+
+    }*/
+
+
+    public void resetPasswordServerData(String userEmail)
+    {
+        if (NetworkStatus.isNetworkConnected(this)) {
+
+            // showAppProgressDialog();
+            mSpinKitView.setVisibility(View.VISIBLE);
+            Map<String, String> params = new HashMap<>();
+            params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
+            params.put(NetworkConstant.REQ_PARAM_USER, userEmail);
+            NetworkService networkService = new NetworkService(NetworkURL.RESET_PASSWORD_NEW, NetworkConstant.METHOD_POST, this,this);
+            networkService.call(params);
+        } else
+
             AppUtils.toast(this, getString(R.string.internet_error));
 
     }
@@ -162,6 +181,24 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
                    // AppUtils.toast(this, message);
             } catch (Exception e) {
                 AppUtils.toast(this, getString(R.string.oops));
+            }
+        }
+        else if(service.equalsIgnoreCase(NetworkURL.RESET_PASSWORD_NEW))
+        {
+
+            try {
+                JSONObject object = new JSONObject(response);
+                String message = object.getString(AppConstant.RES_KEY_MESSAGE);
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppDialogs.passwordResetMessageDialog(this,"Please check your email for reset password link");
+                    //  AppUtils.toast(ResetPasswordScreen.this, message);
+                    // finish();
+                }else
+                    AppUtils.toast(SignInEmailActivity.this, message);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
         else

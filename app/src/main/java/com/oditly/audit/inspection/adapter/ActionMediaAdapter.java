@@ -52,14 +52,6 @@ public class ActionMediaAdapter extends RecyclerView.Adapter<ActionMediaAdapter.
         holder.imageUpload.setTag(position);
         holder.imageName.setOnClickListener(completeFragment);
         holder.imageUpload.setOnClickListener(completeFragment);
-       /* holder.imageName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                showFullImageDialog(context,orderData.get(position));
-            }
-        });*/
-
     }
 
     @Override
@@ -84,40 +76,6 @@ public class ActionMediaAdapter extends RecyclerView.Adapter<ActionMediaAdapter.
     }
 
 
-
-    public static void showFullImageDialog(final Context activity,Uri bitmap) {
-        final Dialog dialog = new Dialog(activity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_fullimage);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
-        dialog.getWindow().setAttributes(lp);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        ImageView imageView= dialog.findViewById(R.id.iv_fullimage);
-
-
-        try {
-
-           // String uri ="file:///storage/emulated/0/Android/data/com.oditly.audit.inspection/files/Oditly/com.oditly.audit.inspection.ui.activty.AddAttachmentActivity1599040075852/Captured_1599040080529.jpg";
-
-            imageView.setImageURI(bitmap);
-
-            dialog.findViewById(R.id.iv_cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    dialog.dismiss();
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        dialog.show();
-
-    }
 
 
 

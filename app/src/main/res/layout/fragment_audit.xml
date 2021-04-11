@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/s_scheduled"
+                android:text="@string/s_scheduled_audit"
                 android:layout_marginTop="@dimen/d_1dp"
                 android:layout_marginBottom="@dimen/d_1dp"
                 android:layout_marginLeft="@dimen/d_1dp"
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/s_progress"
+                android:text="@string/s_progress_audit"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/d_1dp"
                 android:layout_marginBottom="@dimen/d_1dp"
@@ -156,7 +156,19 @@
             android:visibility="visible" />
     </RelativeLayout>
 
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+       android:id="@+id/fb_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="@dimen/d_20dp"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
+        app:fabSize="normal"
+        />
 
     <include
         android:layout_width="@dimen/d_progressbar"

@@ -11,8 +11,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
@@ -28,6 +37,7 @@ import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -40,15 +50,16 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
     private ImageView mEyesIV;
     private TextView mPassworderrorTV;
     private String mEmailID;
-    private String mForgotEmail="";
+    private String mForgotEmail = "";
     private RelativeLayout mSpinKitView;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        mEmailID=getIntent().getStringExtra(AppConstant.EMAIL);
+        mEmailID = getIntent().getStringExtra(AppConstant.EMAIL);
         initView();
         initVar();
 
@@ -61,17 +72,18 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
         findViewById(R.id.tv_emailerror).setVisibility(View.GONE);
         findViewById(R.id.tv_forgotpass).setOnClickListener(this);
         findViewById(R.id.iv_header_left).setOnClickListener(this);
-        mPassworderrorTV=(TextView)findViewById(R.id.tv_passerror);
-        mSpinKitView=(RelativeLayout)findViewById(R.id.ll_parent_progress);
+        mPassworderrorTV = (TextView) findViewById(R.id.tv_passerror);
+        mSpinKitView = (RelativeLayout) findViewById(R.id.ll_parent_progress);
 
-        mSignInBtn=(Button)findViewById(R.id.btn_signin);
+        mSignInBtn = (Button) findViewById(R.id.btn_signin);
         mSignInBtn.setText(getResources().getString(R.string.s_enter));
 
-        mPasswordET=(TextInputEditText)findViewById(R.id.et_password);
-        mEyesIV=(ImageView)findViewById(R.id.iv_eyes);
+        mPasswordET = (TextInputEditText) findViewById(R.id.et_password);
+        mEyesIV = (ImageView) findViewById(R.id.iv_eyes);
 
         mSignInBtn.setOnClickListener(this);
         mEyesIV.setOnClickListener(this);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -84,29 +96,28 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
         super.onClick(view);
         switch (view.getId()) {
             case R.id.btn_signin:
-                if(TextUtils.isEmpty(mPasswordET.getText().toString()))
+                if (TextUtils.isEmpty(mPasswordET.getText().toString()))
                     mPassworderrorTV.setVisibility(View.VISIBLE);
-                else
-                {
+                else {
                     mPassworderrorTV.setVisibility(View.GONE);
                     AppUtils.hideKeyboard(this, view);
-                    validateuserCredentialsData();
+                   // validateuserCredentialsData();
 
+                    firebaseLogin(mEmailID,mPasswordET.getText().toString());
                 }
                 // overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                 break;
             case R.id.tv_forgotpass:
-                AppDialogs.showForgotPassword(this);
+                AppDialogs.showForgotPassword(mEmailID,this);
                 break;
             case R.id.iv_header_left:
                 finish();
                 break;
             case R.id.iv_eyes:
-                if(mEyesIV.isSelected()) {
+                if (mEyesIV.isSelected()) {
                     mEyesIV.setSelected(false);
                     mPasswordET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                }
-                else {
+                } else {
                     mEyesIV.setSelected(true);
                     mPasswordET.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
@@ -117,30 +128,48 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
     }
 
 
-    public void setOTPServer(String userEmail)
-    {
+    public void setOTPServer(String userEmail) {
         if (NetworkStatus.isNetworkConnected(this)) {
-            mForgotEmail=userEmail;
-           // showAppProgressDialog();
+            mForgotEmail = userEmail;
+            // showAppProgressDialog();
             mSpinKitView.setVisibility(View.VISIBLE);
             Map<String, String> params = new HashMap<>();
             params.put(NetworkConstant.REQ_PARAM_USER, userEmail);
-            NetworkService networkService = new NetworkService(NetworkURL.SENDOTP, NetworkConstant.METHOD_POST, this,this);
+            NetworkService networkService = new NetworkService(NetworkURL.SENDOTP, NetworkConstant.METHOD_POST, this, this);
             networkService.call(params);
         } else
 
             AppUtils.toast(this, getString(R.string.internet_error));
 
     }
+
+
+    public void resetPasswordServerData(String userEmail)
+    {
+        if (NetworkStatus.isNetworkConnected(this)) {
+
+            // showAppProgressDialog();
+            mSpinKitView.setVisibility(View.VISIBLE);
+            Map<String, String> params = new HashMap<>();
+            params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
+            params.put(NetworkConstant.REQ_PARAM_USER, userEmail);
+            NetworkService networkService = new NetworkService(NetworkURL.RESET_PASSWORD_NEW, NetworkConstant.METHOD_POST, this,this);
+            networkService.call(params);
+        } else
+
+            AppUtils.toast(this, getString(R.string.internet_error));
+
+    }
+
     private void validateuserCredentialsData() {
         if (NetworkStatus.isNetworkConnected(this)) {
-          //  showAppProgressDialog();
+            //  showAppProgressDialog();
             mSpinKitView.setVisibility(View.VISIBLE);
             Map<String, String> params = new HashMap<>();
             params.put(NetworkConstant.REQ_PARAM_USER, mEmailID);
             params.put(NetworkConstant.REQ_PARAM_PASSWORD, mPasswordET.getText().toString());
             params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
-            NetworkService networkService = new NetworkService(NetworkURL.SIGNIN, NetworkConstant.METHOD_POST, this,this);
+            NetworkService networkService = new NetworkService(NetworkURL.SIGNIN, NetworkConstant.METHOD_POST, this, this);
             networkService.call(params);
         } else {
             AppUtils.toast(this, getString(R.string.internet_error));
@@ -153,11 +182,10 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
     }
 
     @Override
-    public void onNetworkCallCompleted(String type, String service, String response)
-    {
+    public void onNetworkCallCompleted(String type, String service, String response) {
 
-        Log.e("Response",""+response);
-        if(service.equalsIgnoreCase(NetworkURL.SIGNIN)) {
+        Log.e("Response", "" + response);
+        if (service.equalsIgnoreCase(NetworkURL.SIGNIN)) {
             try {
                 JSONObject object = new JSONObject(response);
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
@@ -165,25 +193,25 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                     SignInRootObject signInRootObject = new GsonBuilder().create().fromJson(object.toString(), SignInRootObject.class);
                     if (signInRootObject.getData() != null) {
                         AppUtils.toast(this, message);
-                        AppPreferences.INSTANCE.setLogin(true,this);
-                        AppPreferences.INSTANCE.setAccessToken(signInRootObject.getData().getAccess_token(),this);
+                        AppPreferences.INSTANCE.setLogin(true, this);
+                        AppPreferences.INSTANCE.setAccessToken(signInRootObject.getData().getAccess_token(), this);
                         AppPreferences.INSTANCE.setUserRole(signInRootObject.getData().getRole_id(), this);
                         AppPreferences.INSTANCE.setUserId(signInRootObject.getData().getUser_id(), this);
                         AppPreferences.INSTANCE.setUserPic(signInRootObject.getData().getImage());
                         AppPreferences.INSTANCE.setUserEmail(signInRootObject.getData().getEmail());
                         AppPreferences.INSTANCE.setUserFName(signInRootObject.getData().getFname());
-                        AppPreferences.INSTANCE.setUserLName(signInRootObject.getData().getLname(),this);
+                        AppPreferences.INSTANCE.setUserLName(signInRootObject.getData().getLname(), this);
                         AppPreferences.INSTANCE.setClientRoleId(signInRootObject.getData().getClient_role_id());
                         AppPreferences.INSTANCE.setClientRoleName(signInRootObject.getData().getClient_role_name());
                         Intent intent = new Intent(this, AnimationActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK); //new added
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); //new added
                         startActivity(intent);
                         finish();
                     }
                 } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                     mPassworderrorTV.setVisibility(View.VISIBLE);
                     mPassworderrorTV.setText(R.string.text_invalidpass);
-                  //  AppUtils.toast((BaseActivity) this, object.getString(AppConstant.RES_KEY_MESSAGE));
+                    //  AppUtils.toast((BaseActivity) this, object.getString(AppConstant.RES_KEY_MESSAGE));
 
                 }
             } catch (Exception e) {
@@ -191,8 +219,25 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                 AppUtils.toast(this, getString(R.string.oops));
             }
         }
-        else
+        else if(service.equalsIgnoreCase(NetworkURL.RESET_PASSWORD_NEW))
         {
+
+            try {
+                JSONObject object = new JSONObject(response);
+                String message = object.getString(AppConstant.RES_KEY_MESSAGE);
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppDialogs.passwordResetMessageDialog(this,"Please check your email for reset password link");
+                    //  AppUtils.toast(ResetPasswordScreen.this, message);
+                    // finish();
+                }else
+                    AppUtils.toast(SignInPasswordActivity.this, message);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        else {
             try {
                 JSONObject object = new JSONObject(response);
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
@@ -202,27 +247,46 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                     Intent intent = new Intent(SignInPasswordActivity.this, ResetPasswordScreen.class);
                     intent.putExtra("username", mForgotEmail);
                     startActivity(intent);
-                }else
+                } else
                     AppUtils.toast(SignInPasswordActivity.this, message);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 AppUtils.toast(this, getString(R.string.oops));
 
             }
         }
         mSpinKitView.setVisibility(View.GONE);
-      //  hideProgressDialog();
+        //  hideProgressDialog();
 
     }
 
     @Override
     public void onNetworkCallError(String service, String errorMessage) {
-        Log.e("onNetworkCallError","===>"+errorMessage);
+        Log.e("onNetworkCallError", "===>" + errorMessage);
         AppUtils.toast(this, getString(R.string.oops));
-      //  hideProgressDialog();
+        //  hideProgressDialog();
         mSpinKitView.setVisibility(View.GONE);
 
+    }
+
+    private void firebaseLogin(String email,String pass) {
+
+        firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(SignInPasswordActivity.this, new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(SignInPasswordActivity.this, "Please enter valid username and password", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
+                    Task<GetTokenResult> token=   firebaseUser.getIdToken(false);
+                     String tokenAuth=  token.getResult().getToken();
+                     AppPreferences.INSTANCE.setFirebaseAccessToken(tokenAuth,getApplicationContext());
+                     Log.e("USER TOKEN ",""+tokenAuth);
+                  //  startActivity(new Intent(SignInPasswordActivity.this, MainActivity.class));
+                }
+            }
+        });
     }
 
 }

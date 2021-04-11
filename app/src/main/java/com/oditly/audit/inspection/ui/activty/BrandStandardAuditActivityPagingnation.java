@@ -86,7 +86,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     private static final int AttachmentRequest = 120;
     private static final int QuestionAttachmentRequest = 130;
     private int  itemClickedPos = 0;
-   // public int questionCount = 0;
+    // public int questionCount = 0;
     //private BrandStandardAuditAdapterSingleSection currentBrandStandardAuditAdapter;
     public static boolean isAnswerCliked=false;
     private boolean isSaveButtonClick=false,isBackButtonClick=false;
@@ -172,7 +172,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     {
         sectionTitle = brandStandardSection.getSection_title();
         mTitleTV.setText(""+AppUtils.capitalizeHeading(sectionTitle.toLowerCase()));
-       // questionCount = 0;
+        // questionCount = 0;
         sectionGroupId = "" + brandStandardSection.getSection_group_id();
         sectionId = "" + brandStandardSection.getSection_id();
         fileCount = "" + brandStandardSection.getAudit_section_file_cnt();
@@ -196,7 +196,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         itemClickedPos = questionNo;
         Log.e("QUESTION NO","+++"+questionNo);
         Log.e("POSITION  NO","=== "+position);      //  questionCount = questionNo;
-      //  currentBrandStandardAuditAdapter = brandStandardAuditAdapter;
+        //  currentBrandStandardAuditAdapter = brandStandardAuditAdapter;
         mBrandStandardListCurrent=sectionTabAdapter.getArrayList();
         Intent addAttachment = new Intent(context, AddAttachmentActivity.class);
         addAttachment.putExtra("auditId", auditId);
@@ -211,26 +211,28 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (requestCode == AttachmentRequest && resultCode == Activity.RESULT_OK)
-            {
-                String attachmentCount = data.getStringExtra("attachmentCount");
-                fileBtn.setText("+"+getString(R.string.text_photo)+"     "+attachmentCount);
-            }
-           else if (requestCode == QuestionAttachmentRequest && resultCode == Activity.RESULT_OK)
-            {
-                BrandStandardAuditActivityPagingnation.isAnswerCliked=true;
-                String attachmentCount = data.getStringExtra("attachmentCount");
-                List<Uri> tempList=new ArrayList<>();
-                if(mBrandStandardListCurrent!=null && mBrandStandardListCurrent.get(itemClickedPos).getmImageList()!=null && mBrandStandardListCurrent.get(itemClickedPos).getmImageList().size()>0)
-                    tempList.addAll(mBrandStandardListCurrent.get(itemClickedPos).getmImageList());
-                tempList.addAll(((OditlyApplication)getApplicationContext()).getmAttachImageList());
-                mBrandStandardListCurrent.get(itemClickedPos).setmImageList(tempList);
-
-              //  if(currentBrandStandardAuditAdapter!=null && attachmentCount!=null)
-                //    currentBrandStandardAuditAdapter.setattachmentCount(Integer.parseInt(attachmentCount), itemClickedPos);
-
-                sectionTabAdapter.setattachmentCount(Integer.parseInt(attachmentCount), itemClickedPos);
-
+            if (requestCode == AttachmentRequest && resultCode == Activity.RESULT_OK) {
+                try {
+                    String attachmentCount = data.getStringExtra("attachmentCount");
+                    Button button = this.fileBtn;
+                    button.setText("+" + getString(R.string.text_photo) + "     " + attachmentCount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    AppLogger.e("AttachmentException", e.getMessage());
+                    AppUtils.showHeaderDescription(this.context, e.getMessage());
+                }
+            } else if (requestCode == QuestionAttachmentRequest && resultCode == Activity.RESULT_OK) {
+                isAnswerCliked = true;
+                String attachmentCount2 = data.getStringExtra("attachmentCount");
+                List<Uri> tempList = new ArrayList<>();
+                if (!(this.mBrandStandardListCurrent == null || this.mBrandStandardListCurrent.get(this.itemClickedPos).getmImageList() == null || this.mBrandStandardListCurrent.get(this.itemClickedPos).getmImageList().size() <= 0)) {
+                    tempList.addAll(this.mBrandStandardListCurrent.get(this.itemClickedPos).getmImageList());
+                }
+                tempList.addAll(((OditlyApplication) getApplicationContext()).getmAttachImageList());
+                this.mBrandStandardListCurrent.get(this.itemClickedPos).setmImageList(tempList);
+                this.sectionTabAdapter.setattachmentCount(Integer.parseInt(attachmentCount2), this.itemClickedPos);
+            } else if (requestCode == 1021 && resultCode == Activity.RESULT_OK) {
+                this.sectionTabAdapter.setActionCreatedFlag(this.itemClickedPos);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,23 +246,6 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         questionListRecyclerView.setAdapter(sectionTabAdapter);
     }
 
-    public void setSubSectionQuestionList(ArrayList<BrandStandardSubSection> subSectionArrayList) {
-
-    }
-
-    private void mergJSONArray(JSONArray arrayJson)
-    {
-        try {
-            JSONArray sourceArray = new JSONArray(arrayJson);
-            JSONArray destinationArray = new JSONArray(arrayJson);
-            for (int i = 0; i < sourceArray.length(); i++) {
-                destinationArray.put(sourceArray.getJSONObject(i));
-            }
-
-            String s3 = destinationArray.toString();
-        }
-        catch (Exception e){e.printStackTrace();}
-    }
     public void saveBrandStandardQuestion()
     {
         if (NetworkStatus.isNetworkConnected(this))
@@ -302,7 +287,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     private void setLocalJSON(BrandStandardSection brandStandardSection) {
         try{
             setQuestionList(brandStandardSection.getQuestions());
-           // setSubSectionQuestionList(brandStandardSection.getSub_sections());
+            // setSubSectionQuestionList(brandStandardSection.getSub_sections());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -325,7 +310,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                     String message="Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this,message);
 
-                 //   AppUtils.toastDisplayForLong(BrandStandardAuditActivityPagingnation.this, "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count);
+                    //   AppUtils.toastDisplayForLong(BrandStandardAuditActivityPagingnation.this, "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count);
                     return false;
                 }
             }
@@ -367,17 +352,32 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                     else  if (bsRefrence.getFile_type().contains("video"))
                         ExoVideoPlayer.start(this, bsRefrence.getFile_url());
                     else
-                    {
                         ShowHowWebViewActivity.start(this,bsRefrence.getFile_url());
-                       // "file_type": "application/pdf",presentation  pptx",
-                      //  Toast.makeText(this,"Coming Soon.. "+bsRefrence.getFile_ext(),Toast.LENGTH_SHORT).show();
-                    }
                 }
                 break;
             case R.id.bs_save_btn:
                 AppUtils.hideKeyboard(context, view);
                 isSaveButtonClick=true;
                 saveSectionOrPagewiseData();
+                break;
+            case R.id.ll_actioncreate:
+                BrandStandardQuestion bsQuestion = (BrandStandardQuestion) view.getTag();
+                if (bsQuestion == null) {
+                    return;
+                }
+                if (bsQuestion.isCan_create_action_plan()) {
+                    this.itemClickedPos = bsQuestion.getmClickPosition();
+                    Intent actionPlan = new Intent(this.context, ActionCreateActivity.class);
+                    actionPlan.putExtra("auditid", this.auditId);
+                    actionPlan.putExtra(AppConstant.SECTION_GROUPID, this.sectionGroupId);
+                    actionPlan.putExtra(AppConstant.SECTION_ID, this.sectionId);
+                    actionPlan.putExtra(AppConstant.QUESTION_ID, "" + bsQuestion.getQuestion_id());
+                    actionPlan.putExtra(AppConstant.FROMWHERE, "Audit");
+                    startActivityForResult(actionPlan, 1021);
+                }
+                else
+                AppUtils.toast(this, "Action plan has been created for this Question");
+
                 break;
             case R.id.bs_add_file_btn:
                 Intent addAttachment = new Intent(context, AddAttachmentActivity.class);
