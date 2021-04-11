@@ -241,18 +241,16 @@
             android:layout_margin="@dimen/d_20dp"
             android:src="@mipmap/header_logo_signin"/>
     </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fb_chatsupport"
         android:layout_width="@dimen/d_50dp"
         android:layout_height="@dimen/d_50dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:visibility="visible"
-        android:layout_marginBottom="140dp"
         android:layout_marginRight="@dimen/d_8dp"
         android:backgroundTint="@color/c_blue"
         android:src="@drawable/ic_chat_support"
-        app:fabSize="mini"
-        />
+        android:visibility="gone"
+        app:fabSize="mini" />
 
 </RelativeLayout>

@@ -5,20 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +25,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,7 +47,6 @@ import com.oditly.audit.inspection.network.apirequest.AddBSAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.AddQuestionAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.GetReportRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
-import com.oditly.audit.inspection.services.AppLocationService;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
@@ -179,6 +168,8 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
 
         getOldMediaAttachmentList(attachType);
         getLatLong();
+
+        addAttachmentBtn.performClick(); // new changes
     }
 
     @Override
@@ -335,11 +326,11 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             catch (Exception e){e.printStackTrace();}
         }*/
 
-        Intent intent=new Intent(AddAttachmentActivity.this,CameraActivity.class);
+    /*    Intent intent=new Intent(AddAttachmentActivity.this,CameraActivity.class);
         startActivityForResult(intent,AppConstant.REQUEST_TAKE_PHOTO);
-        overridePendingTransition(R.anim.pull_in_left,R.anim.pull_from_right);
+        overridePendingTransition(R.anim.pull_in_left,R.anim.pull_from_right);*/
 
-      /*  Intent intent = new Intent(this, CameraControllerActivity.class);
+         Intent intent = new Intent(this, CameraControllerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("inputData", new CameraBundleBuilder()
                 .setFullscreenMode(false)
@@ -355,7 +346,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 .setEnableDone(false)
                 .setClearBucket(false)
                 .createCameraBundle());
-        startActivityForResult(intent, AppConstant.REQUEST_TAKE_PHOTO);*/
+        startActivityForResult(intent, AppConstant.REQUEST_TAKE_PHOTO);
 
         // photoEasy = PhotoEasy.builder().setActivity(this).build();
 
@@ -410,20 +401,20 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 // String dataURI= data.getStringExtra("cameraURI");
                 // AppLogger.e("Addattachment uri", "  "+dataURI);
                 AppLogger.e("Addattachment path", "  "+dataPath);
-                Uri uri = Uri.fromFile(new File(dataPath));
+              /*  Uri uri = Uri.fromFile(new File(dataPath));
                 AppLogger.e("Addattachment uri", " size "+uri);
                 if (uri != null && uri.toString().length()>10) {
                     mURIimageList.add(uri);
                     addDescriptionDialog();
-                }
-               /* String[] list = data.getStringArrayExtra("resultData");
+                }*/
+                String[] list = data.getStringArrayExtra("resultData");
                 if (list!=null && list.length>0) {
                     for (int i = 0; i < list.length; i++)
                         mURIimageList.add(Uri.fromFile(new File(list[i])));
                     addDescriptionDialog();
                 } else {
                     AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" );
-                }*/
+                }
             }catch (Exception e){
                 e.printStackTrace();
                 AppUtils.toast(AddAttachmentActivity.this, "Result Some technical error. Please try again." );

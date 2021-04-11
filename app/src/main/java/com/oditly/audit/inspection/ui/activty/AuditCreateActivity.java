@@ -65,12 +65,13 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
     private List<AditorReviewBean> mAuditorNameList;
     private String mBenchMark="",mInstruction="",mAuditName="",mAuditDate="",mReviewerID="",isReviewer="false";
     private String mLocatioID;
-    private ArrayList<Integer> mAuditorsIDSelected;
+
     private String mAuditID="";
     private String mTemplateID="";
     private ArrayAdapter mLocationAdapter;
     private String mAuditStartDate="";
     private ArrayList<MultiSelectModel> mMultiSelectModelsList;
+    private ArrayList<Integer> mAuditorsIDSelected;
     private String mAuditStartHour="";
 
 
@@ -108,10 +109,11 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
     @Override
     protected void initVar() {
         super.initVar();
-        mAuditorNameList =new ArrayList<>();
+
         mLocationList=new ArrayList<>();
         mLocationListID=new ArrayList<>();
         mMultiSelectModelsList=new ArrayList<>();
+        mAuditorNameList =new ArrayList<>();
 
         mReviewerList=new ArrayList<>();
         getmReviewerListID=new ArrayList<>();

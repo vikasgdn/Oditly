@@ -3,13 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/c_white"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/d_10dp"
         android:layout_marginLeft="@dimen/d_10dp"
+        android:layout_marginTop="@dimen/d_5dp"
         android:weightSum="10"
         android:orientation="horizontal">
 
@@ -22,23 +25,23 @@
                 android:id="@+id/tv_auditname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ABC audit (ID :076567)"
+                android:text="Action Title"
                 android:gravity="left"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:fontFamily="@font/nunitosans_semibold"
-                android:padding="@dimen/d_4dp"
+                android:paddingLeft="@dimen/d_4dp"
                 android:maxLines="1"
                 android:textColor="@color/c_dark_gray"
-                android:textSize="@dimen/text_size_16"/>
+                android:textSize="16sp"/>
             <TextView
-                android:id="@+id/tv_department"
+                android:id="@+id/tv_inspectionname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Department"
+                android:text="Inspection Name"
                 android:gravity="left"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:fontFamily="@font/nunitosans_regular"
-                android:padding="@dimen/d_4dp"
+                android:paddingLeft="@dimen/d_4dp"
                 android:textColor="@color/c_gray_text"
                 android:textSize="@dimen/text_size_14"/>
 
@@ -49,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="Friday, April 16,2020 09 AM"
                 android:gravity="left"
+                android:visibility="gone"
                 android:fontFamily="@font/nunitosans_regular"
                 android:padding="@dimen/d_4dp"
                 android:textColor="@color/c_gray_text"
@@ -59,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="Title"
                 android:gravity="left"
+                android:visibility="gone"
                 android:fontFamily="@font/nunitosans_regular"
                 android:padding="@dimen/d_4dp"
                 android:textColor="@color/c_gray_text"
@@ -71,6 +76,9 @@
                 android:gravity="left"
                 android:fontFamily="@font/nunitosans_regular"
                 android:padding="@dimen/d_4dp"
+                android:layout_marginStart="-3dp"
+                android:drawablePadding="@dimen/d_5dp"
+                android:drawableLeft="@mipmap/ic_location36"
                 android:textColor="@color/c_gray_text"
                 android:textSize="@dimen/text_size_14"/>
             <TextView
@@ -79,36 +87,57 @@
                 android:layout_height="wrap_content"
                 android:text="Status: Incomplete Overdue in 3 days"
                 android:gravity="left"
+                android:drawableLeft="@mipmap/ic_date36"
                 android:fontFamily="@font/nunitosans_regular"
                 android:padding="@dimen/d_4dp"
+                android:drawablePadding="@dimen/d_5dp"
                 android:textColor="@color/c_gray_text"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:maxLines="1"
                 android:textSize="@dimen/text_size_14"/>
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_resume"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2.5"
-            android:text="@string/s_view"
-            android:gravity="center"
-            android:layout_marginRight="3dp"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/nunitosans_regular"
-            android:background="@drawable/button_border_view"
-            android:padding="@dimen/d_8dp"
-            android:textColor="@color/c_blue"
-            android:textSize="@dimen/text_size_14"/>
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_resume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:text="@string/s_view"
+                android:visibility="gone"
+                android:gravity="center"
+                android:layout_marginRight="3dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:background="@drawable/button_border_view"
+                android:padding="@dimen/d_8dp"
+                android:textColor="@color/c_blue"
+                android:textSize="@dimen/text_size_14"/>
+            <TextView
+                android:id="@+id/tv_lowhighmedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Low"
+                android:layout_marginTop="@dimen/d_2dp"
+                android:drawableRight="@drawable/ic_baseline_flag_24"
+                android:gravity="center_vertical|right"
+                android:paddingTop="@dimen/d_8dp"
+                android:paddingBottom="@dimen/d_8dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/c_green"
+                android:textSize="@dimen/text_size_16"/>
+        </LinearLayout>
 
     </LinearLayout>
     <View
         android:id="@+id/view_devider"
         android:layout_width="match_parent"
         android:layout_height="0.6dp"
-        android:layout_marginTop="@dimen/size_2dp"
+        android:layout_marginTop="@dimen/d_5dp"
         android:layout_below="@+id/ll_parent"
         android:background="@color/c_light_gray"/>
 

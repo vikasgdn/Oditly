@@ -20,7 +20,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import com.github.pdfviewer.PDFView;
+
 import com.oditly.audit.inspection.BuildConfig;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.network.DownloadPdfTask;

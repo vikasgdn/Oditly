@@ -10,19 +10,22 @@ public class ActionInfo {
 
     private String audit_name = "";
 
-    private String title="";
+    private String title;
     private String assigned_to = "";
     private String action_name = "";
     private String action_details = "";
     private String assigned_user_email= "";
     private String planned_date= "";
     private String status_name = "";
+    private String priority_name = "";
+
     private boolean can_complete;
 
     private ArrayList<AssignedUserData> assigned_users;
 
 
 
+    private String overdue_days = "";
     private String audit_due_date = "";
     private int brand_std_status = 0;
     private int audit_status = 0;
@@ -477,5 +480,21 @@ public class ActionInfo {
 
     public void setAssigned_users(ArrayList<AssignedUserData> assigned_users) {
         this.assigned_users = assigned_users;
+    }
+
+    public String getPriority_name() {
+        return priority_name;
+    }
+
+    public void setPriority_name(String priority_name) {
+        this.priority_name = priority_name;
+    }
+
+    public String getOverdue_days() {
+        return overdue_days;
+    }
+
+    public void setOverdue_days(String overdue_days) {
+        this.overdue_days = overdue_days;
     }
 }

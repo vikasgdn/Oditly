@@ -251,13 +251,13 @@ public enum AppPreferences
 
     }
 
-    public  void setDSLocalDB(String val) {
-        mEditor.putString(SharedPreferencesKeys.dsdatabase.toString(), val);
+    public  void setFCMToken(String val) {
+        mEditor.putString(SharedPreferencesKeys.fcm_token.toString(), val);
         mEditor.commit();
     }
-    public  String getESLocalDB()
+    public  String getFCMToken()
     {
-        return mPreferences.getString(SharedPreferencesKeys.esdatabase.toString(), "");
+        return mPreferences.getString(SharedPreferencesKeys.fcm_token.toString(), "");
 
     }
 
@@ -330,7 +330,8 @@ public enum AppPreferences
         fname,
         lname,
         last_hit_time,
-        esdatabase
+        esdatabase,
+        fcm_token
         ;
 
 

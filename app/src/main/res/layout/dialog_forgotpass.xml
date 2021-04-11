@@ -50,7 +50,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="@dimen/d_15dp"
             android:paddingTop="@dimen/d_10dp"
-            android:text="Please Enter your Email to get OTP"
+            android:text="Please Enter your Email \n to get password reset link"
             android:fontFamily="@font/nunitosans_regular"
             android:textColor="@color/c_dark_gray"
 

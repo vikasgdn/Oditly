@@ -199,7 +199,7 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
     }
 
     private void addAuditSignature(byte[] imageByteData) {
-      //  showProgressDialog();
+        //  showProgressDialog();
         mProgressBarRL.setVisibility(View.VISIBLE);
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
@@ -211,13 +211,16 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
                     if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                         AppDialogs.messageDialogWithOKButton(AuditSubmitSignatureActivity.this,getString(R.string.text_auditsubmited));
                     } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
+                        if (object.optString(AppConstant.RES_KEY_MESSAGE).equalsIgnoreCase("Already submitted"))
+                            AppDialogs.messageDialogWithOKButton(AuditSubmitSignatureActivity.this,getString(R.string.text_auditsubmited));
+                        else
+                            AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-             //   hideProgressDialog();
+                //   hideProgressDialog();
                 mProgressBarRL.setVisibility(View.GONE);
             }
 

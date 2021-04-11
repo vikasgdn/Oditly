@@ -114,6 +114,7 @@ public class ResetPasswordScreen extends BaseActivity implements INetworkEvent {
        // mTitleTV.setText(R.string.text_resetpassword);
         username = getIntent().getStringExtra("username");
         usernametxt.setText(username);
+        mOTPET.setText(username);
 
 
     }
@@ -125,7 +126,7 @@ public class ResetPasswordScreen extends BaseActivity implements INetworkEvent {
         switch (view.getId()) {
             case  R.id.btn_reset:
 
-                String otp,password,confPass;
+            /*    String otp,password,confPass;
                 otp=mOTPET.getText().toString();
                 password=mPasswordET.getText().toString();
                 confPass=mConfirmPasswordET.getText().toString();
@@ -147,10 +148,10 @@ public class ResetPasswordScreen extends BaseActivity implements INetworkEvent {
                     mConfPassErrorTV.setVisibility(View.VISIBLE);
                     mConfPassErrorTV.setText(R.string.text_password_not_same);
                 }
-                else {
+                else {*/
                     AppUtils.hideKeyboard(context, view);
                     resetPasswordServerData();
-                }
+               // }
                 break;
             case R.id.iv_header_left:
                 finish();
@@ -196,10 +197,10 @@ public class ResetPasswordScreen extends BaseActivity implements INetworkEvent {
             Map<String, String> params = new HashMap<>();
             params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
             params.put(NetworkConstant.REQ_PARAM_USER, username);
-            params.put(NetworkConstant.REQ_PARAM_OTP, mOTPET.getText().toString());
-            params.put(NetworkConstant.REQ_PARAM_PASSWORD, mPasswordET.getText().toString());
+          //  params.put(NetworkConstant.REQ_PARAM_OTP, mOTPET.getText().toString());
+           // params.put(NetworkConstant.REQ_PARAM_PASSWORD, mPasswordET.getText().toString());
 
-            NetworkService networkService = new NetworkService(NetworkURL.RESETPASSWORD, NetworkConstant.METHOD_POST, this,this);
+            NetworkService networkService = new NetworkService(NetworkURL.RESET_PASSWORD_NEW, NetworkConstant.METHOD_POST, this,this);
             networkService.call(params);
         } else
 
@@ -220,7 +221,7 @@ public class ResetPasswordScreen extends BaseActivity implements INetworkEvent {
             JSONObject object = new JSONObject(response);
             String message = object.getString(AppConstant.RES_KEY_MESSAGE);
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                AppDialogs.passwordResetMessageDialog(this,"Password changed successfully, please login again to continue");
+                AppDialogs.passwordResetMessageDialog(this,"Please check your email for reset password link");
                 //  AppUtils.toast(ResetPasswordScreen.this, message);
                // finish();
             }else

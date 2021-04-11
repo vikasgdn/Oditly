@@ -30,7 +30,7 @@
             android:textColor="@color/c_dark_gray"
             android:textSize="@dimen/text_size_14"
             android:fontFamily="@font/nunitosans_semibold"
-             />
+            />
         <LinearLayout
             android:id="@+id/ll_note_layout"
             android:layout_width="match_parent"
@@ -162,7 +162,7 @@
             android:layout_marginEnd="@dimen/d_5dp"
             android:background="@drawable/comment_border"
             android:hint="Type your answer"
-            android:inputType="number|numberDecimal"
+            android:inputType="number|numberDecimal|numberSigned"
             android:textSize="@dimen/text_size_14"
             android:gravity="left"
             android:padding="@dimen/d_5dp"
@@ -207,31 +207,33 @@
                 android:id="@+id/ll_comment_media_showhow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/d_5dp"
+                android:layout_marginLeft="@dimen/d_5dp"
+                android:layout_marginRight="@dimen/d_5dp"
+                android:layout_marginTop="@dimen/d_10dp"
                 android:visibility="visible"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/ll_comment"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
                     <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
                         android:src="@mipmap/ic_comment"/>
                     <TextView
                         android:id="@+id/tv_comment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/d_35dp"
-                        android:padding="@dimen/d_3dp"
-                        android:layout_marginRight="2dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:singleLine="true"
                         android:text="@string/text_comment"
-                        android:gravity="left|center_vertical"
+                        android:gravity="center"
+                        android:padding="1dp"
                         android:fontFamily="@font/nunitosans_regular"
                         android:textSize="12sp"
                         android:textColor="@color/c_gray_text" />
@@ -239,54 +241,86 @@
                 <LinearLayout
                     android:id="@+id/ll_bs_add_file_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_gravity="right"
-                    android:gravity="right"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
                     <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
                         android:src="@mipmap/ic_camera"/>
                     <TextView
                         android:id="@+id/tv_media"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/d_35dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginRight="@dimen/d_2dp"
-                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:gravity="center"
+                        android:padding="1dp"
                         android:fontFamily="@font/nunitosans_regular"
-                        android:padding="@dimen/d_3dp"
                         android:text="@string/text_media"
                         android:textColor="@color/c_gray_text"
                         android:textSize="12sp" />
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/ll_showhow"
+                    android:id="@+id/ll_actioncreate"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="wrap_content"
                     android:visibility="visible"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center|top"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:src="@mipmap/ic_questionmark"/>
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/ic_actioncreate"/>
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/d_35dp"
-                        android:padding="@dimen/d_3dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginRight="@dimen/d_2dp"
-                        android:text="@string/text_ref_image"
-                        android:gravity="left|center_vertical"
+                        android:text="@string/text_action"
+                        android:gravity="center"
                         android:textSize="12sp"
+                        android:padding="1dp"
                         android:fontFamily="@font/nunitosans_regular"
                         android:textColor="@color/c_gray_text" />
                 </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_showhow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:layout_gravity="center|top"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/ic_questionmark"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/text_ref_image"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:textColor="@color/c_gray_text" />
+
+                </LinearLayout>
+
+
+
+
+
             </LinearLayout>
 
             <EditText

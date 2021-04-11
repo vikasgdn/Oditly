@@ -191,7 +191,7 @@ public class AppDialogs
 
     }
 
-    public static void showForgotPassword(final Activity activity) {
+    public static void showForgotPassword(String email,final Activity activity) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_forgotpass);
@@ -203,7 +203,8 @@ public class AppDialogs
 
         final EditText mEmailET=(EditText)dialog.findViewById(R.id.et_email);
         final TextView mEmailErrorTv=(TextView)dialog.findViewById(R.id.tv_emailerror);
-
+        if (!TextUtils.isEmpty(email))
+            mEmailET.setText(email);
 
         try {
 
@@ -223,9 +224,9 @@ public class AppDialogs
                     {
                         // AppUtils.hideKeyboard(activity);
                         if (activity instanceof SignInEmailActivity)
-                            ((SignInEmailActivity)activity).setOTPServer(mEmailET.getText().toString());
+                            ((SignInEmailActivity)activity).resetPasswordServerData(mEmailET.getText().toString());
                         else
-                            ((SignInPasswordActivity)activity).setOTPServer(mEmailET.getText().toString());
+                            ((SignInPasswordActivity)activity).resetPasswordServerData(mEmailET.getText().toString());
 
                         dialog.dismiss();
                     }
@@ -486,6 +487,14 @@ public class AppDialogs
                     {
                         Intent intent = new Intent(activity, SplashActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    }
+
+                    if(activity instanceof ActionCreateActivity)
+                    {
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        intent.putExtra(AppConstant.FROMWHERE, AppConstant.AUDIT);
                         activity.startActivity(intent);
                         activity.finish();
                     }

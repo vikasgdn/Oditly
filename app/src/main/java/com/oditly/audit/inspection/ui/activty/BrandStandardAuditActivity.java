@@ -247,6 +247,10 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 if(currentBrandStandardAuditAdapter!=null && attachmentCount!=null)
                     currentBrandStandardAuditAdapter.setattachmentCount(Integer.parseInt(attachmentCount), itemClickedPos);
             }
+            else
+            {
+                        /// for action create
+            }
         } catch (Exception e) {
             e.printStackTrace();
             AppLogger.e("AttachmentException", e.getMessage());
@@ -441,6 +445,17 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                         //  Toast.makeText(this,"Coming Soon.. "+bsRefrence.getFile_ext(),Toast.LENGTH_SHORT).show();
                     }
                 }
+                break;
+            case R.id.ll_actioncreate:
+                String questionId=view.getTag().toString();
+                Intent actionPlan = new Intent(context, ActionCreateActivity.class);
+                actionPlan.putExtra(AppConstant.AUDIT_ID, auditId);
+                actionPlan.putExtra(AppConstant.SECTION_GROUPID, sectionGroupId);
+                actionPlan.putExtra(AppConstant.SECTION_ID, sectionId);
+                actionPlan.putExtra(AppConstant.QUESTION_ID, questionId);
+                actionPlan.putExtra(AppConstant.FROMWHERE, "Audit");
+                startActivityForResult(actionPlan, 1021);
+
                 break;
             case R.id.bs_save_btn:
                 AppUtils.hideKeyboard(context, view);

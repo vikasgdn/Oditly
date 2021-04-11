@@ -11,7 +11,6 @@
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_above="@+id/ll_logout"
     >
     <LinearLayout
         android:layout_width="match_parent"
@@ -210,6 +209,7 @@
             android:drawablePadding="@dimen/d_10dp"
             android:layout_marginLeft="@dimen/d_5dp"
             android:gravity="center_vertical"
+            android:visibility="gone"
             android:text="@string/text_feedback"
             android:theme="@style/TextViewAccount"
             />
@@ -223,6 +223,7 @@
             android:drawablePadding="@dimen/d_10dp"
             android:layout_marginLeft="@dimen/d_5dp"
             android:gravity="center_vertical"
+            android:visibility="gone"
             android:text="@string/text_upcominfeature"
             android:theme="@style/TextViewAccount"
             />
@@ -279,6 +280,21 @@
             />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/tv_chatwithus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/c_dark_gray"
+        android:gravity="center_vertical"
+        android:drawableTop="@mipmap/ic_supoort"
+        android:drawablePadding="@dimen/d_5dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/d_90dp"
+        android:layout_marginRight="@dimen/d_20dp"
+        android:text="@string/text_chatwithus"
+        android:theme="@style/TextViewAccount"
+        />
     <include
         android:layout_width="160dp"
         android:layout_height="160dp"

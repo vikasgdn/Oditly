@@ -41,12 +41,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/s_scheduled"
+                android:text="@string/s_create"
                 android:layout_marginTop="@dimen/d_1dp"
                 android:layout_marginBottom="@dimen/d_1dp"
                 android:layout_marginLeft="@dimen/d_1dp"
                 android:gravity="center"
-                android:fontFamily="@font/nunitosans_regular"
+                android:ellipsize="marquee"
+                android:singleLine="true"                android:fontFamily="@font/nunitosans_regular"
                 android:background="@drawable/auditbn_selector"
                 android:padding="@dimen/d_8dp"
                 android:textColor="@color/text_selector"
@@ -61,13 +62,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/s_progress"
+                android:text="@string/text_open"
+                android:ellipsize="marquee"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/d_1dp"
                 android:layout_marginBottom="@dimen/d_1dp"
                 android:background="@drawable/auditbn_selector"
                 android:fontFamily="@font/nunitosans_regular"
                 android:padding="@dimen/d_8dp"
+                android:singleLine="true"
                 android:textColor="@color/text_selector"
                 android:textSize="@dimen/text_size_14"/>
             <View
@@ -82,12 +85,14 @@
                 android:layout_weight="1"
                 android:text="@string/s_overdue"
                 android:gravity="center"
+                android:ellipsize="marquee"
                 android:layout_marginTop="@dimen/d_1dp"
                 android:layout_marginBottom="1dp"
                 android:layout_marginRight="1dp"
                 android:background="@drawable/auditbn_selector"
                 android:fontFamily="@font/nunitosans_regular"
                 android:padding="@dimen/d_8dp"
+                android:singleLine="true"
                 android:textColor="@color/text_selector"
                 android:textSize="@dimen/text_size_14"/>
         </LinearLayout>
@@ -122,7 +127,7 @@
         android:layout_marginTop="@dimen/d_4dp"
         android:layout_marginBottom="@dimen/d_50dp"
         android:fadeScrollbars="false"
-        tools:listitem="@layout/adapter_auditlist"
+        tools:listitem="@layout/adapter_actionplan"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
@@ -149,6 +154,20 @@
             android:textSize="@dimen/text_size_18"
             android:visibility="visible" />
     </RelativeLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="@dimen/d_20dp"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
+        app:fabSize="normal"
+        />
+
     <include
         android:layout_width="@dimen/d_progressbar"
         android:layout_height="@dimen/d_progressbar"

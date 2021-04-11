@@ -75,7 +75,6 @@ public class MainActivity extends BaseActivity
         navigationView.setOnNavigationItemChangedListener(new OnNavigationItemChangeListener() {
             @Override
             public void onNavigationItemChanged(BottomifyNavigationView.NavigationItem navigationItem) {
-               // navigationView.setActiveNavigationIndex(lastSelectedPosition);
                 setScrollableText(navigationItem.getPosition());
             }
         });
@@ -148,16 +147,16 @@ public class MainActivity extends BaseActivity
                 mTitleTV.setText(getResources().getString(R.string.s_analytics));
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, DashboardFragment.newInstance(0)).commitAllowingStateLoss();
                 break;
-            case 2:
+           /* case 2:
               //  mTitleTV.setText(getResources().getString(R.string.text_goto));
                // getSupportFragmentManager().beginTransaction().replace(R.id.container, GoToFragment.newInstance(4)).commitAllowingStateLoss();
                 AppDialogs.showOtpValidateDialog(this);
-                break;
-            case 3:
+                break;*/
+            case 2:
                 mTitleTV.setText(getResources().getString(R.string.s_reports));
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, ReportListFragment.newInstance("")).commitAllowingStateLoss();
                 break;
-            case 4:
+            case 3:
                 mTitleTV.setText(getResources().getString(R.string.text_team));
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, TeamListFragment.newInstance(4)).commitAllowingStateLoss();
                 break;

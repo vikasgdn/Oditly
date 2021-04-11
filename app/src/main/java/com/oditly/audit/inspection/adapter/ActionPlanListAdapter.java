@@ -50,33 +50,63 @@ public class ActionPlanListAdapter extends RecyclerView.Adapter<ActionPlanListAd
 
 
         final ActionInfo auditInfo = mAuditList.get(position);
-        holder.tvAuditName.setText(auditInfo.getAction_name()+"( ID: "+auditInfo.getAudit_id()+")");
-        holder.tvLocation.setText(auditInfo.getCountry_name());
+        holder.tvAuditName.setText(auditInfo.getTitle());
+        holder.tvLocation.setText(auditInfo.getLocation_title());
         holder.mDateTV.setText(AppUtils.getFormatedDate(auditInfo.getPlanned_date()));
-      //  holder.mDeartmentTV.setText(auditInfo.getD);
+        if (auditInfo.getAudit_id()==0)
+            holder.mInspectionORadocTV.setText("Ad Hoc");
+        else
+            holder.mInspectionORadocTV.setText("Inspection: "+auditInfo.getAudit_name());
         holder.mTitleTV.setText(auditInfo.getTitle());
 
         holder.mStatusTV.setText(auditInfo.getStatus_name());
 
+        holder.mLowMediaumHieghTV.setText(auditInfo.getPriority_name());
+
+        if(auditInfo.getPriority_name().equalsIgnoreCase("High")) {
+            holder.mLowMediaumHieghTV.setTextColor(context.getResources().getColor(R.color.c_red));
+            holder.mLowMediaumHieghTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,R.drawable.ic_baseline_flag_red ,0);
+        }
+        else if(auditInfo.getPriority_name().equalsIgnoreCase("Low")) {
+            holder.mLowMediaumHieghTV.setTextColor(context.getResources().getColor(R.color.c_green));
+            holder.mLowMediaumHieghTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,R.drawable.ic_baseline_flag_24 ,0);
+        }
+        else if(auditInfo.getPriority_name().equalsIgnoreCase("Medium")) {
+            holder.mLowMediaumHieghTV.setTextColor(context.getResources().getColor(R.color.c_orange));
+            holder.mLowMediaumHieghTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,R.drawable.ic_baseline_flag_orange ,0);
+        }
+
+
+
         if(auditInfo.getStatus_name().equalsIgnoreCase("pending Approval"))
-            holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_yellow));
+            holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_blue));
         else if(auditInfo.getStatus_name().equalsIgnoreCase("Rejected"))
             holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_red));
         else if(auditInfo.getStatus_name().equalsIgnoreCase("approved"))
             holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_green));
-
-
-
-
-            holder.mActionTV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((OditlyApplication)context.getApplicationContext()).setmActionPlanData(auditInfo);  // seting in application class because we only send limited data using intent
-                    Intent startAudit = new Intent(context, ActionPlanLandingActivity.class);
-                    context.startActivity(startAudit);
-                }
-            });
+        else if(auditInfo.getStatus_name().equalsIgnoreCase("Open"))
+        {
+            holder.mStatusTV.setText("Overdue On "+AppUtils.getFormatedDate(auditInfo.getPlanned_date()));
+            holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_orange));
         }
+        else if(auditInfo.getStatus_name().equalsIgnoreCase("Overdue"))
+        {
+            holder.mStatusTV.setText("Overdue By "+auditInfo.getOverdue_days()+" Days");
+            holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_red));
+        }
+
+
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((OditlyApplication)context.getApplicationContext()).setmActionPlanData(auditInfo);  // seting in application class because we only send limited data using intent
+                Intent startAudit = new Intent(context, ActionPlanLandingActivity.class);
+                context.startActivity(startAudit);
+            }
+        });
+    }
 
 
 
@@ -96,39 +126,26 @@ public class ActionPlanListAdapter extends RecyclerView.Adapter<ActionPlanListAd
         TextView mDateTV;
         TextView mActionTV;
         TextView mTitleTV;
-        TextView mDeartmentTV;
-        LinearLayout reviewerContainer;
+
+        TextView mLowMediaumHieghTV;
+        TextView mInspectionORadocTV;
+        View itemView;
 
         public AuditViewHolder (View itemView) {
             super(itemView);
 
+
+            this.itemView=itemView;
             tvAuditName = itemView.findViewById(R.id.tv_auditname);
             tvLocation = itemView.findViewById(R.id.tv_location);
             mTitleTV = itemView.findViewById(R.id.tv_title);
-            mDeartmentTV = itemView.findViewById(R.id.tv_department);
+            mInspectionORadocTV = itemView.findViewById(R.id.tv_inspectionname);
             mStatusTV = itemView.findViewById(R.id.tv_status);
             mDateTV = itemView.findViewById(R.id.tv_date);
             mActionTV = itemView.findViewById(R.id.tv_resume);
+            mLowMediaumHieghTV=itemView.findViewById(R.id.tv_lowhighmedium);
 
         }
-    }
-
-
-
-    private void notificationDialog() {
-
-        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-
-        dialog.setTitle(R.string.app_name);
-        dialog.setMessage(R.string.text_youarenot);
-
-        dialog.setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        dialog.create().show();
     }
 
 

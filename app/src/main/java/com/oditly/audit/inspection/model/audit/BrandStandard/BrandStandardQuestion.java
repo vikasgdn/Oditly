@@ -8,7 +8,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrandStandardQuestion implements Parcelable {
+public class BrandStandardQuestion {
 
     private int question_id = 0;
     private String question_title = "";
@@ -17,8 +17,7 @@ public class BrandStandardQuestion implements Parcelable {
     private String question_hint = "";
     private int is_required = 0;
     private int has_comment = 0;
-   // private int is_numbered = 0;
-//    private int max_mark = 0;
+    private boolean can_view_create_action_plan;
     private String audit_answer = "";
     private int audit_answer_na = 0;
     private String audit_comment = "";
@@ -30,7 +29,7 @@ public class BrandStandardQuestion implements Parcelable {
     private BrandStandardSlider slider;
     private int media_count = 0;
     private BrandStandardRefrence ref_file;
-
+    private BrandStandardUnit unit;
 
 
     protected BrandStandardQuestion(Parcel in) {
@@ -69,67 +68,11 @@ public class BrandStandardQuestion implements Parcelable {
         this.slider= in.readParcelable(BrandStandardSlider.class.getClassLoader()); //retrieving from parcel
         this.media_count=in.readInt();
         this.ref_file= in.readParcelable(BrandStandardRefrence.class.getClassLoader()); //retrieving from parcel
+        this.unit= in.readParcelable(BrandStandardUnit.class.getClassLoader()); //retrieving from parcel
 
 
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(question_id);
-        dest.writeString(question_title);
-        dest.writeInt(question_type_id);
-        dest.writeString(question_type);
-        dest.writeString(question_hint);
-        dest.writeInt(is_required);
-        dest.writeInt(has_comment);
-       // dest.writeInt(is_numbered);
-        //dest.writeInt(max_mark);
-        dest.writeString(audit_answer);
-        dest.writeInt(audit_answer_na);
-        dest.writeString(audit_comment);
-      //  dest.writeInt(answer_status);
-        dest.writeInt(audit_question_file_cnt);
-        if (options == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(options);
-        }
-        if (audit_option_id == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(audit_option_id);
-        }
-        if (mImageList == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(mImageList);
-        }
-        dest.writeParcelable(slider, flags); // saving object
-        dest.writeInt(media_count);
-        dest.writeParcelable(ref_file, flags); // saving object
-
-    }
-
-    @SuppressWarnings("unused")
-    public static final Creator<BrandStandardQuestion> CREATOR = new Creator<BrandStandardQuestion>() {
-        @Override
-        public BrandStandardQuestion createFromParcel(Parcel in) {
-            return new BrandStandardQuestion(in);
-        }
-
-        @Override
-        public BrandStandardQuestion[] newArray(int size) {
-            return new BrandStandardQuestion[size];
-        }
-    };
 
     public int getQuestion_id() {
         return question_id;
@@ -184,25 +127,6 @@ public class BrandStandardQuestion implements Parcelable {
         return has_comment;
     }
 
-    public void setHas_comment(int has_comment) {
-        this.has_comment = has_comment;
-    }
-
-  /*  public int getIs_numbered() {
-        return is_numbered;
-    }
-
-    public void setIs_numbered(int is_numbered) {
-        this.is_numbered = is_numbered;
-    }
-*/
-  /*  public int getMax_mark() {
-        return max_mark;
-    }
-
-    public void setMax_mark(int max_mark) {
-        this.max_mark = max_mark;
-    }*/
 
     public String getAudit_answer() {
         return audit_answer;
@@ -228,14 +152,6 @@ public class BrandStandardQuestion implements Parcelable {
         this.audit_comment = audit_comment;
     }
 
-  /*  public int getAnswer_status() {
-        return answer_status;
-    }
-
-    public void setAnswer_status(int answer_status) {
-        this.answer_status = answer_status;
-    }
-*/
     public int getAudit_question_file_cnt() {
         return audit_question_file_cnt;
     }
@@ -293,4 +209,19 @@ public class BrandStandardQuestion implements Parcelable {
     }
 
 
+    public BrandStandardUnit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(BrandStandardUnit unit) {
+        this.unit = unit;
+    }
+
+    public boolean isCan_view_create_action_plan() {
+        return can_view_create_action_plan;
+    }
+
+    public void setCan_view_create_action_plan(boolean can_view_create_action_plan) {
+        this.can_view_create_action_plan = can_view_create_action_plan;
+    }
 }

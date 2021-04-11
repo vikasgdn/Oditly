@@ -72,7 +72,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
         findViewById(R.id.tv_termservice).setOnClickListener(this);
         findViewById(R.id.tv_feedback).setOnClickListener(this);
         findViewById(R.id.tv_upcomingfeature).setOnClickListener(this);
-
+        findViewById(R.id.tv_chatwithus).setOnClickListener(this);
     }
     @Override
     protected void initVar() {
@@ -111,7 +111,10 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                    AppUtils.toast(this,getString(R.string.text_coming_soon));
                 break;
             case R.id.tv_changepass:
-                   setOTPServer();
+                Intent intentChangePass = new Intent(AccountProfileActivity.this, ResetPasswordScreen.class);
+                intentChangePass.putExtra("username", AppPreferences.INSTANCE.getUserEmail(this));
+                startActivity(intentChangePass);
+                 //  setOTPServer();
                 break;
             case R.id.tv_feedback:
                 Intent intent2=new Intent(this,FeedbackActivity.class);
@@ -121,6 +124,11 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                 Intent intent3=new Intent(this,UpComingFeatureActivity.class);
                 startActivity(intent3);
                 break;
+            case R.id.tv_chatwithus:
+                Intent callIntent = new Intent(this, ChatSupportActivity.class);
+                startActivity(callIntent);
+                break;
+
         }
 
 

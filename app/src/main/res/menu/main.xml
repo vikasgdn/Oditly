@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-        <item
-            android:id="@+id/item0"
-            android:title="@string/s_schedule"
-            android:icon="@drawable/ic_schedule_png" />
-
-        <item
-            android:id="@+id/item1"
-            android:title="@string/s_analytics"
-            android:icon="@drawable/ic_analytics_png" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/item0"
+        android:title="@string/s_schedule"
+        android:icon="@drawable/ic_schedule_png" />
+
+    <item
+        android:id="@+id/item1"
+        android:title="@string/s_analytics"
+        android:icon="@drawable/ic_analytics_png" />
+
+    <!--<item
         android:id="@+id/item2"
         android:title="@string/text_goto"
-        android:icon="@drawable/ic_goto_png" />
+        android:visible="false"
+        android:icon="@drawable/ic_goto_png" />-->
 
-        <item
-            android:id="@+id/item3"
-            android:title="@string/s_reports"
-            android:icon="@drawable/ic_report_png" />
-     <item
+    <item
+        android:id="@+id/item3"
+        android:title="@string/s_reports"
+        android:icon="@drawable/ic_report_png" />
+    <item
         android:id="@+id/item4"
         android:title="@string/text_team"
         android:icon="@drawable/ic_adduser_png" />
