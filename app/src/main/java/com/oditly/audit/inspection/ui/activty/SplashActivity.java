@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,7 +20,13 @@ import androidx.annotation.NonNull;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
@@ -50,6 +57,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
     private ImageView mLogoImageIV;
     private TextView mAppNameTv;
     private TextView mSloglanTV;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +76,12 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
     protected void initView() {
         super.initView();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         setStatusBarColor("#0B87E4");
 
         findViewById(R.id.btn_signin).setOnClickListener(this);
+        findViewById(R.id.btn_signin_microsoft).setOnClickListener(this);
         findViewById(R.id.tv_schedule).setOnClickListener(this);
 
 
@@ -115,7 +126,12 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
                 Intent intent=new Intent(this,ScheduleDemoActivity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.btn_signin_microsoft:
+                if (firebaseAuth.getCurrentUser()!=null)
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                else
+                    AuthenticateWithMicrosoftOAuth();
+                break;
             case R.id.btn_signin:
                 if (AppPreferences.INSTANCE.isLogin(this)) {
                     Intent intent2 = new Intent(SplashActivity.this, MainActivity.class);
@@ -124,7 +140,6 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
                     Intent intent1 = new Intent(this, SignInEmailActivity.class);
                     startActivity(intent1);
                 }
-
                 break;
 
         }
@@ -252,6 +267,116 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         {
             AppUtils.toast(this, getString(R.string.internet_error));
 
+        }
+    }
+
+
+
+
+    private void AuthenticateWithMicrosoftOAuth() {
+
+        OAuthProvider.Builder provider = OAuthProvider.newBuilder("microsoft.com");
+        // Force re-consent.
+        // provider.addCustomParameter("prompt", "consent");
+        // Target specific email with login hint.
+        //provider.addCustomParameter("login_hint", "sumiran@mismosystems.com");
+        provider.addCustomParameter("tenant", "common");
+
+        /*List<String> scopes =
+                new ArrayList<String>() {
+                    {
+                        add("mail.read");
+                        add("calendars.read");
+                    }
+                };
+
+        provider.setScopes(scopes);*/
+
+
+
+        Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
+        if (pendingResultTask != null) {
+            // There's something already here! Finish the sign-in for your user.
+            pendingResultTask
+                    .addOnSuccessListener(
+                            new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+                                    // User is signed in.
+                                    // IdP data available in
+                                    // authResult.getAdditionalUserInfo().getProfile().
+                                    // The OAuth access token can also be retrieved:
+                                    // authResult.getCredential().getAccessToken().
+                                    // The OAuth ID token can also be retrieved:
+                                    // authResult.getCredential().getIdToken().
+                                }
+                            })
+                    .addOnFailureListener(
+                            new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    AppUtils.toastDisplayForLong(SplashActivity.this, ""+e.getMessage());
+                                }
+                            });
+        } else {
+            // There's no pending result so you need to start the sign-in flow.
+            // See below.
+            firebaseAuth
+                    .startActivityForSignInWithProvider(/* activity= */ this, provider.build())
+                    .addOnSuccessListener(
+                            new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+
+                                    Object[] userProfile = authResult.getAdditionalUserInfo().getProfile().values().toArray();
+                                    String userEmail = (userProfile[5].toString().trim().toLowerCase());
+                                    String username = (userProfile[1].toString().trim());
+
+                                    if (userEmail.contains("oditly") || userEmail.contains("mismo")) {
+
+                                        AppUtils.toastDisplayForLong(SplashActivity.this,"Welcome " + userEmail);
+                                    } else {
+                                        AppUtils.toastDisplayForLong(SplashActivity.this,"The sign-in user's account does not belong to one of the tenants that this Web App accepts users from.");
+                                    }
+
+                                    AppPreferences.INSTANCE.setLogin(true,SplashActivity.this);
+                                    AppPreferences.INSTANCE.setUserEmail(userEmail);
+                                    String []Name=username.split(" ");
+                                    if (Name.length>1) {
+                                        AppPreferences.INSTANCE.setUserFName(Name[0]);
+                                        AppPreferences.INSTANCE.setUserLName(Name[1], SplashActivity.this);
+                                    }
+                                    else  if (Name.length==1)
+                                    {
+                                        AppPreferences.INSTANCE.setUserFName(Name[0]);
+                                    }
+
+                                    GetTokenResult getTokenResult= authResult.getUser().getIdToken(false).getResult();
+                                    String tokenAuth=  getTokenResult.getToken();
+                                    String userId= getTokenResult.getClaims().get("userId").toString();
+                                    String roleId= getTokenResult.getClaims().get("roleId").toString();
+                                    Log.e("USER ID Microsoft ===> ",""+userId);
+
+
+                                    if (!TextUtils.isEmpty(userId))
+                                        AppPreferences.INSTANCE.setUserId(Integer.parseInt(userId), SplashActivity.this);
+                                    if (!TextUtils.isEmpty(roleId))
+                                        AppPreferences.INSTANCE.setClientRoleId(Integer.parseInt(roleId));
+
+                                    AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
+                                    Log.e("USER TOKEN ",""+AppPreferences.INSTANCE.getFirebaseAccessToken(SplashActivity.this));
+                                    AppPreferences.INSTANCE.setLogin(true, SplashActivity.this);
+                                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+
+                                }
+                            })
+                    .addOnFailureListener(
+                            new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    AppUtils.toastDisplayForLong(SplashActivity.this, ""+e.getMessage());
+                                }
+                            });
         }
     }
 

@@ -14,7 +14,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.dialog.AppDialogs;
@@ -150,7 +157,8 @@ public class ResetPasswordScreen extends BaseActivity implements INetworkEvent {
                 }
                 else {*/
                     AppUtils.hideKeyboard(context, view);
-                    resetPasswordServerData();
+                   // resetPasswordServerData();
+                resetUserPassword(username);
                // }
                 break;
             case R.id.iv_header_left:
@@ -188,6 +196,30 @@ public class ResetPasswordScreen extends BaseActivity implements INetworkEvent {
         mOTPErrorTV.setVisibility(View.GONE);
 
     }
+    public void resetUserPassword(String email){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mSpinKitView.setVisibility(View.VISIBLE);
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            mSpinKitView.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Reset password instructions has sent to your email", Toast.LENGTH_SHORT).show();
+                        }else{
+                            mSpinKitView.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Email don't exist", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                mSpinKitView.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void resetPasswordServerData()
     {
         if (NetworkStatus.isNetworkConnected(this)) {

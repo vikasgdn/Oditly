@@ -240,7 +240,7 @@ public enum AppPreferences
     {
         if(mPreferences==null)
             mPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
-        return mPreferences.getString(SharedPreferencesKeys.accessToken.toString(), "");
+        return mPreferences.getString(SharedPreferencesKeys.firebase_accessToken.toString(), "");
     }
 
     public String getAccessToken(Context context)

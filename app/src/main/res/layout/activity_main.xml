@@ -1,67 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/c_white"
-    tools:context=".ui.activty.MainActivity">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:elevation="0dp"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/c_white"
-                app:contentInsetStart="0dp"
-                app:contentInsetEnd="0dp"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:background="@color/c_white" android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout android:theme="@style/AppTheme.AppBarOverlay" android:id="@+id/appbar" android:layout_width="match_parent" android:layout_height="wrap_content" app:elevation="0dp">
+            <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar" android:background="@color/c_white" android:layout_width="match_parent" android:layout_height="?attr/actionBarSize" app:contentInsetEnd="0dp" app:contentInsetStart="0dp" app:popupTheme="@style/AppTheme.PopupOverlay">
                 <include layout="@layout/include_header_text"/>
             </androidx.appcompat.widget.Toolbar>
-
         </com.google.android.material.appbar.AppBarLayout>
-
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/appbar">
-
-        </FrameLayout>
-
-        <View android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="@dimen/d_5dp"
-            android:layout_above="@+id/bottomify_nav"
-            android:background="@color/c_light_gray" />
-
-        <com.volcaniccoder.bottomify.BottomifyNavigationView
-            android:id="@+id/bottomify_nav"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/d_60dp"
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal"
-            app:menu="@menu/main"
-            app:active_color="@color/c_blue"
-            app:passive_color="@color/c_gray_nav"
-            app:pressed_color="@color/c_blue"
-            android:layout_alignParentBottom="true"
-            app:item_text_size="10sp"
-            app:animation_duration="300"
-            app:scale_percent="5" />
-
+        <FrameLayout android:id="@+id/container" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_below="@+id/appbar"/>
+        <View android:background="@color/c_light_gray" android:layout_width="match_parent" android:layout_height="0.5dp" android:layout_marginTop="@dimen/d_5dp" android:layout_above="@+id/bottomify_nav"/>
+        <com.volcaniccoder.bottomify.BottomifyNavigationView android:orientation="horizontal" android:id="@+id/bottomify_nav" android:background="@color/colorPrimary" android:padding="@dimen/d_5dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" app:active_color="@color/c_blue" app:animation_duration="300" app:item_text_size="12sp" app:menu="@menu/main" app:passive_color="@color/c_gray" app:pressed_color="@color/c_blue"/>
     </RelativeLayout>
-
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

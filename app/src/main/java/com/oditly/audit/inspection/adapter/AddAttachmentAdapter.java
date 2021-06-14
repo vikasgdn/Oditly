@@ -210,7 +210,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
 
         String url = NetworkURL.BSDELETEATTACHMENT;
         DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(
-                AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(),"","",
+                AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(),"","",context,
                 stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
     }
@@ -250,7 +250,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
         DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(
                 AppPreferences.INSTANCE.getAccessToken(context), url, auditId,
                 addAttachmentInfo.getAudit_section_file_id(),
-                addAttachmentInfo.getAudit_question_file_id(),
+                addAttachmentInfo.getAudit_question_file_id(),context,
                 stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
     }

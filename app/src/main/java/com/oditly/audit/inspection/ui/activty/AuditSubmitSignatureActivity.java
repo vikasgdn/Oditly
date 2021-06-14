@@ -238,7 +238,7 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
         };
 
         String fileName = "Oditly-" + mAuditId + ".jpeg";
-        AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId,stringListener, errorListener);
+        AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId,this,stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
     }
 

@@ -362,10 +362,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 break;
             case R.id.ll_actioncreate:
                 BrandStandardQuestion bsQuestion = (BrandStandardQuestion) view.getTag();
-                if (bsQuestion == null) {
-                    return;
-                }
-                if (bsQuestion.isCan_create_action_plan()) {
+                if (bsQuestion!=null && bsQuestion.isCan_create_action_plan()) {
                     this.itemClickedPos = bsQuestion.getmClickPosition();
                     Intent actionPlan = new Intent(this.context, ActionCreateActivity.class);
                     actionPlan.putExtra("auditid", this.auditId);
@@ -473,14 +470,14 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
             }
         }
         for (int j = 0; j < brandStandardSection.getSub_sections().size(); j++) {
-            ArrayList<BrandStandardQuestion> brandStandardQuestions = brandStandardSection.
-                    getSub_sections().get(j).getQuestions();
+            ArrayList<BrandStandardQuestion> brandStandardQuestions = brandStandardSection.getSub_sections().get(j).getQuestions();
             for (int i = 0; i < brandStandardQuestions.size(); i++) {
                 //totalQuestionCount++;
                 BrandStandardQuestion brandStandardQuestion = brandStandardQuestions.get(i);
 
                 if (!(brandStandardQuestion.getAudit_answer_na() == 1)) {
-                    if (brandStandardQuestion.getQuestion_type().equals("radio")) {
+                    if (brandStandardQuestion.getQuestion_type().equals("radio"))
+                    {
                         totalMarks = totalMarks + brandStandardQuestion.getOptions().get(0).getOption_mark();
                     } else {
                         for (int k = 0; k < brandStandardQuestion.getOptions().size(); k++) {

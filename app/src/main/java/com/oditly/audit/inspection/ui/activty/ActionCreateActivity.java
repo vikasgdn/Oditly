@@ -49,7 +49,6 @@ import com.oditly.audit.inspection.network.NetworkServiceMultipart;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.network.apirequest.AddAdHocActionPlan;
-import com.oditly.audit.inspection.network.apirequest.CreateActionPlanAdHocAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
@@ -277,8 +276,8 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 String all = mAuditorNameET.getText().toString();
                 if (TextUtils.isEmpty(title))
                     mTitleErrorTV.setVisibility(View.VISIBLE);
-               // else if (TextUtils.isEmpty(details))
-                //    mDetailsErrorTV.setVisibility(View.VISIBLE);
+                    // else if (TextUtils.isEmpty(details))
+                    //    mDetailsErrorTV.setVisibility(View.VISIBLE);
                 else if (TextUtils.isEmpty(dueDate))
                     mDueDateErrorTV.setVisibility(View.VISIBLE);
                 else if (all.equalsIgnoreCase("All"))
@@ -287,7 +286,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                     if (mFromWhere.equalsIgnoreCase("Audit"))
                         postActionCreateServerDataUsingAuditID();
                     else
-                      //  uploadMediaFileAttachment();
+                        //  uploadMediaFileAttachment();
                         postActionCreateServerData();
 
                 }
@@ -524,13 +523,13 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 JSONObject object = new JSONObject(response);
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
                 if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                    if (mFromWhere.equalsIgnoreCase("Audit")) {
+                    if (this.mFromWhere.equalsIgnoreCase("Audit")) {
                         AppUtils.toast(this, "Action has been created");
+                        setResult(RESULT_OK, new Intent());
                         finish();
-                    }
-                    else
+                    } else {
                         AppDialogs.messageDialogWithOKButton(this, "Action has been created");
-
+                    }
                 } else
                     AppUtils.toastDisplayForLong(this, message);
             } catch (Exception e) {
@@ -717,7 +716,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
             {
                 mURIimageList.addAll(uriList);
                 for (int i=0;i<mURIimageList.size();i++)
-                  mMediaFileList.add(new File(getPath(mURIimageList.get(i))));
+                    mMediaFileList.add(new File(getPath(mURIimageList.get(i))));
 
                 mMediaAdapter.notifyDataSetChanged();
             } else {

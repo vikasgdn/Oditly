@@ -556,7 +556,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         else
             url = NetworkURL.BSATTACHMENT + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId + "&question_id=" + questionId;
 
-        GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(context), url, stringListener, errorListener);
+        GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(context),context, url, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
@@ -597,14 +597,14 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         if (attachType.equalsIgnoreCase("bsQuestion")) {
             AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
                     AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BSATTACHMENT, fileName, imageByteData, auditId,
-                    sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, type, stringListener, errorListener);
+                    sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, type,this, stringListener, errorListener);
             VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
         }
         else
         {
             AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
                     AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BSATTACHMENT, fileName, imageByteData, auditId,
-                    sectionGroupId, sectionId, description, "0", latitude, longitude,type,
+                    sectionGroupId, sectionId, description, "0", latitude, longitude,type,this,
                     stringListener, errorListener);
             VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
         }

@@ -47,7 +47,8 @@ public class NetworkConstant
     public static final String REQ_PARAM_SECTION_GROUP_ID = "section_group_id";
     public static final String REQ_PARAM_QUSITION_ID = "question_id";
     public static final String REQ_PARAM_COMPLETE_MEDIA_COUNT = "media_count";
-
+    public static final String REQ_PARAM_EMAIL = "email";
+    public static final String REQ_FIREBASE_ACCESS_TOKEN = "Authorization";
 
     //"audit_id": 1,"action_plan_id": 1,"complete_comment": ""
 }

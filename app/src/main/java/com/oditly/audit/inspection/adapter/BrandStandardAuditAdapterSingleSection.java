@@ -286,6 +286,30 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                 }
             });
         }
+        else if(questionType.equalsIgnoreCase("target"))
+        {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+                holder.mNumberDecAnsweET.setText(brandStandardQuestion.getAudit_answer());
+                holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
+            }
+            setOtherViewHide(holder);
+            holder.mNumberDecAnsweET.setHint("Target: "+brandStandardQuestion.getMax_mark());
+            holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
+            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable)
+                {
+                    clickedOnAnswerTpye();
+                    brandStandardQuestion.setAudit_answer("" + editable.toString());
+
+                }
+            });
+        }
         else if(questionType.equalsIgnoreCase("radio"))
         {
             // for radio type question

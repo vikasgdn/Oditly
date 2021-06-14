@@ -8,8 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
@@ -85,8 +92,11 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
                     mEmailErrorTV.setVisibility(View.GONE);
                     AppUtils.hideKeyboard(this, view);
                     validateEmailServerData();
+                   /* Intent intent = new Intent(this, SignInPasswordActivity.class);
+                    intent.putExtra(AppConstant.EMAIL, mEmailET.getText().toString());
+                    startActivity(intent);
+             */
                 }
-                //  overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                 break;
             case R.id.tv_forgotpass:
                 AppDialogs.showForgotPassword(mEmailET.getText().toString(),this);
@@ -113,7 +123,8 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
             // showAppProgressDialog();
             mSpinKitView.setVisibility(View.VISIBLE);
             Map<String, String> params = new HashMap<>();
-            params.put(NetworkConstant.REQ_PARAM_USER, mEmailET.getText().toString());
+            params.put(NetworkConstant.REQ_PARAM_EMAIL, mEmailET.getText().toString());
+          //  params.put(NetworkConstant.REQ_PARAM_USER, mEmailET.getText().toString());
             params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
             NetworkService networkService = new NetworkService(NetworkURL.CHECK_USER, NetworkConstant.METHOD_POST, this,this);
             networkService.call(params);
@@ -143,17 +154,43 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
     {
         if (NetworkStatus.isNetworkConnected(this)) {
 
+            resetUserPassword(userEmail);
             // showAppProgressDialog();
-            mSpinKitView.setVisibility(View.VISIBLE);
+         /*   mSpinKitView.setVisibility(View.VISIBLE);
             Map<String, String> params = new HashMap<>();
             params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
             params.put(NetworkConstant.REQ_PARAM_USER, userEmail);
             NetworkService networkService = new NetworkService(NetworkURL.RESET_PASSWORD_NEW, NetworkConstant.METHOD_POST, this,this);
-            networkService.call(params);
+            networkService.call(params);*/
         } else
 
             AppUtils.toast(this, getString(R.string.internet_error));
 
+    }
+
+
+    public void resetUserPassword(String email){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mSpinKitView.setVisibility(View.VISIBLE);
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            mSpinKitView.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Reset password instructions has sent to your email", Toast.LENGTH_SHORT).show();
+                        }else{
+                            mSpinKitView.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Email don't exist", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                mSpinKitView.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

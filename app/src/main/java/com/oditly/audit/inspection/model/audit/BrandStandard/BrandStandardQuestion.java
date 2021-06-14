@@ -31,6 +31,7 @@ public class BrandStandardQuestion {
     private BrandStandardSlider slider;
     private BrandStandardAuditAdapter standardAuditAdapter;
     private BrandStandardUnit unit;
+    private String max_mark;
 
     public int getQuestion_id() {
         return this.question_id;
@@ -226,5 +227,13 @@ public class BrandStandardQuestion {
 
     public void setStandardAuditAdapter(BrandStandardAuditAdapter standardAuditAdapter2) {
         this.standardAuditAdapter = standardAuditAdapter2;
+    }
+
+    public String getMax_mark() {
+        return max_mark;
+    }
+
+    public void setMax_mark(String max_mark) {
+        this.max_mark = max_mark;
     }
 }

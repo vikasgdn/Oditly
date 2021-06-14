@@ -88,7 +88,7 @@ public class NetworkServiceMultipart {
                         .url(NetworkURL.ACTION_PLAN_ADD)
                         .method("POST", body)
                         .addHeader("access-token", AppPreferences.INSTANCE.getAccessToken(mContext))
-                        .addHeader("Authorization","Bearer "+AppPreferences.INSTANCE.getAccessToken(mContext))
+                        .addHeader("Authorization",AppPreferences.INSTANCE.getFirebaseAccessToken(mContext))
                         .build();
 
                 Log.e("MULTIPART=====> ",""+body.toString());

@@ -1,8 +1,12 @@
 package com.oditly.audit.inspection.network.apirequest;
 
+import android.content.Context;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 
@@ -32,7 +36,7 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
 
     HashMap<String, String> headers = new HashMap<String, String>();
 
-    public BSSaveSubmitJsonRequest(String accessToken, String url, JSONObject jsonRequest,
+    public BSSaveSubmitJsonRequest(String accessToken, String url, JSONObject jsonRequest, Context context,
                                    Response.Listener<JSONObject> listener,
                                    Response.ErrorListener errorListener) {
         super(Method.POST, url, jsonRequest, listener, errorListener);
@@ -41,6 +45,8 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
         headers.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headers.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headers.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
+        headers.put(NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN, AppPreferences.INSTANCE.getFirebaseAccessToken(context));
+
     }
 
     public static JSONObject createInput(String auditId, String auditDate, String save, JSONArray answer) {

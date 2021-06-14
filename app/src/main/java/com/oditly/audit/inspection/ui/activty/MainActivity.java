@@ -3,15 +3,24 @@ package com.oditly.audit.inspection.ui.activty;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.PointerIconCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.ui.fragment.DashboardFragment;
 import com.oditly.audit.inspection.ui.fragment.LandingFragment;
 import com.oditly.audit.inspection.ui.fragment.ReportListFragment;
@@ -125,6 +134,26 @@ public class MainActivity extends BaseActivity {
         } else {
             this.mTitleTV.setText(getResources().getString(R.string.text_team));
             getSupportFragmentManager().beginTransaction().replace(R.id.container, TeamListFragment.newInstance(4)).commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (mUser!=null) {
+            mUser.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String idToken = task.getResult().getToken();
+                                Log.e("======TOKEN START ", "" + idToken);
+                                AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer " + idToken, getApplicationContext());// ...
+                            } else {
+                                Log.e("======TOKEN ", "ErROR");
+                            }
+                        }
+                    });
         }
     }
 

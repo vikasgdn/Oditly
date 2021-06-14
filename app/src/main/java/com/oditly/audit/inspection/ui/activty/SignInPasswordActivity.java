@@ -16,12 +16,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.OAuthProvider;
 import com.google.gson.GsonBuilder;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
@@ -84,6 +88,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
         mSignInBtn.setOnClickListener(this);
         mEyesIV.setOnClickListener(this);
         firebaseAuth = FirebaseAuth.getInstance();
+
     }
 
     @Override
@@ -101,8 +106,8 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                 else {
                     mPassworderrorTV.setVisibility(View.GONE);
                     AppUtils.hideKeyboard(this, view);
-                   // validateuserCredentialsData();
-
+                  //  validateuserCredentialsData();
+                    mSpinKitView.setVisibility(View.VISIBLE);
                     firebaseLogin(mEmailID,mPasswordET.getText().toString());
                 }
                 // overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
@@ -148,13 +153,14 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
     {
         if (NetworkStatus.isNetworkConnected(this)) {
 
+            resetUserPassword(userEmail);
             // showAppProgressDialog();
-            mSpinKitView.setVisibility(View.VISIBLE);
+          /*  mSpinKitView.setVisibility(View.VISIBLE);
             Map<String, String> params = new HashMap<>();
             params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
             params.put(NetworkConstant.REQ_PARAM_USER, userEmail);
             NetworkService networkService = new NetworkService(NetworkURL.RESET_PASSWORD_NEW, NetworkConstant.METHOD_POST, this,this);
-            networkService.call(params);
+            networkService.call(params);*/
         } else
 
             AppUtils.toast(this, getString(R.string.internet_error));
@@ -196,7 +202,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                         AppPreferences.INSTANCE.setLogin(true, this);
                         AppPreferences.INSTANCE.setAccessToken(signInRootObject.getData().getAccess_token(), this);
                         AppPreferences.INSTANCE.setUserRole(signInRootObject.getData().getRole_id(), this);
-                        AppPreferences.INSTANCE.setUserId(signInRootObject.getData().getUser_id(), this);
+                        // AppPreferences.INSTANCE.setUserId(signInRootObject.getData().getUser_id(), this);
                         AppPreferences.INSTANCE.setUserPic(signInRootObject.getData().getImage());
                         AppPreferences.INSTANCE.setUserEmail(signInRootObject.getData().getEmail());
                         AppPreferences.INSTANCE.setUserFName(signInRootObject.getData().getFname());
@@ -270,23 +276,156 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
     }
 
     private void firebaseLogin(String email,String pass) {
-
         firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(SignInPasswordActivity.this, new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
+
+                mSpinKitView.setVisibility(View.GONE);
                 if (!task.isSuccessful()) {
-                    Toast.makeText(SignInPasswordActivity.this, "Please enter valid username and password", Toast.LENGTH_SHORT).show();
+                    AppUtils.toastDisplayForLong(SignInPasswordActivity.this, "Please enter valid username and password");
                 } else {
 
                     FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
+
+                    AppPreferences.INSTANCE.setUserPic(firebaseUser.getPhotoUrl().toString());
+                    AppPreferences.INSTANCE.setUserEmail(firebaseUser.getEmail());
+                    String fullName=firebaseUser.getDisplayName();
+                    String []Name=fullName.split(" ");
+                    if (Name.length>1) {
+                        AppPreferences.INSTANCE.setUserFName(Name[0]);
+                        AppPreferences.INSTANCE.setUserLName(Name[1], SignInPasswordActivity.this);
+                    }
+                    else  if (Name.length==1)
+                    {
+                        AppPreferences.INSTANCE.setUserFName(Name[0]);
+                    }
+                    Log.e("USER ID TOKEN ",""+firebaseUser.getIdToken(false).getResult().getToken());
+
                     Task<GetTokenResult> token=   firebaseUser.getIdToken(false);
-                     String tokenAuth=  token.getResult().getToken();
-                     AppPreferences.INSTANCE.setFirebaseAccessToken(tokenAuth,getApplicationContext());
-                     Log.e("USER TOKEN ",""+tokenAuth);
-                  //  startActivity(new Intent(SignInPasswordActivity.this, MainActivity.class));
+                    String tokenAuth=  token.getResult().getToken();
+                    String userId= token.getResult().getClaims().get("userId").toString();
+                    String roleId= token.getResult().getClaims().get("roleId").toString();
+                    if (!TextUtils.isEmpty(userId))
+                        AppPreferences.INSTANCE.setUserId(Integer.parseInt(userId), SignInPasswordActivity.this);
+                    if (!TextUtils.isEmpty(roleId))
+                        AppPreferences.INSTANCE.setClientRoleId(Integer.parseInt(roleId));
+
+                    AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
+                    Log.e("USER TOKEN ",""+AppPreferences.INSTANCE.getFirebaseAccessToken(SignInPasswordActivity.this));
+                    AppPreferences.INSTANCE.setLogin(true, SignInPasswordActivity.this);
+                    startActivity(new Intent(SignInPasswordActivity.this, MainActivity.class));
                 }
             }
         });
     }
 
+
+    private void AuthenticateWithMicrosoftOAuth() {
+
+        OAuthProvider.Builder provider = OAuthProvider.newBuilder("microsoft.com");
+        // Force re-consent.
+        // provider.addCustomParameter("prompt", "consent");
+        // Target specific email with login hint.
+        //provider.addCustomParameter("login_hint", "sumiran@mismosystems.com");
+        provider.addCustomParameter("tenant", "common");
+
+        /*List<String> scopes =
+                new ArrayList<String>() {
+                    {
+                        add("mail.read");
+                        add("calendars.read");
+                    }
+                };
+
+        provider.setScopes(scopes);*/
+
+        FirebaseAuth firebaseAuth;
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
+        if (pendingResultTask != null) {
+            // There's something already here! Finish the sign-in for your user.
+            pendingResultTask
+                    .addOnSuccessListener(
+                            new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+                                    // User is signed in.
+                                    // IdP data available in
+                                    // authResult.getAdditionalUserInfo().getProfile().
+                                    // The OAuth access token can also be retrieved:
+                                    // authResult.getCredential().getAccessToken().
+                                    // The OAuth ID token can also be retrieved:
+                                    // authResult.getCredential().getIdToken().
+                                }
+                            })
+                    .addOnFailureListener(
+                            new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle failure.
+                                }
+                            });
+        } else {
+            // There's no pending result so you need to start the sign-in flow.
+            // See below.
+            firebaseAuth
+                    .startActivityForSignInWithProvider(/* activity= */ this, provider.build())
+                    .addOnSuccessListener(
+                            new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+                                    // User is signed in.
+                                    // IdP data available in
+                                    // authResult.getAdditionalUserInfo().getProfile().
+                                    // The OAuth access token can also be retrieved:
+                                    // authResult.getCredential().getAccessToken().
+                                    // The OAuth ID token can also be retrieved:
+                                    // authResult.getCredential().getIdToken().
+
+                                    Object[] userProfile = authResult.getAdditionalUserInfo().getProfile().values().toArray();
+                                    String userEmail = (userProfile[5].toString().trim().toLowerCase());
+
+
+                                    if (userEmail.contains("oditly") || userEmail.contains("mismo")) {
+
+                                        AppUtils.toastDisplayForLong(SignInPasswordActivity.this,"Welcome " + userEmail);
+                                    } else {
+                                        AppUtils.toastDisplayForLong(SignInPasswordActivity.this,"The sign-in user's account does not belong to one of the tenants that this Web App accepts users from.");
+                                    }
+                                }
+                            })
+                    .addOnFailureListener(
+                            new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle failure.
+                                }
+                            });
+        }
+    }
+
+    public void resetUserPassword(String email){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mSpinKitView.setVisibility(View.VISIBLE);
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            mSpinKitView.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Reset password instructions has sent to your email", Toast.LENGTH_SHORT).show();
+                        }else{
+                            mSpinKitView.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Email don't exist", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                mSpinKitView.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

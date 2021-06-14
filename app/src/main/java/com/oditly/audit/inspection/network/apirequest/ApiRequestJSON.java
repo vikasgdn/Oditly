@@ -38,7 +38,7 @@ public class ApiRequestJSON extends BaseJsonObjectRequest {
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, "android");
         headerParams.put(REQ_PARAM_DEVICE_VERSION, "2");
-        headerParams.put("Authorization","Bearer "+AppPreferences.INSTANCE.getAccessToken(context));
+        headerParams.put("Authorization",AppPreferences.INSTANCE.getFirebaseAccessToken(context));
 
         AppLogger.e("API PARAMS URL ",url+" || "+param);
         AppLogger.e("API HEADERS", headerParams.toString());

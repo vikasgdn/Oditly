@@ -164,7 +164,7 @@
             android:hint="Type your answer"
             android:inputType="number|numberDecimal|numberSigned"
             android:textSize="@dimen/text_size_14"
-            android:gravity="left"
+            android:gravity="left|center_vertical"
             android:padding="@dimen/d_5dp"
             android:imeOptions="actionNone"
             android:minLines="2"

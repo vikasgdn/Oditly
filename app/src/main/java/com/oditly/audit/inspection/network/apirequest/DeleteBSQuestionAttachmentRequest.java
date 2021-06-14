@@ -1,7 +1,11 @@
 package com.oditly.audit.inspection.network.apirequest;
 
+import android.content.Context;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 
@@ -24,7 +28,7 @@ public class DeleteBSQuestionAttachmentRequest extends BaseStringRequest {
 
 
     public DeleteBSQuestionAttachmentRequest(String accessToken, String url, String auditId,
-                                             int sectionFileId, int questionFileId,
+                                             int sectionFileId, int questionFileId, Context context,
                                              Response.Listener<String> listener,
                                              Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
@@ -35,6 +39,7 @@ public class DeleteBSQuestionAttachmentRequest extends BaseStringRequest {
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
+        headerParams.put(NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN, AppPreferences.INSTANCE.getFirebaseAccessToken(context));
 
         AppLogger.e("AttachmentParam", ""+params);
         AppLogger.e("AttachmentHeader", ""+headerParams);

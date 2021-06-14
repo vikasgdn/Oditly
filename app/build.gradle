@@ -9,8 +9,8 @@ android {
         applicationId "com.oditly.audit.inspection"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1020
-        versionName "120"
+        versionCode 1022
+        versionName "122"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -85,6 +85,8 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth'
 
+
+    implementation "androidx.browser:browser:1.3.0"
 
 
 

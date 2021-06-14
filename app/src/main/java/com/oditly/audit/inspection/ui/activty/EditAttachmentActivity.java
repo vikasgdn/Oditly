@@ -328,7 +328,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         String url = NetworkURL.BSEDITATTACHMENT;
         EditBSAttachmentRequest editBSAttachmentRequest = new EditBSAttachmentRequest(
                 AppPreferences.INSTANCE.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                addAttachmentInfo.getAudit_section_file_id(), attachmentDescription.getText().toString(), isCritical, stringListener, errorListener);
+                addAttachmentInfo.getAudit_section_file_id(), attachmentDescription.getText().toString(), isCritical,context, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
     }
 
@@ -372,7 +372,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         String url = NetworkURL.BSEDITATTACHMENT;
         EditBSQuestionAttachmentRequest editBSAttachmentRequest = new EditBSQuestionAttachmentRequest(
                 AppPreferences.INSTANCE.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), attachmentDescription.getText().toString(), isCritical, stringListener, errorListener);
+                addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), attachmentDescription.getText().toString(), isCritical,this, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
     }
 

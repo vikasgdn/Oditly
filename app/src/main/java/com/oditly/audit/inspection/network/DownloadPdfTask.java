@@ -74,6 +74,8 @@ public class DownloadPdfTask {
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();//Open Url Connection
                 httpURLConnection.setRequestMethod("GET");//Set Request Method to "GET" since we are grtting data
                 httpURLConnection.setRequestProperty ("access-token", AppPreferences.INSTANCE.getAccessToken(context));
+                httpURLConnection.setRequestProperty (NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN, AppPreferences.INSTANCE.getFirebaseAccessToken(context));
+
                 httpURLConnection.setDoOutput(false);//connect the URL Connection
 
                 //If Connection response is not OK then show Logs

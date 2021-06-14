@@ -8,13 +8,17 @@ package com.oditly.audit.inspection.network;
 public class NetworkURL {
 
     //API URL'S LIVE SERVER
-  //  public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
-   // public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
+    public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
+    public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
+
+    //API URL'S STAGE SERVER
+  //  public static final String API_BASE_URL_NEW= "https://api.stage.account.oditly.com/";
+   //  public static final String API_BASE_URL = "https://api.stage.account.oditly.com/m/";
 
 
     //API URL'S  TEST SERVER
-    public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
-    public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
+   // public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
+   // public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
 
 
 
@@ -45,7 +49,7 @@ public class NetworkURL {
     public static final String GET_REPORT_URL=API_BASE_URL_NEW+"report/ia/audit/dashboard/pdf?audit_id=";
     public static final String GET_DASHBOARD_URL=API_BASE_URL_NEW+"ia/report/dashboard?";
     public static final String AUDIT_LOCATION_LIST =API_BASE_URL+"filter/location?";
-    public static final String GET_AUDITCREATEFILTER_URL=API_BASE_URL_NEW+ "/internal/audit/create?location_id=";
+    public static final String GET_AUDITCREATEFILTER_URL=API_BASE_URL_NEW+ "internal/audit/create?location_id=";
     public static final String POST_AUDIT_ADD_URL=API_BASE_URL_NEW+ "internal/audit";
     public static final String GET_ACTION_FILTER_URL=API_BASE_URL_NEW+ "ia/action-plan/create?audit_id=";
     public static final String POST_ACTION_ADD_URL=API_BASE_URL_NEW+ "ia/action-plan";

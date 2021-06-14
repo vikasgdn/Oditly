@@ -5,6 +5,7 @@ import android.content.Context;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
@@ -35,7 +36,7 @@ public class ApiRequest extends BaseStringRequest {
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, "android");
         headerParams.put(REQ_PARAM_DEVICE_VERSION, "2");
-        headerParams.put("Authorization","Bearer "+AppPreferences.INSTANCE.getAccessToken(context));
+        headerParams.put(NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN,AppPreferences.INSTANCE.getFirebaseAccessToken(context));
 
         AppLogger.e("API PARAMS URL ",url+" || "+ params.toString());
         AppLogger.e("API HEADERS", headerParams.toString());

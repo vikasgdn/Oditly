@@ -46,7 +46,7 @@ public class QuestionData extends IntentService {
             }
         };
         String questionListUrl = NetworkURL.BRANDSTANDARD + "?" + "audit_id=" + auditID ;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(this), questionListUrl, stringListener, errorListener);
+        GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(this),this, questionListUrl, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(getApplicationContext()).addToRequestQueue(getReportRequest);
     }
 

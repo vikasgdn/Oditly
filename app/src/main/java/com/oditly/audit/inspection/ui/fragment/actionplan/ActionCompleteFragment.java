@@ -192,7 +192,7 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
             }
         };
         String accessToken = AppPreferences.INSTANCE.getAccessToken(this.mActivity);
-        VolleyNetworkRequest.getInstance(this.mActivity).addToRequestQueue(new AddActionAttachmentRequest(accessToken, NetworkURL.POST_ACTIONFILE_URL, "Oditly-" + System.currentTimeMillis(), imageByteData, "" + this.mAuditInfoActionPlanData.getAudit_id(), "" + this.mAuditInfoActionPlanData.getAction_plan_id(), stringListener, errorListener));
+        VolleyNetworkRequest.getInstance(this.mActivity).addToRequestQueue(new AddActionAttachmentRequest(accessToken, NetworkURL.POST_ACTIONFILE_URL, "Oditly-" + System.currentTimeMillis(), imageByteData, "" + this.mAuditInfoActionPlanData.getAudit_id(), "" + this.mAuditInfoActionPlanData.getAction_plan_id(),getContext(), stringListener, errorListener));
     }
 
     private void openMediaDialog() {

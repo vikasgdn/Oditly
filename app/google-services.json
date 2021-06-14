@@ -37,6 +37,14 @@
             {
               "client_id": "739722738543-hhav6po72r5erdovfleg6b6l2hlndv27.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "739722738543-9utm7nqlkkjirdooj8h32ns6f122ijd0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.oditly.audit.inspection",
+                "app_store_id": "1519558914"
+              }
             }
           ]
         }

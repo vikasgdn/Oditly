@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.dialog.AppDialogs;
@@ -100,21 +101,21 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                 AppDialogs.languageDialog(this);
                 break;
             case R.id.tv_support:
-                 Intent intent=new Intent(this, SupportActivity.class);
-                 startActivity(intent);
-                 break;
+                Intent intent=new Intent(this, SupportActivity.class);
+                startActivity(intent);
+                break;
             case R.id.tv_privacy:
                 Intent intent1=new Intent(this, PrivacyPolicyActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.tv_termservice:
-                   AppUtils.toast(this,getString(R.string.text_coming_soon));
+                AppUtils.toast(this,getString(R.string.text_coming_soon));
                 break;
             case R.id.tv_changepass:
                 Intent intentChangePass = new Intent(AccountProfileActivity.this, ResetPasswordScreen.class);
                 intentChangePass.putExtra("username", AppPreferences.INSTANCE.getUserEmail(this));
                 startActivity(intentChangePass);
-                 //  setOTPServer();
+                //  setOTPServer();
                 break;
             case R.id.tv_feedback:
                 Intent intent2=new Intent(this,FeedbackActivity.class);
@@ -168,7 +169,9 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                 @Override
                 public void onClick(View v) {
 
-                    logOutServerData();
+                    wipeDataAfterLogout();
+                    FirebaseAuth.getInstance().signOut();
+                    //logOutServerData();
                     dialog.dismiss();
                 }
             });
@@ -184,7 +187,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
     private void logOutServerData()
     {
         if (NetworkStatus.isNetworkConnected(this)) {
-          //  showAppProgressDialog();
+            //  showAppProgressDialog();
             mProgressBarRL.setVisibility(View.VISIBLE);
             NetworkService networkService = new NetworkService(NetworkURL.LOGOUT, NetworkConstant.METHOD_POST, this ,this);
             networkService.call(new HashMap<String, String>());
@@ -207,16 +210,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                 JSONObject object = new JSONObject(response);
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
                 if (object.getString(AppConstant.RES_KEY_ERROR).equals(AppConstant.ATTRIBUTE_FALSE)) {
-                    AppPreferences.INSTANCE.setLogin(false, this);
-                    AppPreferences.INSTANCE.setAccessToken("", this);
-                    AppUtils.toast(AccountProfileActivity.this, message);
-                    AppPreferences.INSTANCE.clearPreferences();
-
-
-                    Intent intent = new Intent(AccountProfileActivity.this, SplashActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
+                    wipeDataAfterLogout();
 
                 } else {
                     AppUtils.toast(AccountProfileActivity.this, message);
@@ -259,6 +253,19 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
         mProgressBarRL.setVisibility(View.GONE);
 
 
+    }
+
+    private void wipeDataAfterLogout() {
+        AppPreferences.INSTANCE.setLogin(false, this);
+        AppPreferences.INSTANCE.setAccessToken("", this);
+        AppUtils.toast(AccountProfileActivity.this, "SignOut Successfully");
+        AppPreferences.INSTANCE.clearPreferences();
+
+
+        Intent intent = new Intent(AccountProfileActivity.this, SplashActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     @Override

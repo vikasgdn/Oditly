@@ -359,7 +359,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         String fileName = "Oditly-"+AppUtils.getDate(Calendar.getInstance().getTime());
         UpdateQuestionAttachmentRequest addBSAttachmentRequest = new UpdateQuestionAttachmentRequest(
                 AppPreferences.INSTANCE.getAccessToken(this), url, fileName, imageByteData, mAuditId,
-                mSectionGroupID, mSectionID, mQuestionID, mQuestionFileID,stringListener, errorListener);
+                mSectionGroupID, mSectionID, mQuestionID, mQuestionFileID,this,stringListener, errorListener);
         VolleyNetworkRequest.getInstance(this).addToRequestQueue(addBSAttachmentRequest);
     }
 

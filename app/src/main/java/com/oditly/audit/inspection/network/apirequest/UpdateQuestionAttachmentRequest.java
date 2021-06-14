@@ -1,7 +1,11 @@
 package com.oditly.audit.inspection.network.apirequest;
 
+import android.content.Context;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 
@@ -28,7 +32,7 @@ public class UpdateQuestionAttachmentRequest extends BaseStringRequest {
 
     public UpdateQuestionAttachmentRequest(String accessToken, String url, String fileName, byte[] byteData,
                                            String auditId, String sectionGroupId, String sectionId,
-                                           String questionId, String questFileId,
+                                           String questionId, String questFileId, Context context,
                                            Response.Listener<String> listener,
                                            Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
@@ -41,6 +45,7 @@ public class UpdateQuestionAttachmentRequest extends BaseStringRequest {
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
+        headerParams.put(NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN, AppPreferences.INSTANCE.getFirebaseAccessToken(context));
 
         DataPart dataPart = new DataPart();
             fileName=fileName+".jpeg";

@@ -322,5 +322,6 @@
     <string name="text_chatwithus">Chat with us</string>
     <string name="text_entercount">Enter Count</string>
     <string name="s_create">Create</string>
+    <string name="s_signin_microsoft">Sign in with Microsoft</string>
 
 </resources>

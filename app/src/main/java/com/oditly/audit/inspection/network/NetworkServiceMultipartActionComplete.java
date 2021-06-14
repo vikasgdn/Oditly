@@ -74,7 +74,7 @@ public class NetworkServiceMultipartActionComplete {
                         .url(NetworkURL.ACTION_PLAN_COMPLETE)
                         .method("POST", body)
                         .addHeader("access-token", AppPreferences.INSTANCE.getAccessToken(NetworkServiceMultipartActionComplete.this.mContext))
-                        .addHeader("Authorization","Bearer "+AppPreferences.INSTANCE.getAccessToken(mContext))
+                        .addHeader("Authorization",AppPreferences.INSTANCE.getFirebaseAccessToken(mContext))
                         .build();
                 Log.e("MULTIPART=====> ", "" + body.toString());
                // Log.e("MULTIPART=====> ", "https://api.account.oditly.com/ia/action-plan");
