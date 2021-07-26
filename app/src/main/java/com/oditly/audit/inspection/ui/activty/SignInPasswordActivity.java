@@ -70,7 +70,8 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
     }
 
     @Override
-    protected void initView() {
+    protected void initView()
+    {
         super.initView();
         findViewById(R.id.ti_email).setVisibility(View.GONE);
         findViewById(R.id.tv_emailerror).setVisibility(View.GONE);
@@ -195,7 +196,8 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
             try {
                 JSONObject object = new JSONObject(response);
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
-                if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR))
+                {
                     SignInRootObject signInRootObject = new GsonBuilder().create().fromJson(object.toString(), SignInRootObject.class);
                     if (signInRootObject.getData() != null) {
                         AppUtils.toast(this, message);
@@ -311,7 +313,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                         AppPreferences.INSTANCE.setClientRoleId(Integer.parseInt(roleId));
 
                     AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
-                    Log.e("USER TOKEN ",""+AppPreferences.INSTANCE.getFirebaseAccessToken(SignInPasswordActivity.this));
+                    //Log.e("USER TOKEN ",""+AppPreferences.INSTANCE.getFirebaseAccessToken(SignInPasswordActivity.this));
                     AppPreferences.INSTANCE.setLogin(true, SignInPasswordActivity.this);
                     startActivity(new Intent(SignInPasswordActivity.this, MainActivity.class));
                 }

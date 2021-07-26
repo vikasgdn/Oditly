@@ -8,6 +8,7 @@ import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
+import com.oditly.audit.inspection.util.AppUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class AddQuestionAttachmentRequest extends BaseStringRequest {
     public AddQuestionAttachmentRequest(String accessToken, String url, String fileName, byte[] byteData,
                                         String auditId, String sectionGroupId, String sectionId,
                                         String questionId, String description, String isCritical,
-                                        String latitude, String longitude, String type, Context context,
+                                        String latitude, String longitude, String type,String firebaseToken, Context context,
                                         Response.Listener<String> listener,
                                         Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
@@ -52,8 +53,7 @@ public class AddQuestionAttachmentRequest extends BaseStringRequest {
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
-        headerParams.put(NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN, AppPreferences.INSTANCE.getFirebaseAccessToken(context));
-
+        headerParams.put("Authorization","Bearer "+firebaseToken);
         DataPart dataPart = new DataPart();
 
         if(type.equalsIgnoreCase("video"))

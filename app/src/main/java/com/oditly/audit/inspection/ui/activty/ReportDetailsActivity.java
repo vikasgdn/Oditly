@@ -21,10 +21,16 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.BuildConfig;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.network.DownloadPdfTask;
 import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.network.apirequest.UpdateQuestionAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
 
@@ -147,10 +153,18 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
         }  else {
             mProgressBarRL.setVisibility(View.VISIBLE);
-            DownloadPdfTask downloadTask = new DownloadPdfTask(this, mPdfFileUrl,mAuditID, this);
-        }
+            if (FirebaseAuth.getInstance().getCurrentUser() != null)
+            {
+                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                if (task.isSuccessful()) {
+                                    new DownloadPdfTask(ReportDetailsActivity.this, mPdfFileUrl,mAuditID,task.getResult().getToken(), ReportDetailsActivity.this::onPDFDownloadFinished);  }
+                            }
+                        });
+            }
 
-        // ShowHowWebViewActivity.start(this,mPdfFileUrl);
+        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

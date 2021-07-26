@@ -79,6 +79,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     private List<BrandStandardQuestion> mBrandStandardListCurrent;
     private  Context context;
     private String auditId = "",auditDate = "",sectionGroupId = "",sectionId = "",sectionTitle = "",mLocation = "",mChecklist = "",fileCount = "";
+    private String sectionWeightage="";
     public LayoutInflater inflater;
     private ArrayList<BrandStandardSection> brandStandardSectionArrayList = new ArrayList<>();
     private   BrandStandardSection brandStandardSection;
@@ -176,6 +177,8 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         sectionGroupId = "" + brandStandardSection.getSection_group_id();
         sectionId = "" + brandStandardSection.getSection_id();
         fileCount = "" + brandStandardSection.getAudit_section_file_cnt();
+        sectionWeightage=brandStandardSection.getSection_weightage();
+
         fileBtn.setText("+"+getString(R.string.text_photo)+"     "+fileCount);
         setLocalJSON(brandStandardSection);
 
@@ -295,7 +298,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     }
 
 
-    private boolean validateCommentOfQuestion() {
+   /* private boolean validateCommentOfQuestion() {
         boolean validate = true;
         int count = 0;
         ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
@@ -303,7 +306,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         for (int i = 0; i < brandStandardQuestions.size(); i++) {
             BrandStandardQuestion question = brandStandardQuestions.get(i);
             count += 1;
-            if (question.getAudit_answer_na() == 0 && ((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer())))
+            if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer())))
             {
                 if (question.getHas_comment() > 0 && (AppUtils.isStringEmpty(question.getAudit_comment()) || question.getAudit_comment().length() < question.getHas_comment())) {
                     validate = false;
@@ -317,8 +320,43 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         }
         return validate;
 
-    }
+    }*/
+    private boolean validateCommentOfQuestion() {
+        boolean validate = true;
+        int count = 0;
+        ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
 
+        for (int i = 0; i < brandStandardQuestions.size(); i++) {
+            BrandStandardQuestion question = brandStandardQuestions.get(i);
+            count += 1;
+            if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer())))
+            {
+                float mObtainMarks = 0;
+                int commentTypeID = question.getComment_req_type_id();
+                if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
+                    mObtainMarks = Float.parseFloat(question.getObtainMarksForQuestion());
+
+                if (question.getHas_comment() > 0) {
+                    String message="Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                    if (commentTypeID == 1 && question.getAudit_comment().length() < question.getHas_comment()) {
+                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this,message);
+                        return false;
+                    } else if (commentTypeID == 2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks > 0 && question.getAudit_comment().length() < question.getHas_comment()) {
+                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this,message);
+                        return false;
+                    } else if (commentTypeID == 3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks <= 0 && question.getAudit_comment().length() < question.getHas_comment()) {
+                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this,message);
+                        return false;
+                    } else if (commentTypeID == 4 && question.getObtainMarksForQuestion() == null && question.getAudit_comment().length() < question.getHas_comment()) {
+                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this,message);
+                        return false;
+                    }
+                }
+            }
+        }
+        return validate;
+
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -373,7 +411,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                     startActivityForResult(actionPlan, 1021);
                 }
                 else
-                AppUtils.toast(this, "Action plan has been created for this Question");
+                    AppUtils.toast(this, "Action plan has been created for this Question");
 
                 break;
             case R.id.bs_add_file_btn:
@@ -450,10 +488,23 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
             if (!(brandStandardQuestion.getAudit_answer_na() == 1)) {
                 if (brandStandardQuestion.getQuestion_type().equals("radio")) {
                     totalMarks = totalMarks + brandStandardQuestion.getOptions().get(0).getOption_mark();
-                } else {
+                } else if(brandStandardQuestion.getQuestion_type().equals("target") && !TextUtils.isEmpty(brandStandardQuestion.getMax_mark()))
+                {
+                    totalMarks = totalMarks + Float.parseFloat(brandStandardQuestion.getMax_mark());
+                }
+                else {
                     for (int k = 0; k < brandStandardQuestion.getOptions().size(); k++) {
                         totalMarks = totalMarks + brandStandardQuestion.getOptions().get(k).getOption_mark();
                     }
+                }
+                if (brandStandardQuestion.getQuestion_type().equalsIgnoreCase("target") && !TextUtils.isEmpty(brandStandardQuestion.getAudit_answer()))
+                {
+                    float targetScore=Float.parseFloat(brandStandardQuestion.getAudit_answer());
+                    float maxMarks=Float.parseFloat(brandStandardQuestion.getMax_mark());
+                    if (targetScore>maxMarks)
+                        targetScore=maxMarks;
+
+                    marksObtained=marksObtained+targetScore;
                 }
                 if (brandStandardQuestion.getAudit_option_id().size() > 0) {
                     for (int l = 0; l < brandStandardQuestion.getAudit_option_id().size(); l++) {
@@ -469,6 +520,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
 
             }
         }
+/*
         for (int j = 0; j < brandStandardSection.getSub_sections().size(); j++) {
             ArrayList<BrandStandardQuestion> brandStandardQuestions = brandStandardSection.getSub_sections().get(j).getQuestions();
             for (int i = 0; i < brandStandardQuestions.size(); i++) {
@@ -479,16 +531,24 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                     if (brandStandardQuestion.getQuestion_type().equals("radio"))
                     {
                         totalMarks = totalMarks + brandStandardQuestion.getOptions().get(0).getOption_mark();
-                    } else {
+                    }
+                    else if(brandStandardQuestion.getQuestion_type().equals("target"))
+                    {
+                        if (!TextUtils.isEmpty(brandStandardQuestion.getMax_mark()))
+                            totalMarks = totalMarks + Integer.parseInt(brandStandardQuestion.getMax_mark());
+                    }else {
                         for (int k = 0; k < brandStandardQuestion.getOptions().size(); k++) {
                             totalMarks = totalMarks + brandStandardQuestion.getOptions().get(k).getOption_mark();
                         }
                     }
+                    if (brandStandardQuestion.getQuestion_type().equalsIgnoreCase("target") && !TextUtils.isEmpty(brandStandardQuestion.getAudit_answer()))
+                    {
+                        marksObtained=marksObtained+Integer.parseInt(brandStandardQuestion.getAudit_answer());
+                    }
                     if (brandStandardQuestion.getAudit_option_id().size() > 0) {
                         for (int l = 0; l < brandStandardQuestion.getAudit_option_id().size(); l++) {
                             for (int m = 0; m < brandStandardQuestion.getOptions().size(); m++) {
-                                if (brandStandardQuestion.getAudit_option_id().get(l) ==
-                                        brandStandardQuestion.getOptions().get(m).getOption_id()) {
+                                if (brandStandardQuestion.getAudit_option_id().get(l) == brandStandardQuestion.getOptions().get(m).getOption_id()) {
                                     marksObtained = marksObtained + brandStandardQuestion.getOptions().get(m).getOption_mark();
                                     break;
                                 }
@@ -499,8 +559,15 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
 
             }
         }
+*/
+     /*   if (!TextUtils.isEmpty(brandStandardSection.getSection_weightage()))
+        {
+            float weightage = Float.parseFloat(sectionWeightage);
+            scoreText.setText("Score: " + (int) (((float) (marksObtained/(float) totalMarks)) * (weightage / 100)) + "% (" + marksObtained + "/" + totalMarks + ")");
+        }
+        else*/
+            scoreText.setText("Score: " + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
 
-        scoreText.setText("Score: " + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
     }
     //-----------------------Audit Times-------------------------------------
     public Runnable runnable = new Runnable() {

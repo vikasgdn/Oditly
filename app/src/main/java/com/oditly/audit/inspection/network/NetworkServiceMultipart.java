@@ -4,8 +4,17 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.network.apirequest.AddAdHocActionPlan;
+import com.oditly.audit.inspection.network.apirequest.ApiRequestJSON;
+import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 
 import org.json.JSONObject;
 
@@ -27,15 +36,17 @@ public class NetworkServiceMultipart {
     private String mMediaType = "image/jpeg";
     private AddAdHocActionPlan mRequestBean;
     private ArrayList<File> mMediaFileList;
+    private String mFirebaseToken="";
 
 
 
-    public NetworkServiceMultipart(String serviceName, AddAdHocActionPlan bean,ArrayList<File> file, INetworkEvent networkEvent, Context context) {
+    public NetworkServiceMultipart(String serviceName, AddAdHocActionPlan bean,ArrayList<File> file,String token, INetworkEvent networkEvent, Context context) {
         service = serviceName;
         this.networkEvent = networkEvent;
         this.mContext = context;
         mRequestBean=bean;
         mMediaFileList=file;
+        mFirebaseToken=token;
 
 
     }
@@ -83,16 +94,17 @@ public class NetworkServiceMultipart {
                 //builder.addFormDataPart("files[]","2.jpg", RequestBody.create(MediaType.parse("application/octet-stream"),mMediaFileList.get(1)));
                 //  .addFormDataPart("files[]","graphics.jpg", RequestBody.create(MediaType.parse("application/octet-stream"),new File("/home/vikas/Desktop/graphics.jpg")))
 
+
                 RequestBody body=builder.build();
                 Request request = new Request.Builder()
                         .url(NetworkURL.ACTION_PLAN_ADD)
                         .method("POST", body)
                         .addHeader("access-token", AppPreferences.INSTANCE.getAccessToken(mContext))
-                        .addHeader("Authorization",AppPreferences.INSTANCE.getFirebaseAccessToken(mContext))
+                        .addHeader("Authorization","Bearer "+mFirebaseToken)
                         .build();
 
-                Log.e("MULTIPART=====> ",""+body.toString());
-                Log.e("MULTIPART=====> ",""+NetworkURL.ACTION_PLAN_ADD);
+              //  Log.e("MULTIPART=====> ",""+body.toString());
+               // Log.e("MULTIPART=====> ",""+NetworkURL.ACTION_PLAN_ADD);
 
                 Response response = client.newCall(request).execute();
 
@@ -124,14 +136,22 @@ public class NetworkServiceMultipart {
         }
     }
 
-    private String getFileExtension(File file) {
-        String name = file.getName();
-        try {
-            return name.substring(name.lastIndexOf(".") + 1);
-        } catch (Exception e) {
-            return "";
+   /* String tokenFirebase="";
+    private String getFirebaseUpdatedToken() {
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (mUser != null) {
+            mUser.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful())
+                                tokenFirebase= task.getResult().getToken();
+                        }
+                    });
         }
-    }
+        Log.e("Firebase Token : ",""+tokenFirebase);
+        return tokenFirebase;
+    }*/
 
 
 }

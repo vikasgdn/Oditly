@@ -14,6 +14,7 @@ public class BrandStandardSection implements Parcelable {
     private String section_group_title = "";
     private int audit_section_file_cnt = 0;
     private int answered_question_count = 0;
+    private String section_weightage="1";
     ArrayList<BrandStandardQuestion> questions;
     ArrayList<BrandStandardSubSection> sub_sections;
 
@@ -144,5 +145,13 @@ public class BrandStandardSection implements Parcelable {
 
     public void setAnswered_question_count(int answered_question_count) {
         this.answered_question_count = answered_question_count;
+    }
+
+    public String getSection_weightage() {
+        return section_weightage;
+    }
+
+    public void setSection_weightage(String section_weightage) {
+        this.section_weightage = section_weightage;
     }
 }

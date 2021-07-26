@@ -8,6 +8,7 @@ import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
+import com.oditly.audit.inspection.util.AppUtils;
 
 
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class EditBSQuestionAttachmentRequest extends BaseStringRequest {
 
     public EditBSQuestionAttachmentRequest(String accessToken, String url, String fileName, String auditId,
                                            int sectionFileId, int questionFileId, String description,
-                                           int isCritical, Context context, Response.Listener<String> listener,
+                                           int isCritical,String firebaseToken, Context context, Response.Listener<String> listener,
                                            Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
         params.put(REQ_PARAM_AUDIT_ID, auditId);
@@ -46,8 +47,7 @@ public class EditBSQuestionAttachmentRequest extends BaseStringRequest {
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
-        headerParams.put(NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN, AppPreferences.INSTANCE.getFirebaseAccessToken(context));
-
+        headerParams.put("Authorization","Bearer "+firebaseToken);
         AppLogger.e("AttachmentParam", ""+params);
         AppLogger.e("AttachmentHeader", ""+headerParams);
 

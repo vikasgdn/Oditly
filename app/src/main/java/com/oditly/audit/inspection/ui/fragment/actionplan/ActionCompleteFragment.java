@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +25,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.asksira.bsimagepicker.BSImagePicker;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.adapter.ActionMediaAdapter;
@@ -145,13 +151,23 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
                 AppUtils.toast(activity, "Please upload " + remainCount + " media first.");
                 return;
             }
-            postActionCreateServerData();
+            if (FirebaseAuth.getInstance().getCurrentUser() != null)
+            {
+                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                if (task.isSuccessful()) {
+                                    postActionCreateServerData(task.getResult().getToken());
+                                }
+                            }
+                        });
+            }
         } else if (id == R.id.fb_media) {
             openMediaDialog();
         }
     }
 
-    private void postActionCreateServerData() {
+    private void postActionCreateServerData(String tokenFirebase) {
         if (NetworkStatus.isNetworkConnected(this.mActivity)) {
             this.mSpinKitView.setVisibility(View.VISIBLE);
             ActionCompleteRequestBean bean = new ActionCompleteRequestBean();
@@ -159,8 +175,8 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
             bean.setAudit_id("" + this.mAuditInfoActionPlanData.getAudit_id());
             bean.setAction_plan_id("" + this.mAuditInfoActionPlanData.getAction_plan_id());
             bean.setComplete_comment(this.mCommentET.getText().toString());
-            new NetworkServiceMultipartActionComplete(NetworkURL.ACTION_PLAN_COMPLETE, bean, this.mFileimageList, this, this.mActivity).call((NetworkModel) null);
-            return;
+            NetworkServiceMultipartActionComplete actionComplete=new NetworkServiceMultipartActionComplete(NetworkURL.ACTION_PLAN_COMPLETE, bean, this.mFileimageList,tokenFirebase, this, this.mActivity);
+            actionComplete.call(null);
         }
         AppUtils.toast(this.mActivity, getString(R.string.internet_error));
     }
@@ -192,7 +208,18 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
             }
         };
         String accessToken = AppPreferences.INSTANCE.getAccessToken(this.mActivity);
-        VolleyNetworkRequest.getInstance(this.mActivity).addToRequestQueue(new AddActionAttachmentRequest(accessToken, NetworkURL.POST_ACTIONFILE_URL, "Oditly-" + System.currentTimeMillis(), imageByteData, "" + this.mAuditInfoActionPlanData.getAudit_id(), "" + this.mAuditInfoActionPlanData.getAction_plan_id(),getContext(), stringListener, errorListener));
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+        {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                VolleyNetworkRequest.getInstance(mActivity).addToRequestQueue(new AddActionAttachmentRequest(accessToken, NetworkURL.POST_ACTIONFILE_URL, "Oditly-" + System.currentTimeMillis(), imageByteData, "" + mAuditInfoActionPlanData.getAudit_id(), "" + mAuditInfoActionPlanData.getAction_plan_id(),task.getResult().getToken(),getContext(), stringListener, errorListener));
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void openMediaDialog() {

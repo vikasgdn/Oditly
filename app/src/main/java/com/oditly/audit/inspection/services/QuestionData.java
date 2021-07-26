@@ -25,11 +25,10 @@ public class QuestionData extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent)
     {
         bsOfflineDB=BsOfflineDBImpl.getInstance(getApplicationContext());
-         if (intent!=null)
-             setBrandStandardQuestion(intent.getStringExtra(AppConstant.AUDIT_ID));
+             //setBrandStandardQuestion(intent.getStringExtra(AppConstant.AUDIT_ID));
     }
 
-    private void setBrandStandardQuestion(String auditID){
+   /* private void setBrandStandardQuestion(String auditID){
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -48,6 +47,6 @@ public class QuestionData extends IntentService {
         String questionListUrl = NetworkURL.BRANDSTANDARD + "?" + "audit_id=" + auditID ;
         GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(this),this, questionListUrl, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(getApplicationContext()).addToRequestQueue(getReportRequest);
-    }
+    }*/
 
 }

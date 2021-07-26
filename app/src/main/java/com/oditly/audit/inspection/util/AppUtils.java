@@ -30,10 +30,16 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
@@ -74,8 +80,7 @@ public class AppUtils {
                 BrandStandardQuestion question = brandStandardQuestion.get(j);
                 brandStandardQuestionsSubmissions.add(question);
                 String questionType=question.getQuestion_type();
-                if (brandStandardQuestion.size()>0 && (questionType.equalsIgnoreCase("" +
-                        "")|| questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number")|| questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target"))){
+                if (brandStandardQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea")|| questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number")|| questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target"))){
                     if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
                         AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section "+ brandStandardSection.get(i).getSection_title());
                         return null;
@@ -86,21 +91,68 @@ public class AppUtils {
                         return null;
                     }
                 }
-                if (question.getAudit_answer_na()==0 && (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media"))
+                if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media"))
                 {
-                    if (question.getAudit_question_file_cnt()<question.getMedia_count())
-                    {
+                    /*  For scorable questions like radio, checkbox, dropdown  If has_comment > 0 then if comment_req_type_id is 1: Always mandatory 2: Mandatory if question score is > 0 3: Mandatory if question score is <= 0 4: Mandatory if question score is null For other type questions check only has_comment field which is current logic.*/
                         // validate = false;
-                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
-                        return null;
-                    }
+                        float mObtainMarks=0;int mediaTypeID=question.getMedia_req_type_id();
+                        if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
+                            mObtainMarks=Float.parseFloat(question.getObtainMarksForQuestion());
+                        if(question.getMedia_count()>0)
+                        {
+
+                            if (mediaTypeID==1 && question.getAudit_question_file_cnt()<question.getMedia_count())
+                            {
+                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                                return null;
+                            }
+                            else if(mediaTypeID==2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks>0 && question.getAudit_question_file_cnt()<question.getMedia_count())
+                            {
+                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                                return null;
+                            }
+                            else if(mediaTypeID==3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks<=0 && question.getAudit_question_file_cnt()<question.getMedia_count())
+                            {
+                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                                return null;
+                            }
+                            else if(mediaTypeID==4 && question.getObtainMarksForQuestion()==null && question.getAudit_question_file_cnt()<question.getMedia_count())
+                            {
+                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                                return null;
+                            }
+
+                        }
                 }
-                if (question.getAudit_answer_na() == 0 && ((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media")))
+                if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media")))
                 {
-                    if (question.getHas_comment() > 0 && (AppUtils.isStringEmpty(question.getAudit_comment()) || question.getAudit_comment().length() < question.getHas_comment())) {
-                       // validate = false;
-                        AppUtils.toastDisplayForLong(activity, "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count);
-                        return null;
+                    float mObtainMarks=0;int commentTypeID=question.getComment_req_type_id();
+                    if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
+                        mObtainMarks=Float.parseFloat(question.getObtainMarksForQuestion());
+
+                    if (question.getHas_comment()>0)
+                    {
+                        if (commentTypeID==1 && question.getAudit_comment().length() < question.getHas_comment())
+                        {
+                            AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
+                            return null;
+                        }
+                        else if (commentTypeID==2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks>0 && question.getAudit_comment().length() < question.getHas_comment())
+                        {
+                            AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
+                            return null;
+                        }
+                        else if (commentTypeID==3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks<=0 && question.getAudit_comment().length() < question.getHas_comment())
+                        {
+                            AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
+                            return null;
+                        }
+                        else if (commentTypeID==4 && question.getObtainMarksForQuestion()==null && question.getAudit_comment().length() < question.getHas_comment())
+                        {
+                            AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
+                            return null;
+                        }
+
                     }
                 }
             }
@@ -125,25 +177,69 @@ public class AppUtils {
                         {
                             if (brandStandardSubQuestion.size()>0 &&(question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required()==1))
                             {
-                                AppUtils.toastDisplayForLong(activity, "You have not answered " +
-                                        "question no " + count + " in section "+ brandStandardSection.get(i).getSection_title());
+                                AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section "+ brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
                         }
                         if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || (question.getAudit_answer()!= null && question.getAudit_answer().length()>0))
                         {
-                            if (question.getAudit_question_file_cnt()<question.getMedia_count())
-                            {
-                                // validate = false;
-                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " +brandStandardSection.get(i).getSection_title());
-                                return null;
-                            }
+                                float mObtainMarks=0;int mediaTypeID=question.getMedia_req_type_id();
+                                if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
+                                    mObtainMarks=Float.parseFloat(question.getObtainMarksForQuestion());
+                                if(question.getMedia_count()>0)
+                                {
+
+                                    if (mediaTypeID==1 && question.getAudit_question_file_cnt()<question.getMedia_count())
+                                    {
+                                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                                        return null;
+                                    }
+                                    else if(mediaTypeID==2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks>0 && question.getAudit_question_file_cnt()<question.getMedia_count())
+                                    {
+                                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                                        return null;
+                                    }
+                                    else if(mediaTypeID==3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks<=0 && question.getAudit_question_file_cnt()<question.getMedia_count())
+                                    {
+                                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                                        return null;
+                                    }
+                                    else if(mediaTypeID==4 && question.getObtainMarksForQuestion()==null && question.getAudit_question_file_cnt()<question.getMedia_count())
+                                    {
+                                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                                        return null;
+                                    }
+                                }
                         }
-                        if (question.getAudit_answer_na() == 0 && ((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()))) {
-                            if (question.getHas_comment() > 0 && (AppUtils.isStringEmpty(question.getAudit_comment()) || question.getAudit_comment().length() < question.getHas_comment())) {
-                               // validate = false;
-                                AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
-                                return null;
+                        if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()))) {
+
+                            float mObtainMarks=0;int commentTypeID=question.getComment_req_type_id();
+                            if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
+                                mObtainMarks=Float.parseFloat(question.getObtainMarksForQuestion());
+
+                            if (question.getHas_comment()>0)
+                            {
+                                if (commentTypeID==1 && question.getAudit_comment().length() < question.getHas_comment())
+                                {
+                                    AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
+                                    return null;
+                                }
+                               else if (commentTypeID==2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks>0 && question.getAudit_comment().length() < question.getHas_comment())
+                                {
+                                    AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
+                                    return null;
+                                }
+                                else if (commentTypeID==3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks<=0 && question.getAudit_comment().length() < question.getHas_comment())
+                                {
+                                    AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
+                                    return null;
+                                }
+                                else if (commentTypeID==4 && question.getObtainMarksForQuestion()==null && question.getAudit_comment().length() < question.getHas_comment())
+                                {
+                                    AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
+                                    return null;
+                                }
+
                             }
                         }
 
@@ -860,9 +956,9 @@ public class AppUtils {
             }
 
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
-           // image= rotateImageIfRequired(image,uriImage);
+            // image= rotateImageIfRequired(image,uriImage);
             return image;
-           // return rotateImageIfRequired(image,uriImage);
+            // return rotateImageIfRequired(image,uriImage);
         } else {
             return image;
         }
@@ -934,6 +1030,25 @@ public class AppUtils {
         }
         return true;
     }
+
+  /*  String tokenFirebase="";
+    public  String getFirebaseUpdatedToken() {
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (mUser != null)
+        {
+            mUser.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                tokenFirebase = task.getResult().getToken();
+                                Log.e("Task isSuccessful : ",""+tokenFirebase);
+                            }
+                        }
+                    });
+        }
+        Log.e("Firebase Token : ",""+tokenFirebase);
+        return tokenFirebase;
+    }*/
 
 }
 

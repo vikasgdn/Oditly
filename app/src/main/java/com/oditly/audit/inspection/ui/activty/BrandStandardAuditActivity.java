@@ -103,6 +103,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     public static boolean isAnswerCliked=false;
     private boolean isSaveButtonClick=false,isBackButtonClick=false;
     private int isGalleryDisasble=1;
+    private String mSectionWeightage="";
 
     @Override
     protected void onResume() {
@@ -202,6 +203,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         sectionGroupId = "" + brandStandardSection.getSection_group_id();
         sectionId = "" + brandStandardSection.getSection_id();
         fileCount = "" + brandStandardSection.getAudit_section_file_cnt();
+        mSectionWeightage = brandStandardSection.getSection_weightage();
+
         setLocalJSON(brandStandardSection);
         mediaAddBtn.setText("+"+getString(R.string.text_photo)+"     "+fileCount);
         removeHandlerCallBck();
@@ -382,14 +385,28 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         for (int i = 0; i < brandStandardQuestions.size(); i++) {
             BrandStandardQuestion question = brandStandardQuestions.get(i);
             count += 1;
-            if (question.getAudit_answer_na() == 0 && ((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer())))
-            {
-                if (question.getHas_comment() > 0 && (AppUtils.isStringEmpty(question.getAudit_comment()) || question.getAudit_comment().length() < question.getHas_comment())) {
-                    validate = false;
-                    //  AppUtils.toastDisplayForLong(BrandStandardAuditActivity.this, "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count);
+            if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()))) {
+
+                float mObtainMarks = 0;
+                int commentTypeID = question.getComment_req_type_id();
+                if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
+                    mObtainMarks = Float.parseFloat(question.getObtainMarksForQuestion());
+
+                if (question.getHas_comment() > 0) {
                     String message="Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
-                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
-                    return false;
+                    if (commentTypeID == 1 && question.getAudit_comment().length() < question.getHas_comment()) {
+                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
+                        return false;
+                    } else if (commentTypeID == 2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks > 0 && question.getAudit_comment().length() < question.getHas_comment()) {
+                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
+                        return false;
+                    } else if (commentTypeID == 3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks <= 0 && question.getAudit_comment().length() < question.getHas_comment()) {
+                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
+                        return false;
+                    } else if (commentTypeID == 4 && question.getObtainMarksForQuestion() == null && question.getAudit_comment().length() < question.getHas_comment()) {
+                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
+                        return false;
+                    }
                 }
             }
         }
@@ -397,13 +414,30 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         for (int i = 0; i < brandStandardSubsectionQuestions.size(); i++) {
             BrandStandardQuestion subQuestion = brandStandardSubsectionQuestions.get(i);
             count += 1;
-            if (subQuestion.getAudit_answer_na() == 0 && ((subQuestion.getAudit_option_id()!=null && subQuestion.getAudit_option_id().size()>0) || !TextUtils.isEmpty(subQuestion.getAudit_answer()))) {
-                if (subQuestion.getHas_comment() > 0 && (AppUtils.isStringEmpty(subQuestion.getAudit_comment()) || subQuestion.getAudit_comment().length() < subQuestion.getHas_comment())) {
-                    validate = false;
-                    String message="Please enter the  minimum required " + subQuestion.getHas_comment() + " characters comment for question no. " + count;
-                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
-                    // AppUtils.toastDisplayForLong(BrandStandardAuditActivity.this, "Please enter the minimum required " + subQuestion.getHas_comment() + " characters comment for question no." + count);
-                    return false;
+            if (((subQuestion.getAudit_option_id()!=null && subQuestion.getAudit_option_id().size()>0) || !TextUtils.isEmpty(subQuestion.getAudit_answer()))) {
+                if (((subQuestion.getAudit_option_id() != null && subQuestion.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(subQuestion.getAudit_answer()))) {
+                    float mObtainMarks = 0;
+                    int commentTypeID = subQuestion.getComment_req_type_id();
+                    if (!TextUtils.isEmpty(subQuestion.getObtainMarksForQuestion()))
+                        mObtainMarks = Float.parseFloat(subQuestion.getObtainMarksForQuestion());
+
+                    if (subQuestion.getHas_comment() > 0) {
+                        String message="Please enter the  minimum required " + subQuestion.getHas_comment() + " characters comment for question no. " + count;
+
+                        if (commentTypeID == 1 && subQuestion.getAudit_comment().length() < subQuestion.getHas_comment()) {
+                            AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
+                            return false;
+                        } else if (commentTypeID == 2 && !TextUtils.isEmpty(subQuestion.getObtainMarksForQuestion()) && mObtainMarks > 0 && subQuestion.getAudit_comment().length() < subQuestion.getHas_comment()) {
+                            AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
+                            return false;
+                        } else if (commentTypeID == 3 && !TextUtils.isEmpty(subQuestion.getObtainMarksForQuestion())&& mObtainMarks <= 0 && subQuestion.getAudit_comment().length() < subQuestion.getHas_comment()) {
+                            AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
+                            return false;
+                        } else if (commentTypeID == 4 && subQuestion.getObtainMarksForQuestion() == null && subQuestion.getAudit_comment().length() < subQuestion.getHas_comment()) {
+                            AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
+                            return false;
+                        }
+                    }
                 }
             }
         }
@@ -621,10 +655,24 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             if (!(brandStandardQuestion.getAudit_answer_na() == 1)) {
                 if (brandStandardQuestion.getQuestion_type().equals("radio")) {
                     totalMarks = totalMarks + brandStandardQuestion.getOptions().get(0).getOption_mark();
-                } else {
+                }
+                else if(brandStandardQuestion.getQuestion_type().equals("target") && !TextUtils.isEmpty(brandStandardQuestion.getMax_mark()))
+                {
+                    totalMarks = totalMarks + Float.parseFloat(brandStandardQuestion.getMax_mark());
+                }
+                else {
                     for (int k = 0; k < brandStandardQuestion.getOptions().size(); k++) {
                         totalMarks = totalMarks + brandStandardQuestion.getOptions().get(k).getOption_mark();
                     }
+                }
+                if (brandStandardQuestion.getQuestion_type().equalsIgnoreCase("target") && !TextUtils.isEmpty(brandStandardQuestion.getAudit_answer()))
+                {
+                    float targetScore=Float.parseFloat(brandStandardQuestion.getAudit_answer());
+                    float maxMarks=Float.parseFloat(brandStandardQuestion.getMax_mark());
+                    if (targetScore>maxMarks)
+                        targetScore=maxMarks;
+
+                    marksObtained=marksObtained+targetScore;
                 }
                 if (brandStandardQuestion.getAudit_option_id().size() > 0) {
                     for (int l = 0; l < brandStandardQuestion.getAudit_option_id().size(); l++) {
@@ -650,10 +698,25 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 if (!(brandStandardQuestion.getAudit_answer_na() == 1)) {
                     if (brandStandardQuestion.getQuestion_type().equals("radio")) {
                         totalMarks = totalMarks + brandStandardQuestion.getOptions().get(0).getOption_mark();
-                    } else {
+                    }
+                    else if(brandStandardQuestion.getQuestion_type().equals("target") && !TextUtils.isEmpty(brandStandardQuestion.getMax_mark()))
+                    {
+                        totalMarks = totalMarks + Float.parseFloat(brandStandardQuestion.getMax_mark());
+                    }
+                    else {
                         for (int k = 0; k < brandStandardQuestion.getOptions().size(); k++) {
                             totalMarks = totalMarks + brandStandardQuestion.getOptions().get(k).getOption_mark();
                         }
+                    }
+
+                    if (brandStandardQuestion.getQuestion_type().equalsIgnoreCase("target") && !TextUtils.isEmpty(brandStandardQuestion.getAudit_answer()))
+                    {
+                        float targetScore=Float.parseFloat(brandStandardQuestion.getAudit_answer());
+                        float maxMarks=Float.parseFloat(brandStandardQuestion.getMax_mark());
+                        if (targetScore>maxMarks)
+                            targetScore=maxMarks;
+
+                        marksObtained=marksObtained+targetScore;
                     }
                     if (brandStandardQuestion.getAudit_option_id().size() > 0) {
                         for (int l = 0; l < brandStandardQuestion.getAudit_option_id().size(); l++) {
@@ -670,8 +733,14 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
             }
         }
+     /*   if (!TextUtils.isEmpty(brandStandardSection.getSection_weightage()))
+        {
+            float weightage = Float.parseFloat(mSectionWeightage);
+            scoreText.setText("Score: " + (int)((marksObtained/totalMarks) * (weightage / 100)) + "% (" + marksObtained + "/" + totalMarks + ")");
+        }
+        else*/
+            scoreText.setText("Score: " + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
 
-        scoreText.setText("Score: " + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
     }
 
     //-----------------------Audit Times-------------------------------------

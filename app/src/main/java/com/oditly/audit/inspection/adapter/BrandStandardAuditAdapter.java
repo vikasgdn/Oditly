@@ -312,9 +312,10 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                 {
                     clickedOnAnswerTpye();
                     brandStandardQuestion.setAudit_answer("" + editable.toString());
-
+                    ((BrandStandardAuditActivity) context).countNA_Answers();
                 }
             });
+
         }
         else if(questionType.equalsIgnoreCase("radio"))
         {
@@ -725,12 +726,17 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
     }
 
     private void setSelectionProcess(TextView answerText,BrandStandardQuestion brandStandardQuestion, BrandStandardQuestionsOption brandStandardQuestionsOption) {
-        if (brandStandardQuestionsOption.getOption_text().equalsIgnoreCase("NA") || brandStandardQuestionsOption.getOption_text().equalsIgnoreCase("N/A"))
+        if (brandStandardQuestionsOption.getOption_text().equalsIgnoreCase("NA") || brandStandardQuestionsOption.getOption_text().equalsIgnoreCase("N/A")) {
             brandStandardQuestion.setAudit_answer_na(1);
-        else
+            brandStandardQuestion.setObtainMarksForQuestion(null);
+        }
+        else {
             brandStandardQuestion.setAudit_answer_na(0);
+            brandStandardQuestion.setObtainMarksForQuestion(""+brandStandardQuestionsOption.getOption_mark());
+        }
 
-        Log.e("OPTION && TEXT COLOR "," "+brandStandardQuestionsOption.getOption_color()+" TEXTCOLOR  "+brandStandardQuestionsOption.getOption_text_color());
+       // Log.e("OPTION Mark ","===> "+brandStandardQuestionsOption.getOption_mark());
+        //Log.e("OPTION && TEXT COLOR "," "+brandStandardQuestionsOption.getOption_color()+" TEXTCOLOR  "+brandStandardQuestionsOption.getOption_text_color());
         answerText.setBackgroundColor(Color.parseColor(brandStandardQuestionsOption.getOption_color()));
         answerText.setTextColor(Color.parseColor(brandStandardQuestionsOption.getOption_text_color()));
 

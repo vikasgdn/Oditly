@@ -17,8 +17,8 @@ public class NetworkURL {
 
 
     //API URL'S  TEST SERVER
-   // public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
-   // public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
+//    public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
+//    public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
 
 
 
@@ -46,7 +46,9 @@ public class NetworkURL {
     public static final String POST_TEAM_MEMBER = API_BASE_URL_NEW+ "team";
     public static final String GET_TEAM_MEMBER = API_BASE_URL_NEW+ "team?";
     public static final String GET_FILTER_DATA= API_BASE_URL_NEW+"ia/report/dashboard/filter";
-    public static final String GET_REPORT_URL=API_BASE_URL_NEW+"report/ia/audit/dashboard/pdf?audit_id=";
+    //public static final String GET_REPORT_URL=API_BASE_URL_NEW+"report/ia/audit/dashboard/pdf?audit_id=";
+    public static final String GET_REPORT_URL=API_BASE_URL_NEW+"report/ia/audit/overall/pdf?audit_id="; //for complete audit report
+    public static final String GET_REPORT_URL_NON_COMPLANCE=API_BASE_URL_NEW+"report/ia/audit/overall/pdf?audit_id="; //for Noncompliance audit report
     public static final String GET_DASHBOARD_URL=API_BASE_URL_NEW+"ia/report/dashboard?";
     public static final String AUDIT_LOCATION_LIST =API_BASE_URL+"filter/location?";
     public static final String GET_AUDITCREATEFILTER_URL=API_BASE_URL_NEW+ "internal/audit/create?location_id=";
@@ -65,6 +67,9 @@ public class NetworkURL {
     public static final String ACTION_PLAN_COMMENT_LIST = API_BASE_URL_NEW + "ia/action-plan/update-comments?action_plan_id=";
 
     public static final String POST_FCM_TOKEN = API_BASE_URL_NEW+"user/notification-token";
+    public static final String GET_PROFILE_DATA = API_BASE_URL_NEW+"profile";
+
+
 
     // audit_id,action_plan_id,file
 

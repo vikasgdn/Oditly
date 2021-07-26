@@ -35,11 +35,16 @@ import androidx.transition.TransitionManager;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.network.apirequest.AddQuestionAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.EditBSQuestionAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.UpdateQuestionAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
@@ -268,7 +273,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
             case AppConstant.GALLERY_PERMISSION_REQUEST:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                     saveImage();
+                    saveImage();
                 }
                 else
                     AppUtils.toast(this,"Permission Denied");
@@ -277,55 +282,55 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     }
     @SuppressLint("MissingPermission")
     private void saveImage() {
-            mProgressBarRL.setVisibility(View.VISIBLE);
-            File file = null;
-            try {
+        mProgressBarRL.setVisibility(View.VISIBLE);
+        File file = null;
+        try {
 
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                String imageFileName = "JPEG_" + timeStamp + "_";
-                imageFileName = "JPEG_" + timeStamp + "_";
-                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                file = File.createTempFile(imageFileName,  /* prefix */".jpg",         /* suffix */storageDir      /* directory */);
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            file = File.createTempFile(imageFileName,  /* prefix */".jpg",         /* suffix */storageDir      /* directory */);
 
-                //file = File.createTempFile()
-                SaveSettings saveSettings = new SaveSettings.Builder()
-                        .setClearViewsEnabled(true)
-                        .setTransparencyEnabled(true)
-                        .build();
+            //file = File.createTempFile()
+            SaveSettings saveSettings = new SaveSettings.Builder()
+                    .setClearViewsEnabled(true)
+                    .setTransparencyEnabled(true)
+                    .build();
 
-                mPhotoEditor.saveAsFile(file.getAbsolutePath(), saveSettings, new PhotoEditor.OnSaveListener() {
-                    @Override
-                    public void onSuccess(@NonNull String imagePath) {
-                        try {
-                            if (!TextUtils.isEmpty(mLocation) && mLocation.equalsIgnoreCase("EDIT"))
-                            {
-                                byte[] byteData = AppUtils.readBytes(Uri.fromFile(new File(imagePath)), EditImageActivity.this);
-                                addQuestionFileAttachment(byteData);
-                            }
+            mPhotoEditor.saveAsFile(file.getAbsolutePath(), saveSettings, new PhotoEditor.OnSaveListener() {
+                @Override
+                public void onSuccess(@NonNull String imagePath) {
+                    try {
+                        if (!TextUtils.isEmpty(mLocation) && mLocation.equalsIgnoreCase("EDIT"))
+                        {
+                            byte[] byteData = AppUtils.readBytes(Uri.fromFile(new File(imagePath)), EditImageActivity.this);
+                            addQuestionFileAttachment(byteData);
                         }
-                        catch (Exception e){e.printStackTrace();}
-                        mProgressBarRL.setVisibility(View.GONE);
-                        AppUtils.toast(EditImageActivity.this, "Image Saved Successfully");
-                        Intent result = new Intent();
-                        result.putExtra("path", imagePath);
-                        setResult(RESULT_OK, result);
-                        finish();
-                        //mPhotoEditorView.getSource().setImageURI(Uri.fromFile(new File(imagePath)));
                     }
+                    catch (Exception e){e.printStackTrace();}
+                    mProgressBarRL.setVisibility(View.GONE);
+                    AppUtils.toast(EditImageActivity.this, "Image Saved Successfully");
+                    Intent result = new Intent();
+                    result.putExtra("path", imagePath);
+                    setResult(RESULT_OK, result);
+                    finish();
+                    //mPhotoEditorView.getSource().setImageURI(Uri.fromFile(new File(imagePath)));
+                }
 
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                       // hideProgressDialog();
-                        mProgressBarRL.setVisibility(View.GONE);
-                        AppUtils.toast(EditImageActivity.this, "Failed to save Image");
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-               // hideProgressDialog();
-                mProgressBarRL.setVisibility(View.GONE);
-                AppUtils.toast(EditImageActivity.this,e.getMessage());
-            }
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // hideProgressDialog();
+                    mProgressBarRL.setVisibility(View.GONE);
+                    AppUtils.toast(EditImageActivity.this, "Failed to save Image");
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            // hideProgressDialog();
+            mProgressBarRL.setVisibility(View.GONE);
+            AppUtils.toast(EditImageActivity.this,e.getMessage());
+        }
 
     }
 
@@ -357,11 +362,24 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
         String url = NetworkURL.BSATTACHMENT_UPDATE;
         String fileName = "Oditly-"+AppUtils.getDate(Calendar.getInstance().getTime());
-        UpdateQuestionAttachmentRequest addBSAttachmentRequest = new UpdateQuestionAttachmentRequest(
-                AppPreferences.INSTANCE.getAccessToken(this), url, fileName, imageByteData, mAuditId,
-                mSectionGroupID, mSectionID, mQuestionID, mQuestionFileID,this,stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(this).addToRequestQueue(addBSAttachmentRequest);
-    }
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+        {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String token=task.getResult().getToken();
+                                UpdateQuestionAttachmentRequest addBSAttachmentRequest = new UpdateQuestionAttachmentRequest(
+                                        token, url, fileName, imageByteData, mAuditId,
+                                        mSectionGroupID, mSectionID, mQuestionID, mQuestionFileID,EditImageActivity.this,stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(EditImageActivity.this).addToRequestQueue(addBSAttachmentRequest);
+                            }
+                        }
+                    });
+        }
+
+}
 
 
     @Override

@@ -9,6 +9,7 @@ import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
+import com.oditly.audit.inspection.util.AppUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +37,11 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
 
     HashMap<String, String> headers = new HashMap<String, String>();
 
+    public BSSaveSubmitJsonRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        super(method, url, jsonRequest, listener, errorListener);
+    }
+
+/*
     public BSSaveSubmitJsonRequest(String accessToken, String url, JSONObject jsonRequest, Context context,
                                    Response.Listener<JSONObject> listener,
                                    Response.ErrorListener errorListener) {
@@ -45,9 +51,8 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
         headers.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headers.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headers.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
-        headers.put(NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN, AppPreferences.INSTANCE.getFirebaseAccessToken(context));
-
-    }
+        headers.put("Authorization",AppPreferences.INSTANCE.getFirebaseAccessToken(context));
+    }*/
 
     public static JSONObject createInput(String auditId, String auditDate, String save, JSONArray answer) {
 

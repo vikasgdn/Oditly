@@ -3,9 +3,19 @@ package com.oditly.audit.inspection.network;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.network.apirequest.ActionCompleteRequestBean;
 import com.oditly.audit.inspection.util.AppConstant;
+import com.oditly.audit.inspection.util.AppUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -28,13 +38,15 @@ public class NetworkServiceMultipartActionComplete {
     public INetworkEvent networkEvent;
     /* access modifiers changed from: private */
     public String service;
+    private String mFirebaseToken;
 
-    public NetworkServiceMultipartActionComplete(String serviceName, ActionCompleteRequestBean bean, ArrayList<File> file, INetworkEvent networkEvent2, Context context) {
+    public NetworkServiceMultipartActionComplete(String serviceName, ActionCompleteRequestBean bean, ArrayList<File> file,String token, INetworkEvent networkEvent2, Context context) {
         this.service = serviceName;
         this.networkEvent = networkEvent2;
         this.mContext = context;
         this.mRequestBean = bean;
         this.mMediaFileList = file;
+        mFirebaseToken=token;
     }
 
     public void call(NetworkModel input) {
@@ -74,10 +86,8 @@ public class NetworkServiceMultipartActionComplete {
                         .url(NetworkURL.ACTION_PLAN_COMPLETE)
                         .method("POST", body)
                         .addHeader("access-token", AppPreferences.INSTANCE.getAccessToken(NetworkServiceMultipartActionComplete.this.mContext))
-                        .addHeader("Authorization",AppPreferences.INSTANCE.getFirebaseAccessToken(mContext))
+                        .addHeader("Authorization","Bearer "+mFirebaseToken)
                         .build();
-                Log.e("MULTIPART=====> ", "" + body.toString());
-               // Log.e("MULTIPART=====> ", "https://api.account.oditly.com/ia/action-plan");
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
                     this.isError = false;
@@ -105,5 +115,7 @@ public class NetworkServiceMultipartActionComplete {
                 NetworkServiceMultipartActionComplete.this.networkEvent.onNetworkCallCompleted("", NetworkServiceMultipartActionComplete.this.service, s);
             }
         }
+
+
     }
 }

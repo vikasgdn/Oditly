@@ -28,7 +28,7 @@ import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkService;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
-import com.oditly.audit.inspection.services.QuestionData;
+
 import com.oditly.audit.inspection.ui.activty.AuditCreateActivity;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.util.AppConstant;
@@ -310,7 +310,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
         mSpinKitView.setVisibility(View.GONE);
     }
 
-    private void fetchQuestionJsonDataInBackground(List<AuditInfo> mAuditLisBean)
+   /* private void fetchQuestionJsonDataInBackground(List<AuditInfo> mAuditLisBean)
     {
         for (int j=0;j<mAuditLisBean.size();j++)
         {
@@ -320,7 +320,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
             mActivity.startService(intent);
         }
 
-    }
+    }*/
 
 
 

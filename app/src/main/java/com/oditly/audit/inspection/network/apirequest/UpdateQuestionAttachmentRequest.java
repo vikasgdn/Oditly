@@ -8,6 +8,7 @@ import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
+import com.oditly.audit.inspection.util.AppUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class UpdateQuestionAttachmentRequest extends BaseStringRequest {
     private Map<String, String> headerParams = new HashMap<>();
     Map<String, DataPart> multipartParams = new HashMap<>();
 
-    public UpdateQuestionAttachmentRequest(String accessToken, String url, String fileName, byte[] byteData,
+    public UpdateQuestionAttachmentRequest(String firebaseToken, String url, String fileName, byte[] byteData,
                                            String auditId, String sectionGroupId, String sectionId,
                                            String questionId, String questFileId, Context context,
                                            Response.Listener<String> listener,
@@ -41,12 +42,11 @@ public class UpdateQuestionAttachmentRequest extends BaseStringRequest {
         params.put(REQ_PARAM_SECTION_ID, sectionId);
         params.put(REQ_PARAM_QUESTION_ID, questionId);
         params.put(REQ_PARAM_QUESTION_FILEID, questFileId);
-        headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(REQ_PARAM_ACCESS_TOKEN, "");
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
-        headerParams.put(NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN, AppPreferences.INSTANCE.getFirebaseAccessToken(context));
-
+        headerParams.put("Authorization","Bearer "+firebaseToken);
         DataPart dataPart = new DataPart();
             fileName=fileName+".jpeg";
             dataPart.setType("image/jpeg");

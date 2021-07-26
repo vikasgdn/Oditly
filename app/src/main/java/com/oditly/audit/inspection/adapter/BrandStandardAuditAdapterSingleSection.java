@@ -29,6 +29,7 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardAction
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSlider;
+import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
@@ -306,7 +307,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                 {
                     clickedOnAnswerTpye();
                     brandStandardQuestion.setAudit_answer("" + editable.toString());
-
+                    ((BrandStandardAuditActivityPagingnation) context).countNA_Answers();
                 }
             });
         }
@@ -717,11 +718,16 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
     }
 
     private void setSelectionProcess(TextView answerText,BrandStandardQuestion brandStandardQuestion, BrandStandardQuestionsOption brandStandardQuestionsOption) {
-        if (brandStandardQuestionsOption.getOption_text().equalsIgnoreCase("NA") || brandStandardQuestionsOption.getOption_text().equalsIgnoreCase("N/A"))
+        if (brandStandardQuestionsOption.getOption_text().equalsIgnoreCase("NA") || brandStandardQuestionsOption.getOption_text().equalsIgnoreCase("N/A")) {
             brandStandardQuestion.setAudit_answer_na(1);
-        else
+            brandStandardQuestion.setObtainMarksForQuestion(null);
+        }
+        else {
             brandStandardQuestion.setAudit_answer_na(0);
+            brandStandardQuestion.setObtainMarksForQuestion(""+brandStandardQuestionsOption.getOption_mark());
+        }
 
+       // brandStandardQuestion.setObtainMarksForQuestion(""+brandStandardQuestionsOption.getOption_mark());
         Log.e("OPTION && TEXT COLOR "," "+brandStandardQuestionsOption.getOption_color()+" TEXTCOLOR  "+brandStandardQuestionsOption.getOption_text_color());
         answerText.setBackgroundColor(Color.parseColor(brandStandardQuestionsOption.getOption_color()));
         answerText.setTextColor(Color.parseColor(brandStandardQuestionsOption.getOption_text_color()));

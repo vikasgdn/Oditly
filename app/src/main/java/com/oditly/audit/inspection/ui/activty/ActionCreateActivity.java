@@ -30,6 +30,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.asksira.bsimagepicker.BSImagePicker;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 import com.oditly.audit.inspection.BuildConfig;
 import com.oditly.audit.inspection.R;
@@ -285,10 +289,19 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 else {
                     if (mFromWhere.equalsIgnoreCase("Audit"))
                         postActionCreateServerDataUsingAuditID();
-                    else
-                        //  uploadMediaFileAttachment();
-                        postActionCreateServerData();
-
+                    else {
+                        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+                        {
+                            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                            if (task.isSuccessful()) {
+                                                postActionCreateServerData(task.getResult().getToken());
+                                            }
+                                        }
+                                    });
+                        }
+                    }
                 }
                 break;
 
@@ -337,22 +350,11 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
         }
     }
 
-    private void postActionCreateServerData() {
+    private void postActionCreateServerData(String firebaseToken) {
         if (NetworkStatus.isNetworkConnected(this)) {
             mProgressBarRL.setVisibility(View.VISIBLE);
             JSONArray jsArray = new JSONArray(mAuditorsIDSelected);
             try {
-             /*   JSONObject params = new JSONObject();
-                params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
-                params.put(NetworkConstant.REQ_PARAM_LOCATIONID, mLocatioID);
-                params.put(NetworkConstant.REQ_PARAM_PRIORITYID, mPriorityID);
-                params.put(NetworkConstant.REQ_PARAM_SECTIONID, mSectionID);
-                params.put(NetworkConstant.REQ_PARAM_PLANNED_DATE, mDueDateET.getText().toString());
-                params.put(NetworkConstant.REQ_PARAM_ASSIGNED_USERID, jsArray);
-                params.put(NetworkConstant.REQ_PARAM_TITLE, mTitleET.getText().toString());
-                params.put(NetworkConstant.REQ_PARAM_ACTION_DETAILS, mCorrectiveActionET.getText().toString());
-                params.put(NetworkConstant.REQ_PARAM_COMPLETE_MEDIA_COUNT,mMeidaCountET.getText().toString());
-*/
                 AddAdHocActionPlan bean=new AddAdHocActionPlan();
                 bean.setLocation_id(mLocatioID);
                 bean.setPriority_id(mPriorityID);
@@ -364,7 +366,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 bean.setMedia_count(mMeidaCountET.getText().toString());
 
 
-                NetworkServiceMultipart networkService = new NetworkServiceMultipart(NetworkURL.ACTION_PLAN_ADD,bean,mMediaFileList, this, this);
+                NetworkServiceMultipart networkService = new NetworkServiceMultipart(NetworkURL.ACTION_PLAN_ADD,bean,mMediaFileList,firebaseToken, this, this);
                 networkService.call(null);
             } catch (Exception e) {
                 AppUtils.toast(this, getString(R.string.internet_error));

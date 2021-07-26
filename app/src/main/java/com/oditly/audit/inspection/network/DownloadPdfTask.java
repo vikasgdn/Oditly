@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.util.AppConstant;
+import com.oditly.audit.inspection.util.AppUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,14 +27,15 @@ public class DownloadPdfTask {
     private static final String TAG = DownloadPdfTask.class.getSimpleName();
     private PDFDownloadFinishedListner pdfDownloadFinishedListner;
     private int mAuditID=0;
+    private String mFirebaseToken;
 
 
-    public DownloadPdfTask(Context context, String downloadUrl,int auditid, PDFDownloadFinishedListner pdfDownloadFinishedListner) {
+    public DownloadPdfTask(Context context, String downloadUrl,int auditid,String token, PDFDownloadFinishedListner pdfDownloadFinishedListner) {
         this.context = context;
         this.downloadUrl = downloadUrl;
         mAuditID=auditid;
         this.pdfDownloadFinishedListner = pdfDownloadFinishedListner;
-
+        mFirebaseToken=token;
         downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf( '/' ),downloadUrl.length());//Create file name by picking download file name from URL
         Log.e(TAG, downloadFileName);
 
@@ -74,7 +76,7 @@ public class DownloadPdfTask {
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();//Open Url Connection
                 httpURLConnection.setRequestMethod("GET");//Set Request Method to "GET" since we are grtting data
                 httpURLConnection.setRequestProperty ("access-token", AppPreferences.INSTANCE.getAccessToken(context));
-                httpURLConnection.setRequestProperty (NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN, AppPreferences.INSTANCE.getFirebaseAccessToken(context));
+                httpURLConnection.setRequestProperty (NetworkConstant.REQ_FIREBASE_ACCESS_TOKEN,"Bearer "+mFirebaseToken);
 
                 httpURLConnection.setDoOutput(false);//connect the URL Connection
 

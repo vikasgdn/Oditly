@@ -64,13 +64,20 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         AppPreferences.INSTANCE.initAppPreferences(this);
+
+     //   Log.e("TOKEN SPLASH ",""+FirebaseAuth.getInstance().getCurrentUser().getIdToken(true).getResult().getToken());
         //updateFCMNotification();
         initView();
         initVar();
         updateFCMNotification();
+       // getUserProfile();
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
     @Override
     protected void initView() {
@@ -167,6 +174,16 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
 
         }
     }
+    private void getUserProfile() {
+        if (NetworkStatus.isNetworkConnected(this)) {
+            //mSpinKitView.setVisibility(View.VISIBLE);
+            NetworkService networkService = new NetworkService(NetworkURL.GET_PROFILE_DATA, NetworkConstant.METHOD_GET, this, this);
+            networkService.call(new HashMap<String, String>());
+        } else {
+            AppUtils.toast(this, getString(R.string.internet_error));
+
+        }
+    }
 
     @Override
     public void onNetworkCallInitiated(String service) {
@@ -175,12 +192,25 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
 
     @Override
     public void onNetworkCallCompleted(String type, String service, String response) {
+        Log.e("onNetworkCallCompleted "+service, "||||||  "+response);
 
         if (service.equalsIgnoreCase(NetworkURL.POST_FCM_TOKEN)) {
             Log.e("TOKEN  ", "|||||| UPDATED "+AppPreferences.INSTANCE.getFCMToken());
+        } else if(service.equalsIgnoreCase(NetworkURL.GET_PROFILE_DATA))
+        {
+            //  {"error":false,"data":{"user_id":3,"uid":"eZqETckFW3Tw53eeIjM3MUWrrOF3","tenant_uid":null,"role_id":200,"client_id":3,"fname":"Test","lname":"Client","email":"testclient@oditly.com","image":"https:\/\/api.account.oditly.com\/assets\/profile\/dummy.jpg","phone":1234567890,"dob":null,"gender":1,"address":"test address","city_id":707,"state_id":10,"country_id":101,"zone_id":194,"zipcode":123456,"user_status":1,"created_on":"2020-05-03 22:09:15","gender_text":"male","custom_role_id":null,"custom_role_name":null,"country_name":"India","zone_name":"Asia\/Kolkata","state_name":"Delhi","city_name":"New Delhi","role_name":"Client SuperAdmin","role_resource":"client","client_status":1,"industry_id":3,"tenant_id":null,"company_contact_email":"info@oditly.com","company_support_email":"support@oditly.com","company_name":"Test Client","company_logo":"https:\/\/api.account.oditly.com\/assets\/company_logo\/20200510_141240_52359315172925.png","ia_status":1,"training_status":1,"star_employee":0,"faq_report_name":"FAQ","can_gm_approve_action_plan":1},
+            try {
 
-
-        } else {
+                JSONObject object = new JSONObject(response);
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR))
+                {
+                   AppPreferences.INSTANCE.setUserId(object.getJSONObject("data").getInt("user_id"),this);
+                    AppPreferences.INSTANCE.setUserRole(object.getJSONObject("data").getInt("role_id"),this);
+                }
+            }
+            catch (Exception e){e.printStackTrace();}
+        }
+        else {
             try {
                 JSONObject object = new JSONObject(response);
 
@@ -269,7 +299,26 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
 
         }
     }
+    public void getUserProfileData()
+    {
+        if (NetworkStatus.isNetworkConnected(this))
+        {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put(AppConstant.TOKEN,AppPreferences.INSTANCE.getFCMToken());
+                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.POST_FCM_TOKEN, NetworkConstant.METHOD_POST, this, this);
+                networkService.call(jsonObject);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        } else
+        {
+            AppUtils.toast(this, getString(R.string.internet_error));
 
+        }
+    }
 
 
 
@@ -353,8 +402,13 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
 
                                     GetTokenResult getTokenResult= authResult.getUser().getIdToken(false).getResult();
                                     String tokenAuth=  getTokenResult.getToken();
-                                    String userId= getTokenResult.getClaims().get("userId").toString();
-                                    String roleId= getTokenResult.getClaims().get("roleId").toString();
+                                    AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
+
+                                    String userId= getTokenResult.getClaims().get("userId")==null?"":getTokenResult.getClaims().get("userId").toString();
+                                    String roleId= getTokenResult.getClaims().get("roleId")==null?"":getTokenResult.getClaims().get("roleId").toString();
+
+                                    getUserProfile();
+
                                     Log.e("USER ID Microsoft ===> ",""+userId);
 
 
@@ -363,8 +417,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
                                     if (!TextUtils.isEmpty(roleId))
                                         AppPreferences.INSTANCE.setClientRoleId(Integer.parseInt(roleId));
 
-                                    AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
-                                    Log.e("USER TOKEN ",""+AppPreferences.INSTANCE.getFirebaseAccessToken(SplashActivity.this));
+                                   // Log.e("USER TOKEN ",""+AppPreferences.INSTANCE.getFirebaseAccessToken(SplashActivity.this));
                                     AppPreferences.INSTANCE.setLogin(true, SplashActivity.this);
                                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
 

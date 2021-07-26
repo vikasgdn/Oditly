@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
@@ -28,10 +29,16 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentInfo;
 import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.network.apirequest.DeleteBSAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.DeleteBSQuestionAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.EditBSAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.EditBSQuestionAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
@@ -82,7 +89,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     int isCritical = 0;
     private String editable = "";
     Context context;
-  //  private ProgressDialog progressDialog;
+    //  private ProgressDialog progressDialog;
     private AddAttachmentInfo addAttachmentInfo;
     private static final String TAG = EditAttachmentActivity.class.getSimpleName();
 
@@ -133,8 +140,8 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
 
         attachType = getIntent().getStringExtra("attachType");
         addAttachmentInfo = getIntent().getParcelableExtra("attachmentDetail");
-     //   progressDialog = new ProgressDialog(context);
-      //  progressDialog.setMessage("Loading...");
+        //   progressDialog = new ProgressDialog(context);
+        //  progressDialog.setMessage("Loading...");
         if (editable.equals("0")){
             editBtn.setVisibility(View.VISIBLE);
         }else {
@@ -192,7 +199,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
                         break;
                     case "bsQuestion":
                         if (!TextUtils.isEmpty(attachmentDescription.getText()))
-                          addQuestionFileAttachment();
+                            addQuestionFileAttachment();
                         else
                             AppUtils.toast(this,getString(R.string.text_enter_desc));
                         break;
@@ -223,7 +230,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
 
     private void setData() {
         if (!AppUtils.isStringEmpty(addAttachmentInfo.getFile_url())) {
-          //  progressDialog.show();
+            //  progressDialog.show();
             mRparenProgressRL.setVisibility(View.VISIBLE);
             Glide.with(context)
                     .load(Headers.getUrlWithHeaders(addAttachmentInfo.getFile_url(),
@@ -231,7 +238,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                          //  progressDialog.dismiss();
+                            //  progressDialog.dismiss();
                             mRparenProgressRL.setVisibility(View.GONE);
                             AppUtils.toast(EditAttachmentActivity.this, "Image not available");
                             return false;
@@ -239,7 +246,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
 
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                          //  progressDialog.dismiss();
+                            //  progressDialog.dismiss();
                             mRparenProgressRL.setVisibility(View.GONE);
                             sDrawable=resource;
                             return false;
@@ -326,10 +333,20 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         };
 
         String url = NetworkURL.BSEDITATTACHMENT;
-        EditBSAttachmentRequest editBSAttachmentRequest = new EditBSAttachmentRequest(
-                AppPreferences.INSTANCE.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                addAttachmentInfo.getAudit_section_file_id(), attachmentDescription.getText().toString(), isCritical,context, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+        {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String token=task.getResult().getToken();
+                                EditBSAttachmentRequest editBSAttachmentRequest = new EditBSAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId, addAttachmentInfo.getAudit_section_file_id(), attachmentDescription.getText().toString(), isCritical,token,context, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void addQuestionFileAttachment() {
@@ -361,7 +378,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-               // hideProgressDialog();
+                // hideProgressDialog();
                 mRparenProgressRL.setVisibility(View.GONE);
                 AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
                 AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
@@ -370,10 +387,19 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         };
 
         String url = NetworkURL.BSEDITATTACHMENT;
-        EditBSQuestionAttachmentRequest editBSAttachmentRequest = new EditBSQuestionAttachmentRequest(
-                AppPreferences.INSTANCE.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), attachmentDescription.getText().toString(), isCritical,this, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+        {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String token=task.getResult().getToken();
+                                EditBSQuestionAttachmentRequest editBSAttachmentRequest = new EditBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), attachmentDescription.getText().toString(), isCritical,token,context, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+                            }
+                        }
+                    });
+        }
     }
 
 

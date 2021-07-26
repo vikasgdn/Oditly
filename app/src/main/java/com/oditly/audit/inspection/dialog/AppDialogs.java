@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.oditly.audit.inspection.BuildConfig;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.ui.activty.ActionCreateActivity;
@@ -334,6 +335,9 @@ public class AppDialogs
         lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
         dialog.getWindow().setAttributes(lp);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        TextView textView=dialog.findViewById(R.id.tv_dialog_message);
+
+        textView.setText(BuildConfig.VERSION_NAME);
 
         try {
 

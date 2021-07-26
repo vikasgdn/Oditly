@@ -4,6 +4,7 @@ package com.oditly.audit.inspection.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentInfo;
 import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.network.apirequest.ApiRequest;
 import com.oditly.audit.inspection.network.apirequest.DeleteBSAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.DeleteBSQuestionAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
@@ -160,10 +166,10 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
             public void onClick(DialogInterface dialog, int which) {
                 switch (attachType) {
                     case "bsSection":
-                        deleteBsFileAttachment(addAttachmentInfo);
+                        deleteBsSectionAndQuestionAttachment(addAttachmentInfo,AppConstant.BS_SECTION);
                         break;
                     case "bsQuestion":
-                        deleteQuestionFileAttachment(addAttachmentInfo);
+                        deleteBsSectionAndQuestionAttachment(addAttachmentInfo,AppConstant.BS_QUESTION);
                         break;
                 }
             }
@@ -177,19 +183,31 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
         dialog.create().show();
     }
 
-    private void deleteBsFileAttachment(AddAttachmentInfo addAttachmentInfo) {
+    private void deleteBsSectionAndQuestionAttachment(AddAttachmentInfo addAttachmentInfo,String type) {
         ((AddAttachmentActivity) context).showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 AppLogger.e("", "DeleteBSResponse: " + response);
                 try {
-                    JSONObject object = new JSONObject(response);
-                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
-                        ((AddAttachmentActivity) context).getOldMediaAttachmentList("bsSection");
-                    } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
+                    if (type.equalsIgnoreCase(AppConstant.BS_SECTION)) {
+                        JSONObject object = new JSONObject(response);
+                        if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                            AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
+                            ((AddAttachmentActivity) context).getOldMediaAttachmentList("bsSection");
+                        } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                            AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
+                        }
+                    }
+                    else
+                    {
+                        JSONObject object = new JSONObject(response);
+                        if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                            AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
+                            ((AddAttachmentActivity) context).getOldMediaAttachmentList("bsQuestion");
+                        } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                            AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -209,13 +227,33 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
         };
 
         String url = NetworkURL.BSDELETEATTACHMENT;
-        DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(
-                AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(),"","",context,
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
-    }
 
-    private void deleteQuestionFileAttachment(AddAttachmentInfo addAttachmentInfo) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+        {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String token=task.getResult().getToken();
+                                if (type.equalsIgnoreCase(AppConstant.BS_SECTION))
+                                {
+                                    DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(),"","",token,context, stringListener, errorListener);
+                                    VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+                                }
+                                else
+                                {
+                                    DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(),token,context, stringListener, errorListener);
+                                    VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+                                }
+
+                            }
+                        }
+                    });
+        }
+
+}
+
+  /*  private void deleteQuestionFileAttachment(AddAttachmentInfo addAttachmentInfo) {
         ((AddAttachmentActivity) context).showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
@@ -253,6 +291,6 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
                 addAttachmentInfo.getAudit_question_file_id(),context,
                 stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
-    }
+    }*/
 
 }

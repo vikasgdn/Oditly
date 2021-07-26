@@ -137,25 +137,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (mUser!=null) {
-            mUser.getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                String idToken = task.getResult().getToken();
-                                Log.e("======TOKEN START ", "" + idToken);
-                                AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer " + idToken, getApplicationContext());// ...
-                            } else {
-                                Log.e("======TOKEN ", "ErROR");
-                            }
-                        }
-                    });
-        }
-    }
 
     public void onClick(View view) {
         super.onClick(view);

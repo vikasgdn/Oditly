@@ -5,18 +5,26 @@ import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
 
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
@@ -32,6 +40,26 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             setSupportActionBar(mToolbar);
         }
 
+    }
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (mUser!=null) {
+            mUser.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String idToken = task.getResult().getToken();
+                                Log.e("======TOKEN START ", "" + idToken);
+                                AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer " + idToken, getApplicationContext());// ...
+                            } else {
+                                Log.e("======TOKEN ", "ErROR");
+                            }
+                        }
+                    });
+        }
     }
 
     protected void initView(){

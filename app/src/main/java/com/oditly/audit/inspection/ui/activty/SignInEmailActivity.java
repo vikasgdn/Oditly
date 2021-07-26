@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.network.INetworkEvent;
@@ -84,18 +85,13 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
         super.onClick(view);
         switch (view.getId()) {
             case R.id.btn_signin:
-                //   if (TextUtils.isEmpty(mEmailET.getText().toString()) || !AppUtils.isValidEmail(mEmailET.getText().toString()))
-
+                AppPreferences.INSTANCE.clearPreferences();
                 if (TextUtils.isEmpty(mEmailET.getText().toString()))
                     mEmailErrorTV.setVisibility(View.VISIBLE);
                 else {
                     mEmailErrorTV.setVisibility(View.GONE);
                     AppUtils.hideKeyboard(this, view);
                     validateEmailServerData();
-                   /* Intent intent = new Intent(this, SignInPasswordActivity.class);
-                    intent.putExtra(AppConstant.EMAIL, mEmailET.getText().toString());
-                    startActivity(intent);
-             */
                 }
                 break;
             case R.id.tv_forgotpass:

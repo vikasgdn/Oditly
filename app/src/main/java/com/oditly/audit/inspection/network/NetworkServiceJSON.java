@@ -2,11 +2,17 @@ package com.oditly.audit.inspection.network;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.network.apirequest.ApiRequest;
 import com.oditly.audit.inspection.network.apirequest.ApiRequestJSON;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
@@ -69,9 +75,19 @@ public class NetworkServiceJSON {
             }
         };
 
-            ApiRequestJSON signInRequest = new ApiRequestJSON(request, mMethod, mURL, mContext, stringListener, errorListener);
-
-            VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+        {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                ApiRequestJSON signInRequest = new ApiRequestJSON(request, mMethod, mURL,task.getResult().getToken(), mContext, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
+                                Log.e("Task isSuccessful : ",""+task.getResult().getToken());
+                            }
+                        }
+                    });
+        }
 
     }
 
