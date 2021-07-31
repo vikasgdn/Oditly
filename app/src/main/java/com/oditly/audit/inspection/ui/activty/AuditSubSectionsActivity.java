@@ -1,4 +1,4 @@
-package com.oditly.audit.inspection.ui.activty;
+ package com.oditly.audit.inspection.ui.activty;
 
 import android.content.Context;
 import android.content.Intent;

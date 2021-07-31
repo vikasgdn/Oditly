@@ -55,7 +55,7 @@ public class AppDialogs
         final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
         dialog.setTitle(activity.getString(R.string.app_name));
         dialog.setMessage("You have unsaved answered locally in your device. Would you like to sync them?");
-        dialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton("Save", new DialogInterface.OnCNetlickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 */
@@ -133,9 +133,7 @@ public class AppDialogs
         TextView textView=dialog.findViewById(R.id.tv_dialog_message);
         dialog.findViewById(R.id.tv_pass_rule).setVisibility(View.GONE);
         textView.setText(""+message);
-
         try {
-
 
             dialog.findViewById(R.id.tv_no).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -150,7 +148,6 @@ public class AppDialogs
                     dialog.dismiss();
                 }
             });
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -407,8 +404,6 @@ public class AppDialogs
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         try {
-
-
             dialog.findViewById(R.id.tv_no).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
