@@ -273,7 +273,15 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         questionListRecyclerView.setDrawingCacheEnabled(true);
         questionListRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
     }
-
+    public void sendToQuestionBasedActivity(ArrayList<BrandStandardQuestion> brandStandardQuestions)
+    {
+        Intent actionPlan = new Intent(this.context, BrandStandardOptionsBasedQuestionActivity.class);
+        actionPlan.putExtra(AppConstant.AUDIT_ID,auditId);
+        actionPlan.putExtra(AppConstant.SECTION_GROUPID,sectionGroupId);
+        actionPlan.putExtra(AppConstant.SECTION_ID,sectionId);
+        ((OditlyApplication)context.getApplicationContext()).setmSubQuestionForOptions(brandStandardQuestions);
+        startActivityForResult(actionPlan, AppConstant.SUBQUESTION_REQUESTCODE);
+   }
     public void setSubSectionQuestionList(ArrayList<BrandStandardSubSection> subSectionArrayList) {
         subSectionQuestionLayout.removeAllViews();
         if (subSectionArrayList != null || subSectionArrayList.size() != 0)
@@ -338,6 +346,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", new JSONArray(brandStandardQuestions.get(i).getAudit_option_id()));
                 jsonObject.put("audit_answer", brandStandardQuestions.get(i).getAudit_answer());
+                jsonObject.put("options", AppUtils.getOptionQuestionArray(brandStandardQuestions.get(i).getOptions()));
+
                 jsonArray.put(jsonObject);
 
             } catch (Exception e) {
@@ -353,6 +363,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 jsonObject.put("audit_comment", brandStandardsubsectionQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", new JSONArray(brandStandardsubsectionQuestions.get(i).getAudit_option_id()));
                 jsonObject.put("audit_answer", brandStandardsubsectionQuestions.get(i).getAudit_answer());
+                jsonObject.put("options", AppUtils.getOptionQuestionArray(brandStandardsubsectionQuestions.get(i).getOptions()));
+
                 jsonArray.put(jsonObject);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -372,8 +384,6 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         }
     }
 
-
-
     private boolean validateCommentOfQuestion() {
         boolean validate = true;
         int count = 0;
@@ -387,26 +397,10 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             count += 1;
             if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()))) {
 
-                float mObtainMarks = 0;
-                int commentTypeID = question.getComment_req_type_id();
-                if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
-                    mObtainMarks = Float.parseFloat(question.getObtainMarksForQuestion());
-
-                if (question.getHas_comment() > 0) {
-                    String message="Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
-                    if (commentTypeID == 1 && question.getAudit_comment().length() < question.getHas_comment()) {
-                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
-                        return false;
-                    } else if (commentTypeID == 2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks > 0 && question.getAudit_comment().length() < question.getHas_comment()) {
-                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
-                        return false;
-                    } else if (commentTypeID == 3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks <= 0 && question.getAudit_comment().length() < question.getHas_comment()) {
-                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
-                        return false;
-                    } else if (commentTypeID == 4 && question.getObtainMarksForQuestion() == null && question.getAudit_comment().length() < question.getHas_comment()) {
-                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
-                        return false;
-                    }
+                if (question.getHas_comment() > 0 && question.getHas_comment() > question.getAudit_comment().length()) {
+                    String message = "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
+                    return false;
                 }
             }
         }
@@ -416,33 +410,15 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             count += 1;
             if (((subQuestion.getAudit_option_id()!=null && subQuestion.getAudit_option_id().size()>0) || !TextUtils.isEmpty(subQuestion.getAudit_answer()))) {
                 if (((subQuestion.getAudit_option_id() != null && subQuestion.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(subQuestion.getAudit_answer()))) {
-                    float mObtainMarks = 0;
-                    int commentTypeID = subQuestion.getComment_req_type_id();
-                    if (!TextUtils.isEmpty(subQuestion.getObtainMarksForQuestion()))
-                        mObtainMarks = Float.parseFloat(subQuestion.getObtainMarksForQuestion());
-
-                    if (subQuestion.getHas_comment() > 0) {
-                        String message="Please enter the  minimum required " + subQuestion.getHas_comment() + " characters comment for question no. " + count;
-
-                        if (commentTypeID == 1 && subQuestion.getAudit_comment().length() < subQuestion.getHas_comment()) {
-                            AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
-                            return false;
-                        } else if (commentTypeID == 2 && !TextUtils.isEmpty(subQuestion.getObtainMarksForQuestion()) && mObtainMarks > 0 && subQuestion.getAudit_comment().length() < subQuestion.getHas_comment()) {
-                            AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
-                            return false;
-                        } else if (commentTypeID == 3 && !TextUtils.isEmpty(subQuestion.getObtainMarksForQuestion())&& mObtainMarks <= 0 && subQuestion.getAudit_comment().length() < subQuestion.getHas_comment()) {
-                            AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
-                            return false;
-                        } else if (commentTypeID == 4 && subQuestion.getObtainMarksForQuestion() == null && subQuestion.getAudit_comment().length() < subQuestion.getHas_comment()) {
-                            AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this,message);
-                            return false;
-                        }
+                    if (subQuestion.getHas_comment() > 0 && subQuestion.getHas_comment() > subQuestion.getAudit_comment().length()) {
+                        String message = "Please enter the  minimum required " + subQuestion.getHas_comment() + " characters comment for question no. " + count;
+                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
+                        return false;
                     }
                 }
             }
         }
         return validate;
-
     }
 
 
@@ -739,7 +715,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             scoreText.setText("Score: " + (int)((marksObtained/totalMarks) * (weightage / 100)) + "% (" + marksObtained + "/" + totalMarks + ")");
         }
         else*/
-            scoreText.setText("Score: " + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
+        scoreText.setText("Score: " + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
 
     }
 

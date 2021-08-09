@@ -136,22 +136,6 @@ public class NetworkServiceMultipart {
         }
     }
 
-   /* String tokenFirebase="";
-    private String getFirebaseUpdatedToken() {
-        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (mUser != null) {
-            mUser.getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful())
-                                tokenFirebase= task.getResult().getToken();
-                        }
-                    });
-        }
-        Log.e("Firebase Token : ",""+tokenFirebase);
-        return tokenFirebase;
-    }*/
 
 
 }

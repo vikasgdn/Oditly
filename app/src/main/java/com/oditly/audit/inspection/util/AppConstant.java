@@ -98,10 +98,13 @@ public class AppConstant {
     public static final String TOKEN = "token";
     public static final String BS_SECTION = "bsSection";
     public static final String BS_QUESTION = "bsQuestion";
+    public static final int SUBQUESTION_REQUESTCODE = 1021;
+    public static final int QuestionAttachmentRequest = 1029;
 
 
     public static String DEVICE_ID = "";
 
     public static int boxSize = 0;
     public static String ODITLY="oditly";
+
 }

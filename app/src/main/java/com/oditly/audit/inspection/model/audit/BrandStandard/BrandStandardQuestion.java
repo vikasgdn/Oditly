@@ -14,13 +14,15 @@ public class BrandStandardQuestion {
     private int audit_question_file_cnt = 0;
     private boolean can_create_action_plan;
     private int comment_req_type_id;
-    private int has_comment = 0;
+    private int comment_count = 0;
     private int is_required = 0;
     private int mClickPosition = 0;
     List<Uri> mImageList;
     private int media_count = 0;
     private int media_req_type_id;
     private String obtained_mark;
+    //private int mediaCount;
+   // private int commentCount;
     ArrayList<BrandStandardQuestionsOption> options;
     private String question_hint = "";
     private int question_id = 0;
@@ -81,9 +83,7 @@ public class BrandStandardQuestion {
         this.is_required = is_required2;
     }
 
-    public int getHas_comment() {
-        return this.has_comment;
-    }
+
 
     public String getAudit_answer() {
         return this.audit_answer;
@@ -236,4 +236,28 @@ public class BrandStandardQuestion {
     public void setMax_mark(String max_mark) {
         this.max_mark = max_mark;
     }
+
+    public int getHas_comment() {
+        return comment_count;
+    }
+
+    public void setHas_comment(int has_comment) {
+        this.comment_count = has_comment;
+    }
+
+    /*public int getCommentCountForCondition() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public int getMediaCountForCondition() {
+        return mediaCount;
+    }
+
+    public void setMediaCount(int mediaCount) {
+        this.mediaCount = mediaCount;
+    }*/
 }

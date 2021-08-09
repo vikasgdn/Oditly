@@ -43,6 +43,7 @@ import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
 
@@ -71,6 +72,7 @@ public class AppUtils {
     public static JSONArray validateSubmitQuestionFinalSubmission(Activity  activity,ArrayList<BrandStandardSection> brandStandardSection){
         // boolean validate = true;
         int count = 0;
+        int mMediaCount=0,mCommentCount=0;
         ArrayList<BrandStandardQuestion> brandStandardQuestionsSubmissions = new ArrayList<>();
         for (int i = 0 ; i < brandStandardSection.size() ; i++ ) {
             ArrayList<BrandStandardQuestion> brandStandardQuestion = brandStandardSection.get(i).getQuestions();
@@ -91,68 +93,46 @@ public class AppUtils {
                         return null;
                     }
                 }
-                if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media"))
-                {
-                    /*  For scorable questions like radio, checkbox, dropdown  If has_comment > 0 then if comment_req_type_id is 1: Always mandatory 2: Mandatory if question score is > 0 3: Mandatory if question score is <= 0 4: Mandatory if question score is null For other type questions check only has_comment field which is current logic.*/
-                        // validate = false;
-                        float mObtainMarks=0;int mediaTypeID=question.getMedia_req_type_id();
-                        if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
-                            mObtainMarks=Float.parseFloat(question.getObtainMarksForQuestion());
-                        if(question.getMedia_count()>0)
-                        {
 
-                            if (mediaTypeID==1 && question.getAudit_question_file_cnt()<question.getMedia_count())
+                mMediaCount=question.getMedia_count();
+                mCommentCount=question.getHas_comment();
+                if (question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0)
+                {
+                    for (int k = 0; k < question.getOptions().size(); k++) {
+                        BrandStandardQuestionsOption option = question.getOptions().get(k);
+                        if (question.getAudit_option_id() != null && question.getAudit_option_id().contains(new Integer(option.getOption_id()))) {
+                            if (question.getQuestion_type().equalsIgnoreCase("checkbox"))
                             {
-                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
-                                return null;
+                                if (mMediaCount<option.getMedia_count())
+                                    mMediaCount = option.getMedia_count();
+                                if (mCommentCount<option.getCommentCount())
+                                    mCommentCount = option.getCommentCount();
                             }
-                            else if(mediaTypeID==2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks>0 && question.getAudit_question_file_cnt()<question.getMedia_count())
-                            {
-                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
-                                return null;
-                            }
-                            else if(mediaTypeID==3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks<=0 && question.getAudit_question_file_cnt()<question.getMedia_count())
-                            {
-                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
-                                return null;
-                            }
-                            else if(mediaTypeID==4 && question.getObtainMarksForQuestion()==null && question.getAudit_question_file_cnt()<question.getMedia_count())
-                            {
-                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
-                                return null;
+                            else {
+                                mMediaCount = option.getMedia_count();
+                                mCommentCount = option.getCommentCount();
+                                break;
                             }
 
                         }
+                    }
+                }
+                Log.e("Media || Comment Count ","===> "+mMediaCount+" || "+mCommentCount);
+
+                if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media"))
+                {
+                    if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
+                    {
+                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                        return null;
+                    }
                 }
                 if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media")))
                 {
-                    float mObtainMarks=0;int commentTypeID=question.getComment_req_type_id();
-                    if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
-                        mObtainMarks=Float.parseFloat(question.getObtainMarksForQuestion());
-
-                    if (question.getHas_comment()>0)
+                    if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
                     {
-                        if (commentTypeID==1 && question.getAudit_comment().length() < question.getHas_comment())
-                        {
-                            AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
-                            return null;
-                        }
-                        else if (commentTypeID==2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks>0 && question.getAudit_comment().length() < question.getHas_comment())
-                        {
-                            AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
-                            return null;
-                        }
-                        else if (commentTypeID==3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks<=0 && question.getAudit_comment().length() < question.getHas_comment())
-                        {
-                            AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
-                            return null;
-                        }
-                        else if (commentTypeID==4 && question.getObtainMarksForQuestion()==null && question.getAudit_comment().length() < question.getHas_comment())
-                        {
-                            AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
-                            return null;
-                        }
-
+                        AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count);
+                        return null;
                     }
                 }
             }
@@ -181,65 +161,41 @@ public class AppUtils {
                                 return null;
                             }
                         }
+                        mMediaCount=question.getMedia_count();
+                        mCommentCount=question.getHas_comment();
+                        if (question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0)
+                        {
+                            for (int y = 0; y < question.getOptions().size(); y++) {
+                                BrandStandardQuestionsOption option = question.getOptions().get(y);
+                                if (question.getQuestion_type().equalsIgnoreCase("checkbox"))
+                                {
+                                    if (mMediaCount<option.getMedia_count())
+                                        mMediaCount = option.getMedia_count();
+                                    if (mCommentCount<option.getCommentCount())
+                                        mCommentCount = option.getCommentCount();
+                                }
+                                else {
+                                    mMediaCount = option.getMedia_count();
+                                    mCommentCount = option.getCommentCount();
+                                    break;
+                                }
+                            }
+                        }
+                        
                         if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || (question.getAudit_answer()!= null && question.getAudit_answer().length()>0))
                         {
-                                float mObtainMarks=0;int mediaTypeID=question.getMedia_req_type_id();
-                                if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
-                                    mObtainMarks=Float.parseFloat(question.getObtainMarksForQuestion());
-                                if(question.getMedia_count()>0)
-                                {
-
-                                    if (mediaTypeID==1 && question.getAudit_question_file_cnt()<question.getMedia_count())
-                                    {
-                                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
-                                        return null;
-                                    }
-                                    else if(mediaTypeID==2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks>0 && question.getAudit_question_file_cnt()<question.getMedia_count())
-                                    {
-                                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
-                                        return null;
-                                    }
-                                    else if(mediaTypeID==3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks<=0 && question.getAudit_question_file_cnt()<question.getMedia_count())
-                                    {
-                                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
-                                        return null;
-                                    }
-                                    else if(mediaTypeID==4 && question.getObtainMarksForQuestion()==null && question.getAudit_question_file_cnt()<question.getMedia_count())
-                                    {
-                                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
-                                        return null;
-                                    }
-                                }
+                            if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
+                            {
+                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                                return null;
+                            }
                         }
                         if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()))) {
 
-                            float mObtainMarks=0;int commentTypeID=question.getComment_req_type_id();
-                            if (!TextUtils.isEmpty(question.getObtainMarksForQuestion()))
-                                mObtainMarks=Float.parseFloat(question.getObtainMarksForQuestion());
-
-                            if (question.getHas_comment()>0)
+                            if (mCommentCount>0 && question.getAudit_comment().length()<mCommentCount)
                             {
-                                if (commentTypeID==1 && question.getAudit_comment().length() < question.getHas_comment())
-                                {
-                                    AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
-                                    return null;
-                                }
-                               else if (commentTypeID==2 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks>0 && question.getAudit_comment().length() < question.getHas_comment())
-                                {
-                                    AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
-                                    return null;
-                                }
-                                else if (commentTypeID==3 && !TextUtils.isEmpty(question.getObtainMarksForQuestion()) && mObtainMarks<=0 && question.getAudit_comment().length() < question.getHas_comment())
-                                {
-                                    AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
-                                    return null;
-                                }
-                                else if (commentTypeID==4 && question.getObtainMarksForQuestion()==null && question.getAudit_comment().length() < question.getHas_comment())
-                                {
-                                    AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + question.getHas_comment() + " characters comment for question no." + count);
-                                    return null;
-                                }
-
+                                AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count);
+                                return null;
                             }
                         }
 
@@ -249,26 +205,51 @@ public class AppUtils {
             catch (Exception e){e.printStackTrace();}
 
         }
-        // answerArray = AppUtils.getQuestionsArray (brandStandardQuestionsSubmissions);
         return AppUtils.getQuestionsArray (brandStandardQuestionsSubmissions);
     }
 
-    public static JSONArray getOptionIdArray (ArrayList<Integer> arrayList){
-        JSONArray jsArray = null;
-        if (arrayList==null || arrayList.size()==0)
-            return jsArray;
-        try
-        {
-            if (arrayList!=null && arrayList.size()>0)
-                jsArray=  new JSONArray(arrayList);
-            else
-                jsArray=  new JSONArray();
+
+
+    public static JSONArray getOptionQuestionArray (ArrayList<BrandStandardQuestionsOption> optionsArray){
+        try {
+            JSONArray jsonArray = new JSONArray();
+
+            for (int i=0;i<optionsArray.size();i++)
+            {
+                JSONObject jsonObject = new JSONObject();
+                BrandStandardQuestionsOption questionsOption= optionsArray.get(i);
+                if (questionsOption.getQuestions()!=null && questionsOption.getQuestions().size()>0 ) {
+                    jsonObject.put("option_id", questionsOption.getOption_id());
+                    jsonObject.put("questions", geSubQusetionsArrayArray(questionsOption.getQuestions()));
+                    jsonArray.put(jsonObject);
+                }
+            }
+            return jsonArray;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return jsArray;
+        return new JSONArray();
     }
+    public static JSONArray geSubQusetionsArrayArray (ArrayList<BrandStandardQuestion> questionsArray){
 
+        try {
+            JSONArray jsonArray = new JSONArray();
+            for (int i=0;i<questionsArray.size();i++)
+            {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("question_id", questionsArray.get(i).getQuestion_id());
+                jsonObject.put("audit_option_id", getOptionIdArray(questionsArray.get(i).getAudit_option_id()));
+                jsonObject.put("audit_answer", questionsArray.get(i).getAudit_answer());
+                jsonObject.put("audit_comment", questionsArray.get(i).getAudit_comment());
+                jsonArray.put(jsonObject);
+            }
+            return jsonArray;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  new JSONArray();
+    }
     public static JSONArray getQuestionsArray (ArrayList<BrandStandardQuestion> brandStandardQuestions){
         JSONArray jsonArray = new JSONArray();
         if (brandStandardQuestions==null || brandStandardQuestions.size()==0)
@@ -281,6 +262,7 @@ public class AppUtils {
                 jsonObject.put("audit_answer_na", brandStandardQuestions.get(i).getAudit_answer_na());
                 jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", AppUtils.getOptionIdArray(brandStandardQuestions.get(i).getAudit_option_id()));
+                jsonObject.put("options", getOptionQuestionArray(brandStandardQuestions.get(i).getOptions()));
                 jsonObject.put("audit_answer", brandStandardQuestions.get(i).getAudit_answer());
                 jsonArray.put(jsonObject);
             } catch (JSONException e) {
@@ -288,6 +270,19 @@ public class AppUtils {
             }
         }
         return jsonArray;
+    }
+    public static JSONArray getOptionIdArray (ArrayList<Integer> arrayList){
+        JSONArray jsArray = null ;
+        try
+        {
+            if (arrayList!=null && arrayList.size()>0)
+                jsArray=  new JSONArray(arrayList);
+            else
+                jsArray=  new JSONArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsArray;
     }
     public static void toast(Activity activity, String message) {
         if (message != null && !message.equals("") && activity != null) {

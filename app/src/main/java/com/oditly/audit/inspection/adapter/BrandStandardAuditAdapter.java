@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import com.mohammedalaa.seekbar.OnRangeSeekBarChangeListener;
 import com.mohammedalaa.seekbar.RangeSeekBarView;
+import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardActionPlan;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
@@ -31,6 +32,7 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSlider
 import com.oditly.audit.inspection.ui.activty.AudioPlayerActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
+import com.oditly.audit.inspection.ui.activty.BrandStandardOptionsBasedQuestionActivity;
 import com.oditly.audit.inspection.ui.activty.ShowHowImageActivity;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
@@ -361,6 +363,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
             public void afterTextChanged(Editable editable) {
                 clickedOnAnswerTpye();
                 brandStandardQuestion.setAudit_comment("" + editable.toString());
+                brandStandardQuestion.setAudit_comment("" + editable.toString());
             }
         });
         holder.mCommentHideShowLL.setOnClickListener(new View.OnClickListener() {
@@ -549,14 +552,14 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
         arrayList.addAll(brandStandardQuestion.getOptions());
         holder.optionListLinearLayout.removeAllViews();
 
-        for (int i = 0; i < arrayList.size(); i++) {
-
+        for (int i = 0; i < arrayList.size(); i++)
+        {
             final BrandStandardQuestionsOption brandStandardQuestionsOption = arrayList.get(i);
             final View view = ((BrandStandardAuditActivity) context).inflater.inflate(R.layout.brand_standard_audit_rdo_cbx_quesn, null,false);
             final TextView answerText = view.findViewById(R.id.radio_text);
             answerText.setText(String.valueOf(brandStandardQuestionsOption.getOption_text()));
             if (brandStandardQuestion.getAudit_option_id()!= null && brandStandardQuestion.getAudit_option_id().contains(new Integer(brandStandardQuestionsOption.getOption_id())))
-            {   setSelectionProcess(answerText,brandStandardQuestion,brandStandardQuestionsOption);
+            {   setSelectionProcess(answerText,brandStandardQuestion,brandStandardQuestionsOption,false);
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
 
@@ -579,7 +582,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                             answerOptionId.clear();
                             answerOptionId.add(optionId);
                             brandStandardQuestionsOption.setSelected(1);
-                            setSelectionProcess(answerText,brandStandardQuestion,brandStandardQuestionsOption);
+                            setSelectionProcess(answerText,brandStandardQuestion,brandStandardQuestionsOption,true);
                         } else {
                             radio_text.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
                             radio_text.setTextColor(context.getResources().getColor(R.color.c_dark_gray));
@@ -666,7 +669,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
 
             if (brandStandardQuestion.getAudit_option_id()!= null && brandStandardQuestion.getAudit_option_id().contains(new Integer(brandStandardQuestionsOption.getOption_id())))
             {
-                setSelectionProcess(answerText,brandStandardQuestion,brandStandardQuestionsOption);
+                setSelectionProcess(answerText,brandStandardQuestion,brandStandardQuestionsOption,false);
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
 
@@ -687,7 +690,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                             {
                                 answerOptionId.clear();
                                 answerOptionId.add(optionId);
-                                setSelectionProcess(answerText,brandStandardQuestion,brandStandardQuestionsOption);
+                                setSelectionProcess(answerText,brandStandardQuestion,brandStandardQuestionsOption,true);
                             } else {
                                 radio_text.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
                                 radio_text.setTextColor(context.getResources().getColor(R.color.c_dark_gray));
@@ -707,7 +710,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                         }
                         else
                         {   answerOptionId.add(optionId);
-                            setSelectionProcess(answerText, brandStandardQuestion, brandStandardQuestionsOption);
+                            setSelectionProcess(answerText, brandStandardQuestion, brandStandardQuestionsOption,true);
                         }
                     }
                     ((BrandStandardAuditActivity) context).countNA_Answers();
@@ -725,7 +728,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
         view.setTextColor(context.getResources().getColor(R.color.c_dark_gray));
     }
 
-    private void setSelectionProcess(TextView answerText,BrandStandardQuestion brandStandardQuestion, BrandStandardQuestionsOption brandStandardQuestionsOption) {
+    private void setSelectionProcess(TextView answerText,BrandStandardQuestion brandStandardQuestion, BrandStandardQuestionsOption brandStandardQuestionsOption,boolean isSubquestionRedirection) {
         if (brandStandardQuestionsOption.getOption_text().equalsIgnoreCase("NA") || brandStandardQuestionsOption.getOption_text().equalsIgnoreCase("N/A")) {
             brandStandardQuestion.setAudit_answer_na(1);
             brandStandardQuestion.setObtainMarksForQuestion(null);
@@ -734,11 +737,19 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
             brandStandardQuestion.setAudit_answer_na(0);
             brandStandardQuestion.setObtainMarksForQuestion(""+brandStandardQuestionsOption.getOption_mark());
         }
+        //newly added
+        brandStandardQuestion.setHas_comment(brandStandardQuestionsOption.getCommentCount());
+        brandStandardQuestion.setMedia_count(brandStandardQuestionsOption.getMedia_count());
 
-       // Log.e("OPTION Mark ","===> "+brandStandardQuestionsOption.getOption_mark());
-        //Log.e("OPTION && TEXT COLOR "," "+brandStandardQuestionsOption.getOption_color()+" TEXTCOLOR  "+brandStandardQuestionsOption.getOption_text_color());
+        Log.e("=====SELCeTION ","PROCESS========");
+
         answerText.setBackgroundColor(Color.parseColor(brandStandardQuestionsOption.getOption_color()));
         answerText.setTextColor(Color.parseColor(brandStandardQuestionsOption.getOption_text_color()));
+
+        if (brandStandardQuestionsOption.getQuestions()!=null && brandStandardQuestionsOption.getQuestions().size()>0 && isSubquestionRedirection)
+        {
+            ((BrandStandardAuditActivity)context).sendToQuestionBasedActivity(brandStandardQuestionsOption.getQuestions());
+        }
 
     }
 

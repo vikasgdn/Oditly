@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.oditly.audit.inspection.model.actionData.ActionInfo;
 import com.oditly.audit.inspection.model.audit.AuditInfo;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSectionNew;
 
@@ -30,6 +31,8 @@ public class OditlyApplication extends Application {
     private ActionInfo mActionPlanData;
     private AuditInfo mAuditData;
     private List<BrandStandardSectionNew> mSubSectionList;
+
+    private ArrayList<BrandStandardQuestion> mSubQuestionForOptions;
     private ArrayList<BrandStandardSection> mBrandStandardSectionList;
     private Context mContext;
     private boolean isGalleryDisable;
@@ -119,5 +122,13 @@ public class OditlyApplication extends Application {
 
     public void setGalleryDisable(boolean galleryDisable) {
         isGalleryDisable = galleryDisable;
+    }
+
+    public ArrayList<BrandStandardQuestion> getmSubQuestionForOptions() {
+        return mSubQuestionForOptions;
+    }
+
+    public void setmSubQuestionForOptions(ArrayList<BrandStandardQuestion> mSubQuestionForOptions) {
+        this.mSubQuestionForOptions = mSubQuestionForOptions;
     }
 }

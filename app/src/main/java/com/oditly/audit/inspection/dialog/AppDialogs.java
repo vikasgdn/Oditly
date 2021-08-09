@@ -26,6 +26,7 @@ import com.oditly.audit.inspection.ui.activty.AuditCreateActivity;
 import com.oditly.audit.inspection.ui.activty.AuditSubmitSignatureActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
+import com.oditly.audit.inspection.ui.activty.BrandStandardOptionsBasedQuestionActivity;
 import com.oditly.audit.inspection.ui.activty.MainActivity;
 import com.oditly.audit.inspection.ui.activty.ScheduleDemoActivity;
 import com.oditly.audit.inspection.ui.activty.SignInEmailActivity;
@@ -533,8 +534,12 @@ public class AppDialogs
                 public void onClick(View v) {
                     if (activity instanceof BrandStandardAuditActivity)
                         ((BrandStandardAuditActivity)activity).saveBrandStandardQuestion();
-                    else
+                    else if (activity instanceof BrandStandardAuditActivityPagingnation)
                         ((BrandStandardAuditActivityPagingnation)activity).saveBrandStandardQuestion();
+                    else
+                    {
+                        ((BrandStandardOptionsBasedQuestionActivity)activity).finish();
+                    }
                     dialog.dismiss();
                 }
             });

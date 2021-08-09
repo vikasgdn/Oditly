@@ -4,7 +4,9 @@ package com.oditly.audit.inspection.model.audit.BrandStandard;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class BrandStandardQuestionsOption implements Parcelable {
+import java.util.ArrayList;
+
+public class BrandStandardQuestionsOption  {
 
     int option_id = 0;
     String option_text = "";
@@ -13,48 +15,9 @@ public class BrandStandardQuestionsOption implements Parcelable {
     int checked = 0;
     String option_color = "";
     String option_text_color = "";
-
-
-
-
-    protected BrandStandardQuestionsOption(Parcel in) {
-        option_id = in.readInt();
-        option_text = in.readString();
-        option_mark = in.readFloat();
-        selected = in.readInt();
-        checked = in.readInt();
-        option_color = in.readString();
-        option_text_color = in.readString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(option_id);
-        dest.writeString(option_text);
-        dest.writeFloat(option_mark);
-        dest.writeInt(selected);
-        dest.writeInt(checked);
-        dest.writeString(option_color);
-        dest.writeString(option_text_color);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Creator<BrandStandardQuestionsOption> CREATOR = new Creator<BrandStandardQuestionsOption>() {
-        @Override
-        public BrandStandardQuestionsOption createFromParcel(Parcel in) {
-            return new BrandStandardQuestionsOption(in);
-        }
-
-        @Override
-        public BrandStandardQuestionsOption[] newArray(int size) {
-            return new BrandStandardQuestionsOption[size];
-        }
-    };
+    int comment_count;
+    int media_count;
+    private ArrayList<BrandStandardQuestion> questions;
 
     public int getOption_id() {
         return option_id;
@@ -95,6 +58,7 @@ public class BrandStandardQuestionsOption implements Parcelable {
     public void setChecked(int checked) {
         this.checked = checked;
     }
+
     public String getOption_color() {
         return option_color;
     }
@@ -114,4 +78,29 @@ public class BrandStandardQuestionsOption implements Parcelable {
     @Override
     public String toString() {
         return getOption_text(); // You can add anything else like maybe getDrinkType()
-    }}
+    }
+
+    public int getCommentCount() {
+        return comment_count;
+    }
+
+    public void setCommentCount(int comment) {
+        this.comment_count = comment;
+    }
+
+    public int getMedia_count() {
+        return media_count;
+    }
+
+    public void setMedia_count(int media_count) {
+        this.media_count = media_count;
+    }
+
+    public ArrayList<BrandStandardQuestion> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(ArrayList<BrandStandardQuestion> questions) {
+        this.questions = questions;
+    }
+}

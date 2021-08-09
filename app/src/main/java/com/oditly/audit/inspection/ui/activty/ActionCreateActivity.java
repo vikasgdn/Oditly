@@ -698,7 +698,6 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                         mURIimageList.add(Uri.fromFile(new File(list[i])));
                         mMediaFileList.add(new File(list[i]));
                     }
-
                     mMediaAdapter.notifyDataSetChanged();
 
                 } else {
