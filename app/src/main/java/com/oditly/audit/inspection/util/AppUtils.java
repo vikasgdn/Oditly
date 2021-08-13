@@ -72,7 +72,7 @@ public class AppUtils {
     public static JSONArray validateSubmitQuestionFinalSubmission(Activity  activity,ArrayList<BrandStandardSection> brandStandardSection){
         // boolean validate = true;
         int count = 0;
-        int mMediaCount=0,mCommentCount=0;
+        int mMediaCount=0,mCommentCount=0,mActionPlanRequred=0;
         ArrayList<BrandStandardQuestion> brandStandardQuestionsSubmissions = new ArrayList<>();
         for (int i = 0 ; i < brandStandardSection.size() ; i++ ) {
             ArrayList<BrandStandardQuestion> brandStandardQuestion = brandStandardSection.get(i).getQuestions();
@@ -103,6 +103,8 @@ public class AppUtils {
                         if (question.getAudit_option_id() != null && question.getAudit_option_id().contains(new Integer(option.getOption_id()))) {
                             if (question.getQuestion_type().equalsIgnoreCase("checkbox"))
                             {
+                                if (mActionPlanRequred==0)
+                                    mActionPlanRequred=option.getAction_plan_required();
                                 if (mMediaCount<option.getMedia_count())
                                     mMediaCount = option.getMedia_count();
                                 if (mCommentCount<option.getCommentCount())
@@ -111,6 +113,7 @@ public class AppUtils {
                             else {
                                 mMediaCount = option.getMedia_count();
                                 mCommentCount = option.getCommentCount();
+                                mActionPlanRequred=option.getAction_plan_required();
                                 break;
                             }
 
@@ -121,20 +124,23 @@ public class AppUtils {
 
                 if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media"))
                 {
+                    if(mActionPlanRequred>0 && question.getAction_plan()==null)
+                    {
+                        AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                        return null;
+                    }
                     if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
                     {
                         AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
                         return null;
                     }
-                }
-                if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media")))
-                {
                     if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
                     {
                         AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count);
                         return null;
                     }
                 }
+
             }
 
             ArrayList<BrandStandardSubSection> brandStandardSubSections = brandStandardSection.get(i).getSub_sections();
@@ -149,6 +155,7 @@ public class AppUtils {
                         String questionType=question.getQuestion_type();
                         if (brandStandardSubQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider")|| questionType.equalsIgnoreCase("target")))
                         {
+
                             if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
                                 AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
@@ -169,6 +176,8 @@ public class AppUtils {
                                 BrandStandardQuestionsOption option = question.getOptions().get(y);
                                 if (question.getQuestion_type().equalsIgnoreCase("checkbox"))
                                 {
+                                    if (mActionPlanRequred==0)
+                                        mActionPlanRequred=option.getAction_plan_required();
                                     if (mMediaCount<option.getMedia_count())
                                         mMediaCount = option.getMedia_count();
                                     if (mCommentCount<option.getCommentCount())
@@ -177,26 +186,30 @@ public class AppUtils {
                                 else {
                                     mMediaCount = option.getMedia_count();
                                     mCommentCount = option.getCommentCount();
+                                    mActionPlanRequred=option.getAction_plan_required();
                                     break;
                                 }
                             }
                         }
-                        
                         if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || (question.getAudit_answer()!= null && question.getAudit_answer().length()>0))
                         {
+                            if(mActionPlanRequred>0 && question.getAction_plan()==null)
+                            {
+                                AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                                return null;
+                            }
                             if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
                             {
                                 AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
-                        }
-                        if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()))) {
 
                             if (mCommentCount>0 && question.getAudit_comment().length()<mCommentCount)
                             {
                                 AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count);
                                 return null;
                             }
+
                         }
 
                     }

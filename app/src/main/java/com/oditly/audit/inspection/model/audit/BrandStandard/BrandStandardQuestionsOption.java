@@ -17,6 +17,7 @@ public class BrandStandardQuestionsOption  {
     String option_text_color = "";
     int comment_count;
     int media_count;
+    private int action_plan_required;
     private ArrayList<BrandStandardQuestion> questions;
 
     public int getOption_id() {
@@ -102,5 +103,13 @@ public class BrandStandardQuestionsOption  {
 
     public void setQuestions(ArrayList<BrandStandardQuestion> questions) {
         this.questions = questions;
+    }
+
+    public int getAction_plan_required() {
+        return action_plan_required;
+    }
+
+    public void setAction_plan_required(int action_plan_required) {
+        this.action_plan_required = action_plan_required;
     }
 }
