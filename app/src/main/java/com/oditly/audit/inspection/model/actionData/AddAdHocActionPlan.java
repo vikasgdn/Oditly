@@ -1,4 +1,4 @@
-package com.oditly.audit.inspection.network.apirequest;
+package com.oditly.audit.inspection.model.actionData;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -20,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,7 +54,9 @@ import com.oditly.audit.inspection.network.NetworkServiceJSON;
 import com.oditly.audit.inspection.network.NetworkServiceMultipart;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
-import com.oditly.audit.inspection.network.apirequest.AddAdHocActionPlan;
+import com.oditly.audit.inspection.model.actionData.AddAdHocActionPlan;
+import com.oditly.audit.inspection.network.apirequest.ApiRequest;
+import com.oditly.audit.inspection.network.apirequest.OktaTokenRefreshRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
@@ -290,16 +294,43 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                     if (mFromWhere.equalsIgnoreCase("Audit"))
                         postActionCreateServerDataUsingAuditID();
                     else {
-                        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+                        if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
                         {
-                            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                            if (task.isSuccessful()) {
-                                                postActionCreateServerData(task.getResult().getToken());
+                            if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
+                            {
+                                postActionCreateServerData(AppPreferences.INSTANCE.getOktaToken(this));
+                            }
+                            else
+                            {
+                                Response.Listener<JSONObject> jsonListener = new Response.Listener<JSONObject>() {
+                                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        AppLogger.e("TAG", " Token SUCCESS Response: " + response);
+                                        AppUtils.parseRefreshTokenRespone(response,ActionCreateActivity.this);
+                                        postActionCreateServerData(AppPreferences.INSTANCE.getOktaToken(ActionCreateActivity.this));
+                                    }
+                                };
+                                Response.ErrorListener errListener = new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        AppLogger.e("TAG", "ERROR Response: " + error);
+                                    }
+                                };
+                                OktaTokenRefreshRequest tokenRequest = new OktaTokenRefreshRequest(AppUtils.getTokenJson(ActionCreateActivity.this),jsonListener, errListener);
+                                VolleyNetworkRequest.getInstance(ActionCreateActivity.this).addToRequestQueue(tokenRequest);
+                            }
+                        } else {
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    postActionCreateServerData(task.getResult().getToken());
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                            }
                         }
                     }
                 }

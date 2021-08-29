@@ -2,21 +2,9 @@ package com.oditly.audit.inspection.network;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
-import com.oditly.audit.inspection.network.apirequest.AddAdHocActionPlan;
-import com.oditly.audit.inspection.network.apirequest.ApiRequestJSON;
-import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
-
-import org.json.JSONObject;
+import com.oditly.audit.inspection.model.actionData.AddAdHocActionPlan;
 
 import java.io.File;
 import java.util.ArrayList;

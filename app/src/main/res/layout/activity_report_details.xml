@@ -286,6 +286,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:orientation="horizontal">
 
 
@@ -300,6 +301,7 @@
             android:fontFamily="@font/nunitosans_regular"
             android:background="@drawable/tv_shape_blue_border"
             android:padding="@dimen/d_5dp"
+            android:visibility="gone"
             android:drawableLeft="@mipmap/iv_view"
             android:drawablePadding="@dimen/d_5dp"
             android:textColor="@color/text_selector"
@@ -312,6 +314,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/text_share"
+            android:visibility="gone"
             android:gravity="center"
             android:layout_margin="@dimen/d_10dp"
             android:background="@drawable/tv_shape_blue_border"
@@ -325,11 +328,11 @@
 
         <TextView
             android:id="@+id/tv_export"
-            android:layout_width="match_parent"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/text_export"
             android:gravity="center"
+            android:layout_gravity="center"
             android:drawableLeft="@mipmap/iv_download"
             android:drawablePadding="@dimen/d_5dp"
             android:layout_margin="@dimen/d_10dp"

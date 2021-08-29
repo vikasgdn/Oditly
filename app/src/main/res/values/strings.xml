@@ -94,9 +94,9 @@
     <string name="text_submitfinal">Final Submit</string>
     <string name="text_photo">Media</string>
     <string name="text_summary">Summary</string>
-    <string name="text_comment_comp">Completion Comment</string>
+    <string name="text_comment_comp">Closure Proof</string>
     <string name="text_comment">Comment</string>
-    <string name="text_ref_image">Show how</string>
+    <string name="text_ref_image">Reference</string>
     <string name="rtext_esume">Resume</string>
     <string name="text_na">N/A</string>
     <string name="text_resume">Resume</string>
@@ -317,7 +317,7 @@
     <string name="text_action_title">Action Title</string>
     <string name="text_department">Department</string>
     <string name="text_correctiveaction">Corrective Action Required</string>
-    <string name="text_mediacount">Completion Media Count</string>
+    <string name="text_mediacount">Closure Proof</string>
     <string name="text_complition">Completion</string>
     <string name="text_chatwithus">Chat with us</string>
     <string name="text_entercount">Enter Count</string>

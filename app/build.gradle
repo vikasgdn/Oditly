@@ -9,8 +9,8 @@ android {
         applicationId "com.oditly.audit.inspection"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1027
-        versionName "1027"
+        versionCode 1029
+        versionName "1029"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

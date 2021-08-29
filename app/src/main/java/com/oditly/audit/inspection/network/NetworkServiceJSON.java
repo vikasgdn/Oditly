@@ -13,9 +13,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.network.apirequest.ApiRequest;
 import com.oditly.audit.inspection.network.apirequest.ApiRequestJSON;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
+import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 
 import org.json.JSONObject;
@@ -48,7 +50,7 @@ public class NetworkServiceJSON {
     }
 
     private void SignIn(JSONObject request) {
-      //  showProgressDialog();
+        //  showProgressDialog();
 
         Response.Listener<JSONObject> stringListener = new Response.Listener<JSONObject>() {
 
@@ -74,19 +76,23 @@ public class NetworkServiceJSON {
 
             }
         };
-
-        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+        if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA)) {
+            ApiRequestJSON signInRequest = new ApiRequestJSON(request, mMethod, mURL,AppPreferences.INSTANCE.getOktaToken(mContext), mContext, stringListener, errorListener);
+            VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
+        } else
         {
-            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                ApiRequestJSON signInRequest = new ApiRequestJSON(request, mMethod, mURL,task.getResult().getToken(), mContext, stringListener, errorListener);
-                                VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
-                                Log.e("Task isSuccessful : ",""+task.getResult().getToken());
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                if (task.isSuccessful()) {
+                                    ApiRequestJSON signInRequest = new ApiRequestJSON(request, mMethod, mURL, task.getResult().getToken(), mContext, stringListener, errorListener);
+                                    VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
+                                    Log.e("Task isSuccessful : ", "" + task.getResult().getToken());
+                                }
                             }
-                        }
-                    });
+                        });
+            }
         }
 
     }

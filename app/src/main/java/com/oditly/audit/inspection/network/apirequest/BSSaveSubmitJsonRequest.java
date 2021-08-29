@@ -41,19 +41,6 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
         super(method, url, jsonRequest, listener, errorListener);
     }
 
-/*
-    public BSSaveSubmitJsonRequest(String accessToken, String url, JSONObject jsonRequest, Context context,
-                                   Response.Listener<JSONObject> listener,
-                                   Response.ErrorListener errorListener) {
-        super(Method.POST, url, jsonRequest, listener, errorListener);
-
-        headers.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
-        headers.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
-        headers.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
-        headers.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
-        headers.put("Authorization",AppPreferences.INSTANCE.getFirebaseAccessToken(context));
-    }*/
-
     public static JSONObject createInput(String auditId, String auditDate, String save, JSONArray answer) {
 
 

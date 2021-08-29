@@ -235,8 +235,6 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
         } else
         {
             AppUtils.toast(mActivity, mActivity.getString(R.string.internet_error));
-            //  processAuditListResponse(mBsOfflineDB.getAuditListJSONFromDB(mAudityType));
-
         }
     }
 
@@ -290,10 +288,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                         case 3:
                             mOverDueTV.setText(getString(R.string.s_overdue)+"("+object.optString("rows")+")");
                             break;
-
                     }
-                    //if (NetworkStatus.isNetworkConnected(mActivity))
-                    //fetchQuestionJsonDataInBackground(mAuditLisBean);
                 }else {
                     mNoDataFoundRL.setVisibility(View.VISIBLE);
                 }
@@ -309,19 +304,6 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
         }
         mSpinKitView.setVisibility(View.GONE);
     }
-
-   /* private void fetchQuestionJsonDataInBackground(List<AuditInfo> mAuditLisBean)
-    {
-        for (int j=0;j<mAuditLisBean.size();j++)
-        {
-            String auditID=""+mAuditLisBean.get(j).getAudit_id();
-            Intent intent = new Intent(mActivity,QuestionData.class);
-            intent.putExtra(AppConstant.AUDIT_ID,auditID);
-            mActivity.startService(intent);
-        }
-
-    }*/
-
 
 
 

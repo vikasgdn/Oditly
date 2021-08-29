@@ -66,10 +66,10 @@ public class MainActivity extends BaseActivity {
         }
         BottomifyNavigationView navigationView = (BottomifyNavigationView) findViewById(R.id.bottomify_nav);
         navigationView.setActiveNavigationIndex(this.lastSelectedPosition);
-        setScrollableText(this.lastSelectedPosition);
+       // setPageSelection(this.lastSelectedPosition);
         navigationView.setOnNavigationItemChangedListener(new OnNavigationItemChangeListener() {
             public void onNavigationItemChanged(BottomifyNavigationView.NavigationItem navigationItem) {
-                MainActivity.this.setScrollableText(navigationItem.getPosition());
+                MainActivity.this.setPageSelection(navigationItem.getPosition());
             }
         });
     }
@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity {
     /* access modifiers changed from: protected */
     public void initVar() {
         super.initVar();
-        setScrollableText(this.lastSelectedPosition);
+        setPageSelection(this.lastSelectedPosition);
         checkPermissionRequest();
     }
 
@@ -119,7 +119,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /* access modifiers changed from: private */
-    public void setScrollableText(int position) {
+    public void setPageSelection(int position) {
         if (position == 0) {
             this.mTitleTV.setText(getResources().getString(R.string.s_schedule));
             getSupportFragmentManager().beginTransaction().replace(R.id.container, LandingFragment.newInstance(this.mAuditTypeID)).commitAllowingStateLoss();

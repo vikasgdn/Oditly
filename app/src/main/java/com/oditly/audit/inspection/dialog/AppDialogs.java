@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.oditly.audit.inspection.BuildConfig;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.ui.activty.ActionCreateActivity;
 import com.oditly.audit.inspection.ui.activty.AddTeamMemberActivity;
@@ -28,6 +29,7 @@ import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
 import com.oditly.audit.inspection.ui.activty.BrandStandardOptionsBasedQuestionActivity;
 import com.oditly.audit.inspection.ui.activty.MainActivity;
+import com.oditly.audit.inspection.ui.activty.OctaLoginActivity;
 import com.oditly.audit.inspection.ui.activty.ScheduleDemoActivity;
 import com.oditly.audit.inspection.ui.activty.SignInEmailActivity;
 import com.oditly.audit.inspection.ui.activty.SignInPasswordActivity;
@@ -464,6 +466,9 @@ public class AppDialogs
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         TextView textView=dialog.findViewById(R.id.tv_dialog_message);
         textView.setText(""+message);
+        TextView textYes=dialog.findViewById(R.id.tv_yes);
+        if (activity instanceof OctaLoginActivity)
+            textYes.setText("Log Out");
 
         try {
             dialog.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {
@@ -495,6 +500,14 @@ public class AppDialogs
                     {
                         Intent intent = new Intent(activity, MainActivity.class);
                         intent.putExtra(AppConstant.FROMWHERE, AppConstant.AUDIT);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    }
+                    if(activity instanceof OctaLoginActivity)
+                    {
+                        AppPreferences.INSTANCE.clearPreferences();
+                        Intent intent = new Intent(activity, SplashActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         activity.startActivity(intent);
                         activity.finish();
                     }

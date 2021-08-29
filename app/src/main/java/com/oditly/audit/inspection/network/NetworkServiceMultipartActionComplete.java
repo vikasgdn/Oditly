@@ -2,19 +2,10 @@ package com.oditly.audit.inspection.network;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
-import com.oditly.audit.inspection.network.apirequest.ActionCompleteRequestBean;
+import com.oditly.audit.inspection.model.actionData.ActionCompleteRequestBean;
 import com.oditly.audit.inspection.util.AppConstant;
-import com.oditly.audit.inspection.util.AppUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -72,7 +63,7 @@ public class NetworkServiceMultipartActionComplete {
         /* access modifiers changed from: protected */
         public String doInBackground(NetworkModel... networkModels) {
             try {
-                OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(40, TimeUnit.SECONDS).writeTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).build();
+                OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).writeTimeout(80, TimeUnit.SECONDS).readTimeout(80, TimeUnit.SECONDS).build();
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart(NetworkConstant.REQ_PARAM_MOBILE, NetworkServiceMultipartActionComplete.this.mRequestBean.getMobile());
                 builder.addFormDataPart(NetworkConstant.REQ_PARAM_AUDIT_ID, NetworkServiceMultipartActionComplete.this.mRequestBean.getAudit_id());

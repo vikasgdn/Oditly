@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -41,10 +43,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.network.DownloadPdfTask;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkURL;
-import com.oditly.audit.inspection.network.apirequest.AddQuestionAttachmentRequest;
-import com.oditly.audit.inspection.network.apirequest.EditBSQuestionAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.OktaTokenRefreshRequest;
 import com.oditly.audit.inspection.network.apirequest.UpdateQuestionAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
@@ -363,23 +365,61 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         String url = NetworkURL.BSATTACHMENT_UPDATE;
         String fileName = "Oditly-"+AppUtils.getDate(Calendar.getInstance().getTime());
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+        if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
         {
-            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                String token=task.getResult().getToken();
-                                UpdateQuestionAttachmentRequest addBSAttachmentRequest = new UpdateQuestionAttachmentRequest(
-                                        token, url, fileName, imageByteData, mAuditId,
-                                        mSectionGroupID, mSectionID, mQuestionID, mQuestionFileID,EditImageActivity.this,stringListener, errorListener);
-                                VolleyNetworkRequest.getInstance(EditImageActivity.this).addToRequestQueue(addBSAttachmentRequest);
+
+            if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
+            {
+                UpdateQuestionAttachmentRequest addBSAttachmentRequest = new UpdateQuestionAttachmentRequest(
+                        AppPreferences.INSTANCE.getOktaToken(EditImageActivity.this), url, fileName, imageByteData, mAuditId,
+                        mSectionGroupID, mSectionID, mQuestionID, mQuestionFileID, EditImageActivity.this, stringListener, errorListener);
+                VolleyNetworkRequest.getInstance(EditImageActivity.this).addToRequestQueue(addBSAttachmentRequest);
+
+            }
+            else
+            {
+                Response.Listener<JSONObject> jsonListener = new Response.Listener<JSONObject>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        AppLogger.e("TAG", " Token SUCCESS Response: " + response);
+                        AppUtils.parseRefreshTokenRespone(response,EditImageActivity.this);
+                        UpdateQuestionAttachmentRequest addBSAttachmentRequest = new UpdateQuestionAttachmentRequest(
+                                AppPreferences.INSTANCE.getOktaToken(EditImageActivity.this), url, fileName, imageByteData, mAuditId,
+                                mSectionGroupID, mSectionID, mQuestionID, mQuestionFileID, EditImageActivity.this, stringListener, errorListener);
+                        VolleyNetworkRequest.getInstance(EditImageActivity.this).addToRequestQueue(addBSAttachmentRequest);
+
+                    }
+                };
+                Response.ErrorListener errListener = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        AppLogger.e("TAG", "ERROR Response: " + error);
+                    }
+                };
+                OktaTokenRefreshRequest tokenRequest = new OktaTokenRefreshRequest(AppUtils.getTokenJson(EditImageActivity.this),jsonListener, errListener);
+                VolleyNetworkRequest.getInstance(EditImageActivity.this).addToRequestQueue(tokenRequest);
+            }
+
+        }
+        else {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                if (task.isSuccessful()) {
+                                    String token = task.getResult().getToken();
+                                    UpdateQuestionAttachmentRequest addBSAttachmentRequest = new UpdateQuestionAttachmentRequest(
+                                            token, url, fileName, imageByteData, mAuditId,
+                                            mSectionGroupID, mSectionID, mQuestionID, mQuestionFileID, EditImageActivity.this, stringListener, errorListener);
+                                    VolleyNetworkRequest.getInstance(EditImageActivity.this).addToRequestQueue(addBSAttachmentRequest);
+                                }
                             }
-                        }
-                    });
+                        });
+            }
         }
 
-}
+    }
 
 
     @Override

@@ -187,7 +187,6 @@ public class AddTeamMemberActivity extends BaseActivity implements INetworkEvent
         } else
         {
             AppUtils.toast(this, getString(R.string.internet_error));
-
         }
     }
 

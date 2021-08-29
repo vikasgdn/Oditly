@@ -16,23 +16,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.BuildConfig;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.network.DownloadPdfTask;
 import com.oditly.audit.inspection.network.NetworkURL;
-import com.oditly.audit.inspection.network.apirequest.UpdateQuestionAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.OktaTokenRefreshRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.util.AppConstant;
+import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
+
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -153,15 +160,43 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
         }  else {
             mProgressBarRL.setVisibility(View.VISIBLE);
-            if (FirebaseAuth.getInstance().getCurrentUser() != null)
-            {
-                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                            public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                if (task.isSuccessful()) {
-                                    new DownloadPdfTask(ReportDetailsActivity.this, mPdfFileUrl,mAuditID,task.getResult().getToken(), ReportDetailsActivity.this::onPDFDownloadFinished);  }
-                            }
-                        });
+            if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA)) {
+                if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
+                {
+                    new DownloadPdfTask(ReportDetailsActivity.this, mPdfFileUrl,mAuditID,AppPreferences.INSTANCE.getOktaToken(this), ReportDetailsActivity.this::onPDFDownloadFinished);
+                }
+                else
+                {
+                    Response.Listener<JSONObject> jsonListener = new Response.Listener<JSONObject>() {
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            AppLogger.e("TAG", " Token SUCCESS Response: " + response);
+                            AppUtils.parseRefreshTokenRespone(response,ReportDetailsActivity.this);
+                            new DownloadPdfTask(ReportDetailsActivity.this, mPdfFileUrl,mAuditID,AppPreferences.INSTANCE.getOktaToken(ReportDetailsActivity.this), ReportDetailsActivity.this::onPDFDownloadFinished);
+                        }
+                    };
+                    Response.ErrorListener errListener = new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            AppLogger.e("TAG", "ERROR Response: " + error);
+                        }
+                    };
+                    OktaTokenRefreshRequest tokenRequest = new OktaTokenRefreshRequest(AppUtils.getTokenJson(ReportDetailsActivity.this),jsonListener, errListener);
+                    VolleyNetworkRequest.getInstance(ReportDetailsActivity.this).addToRequestQueue(tokenRequest);
+                }
+            }
+            else {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                    if (task.isSuccessful()) {
+                                        new DownloadPdfTask(ReportDetailsActivity.this, mPdfFileUrl, mAuditID, task.getResult().getToken(), ReportDetailsActivity.this::onPDFDownloadFinished);
+                                    }
+                                }
+                            });
+                }
             }
 
         }

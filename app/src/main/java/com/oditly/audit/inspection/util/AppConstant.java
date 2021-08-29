@@ -100,6 +100,10 @@ public class AppConstant {
     public static final String BS_QUESTION = "bsQuestion";
     public static final int SUBQUESTION_REQUESTCODE = 1021;
     public static final int QuestionAttachmentRequest = 1029;
+    public static final String OKTA = "Okta";
+    public static final String PROVIDER_ID = "providerid";
+    public static final String PROVIDER_OKTA = "Okta";
+    public static final String PASSWORD_LOGIN = "password";
 
 
     public static String DEVICE_ID = "";

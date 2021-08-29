@@ -112,6 +112,17 @@ public enum AppPreferences
         mEditor.commit();
     }
 
+    public String getProviderName()
+    {
+        return mPreferences.getString(SharedPreferencesKeys.provider_name.toString(), "");
+    }
+
+    public void setProviderName(String value)
+    {
+        mEditor.putString(SharedPreferencesKeys.provider_name.toString(), value);
+        mEditor.commit();
+    }
+
 
     public String getClientRoleName()
     {
@@ -253,15 +264,54 @@ public enum AppPreferences
     {
         if(mEditor==null)
             initAppPreferences(context);
-
         mEditor.putString(SharedPreferencesKeys.accessToken.toString(), accessToken);
         mEditor.commit();
     }
 
 
+
+
+
+    public String getOktaToken(Context context)
+    {
+        if(mPreferences==null)
+            mPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        return mPreferences.getString(SharedPreferencesKeys.oktaToken.toString(), "");
+    }
+    public void setOktaToken(String accessToken,Context context)
+    {
+        if(mEditor==null)
+            initAppPreferences(context);
+        mEditor.putString(SharedPreferencesKeys.oktaToken.toString(), accessToken);
+        mEditor.commit();
+    }
+    public long getOktaTokenExpireTime(Context context)
+    {
+        if(mPreferences==null)
+            mPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        return mPreferences.getLong(SharedPreferencesKeys.oktaToken_expire_time.toString(), System.currentTimeMillis());
+    }
+    public void setOktaTokenExpireTime(long accessToken,Context context)
+    {
+        if(mEditor==null)
+            initAppPreferences(context);
+        mEditor.putLong(SharedPreferencesKeys.oktaToken_expire_time.toString(), accessToken);
+        mEditor.commit();
+    }
+
     public  String getDSLocalDB()
     {
         return mPreferences.getString(SharedPreferencesKeys.dsdatabase.toString(), "");
+
+    }
+
+    public  void setRefreshTokenOkta(String val) {
+        mEditor.putString(SharedPreferencesKeys.refresh_token.toString(), val);
+        mEditor.commit();
+    }
+    public  String geRefreshTokenOkta()
+    {
+        return mPreferences.getString(SharedPreferencesKeys.refresh_token.toString(), "");
 
     }
 
@@ -329,11 +379,13 @@ public enum AppPreferences
         dsdatabase,
         deviceToken,
         accessToken,
-        appVersion,
+        provider_name,
         user_role,
         client_role_id,
         mobile,
         username,
+        refresh_token,
+        oktaToken_expire_time,
         pincode,
         city,
         dob,
@@ -346,6 +398,7 @@ public enum AppPreferences
         last_hit_time,
         esdatabase,
         fcm_token,
+        oktaToken,
         firebase_accessToken
         ;
 

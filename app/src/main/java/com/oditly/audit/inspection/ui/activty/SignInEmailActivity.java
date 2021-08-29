@@ -120,7 +120,7 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
             mSpinKitView.setVisibility(View.VISIBLE);
             Map<String, String> params = new HashMap<>();
             params.put(NetworkConstant.REQ_PARAM_EMAIL, mEmailET.getText().toString());
-          //  params.put(NetworkConstant.REQ_PARAM_USER, mEmailET.getText().toString());
+            //  params.put(NetworkConstant.REQ_PARAM_USER, mEmailET.getText().toString());
             params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
             NetworkService networkService = new NetworkService(NetworkURL.CHECK_USER, NetworkConstant.METHOD_POST, this,this);
             networkService.call(params);
@@ -200,18 +200,48 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
         if(service.equalsIgnoreCase(NetworkURL.CHECK_USER)) {
             try {
                 JSONObject object = new JSONObject(response);
+                JSONObject dataObj=object.optJSONObject("data");
+                JSONObject providerObj=dataObj.optJSONObject("provider");
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
                 if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                    Intent intent = new Intent(this, SignInPasswordActivity.class);
-                    intent.putExtra(AppConstant.EMAIL, mEmailET.getText().toString());
-                    startActivity(intent);
-                   // finish();
-
+                  /*  {
+                        "error": false,
+                            "data": {
+                        "fname": "vikas",
+                                "lname": "gdn",
+                                "role_id": null,
+                                "provider": {
+                            "provider_id": "saml.okta-saml-dev-39590758",
+                                    "name": "okta",
+                                    "display_name": "Okta"
+                        }
+                    },
+                        "message": "Data found"
+                    }*/
+                    AppPreferences.INSTANCE.setProviderName(providerObj.optString("name"));
+                    if (!TextUtils.isEmpty(providerObj.optString("name")) && providerObj.optString("name").equalsIgnoreCase(AppConstant.OKTA))
+                    {
+                        Intent intent = new Intent(this, OctaLoginActivity.class);
+                        intent.putExtra(AppConstant.PROVIDER_ID,providerObj.optString("provider_id") );
+                        startActivity(intent);
+                        finish();
+                    }
+                    else if(providerObj.optString("name").equalsIgnoreCase(AppConstant.PASSWORD_LOGIN))
+                    {
+                        Intent intent = new Intent(this, SignInPasswordActivity.class);
+                        intent.putExtra(AppConstant.EMAIL, mEmailET.getText().toString());
+                        startActivity(intent);
+                    }
+                    else {
+                        Intent intent = new Intent(this, MicroSoftLoginActivity.class);
+                        intent.putExtra(AppConstant.EMAIL, mEmailET.getText().toString());
+                        startActivity(intent);
+                    }
                 } else {
                     mEmailErrorTV.setVisibility(View.VISIBLE);
                     mEmailErrorTV.setText("" + message);
                 }
-                   // AppUtils.toast(this, message);
+                // AppUtils.toast(this, message);
             } catch (Exception e) {
                 AppUtils.toast(this, getString(R.string.oops));
             }
@@ -245,7 +275,7 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
                     Intent intent = new Intent(SignInEmailActivity.this, ResetPasswordScreen.class);
                     intent.putExtra("username", mForgotEmail);
                     startActivity(intent);
-                  //  finish();
+                    //  finish();
                 }else
                     AppUtils.toast(SignInEmailActivity.this, message);
             }

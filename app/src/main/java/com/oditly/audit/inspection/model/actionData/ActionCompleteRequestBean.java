@@ -1,4 +1,4 @@
-package com.oditly.audit.inspection.network.apirequest;
+package com.oditly.audit.inspection.model.actionData;
 
 public class ActionCompleteRequestBean {
     private String action_plan_id;

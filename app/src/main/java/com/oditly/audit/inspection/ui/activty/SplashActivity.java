@@ -6,27 +6,19 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GetTokenResult;
-import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
@@ -37,17 +29,14 @@ import com.oditly.audit.inspection.network.NetworkService;
 import com.oditly.audit.inspection.network.NetworkServiceJSON;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
-import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class SplashActivity extends BaseActivity implements INetworkEvent {
 
@@ -58,6 +47,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
     private TextView mAppNameTv;
     private TextView mSloglanTV;
     FirebaseAuth firebaseAuth;
+    private String mRefreshTokenURL=NetworkURL.GET_RefreshToke_OKTA_URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +55,11 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         setContentView(R.layout.activity_splash);
         AppPreferences.INSTANCE.initAppPreferences(this);
 
-     //   Log.e("TOKEN SPLASH ",""+FirebaseAuth.getInstance().getCurrentUser().getIdToken(true).getResult().getToken());
-        //updateFCMNotification();
+        Log.e("CURRENT TIME MILLIS","===> "+System.currentTimeMillis());
+        Log.e("OKTA EXPIRE MILLIS","===> "+AppPreferences.INSTANCE.getOktaTokenExpireTime(this));
         initView();
         initVar();
         updateFCMNotification();
-       // getUserProfile();
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -108,21 +91,13 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         mAppNameTv.setAnimation(fromLeft);
         mSloglanTV.setAnimation(downtoup);
 
-        if (System.currentTimeMillis() - AppPreferences.INSTANCE.getLastHitTime(this) > UPDATE_CHECK) {
-            AppPreferences.INSTANCE.setLastHitTime(this, System.currentTimeMillis());
-            getAppUpdateStatusFromServer();
-        } else
-        {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    sendToNewActivity();
-                }
-            }, SPLACE_TIMEOUT);
-        }
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkRefreshTokenAndForceUpdate();
+    }
 
     @Override
     public void onClick(View view) {
@@ -134,10 +109,6 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
                 startActivity(intent);
                 break;
             case R.id.btn_signin_microsoft:
-                if (firebaseAuth.getCurrentUser()!=null)
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                else
-                    AuthenticateWithMicrosoftOAuth();
                 break;
             case R.id.btn_signin:
                 if (AppPreferences.INSTANCE.isLogin(this)) {
@@ -158,26 +129,12 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         if (AppPreferences.INSTANCE.isLogin(this)) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
-        }/* else {
-            Intent intent = new Intent(this, SignInEmailActivity.class);
-            startActivity(intent);
-        }*/
+        }
     }
 
     private void getAppUpdateStatusFromServer() {
         if (NetworkStatus.isNetworkConnected(this)) {
-            //mSpinKitView.setVisibility(View.VISIBLE);
             NetworkService networkService = new NetworkService(NetworkURL.APP_VERSION, NetworkConstant.METHOD_GET, this, this);
-            networkService.call(new HashMap<String, String>());
-        } else {
-            AppUtils.toast(this, getString(R.string.internet_error));
-
-        }
-    }
-    private void getUserProfile() {
-        if (NetworkStatus.isNetworkConnected(this)) {
-            //mSpinKitView.setVisibility(View.VISIBLE);
-            NetworkService networkService = new NetworkService(NetworkURL.GET_PROFILE_DATA, NetworkConstant.METHOD_GET, this, this);
             networkService.call(new HashMap<String, String>());
         } else {
             AppUtils.toast(this, getString(R.string.internet_error));
@@ -193,8 +150,18 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
     @Override
     public void onNetworkCallCompleted(String type, String service, String response) {
         Log.e("onNetworkCallCompleted "+service, "||||||  "+response);
-
-        if (service.equalsIgnoreCase(NetworkURL.POST_FCM_TOKEN)) {
+        if (service.equalsIgnoreCase(mRefreshTokenURL))
+        {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                AppUtils.parseRefreshTokenRespone(jsonObject,this);
+                sendToNewActivity();
+            } catch (Exception e) {
+                AppUtils.toast(this, getString(R.string.oops));
+                e.printStackTrace();
+            }
+        }
+        else if (service.equalsIgnoreCase(NetworkURL.POST_FCM_TOKEN)) {
             Log.e("TOKEN  ", "|||||| UPDATED "+AppPreferences.INSTANCE.getFCMToken());
         } else if(service.equalsIgnoreCase(NetworkURL.GET_PROFILE_DATA))
         {
@@ -204,7 +171,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
                 JSONObject object = new JSONObject(response);
                 if (!object.getBoolean(AppConstant.RES_KEY_ERROR))
                 {
-                   AppPreferences.INSTANCE.setUserId(object.getJSONObject("data").getInt("user_id"),this);
+                    AppPreferences.INSTANCE.setUserId(object.getJSONObject("data").getInt("user_id"),this);
                     AppPreferences.INSTANCE.setUserRole(object.getJSONObject("data").getInt("role_id"),this);
                 }
             }
@@ -263,17 +230,11 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                            //  Log.w("TAG", "Fetching FCM registration token failed", task.getException());
                             return;
                         }
-
-                        // Get new FCM registration token
                         String token = task.getResult();
                         AppPreferences.INSTANCE.setFCMToken(token);
                         postTokenToServer();
-                        // Log and toast
-                        Log.d("TAG", token);
-                        // Toast.makeText(SplashActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -299,138 +260,39 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
 
         }
     }
-    public void getUserProfileData()
+
+    private void hitGenerateOktaTokeAPI()
     {
         if (NetworkStatus.isNetworkConnected(this))
         {
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put(AppConstant.TOKEN,AppPreferences.INSTANCE.getFCMToken());
-                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.POST_FCM_TOKEN, NetworkConstant.METHOD_POST, this, this);
-                networkService.call(jsonObject);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            mRefreshTokenURL=mRefreshTokenURL+""+ FirebaseApp.getInstance().getOptions().getApiKey();
+            NetworkServiceJSON networkService = new NetworkServiceJSON(mRefreshTokenURL, NetworkConstant.METHOD_POST, this, this);
+            networkService.call(AppUtils.getTokenJson(this));
         } else
         {
             AppUtils.toast(this, getString(R.string.internet_error));
-
         }
     }
 
-
-
-    private void AuthenticateWithMicrosoftOAuth() {
-
-        OAuthProvider.Builder provider = OAuthProvider.newBuilder("microsoft.com");
-        // Force re-consent.
-        // provider.addCustomParameter("prompt", "consent");
-        // Target specific email with login hint.
-        //provider.addCustomParameter("login_hint", "sumiran@mismosystems.com");
-        provider.addCustomParameter("tenant", "common");
-
-        /*List<String> scopes =
-                new ArrayList<String>() {
-                    {
-                        add("mail.read");
-                        add("calendars.read");
+    private void checkRefreshTokenAndForceUpdate()
+    {
+        if (System.currentTimeMillis() - AppPreferences.INSTANCE.getLastHitTime(this) > UPDATE_CHECK) {
+            AppPreferences.INSTANCE.setLastHitTime(this, System.currentTimeMillis());
+            getAppUpdateStatusFromServer();
+        } else
+        {
+            if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA) && System.currentTimeMillis()>AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
+                hitGenerateOktaTokeAPI();
+          /*  else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendToNewActivity();
                     }
-                };
-
-        provider.setScopes(scopes);*/
-
-
-
-        Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
-        if (pendingResultTask != null) {
-            // There's something already here! Finish the sign-in for your user.
-            pendingResultTask
-                    .addOnSuccessListener(
-                            new OnSuccessListener<AuthResult>() {
-                                @Override
-                                public void onSuccess(AuthResult authResult) {
-                                    // User is signed in.
-                                    // IdP data available in
-                                    // authResult.getAdditionalUserInfo().getProfile().
-                                    // The OAuth access token can also be retrieved:
-                                    // authResult.getCredential().getAccessToken().
-                                    // The OAuth ID token can also be retrieved:
-                                    // authResult.getCredential().getIdToken().
-                                }
-                            })
-                    .addOnFailureListener(
-                            new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    AppUtils.toastDisplayForLong(SplashActivity.this, ""+e.getMessage());
-                                }
-                            });
-        } else {
-            // There's no pending result so you need to start the sign-in flow.
-            // See below.
-            firebaseAuth
-                    .startActivityForSignInWithProvider(/* activity= */ this, provider.build())
-                    .addOnSuccessListener(
-                            new OnSuccessListener<AuthResult>() {
-                                @Override
-                                public void onSuccess(AuthResult authResult) {
-
-                                    Object[] userProfile = authResult.getAdditionalUserInfo().getProfile().values().toArray();
-                                    String userEmail = (userProfile[5].toString().trim().toLowerCase());
-                                    String username = (userProfile[1].toString().trim());
-
-                                    if (userEmail.contains("oditly") || userEmail.contains("mismo")) {
-
-                                        AppUtils.toastDisplayForLong(SplashActivity.this,"Welcome " + userEmail);
-                                    } else {
-                                        AppUtils.toastDisplayForLong(SplashActivity.this,"The sign-in user's account does not belong to one of the tenants that this Web App accepts users from.");
-                                    }
-
-                                    AppPreferences.INSTANCE.setLogin(true,SplashActivity.this);
-                                    AppPreferences.INSTANCE.setUserEmail(userEmail);
-                                    String []Name=username.split(" ");
-                                    if (Name.length>1) {
-                                        AppPreferences.INSTANCE.setUserFName(Name[0]);
-                                        AppPreferences.INSTANCE.setUserLName(Name[1], SplashActivity.this);
-                                    }
-                                    else  if (Name.length==1)
-                                    {
-                                        AppPreferences.INSTANCE.setUserFName(Name[0]);
-                                    }
-
-                                    GetTokenResult getTokenResult= authResult.getUser().getIdToken(false).getResult();
-                                    String tokenAuth=  getTokenResult.getToken();
-                                    AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
-
-                                    String userId= getTokenResult.getClaims().get("userId")==null?"":getTokenResult.getClaims().get("userId").toString();
-                                    String roleId= getTokenResult.getClaims().get("roleId")==null?"":getTokenResult.getClaims().get("roleId").toString();
-
-                                    getUserProfile();
-
-                                    Log.e("USER ID Microsoft ===> ",""+userId);
-
-
-                                    if (!TextUtils.isEmpty(userId))
-                                        AppPreferences.INSTANCE.setUserId(Integer.parseInt(userId), SplashActivity.this);
-                                    if (!TextUtils.isEmpty(roleId))
-                                        AppPreferences.INSTANCE.setClientRoleId(Integer.parseInt(roleId));
-
-                                   // Log.e("USER TOKEN ",""+AppPreferences.INSTANCE.getFirebaseAccessToken(SplashActivity.this));
-                                    AppPreferences.INSTANCE.setLogin(true, SplashActivity.this);
-                                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-
-                                }
-                            })
-                    .addOnFailureListener(
-                            new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    AppUtils.toastDisplayForLong(SplashActivity.this, ""+e.getMessage());
-                                }
-                            });
+                }, SPLACE_TIMEOUT);
+            }*/
         }
+
     }
 
 }

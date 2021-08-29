@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
@@ -33,9 +35,10 @@ import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.dialog.AppDialogs;
+import com.oditly.audit.inspection.network.DownloadPdfTask;
 import com.oditly.audit.inspection.network.NetworkURL;
-import com.oditly.audit.inspection.network.apirequest.AddActionAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.AddAuditSignatureRequest;
+import com.oditly.audit.inspection.network.apirequest.OktaTokenRefreshRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
@@ -248,17 +251,48 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
         };
 
         String fileName = "Oditly-" + mAuditId + ".jpeg";
-        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+        if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
         {
-            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId,task.getResult().getToken(),context,stringListener, errorListener);
-                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+            if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
+            {
+                AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId,AppPreferences.INSTANCE.getOktaToken(context), context,stringListener, errorListener);
+                VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+            }
+            else
+            {
+                Response.Listener<JSONObject> jsonListener = new Response.Listener<JSONObject>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        AppLogger.e("TAG", " Token SUCCESS Response: " + response);
+                        AppUtils.parseRefreshTokenRespone(response,AuditSubmitSignatureActivity.this);
+                        AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId,AppPreferences.INSTANCE.getOktaToken(context), context,stringListener, errorListener);
+                        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+                    }
+                };
+                Response.ErrorListener errListener = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        AppLogger.e("TAG", "ERROR Response: " + error);
+                    }
+                };
+                OktaTokenRefreshRequest tokenRequest = new OktaTokenRefreshRequest(AppUtils.getTokenJson(AuditSubmitSignatureActivity.this),jsonListener, errListener);
+                VolleyNetworkRequest.getInstance(AuditSubmitSignatureActivity.this).addToRequestQueue(tokenRequest);
+            }
+
+        }
+        else {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                if (task.isSuccessful()) {
+                                    AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId, task.getResult().getToken(), context, stringListener, errorListener);
+                                    VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+                                }
                             }
-                        }
-                    });
+                        });
+            }
         }
     }
 

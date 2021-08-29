@@ -363,6 +363,28 @@ public class AppUtils {
         }
     }
 
+    public static JSONObject getTokenJson(Context mContext) {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("grant_type", "refresh_token");
+            jsonObject.put("refresh_token", AppPreferences.INSTANCE.geRefreshTokenOkta());
+            return  jsonObject;
+        }
+        catch (Exception e)
+        {
+            return new JSONObject();
+        }
+    }
+
+    public static void parseRefreshTokenRespone(JSONObject jsonObject,Context context)
+    {
+        int expireSecond=jsonObject.optInt("expires_in");
+        long expireMilliSecond=System.currentTimeMillis()+(1600*1000);  // just want hit after 28 minute btw token exp time is 60 minute
+        AppPreferences.INSTANCE.setOktaTokenExpireTime(expireMilliSecond,context);
+        AppPreferences.INSTANCE.setOktaToken(jsonObject.optString("id_token"), context);
+        AppPreferences.INSTANCE.setRefreshTokenOkta(jsonObject.optString("refresh_token"));
+    }
+
     public Bitmap drawTextToBitmap(Context gContext, Bitmap bitmap, String gText) {
         Log.e("BITMAP TEXT",""+gText);
         Bitmap drawBitmap=null;
@@ -964,6 +986,8 @@ public class AppUtils {
             }
 
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+
+
             // image= rotateImageIfRequired(image,uriImage);
             return image;
             // return rotateImageIfRequired(image,uriImage);
@@ -971,6 +995,7 @@ public class AppUtils {
             return image;
         }
     }
+
 
     private static Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException
     {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,13 +38,13 @@ import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.dialog.CustomDialog;
 import com.oditly.audit.inspection.model.actionData.ActionInfo;
 import com.oditly.audit.inspection.network.INetworkEvent;
-import com.oditly.audit.inspection.network.NetworkModel;
 import com.oditly.audit.inspection.network.NetworkServiceMultipartActionComplete;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
-import com.oditly.audit.inspection.network.apirequest.ActionCompleteRequestBean;
-import com.oditly.audit.inspection.network.apirequest.AddActionAttachmentRequest;
+import com.oditly.audit.inspection.model.actionData.ActionCompleteRequestBean;
+import com.oditly.audit.inspection.network.apirequest.OktaTokenRefreshRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
+import com.oditly.audit.inspection.ui.activty.ActionCreateActivity;
 import com.oditly.audit.inspection.ui.activty.MainActivity;
 import com.oditly.audit.inspection.ui.fragment.BaseFragment;
 import com.oditly.audit.inspection.util.AppConstant;
@@ -147,20 +149,44 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
             String obj = this.mCommentET.getText().toString();
             if (this.mURIimageList.size() < this.mAuditInfoActionPlanData.getMedia_count()) {
                 int remainCount = this.mAuditInfoActionPlanData.getMedia_count() - this.mURIimageList.size();
-                Activity activity = this.mActivity;
-                AppUtils.toast(activity, "Please upload " + remainCount + " media first.");
-                return;
+                AppUtils.toast(mActivity, "Please upload " + remainCount + " media first.");
             }
-            if (FirebaseAuth.getInstance().getCurrentUser() != null)
-            {
-                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                            public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                if (task.isSuccessful()) {
-                                    postActionCreateServerData(task.getResult().getToken());
-                                }
+            else {
+                if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
+                    if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(mActivity))
+                    {
+                        postActionCreateServerData(AppPreferences.INSTANCE.getOktaToken(mActivity));                    }
+                    else
+                    {
+                        Response.Listener<JSONObject> jsonListener = new Response.Listener<JSONObject>() {
+                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                AppLogger.e("TAG", " Token SUCCESS Response: " + response);
+                                AppUtils.parseRefreshTokenRespone(response, mActivity);
+                                postActionCreateServerData(AppPreferences.INSTANCE.getOktaToken(mActivity));                            }
+                        };
+                        Response.ErrorListener errListener = new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                AppLogger.e("TAG", "ERROR Response: " + error);
                             }
-                        });
+                        };
+                        OktaTokenRefreshRequest tokenRequest = new OktaTokenRefreshRequest(AppUtils.getTokenJson(mActivity),jsonListener, errListener);
+                        VolleyNetworkRequest.getInstance(mActivity).addToRequestQueue(tokenRequest);
+                    }
+                else {
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                        FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                        if (task.isSuccessful()) {
+                                            postActionCreateServerData(task.getResult().getToken());
+                                        }
+                                    }
+                                });
+                    }
+                }
             }
         } else if (id == R.id.fb_media) {
             openMediaDialog();
@@ -175,52 +201,13 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
             bean.setAudit_id("" + this.mAuditInfoActionPlanData.getAudit_id());
             bean.setAction_plan_id("" + this.mAuditInfoActionPlanData.getAction_plan_id());
             bean.setComplete_comment(this.mCommentET.getText().toString());
-            NetworkServiceMultipartActionComplete actionComplete=new NetworkServiceMultipartActionComplete(NetworkURL.ACTION_PLAN_COMPLETE, bean, this.mFileimageList,tokenFirebase, this, this.mActivity);
+            NetworkServiceMultipartActionComplete actionComplete=new NetworkServiceMultipartActionComplete(NetworkURL.ACTION_PLAN_COMPLETE, bean, mFileimageList,tokenFirebase, this, this.mActivity);
             actionComplete.call(null);
         }
-        AppUtils.toast(this.mActivity, getString(R.string.internet_error));
+        else
+            AppUtils.toast(this.mActivity, getString(R.string.internet_error));
     }
 
-    private void uploadMediaFileAttachment(byte[] imageByteData) {
-        this.mSpinKitView.setVisibility(View.VISIBLE);
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            public void onResponse(String response) {
-                AppLogger.e("TAG", "AddAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (!object.getBoolean("error")) {
-                        ActionCompleteFragment.this.mURIimageList.remove(ActionCompleteFragment.this.mPosition);
-                        ActionCompleteFragment.this.mMediaAdapter.notifyDataSetChanged();
-                        Toast.makeText(ActionCompleteFragment.this.mActivity, ActionCompleteFragment.this.getString(R.string.text_updatedsuccessfully), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(ActionCompleteFragment.this.mActivity, object.getString(AppConstant.RES_KEY_MESSAGE), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                ActionCompleteFragment.this.mSpinKitView.setVisibility(View.GONE);
-            }
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            public void onErrorResponse(VolleyError error) {
-                ActionCompleteFragment.this.mSpinKitView.setVisibility(View.GONE);
-                Toast.makeText(ActionCompleteFragment.this.getActivity(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
-            }
-        };
-        String accessToken = AppPreferences.INSTANCE.getAccessToken(this.mActivity);
-        if (FirebaseAuth.getInstance().getCurrentUser() != null)
-        {
-            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                VolleyNetworkRequest.getInstance(mActivity).addToRequestQueue(new AddActionAttachmentRequest(accessToken, NetworkURL.POST_ACTIONFILE_URL, "Oditly-" + System.currentTimeMillis(), imageByteData, "" + mAuditInfoActionPlanData.getAudit_id(), "" + mAuditInfoActionPlanData.getAction_plan_id(),task.getResult().getToken(),getContext(), stringListener, errorListener));
-                            }
-                        }
-                    });
-        }
-
-    }
 
     private void openMediaDialog() {
         CustomDialog customDialog2 = new CustomDialog(this.mActivity,R.layout.upload_image_dailog);
@@ -335,7 +322,7 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
                 this.mActivity.finish();
             }
             else
-              AppUtils.toastDisplayForLong(this.mActivity, message);
+                AppUtils.toastDisplayForLong(this.mActivity, message);
         } catch (Exception e) {
             e.printStackTrace();
             AppUtils.toastDisplayForLong(this.mActivity, this.mActivity.getString(R.string.oops));

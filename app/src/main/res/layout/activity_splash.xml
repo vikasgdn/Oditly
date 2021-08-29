@@ -76,6 +76,7 @@
             app:elevation="@dimen/d_5dp"
             android:layout_marginTop="@dimen/d_5dp"
             android:gravity="center"
+            android:visibility="gone"
             android:drawableStart="@mipmap/ic_microsoft"
             android:drawablePadding="@dimen/d_5dp"
             android:paddingLeft="@dimen/d_10dp"

@@ -69,7 +69,7 @@ public class NetworkURL {
     public static final String POST_FCM_TOKEN = API_BASE_URL_NEW+"user/notification-token";
     public static final String GET_PROFILE_DATA = API_BASE_URL_NEW+"profile";
 
-
+    public static final String GET_RefreshToke_OKTA_URL="https://securetoken.googleapis.com/v1/token?key=";
 
     // audit_id,action_plan_id,file
 

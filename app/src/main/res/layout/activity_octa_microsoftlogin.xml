@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_white"
+    tools:context=".ui.activty.MicroSoftLoginActivity">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/include_header"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/d_170dp"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/btn_signin_octa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border_blue"
+            android:textColor="@color/c_white"
+            android:fontFamily="@font/nunitosans_semibold"
+            app:elevation="@dimen/d_5dp"
+            android:gravity="center"
+            android:focusable="false"
+            android:textSize="@dimen/text_size_20"
+            android:textAllCaps="false"
+            android:text="Sign in with Okta"/>
+        <Button
+            android:id="@+id/btn_signin_microsoft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border_blue"
+            android:textColor="@color/c_white"
+            android:fontFamily="@font/nunitosans_semibold"
+            app:elevation="@dimen/d_5dp"
+            android:layout_marginTop="@dimen/d_5dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:drawableStart="@mipmap/ic_microsoft"
+            android:drawablePadding="@dimen/d_5dp"
+            android:paddingLeft="@dimen/d_10dp"
+            android:focusable="false"
+            android:textSize="@dimen/text_size_20"
+            android:textAllCaps="false"
+            android:text="@string/s_signin_microsoft"/>
+    </LinearLayout>
+    <include
+        android:layout_width="@dimen/d_progressbar"
+        android:layout_height="@dimen/d_progressbar"
+        android:layout_centerInParent="true"
+        layout="@layout/spunk_view"
+        />
+
+
+</RelativeLayout>

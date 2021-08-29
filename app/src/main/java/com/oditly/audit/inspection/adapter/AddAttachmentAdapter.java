@@ -4,6 +4,7 @@ package com.oditly.audit.inspection.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,11 +30,15 @@ import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentInfo;
 import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.network.apirequest.AddBSAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.AddQuestionAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.ApiRequest;
 import com.oditly.audit.inspection.network.apirequest.DeleteBSAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.DeleteBSQuestionAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.OktaTokenRefreshRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.ui.activty.AddAttachmentActivity;
+import com.oditly.audit.inspection.ui.activty.AuditSubmitSignatureActivity;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.ui.activty.EditAttachmentActivity;
 import com.oditly.audit.inspection.ui.activty.ExoVideoPlayer;
@@ -228,30 +234,69 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
 
         String url = NetworkURL.BSDELETEATTACHMENT;
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+        if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
         {
-            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                String token=task.getResult().getToken();
-                                if (type.equalsIgnoreCase(AppConstant.BS_SECTION))
-                                {
-                                    DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(),"","",token,context, stringListener, errorListener);
-                                    VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
-                                }
-                                else
-                                {
-                                    DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(),token,context, stringListener, errorListener);
-                                    VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
-                                }
-
-                            }
+            if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(context))
+            {
+                if (type.equalsIgnoreCase(AppConstant.BS_SECTION)) {
+                    DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), "", "", AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
+                    VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+                } else {
+                    DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
+                    VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+                }
+            }
+            else
+            {
+                Response.Listener<JSONObject> jsonListener = new Response.Listener<JSONObject>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        AppLogger.e("TAG", " Token SUCCESS Response: " + response);
+                        AppUtils.parseRefreshTokenRespone(response,context);
+                        if (type.equalsIgnoreCase(AppConstant.BS_SECTION)) {
+                            DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), "", "", AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
+                            VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+                        } else {
+                            DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
+                            VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
                         }
-                    });
+                    }
+                };
+                Response.ErrorListener errListener = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        AppLogger.e("TAG", "ERROR Response: " + error);
+                    }
+                };
+                OktaTokenRefreshRequest tokenRequest = new OktaTokenRefreshRequest(AppUtils.getTokenJson(context),jsonListener, errListener);
+                VolleyNetworkRequest.getInstance(context).addToRequestQueue(tokenRequest);
+            }
+
+        }
+        else
+        {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                if (task.isSuccessful()) {
+                                    String token = task.getResult().getToken();
+                                    if (type.equalsIgnoreCase(AppConstant.BS_SECTION)) {
+                                        DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), "", "", token, context, stringListener, errorListener);
+                                        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+                                    } else {
+                                        DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), token, context, stringListener, errorListener);
+                                        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+                                    }
+
+                                }
+                            }
+                        });
+            }
         }
 
-}
+    }
 
   /*  private void deleteQuestionFileAttachment(AddAttachmentInfo addAttachmentInfo) {
         ((AddAttachmentActivity) context).showProgressDialog();
