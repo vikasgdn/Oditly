@@ -245,6 +245,29 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                 e.printStackTrace();
             }
         }
+       else if (service.equalsIgnoreCase(NetworkURL.GET_PROFILE_DATA))
+        {
+            try {
+                JSONObject object = new JSONObject(response);
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR))
+                {
+                    String roleId=object.getJSONObject("data").optString("role_id");
+                    if (TextUtils.isEmpty(roleId))
+                    {
+                        AppDialogs.messageDialogWithOKButton(this,"You dont have any access previleges yet. Please contact "+object.getJSONObject("data").optString("created_by_email"));
+                    }
+                    else {
+                        AppPreferences.INSTANCE.setUserId(object.getJSONObject("data").getInt("user_id"), this);
+                        AppPreferences.INSTANCE.setUserFName(object.getJSONObject("data").optString("fname"));
+                        AppPreferences.INSTANCE.setUserLName(object.getJSONObject("data").optString("lname"),this);
+                        AppPreferences.INSTANCE.setUserEmail(object.getJSONObject("data").optString("email"));
+                        AppPreferences.INSTANCE.setUserRole(Integer.parseInt(roleId), this);
+                        AppPreferences.INSTANCE.setLogin(true, this);
+                        startActivity(new Intent(this, MainActivity.class));         }
+                }
+            }
+            catch (Exception e){e.printStackTrace();}
+        }
         else {
             try {
                 JSONObject object = new JSONObject(response);
@@ -290,7 +313,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                     FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
 
                     AppPreferences.INSTANCE.setUserPic(firebaseUser.getPhotoUrl().toString());
-                    AppPreferences.INSTANCE.setUserEmail(firebaseUser.getEmail());
+                 /*   AppPreferences.INSTANCE.setUserEmail(firebaseUser.getEmail());
                     String fullName=firebaseUser.getDisplayName();
                     String []Name=fullName.split(" ");
                     if (Name.length>1) {
@@ -302,110 +325,29 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                         AppPreferences.INSTANCE.setUserFName(Name[0]);
                     }
                     Log.e("USER ID TOKEN ",""+firebaseUser.getIdToken(false).getResult().getToken());
-
+*/
                     Task<GetTokenResult> token=   firebaseUser.getIdToken(false);
                     String tokenAuth=  token.getResult().getToken();
-                    String userId= token.getResult().getClaims().get("userId").toString();
+                    AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
+
+                   /* String userId= token.getResult().getClaims().get("userId").toString();
                     String roleId= token.getResult().getClaims().get("roleId").toString();
                     if (!TextUtils.isEmpty(userId))
                         AppPreferences.INSTANCE.setUserId(Integer.parseInt(userId), SignInPasswordActivity.this);
                     if (!TextUtils.isEmpty(roleId))
                         AppPreferences.INSTANCE.setClientRoleId(Integer.parseInt(roleId));
 
-                    AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
                     //Log.e("USER TOKEN ",""+AppPreferences.INSTANCE.getFirebaseAccessToken(SignInPasswordActivity.this));
                     AppPreferences.INSTANCE.setLogin(true, SignInPasswordActivity.this);
                     startActivity(new Intent(SignInPasswordActivity.this, MainActivity.class));
+          */
+                  getUserProfile();
                 }
             }
         });
     }
 
 
-    private void AuthenticateWithMicrosoftOAuth() {
-
-        OAuthProvider.Builder provider = OAuthProvider.newBuilder("microsoft.com");
-        // Force re-consent.
-        // provider.addCustomParameter("prompt", "consent");
-        // Target specific email with login hint.
-        //provider.addCustomParameter("login_hint", "sumiran@mismosystems.com");
-        provider.addCustomParameter("tenant", "common");
-
-        /*List<String> scopes =
-                new ArrayList<String>() {
-                    {
-                        add("mail.read");
-                        add("calendars.read");
-                    }
-                };
-
-        provider.setScopes(scopes);*/
-
-        FirebaseAuth firebaseAuth;
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
-        if (pendingResultTask != null) {
-            // There's something already here! Finish the sign-in for your user.
-            pendingResultTask
-                    .addOnSuccessListener(
-                            new OnSuccessListener<AuthResult>() {
-                                @Override
-                                public void onSuccess(AuthResult authResult) {
-                                    // User is signed in.
-                                    // IdP data available in
-                                    // authResult.getAdditionalUserInfo().getProfile().
-                                    // The OAuth access token can also be retrieved:
-                                    // authResult.getCredential().getAccessToken().
-                                    // The OAuth ID token can also be retrieved:
-                                    // authResult.getCredential().getIdToken().
-                                }
-                            })
-                    .addOnFailureListener(
-                            new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Handle failure.
-                                }
-                            });
-        } else {
-            // There's no pending result so you need to start the sign-in flow.
-            // See below.
-            firebaseAuth
-                    .startActivityForSignInWithProvider(/* activity= */ this, provider.build())
-                    .addOnSuccessListener(
-                            new OnSuccessListener<AuthResult>() {
-                                @Override
-                                public void onSuccess(AuthResult authResult) {
-                                    // User is signed in.
-                                    // IdP data available in
-                                    // authResult.getAdditionalUserInfo().getProfile().
-                                    // The OAuth access token can also be retrieved:
-                                    // authResult.getCredential().getAccessToken().
-                                    // The OAuth ID token can also be retrieved:
-                                    // authResult.getCredential().getIdToken().
-
-                                    Object[] userProfile = authResult.getAdditionalUserInfo().getProfile().values().toArray();
-                                    String userEmail = (userProfile[5].toString().trim().toLowerCase());
-
-
-                                    if (userEmail.contains("oditly") || userEmail.contains("mismo")) {
-
-                                        AppUtils.toastDisplayForLong(SignInPasswordActivity.this,"Welcome " + userEmail);
-                                    } else {
-                                        AppUtils.toastDisplayForLong(SignInPasswordActivity.this,"The sign-in user's account does not belong to one of the tenants that this Web App accepts users from.");
-                                    }
-                                }
-                            })
-                    .addOnFailureListener(
-                            new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Handle failure.
-                                }
-                            });
-        }
-    }
 
     public void resetUserPassword(String email){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -429,5 +371,16 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                 Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void getUserProfile() {
+        if (NetworkStatus.isNetworkConnected(this)) {
+            //mSpinKitView.setVisibility(View.VISIBLE);
+            NetworkService networkService = new NetworkService(NetworkURL.GET_PROFILE_DATA, NetworkConstant.METHOD_GET, this, this);
+            networkService.call(new HashMap<String, String>());
+        } else {
+            AppUtils.toast(this, getString(R.string.internet_error));
+
+        }
     }
 }

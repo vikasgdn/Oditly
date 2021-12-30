@@ -16,9 +16,11 @@ import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.network.apirequest.ApiRequest;
 import com.oditly.audit.inspection.network.apirequest.ApiRequestJSON;
+import com.oditly.audit.inspection.network.apirequest.OktaTokenRefreshRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
+import com.oditly.audit.inspection.util.AppUtils;
 
 import org.json.JSONObject;
 
@@ -51,34 +53,48 @@ public class NetworkServiceJSON {
 
     private void SignIn(JSONObject request) {
         //  showProgressDialog();
-
         Response.Listener<JSONObject> stringListener = new Response.Listener<JSONObject>() {
-
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onResponse(JSONObject response) {
-
                 AppLogger.e("TAG", " SUCCESS Response: " + response);
-
                 networkEvent.onNetworkCallCompleted("",mURL, response.toString());
-
             }
         };
-
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 AppLogger.e("TAG", "ERROR Response: " + error);
-
                 networkEvent.onNetworkCallError(mURL, error.toString());
-
-
             }
         };
         if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA)) {
-            ApiRequestJSON signInRequest = new ApiRequestJSON(request, mMethod, mURL,AppPreferences.INSTANCE.getOktaToken(mContext), mContext, stringListener, errorListener);
-            VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
+            if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(mContext))
+            {
+                ApiRequestJSON signInRequest = new ApiRequestJSON(request, mMethod, mURL,AppPreferences.INSTANCE.getOktaToken(mContext), mContext, stringListener, errorListener);
+                VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
+            }
+            else
+            {
+                Response.Listener<JSONObject> jsonListener = new Response.Listener<JSONObject>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        AppLogger.e("TAG", " Token SUCCESS Response: " + response);
+                        AppUtils.parseRefreshTokenRespone(response,mContext);
+                        ApiRequestJSON signInRequest = new ApiRequestJSON(request, mMethod, mURL,AppPreferences.INSTANCE.getOktaToken(mContext), mContext, stringListener, errorListener);
+                        VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
+                    }
+                };
+                Response.ErrorListener errListener = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        AppLogger.e("TAG", "ERROR Response: " + error);
+                    }
+                };
+                OktaTokenRefreshRequest tokenRequest = new OktaTokenRefreshRequest(AppUtils.getTokenJson(mContext),jsonListener, errListener);
+                VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(tokenRequest);
+            }
         } else
         {
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {

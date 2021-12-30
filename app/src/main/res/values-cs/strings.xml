@@ -1,0 +1,336 @@
+<resources>
+<!--
+    <string name="app_name">Oditlyczech</string>
+-->
+    Change everywhere from Department to Section
+    <string name="navigation_drawer_open">Otevřete navigační vysouvací panel</string>
+    <string name="navigation_drawer_close">Zavřete navigační panel</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Záhlaví navigace</string>
+    <string name="action_settings">Nastavení</string>
+
+    <string name="menu_home">Domů</string>
+    <string name="menu_gallery">Galerie</string>
+    <string name="menu_slideshow">Prezentace</string>
+
+    <string name="home_second">Druhý domov</string>
+    <string name="s_digitize">Automatizujte pracovní postupy inspekce</string>
+    <string name="s_signin">Přihlásit se</string>
+    <string name="s_next">Další</string>
+    <string name="s_signin_to_oditly">Přihlaste se do Oditly</string>
+    <string name="h_email">Email</string>
+    <string name="s_forgot_pass">Zapomenuté heslo?</string>
+    <string name="s_remember">Zapamatuj si mě</string>
+    <string name="default_progress_dialog_message">Načítání....</string>
+    <string name="s_enter">Vstupte</string>
+    <string name="h_password">Heslo</string>
+    <string name="s_description">Tato sekce obsahuje všechny akce, které jsou vytvořeny, otevřeny nebo po splatnosti</string>
+    <string name="s_description_insp">Tato část obsahuje všechny kontroly, které jsou naplánované, probíhají nebo po termínu</string>
+    <string name="s_scheduled_audit">Naplánováno</string>
+    <string name="s_progress_audit">Probíhá </string>
+
+    <string name="s_scheduled">Vytvořeno</string>
+    <string name="s_progress">Otevřít</string>
+    <string name="s_overdue">Zpožděné</string>
+    <string name="s_audit_des">Tato sekce obsahuje všechny akce, které jsou v řádném termínu a probíhají, ale nejsou dokončeny. Pokračujte kliknutím na obnovit a dokončete přiřazenou akci.</string>
+    <string name="s_resume">Obnovit</string>
+    <string name="s_setting">Nastavení</string>
+    <string name="s_change_pass">Změna hesla</string>
+    <string name="s_language">Jazyk</string>
+    <string name="s_support">Podpora</string>
+    <string name="s_privacy_policy">Zásady ochrany osobních údajů</string>
+    <string name="s_term">Podmínky služby</string>
+    <string name="s_version">Verze</string>
+    <string name="s_logout">Odhlásit</string>
+    <string name="cancel">Zrušit</string>
+    <string name="send">Odeslat</string>
+    <string name="enter_email">Zadejte e-mail</string>
+    <string name="s_schedule">Plán</string>
+    <string name="s_mytask">Moje úkoly</string>
+    <string name="s_analytics">Analytika</string>
+    <string name="s_user">Uživatelé</string>
+    <string name="s_reports">Sestavy</string>
+    <string name="app_name_small">oditly</string>
+    <string name="s_signout">Odhlásit</string>
+    <string name="s_account">Účet</string>
+    <string name="s_entervallidemail">Zadejte platný e-mail</string>
+    <string name="s_entercorrectpass">Zadejte správné heslo</string>
+    <string name="s_entercorrectpass_conf">Zadejte správné potvrzovací heslo</string>
+    <string name="oops">Jejda.. Něco se pokazilo..</string>
+
+    <string name="internet_error">Zkontrolujte prosím své internetové připojení. </string>
+    <string name="s_nodatafound">Nebyla nalezena žádná kontrola.</string>
+    <string name="text_ok">OK</string>
+    <string name="text_youarenot">V této inspekci nemůžete provádět žádnou funkci.</string>
+    <string name="text_start">Začátek</string>
+
+    <string name="text_audit_target">Váš cíl inspekce</string>
+    <string name="text_you_need">Musíte vyplnit následující oddíly</string>
+    <string name="text_your_goal">Váš cíl</string>
+    <string name="text_you_need_assignmnt">Musíte vyplnit následující oddíly</string>
+    <string name="text_search_with_auditid">Vyhledat pomocí ID inspekce, ID e-mailu zadavatele</string>
+    <string name="text_sorrynoauditfound">Je nám líto, žádná inspekce nebyla nalezena</string>
+
+
+    <string name="text_password_contain">Heslo by mělo obsahovat:</string>
+
+    <string name="text_password_rule">1. between 8 and 20 characters  \n2. at least one lower case letter \n3. at least one upper case letter
+ \n4. at least one digit \n5.  at least one of these special characters ~!@#$%^&amp;*()_+</string>
+
+
+
+    <string name="text_brand_standard">STANDARD ZNAČKY</string>
+    <string name="text_executive_summary">SHRNUTÍ</string>
+    <string name="text_detailed_summary">PODROBNÉ SHRNUTÍ</string>
+    <string name="text_detailed_summary_s">Podrobné Shrnutí</string>
+    <string name="text_auditor">JMÉNO PŘÍJEMCE</string>
+    <string name="text_reviewer">JMÉNO KONTROLORA</string>
+    <string name="text_reviewersmall">Jméno Kontrolora</string>
+    <string name="text_overdue">ZPOŽDĚNÉ</string>
+
+    <string name="text_location">Místo</string>
+    <string name="text_brand">Značka</string>
+    <string name="text_audit_name">Název inspekce</string>
+    <string name="text_save">Uložit</string>
+    <string name="text_submit">Odeslat</string>
+    <string name="text_submitgoto">Přejít na Odeslat</string>
+    <string name="text_submitfinal">Závěrečné odeslání</string>
+    <string name="text_photo">Média</string>
+    <string name="text_summary">Shrnutí</string>
+    <string name="text_comment_comp">Důkaz uzavření</string>
+    <string name="text_comment_complt">Komentář k dokončení</string>
+    <string name="text_comment">Komentář</string>
+    <string name="text_ref_image">Reference</string>
+    <string name="rtext_esume">Obnovit</string>
+    <string name="text_na">N/A</string>
+    <string name="text_resume">Obnovit</string>
+    <string name="text_assigned">Přiřazeno</string>
+    <string name="text_submitted">Odesláno</string>
+    <string name="text_reviewed">Přezkoumáno</string>
+    <string name="text_rejected">Zamítnuto</string>
+    <string name="text_audit_option">Inspekce</string>
+    <string name="text_prev">Předchozí</string>
+    <string name="text_next">Další</string>
+    <string name="you_can_not_upload">Můžete přidat až 20 příloh a\ \n vybrat pouze 10 obrázků najednou</string>
+    <string name="text_enter_desc">Zadejte popis</string>
+
+    <string name="text_image_choose">Nahrát z</string>
+
+    <string name="text_video">Video</string>
+    <string name="text_gallery">Galerie</string>
+    <string name="text_camera">Fotoaparát</string>
+    <string name="text_edit">upravit</string>
+
+    <string name="text_attachment_name">Název přílohy</string>
+    <string name="text_critical">Kritické</string>
+    <string name="text_staff_name">Jméno zaměstnance</string>
+    <string name="text_reservation">Rezervace</string>
+    <string name="text_attachment">Příloha</string>
+    <string name="text_clear_pad">Vymazat</string>
+    <string name="text_signature_pad">Podpisová podložka</string>
+    <string name="text_yes">Ano</string>
+    <string name="text_no">Ne</string>
+
+    <string name="text_logout">Odhlásit se</string>
+    <string name="text_alert_dialog_logout_msg">Jste si jisti, že se chcete odhlásit? </string>
+
+    <string name="text_re_enter_password">Zadejte znovu heslo..</string>
+    <string name="text_password_not_same"> Heslo se neshoduje.</string>
+    <string name="text_enter_pass">Zadejte heslo</string>
+
+
+    <!--SignIn strings-->
+    <string name="text_resetpassword">Resetovat heslo</string>
+    <string name="text_enteryourotp">Zadejte OTP zaslané na váš e-mail</string>
+    <string name="text_enteryourpassword">Zadejte své heslo</string>
+    <string name="text_reenteredpassword">Potvrďte své heslo</string>
+    <string name="s_view">Zobrazit</string>
+    <string name="text_auditname">Název inspekce</string>
+    <string name="text_auditname_a">Název inspekce</string>
+    <string name="text_enter_comment">Zadejte komentář (minimálně 50 znaků)</string>
+    <string name="text_enter_commentaction">Zadejte svůj komentář</string>
+    <string name="text_title">Titul</string>
+    <string name="text_action">Akce</string>
+    <string name="text_plandate">Plánovaný Datum</string>
+    <string name="text_details">Detaily</string>
+    <string name="text_assignedto">Přiřazeno k</string>
+    <string name="text_ccemail">CC Email</string>
+    <string name="text_douwanttoexit">Chcete ukončit aplikaci?</string>
+    <string name="text_coming_soon">Již brzy..</string>
+    <string name="s_entervallidotp">Zadejte správné OTP</string>
+    <string name="text_brush">Štětec</string>
+    <string name="text_opacity">Neprůhlednost</string>
+    <string name="text_done">Hotovo</string>
+    <string name="text_emoji">Emoii</string>
+    <string name="text_sticker">Nálepka</string>
+    <string name="text_filter">Filtr</string>
+    <string name="text_eraser">Gumička</string>
+    <string name="text_text">Text</string>
+    <string name="s_no_action_found">Nebyla nalezena žádná akce</string>
+    <string name="inspection_option">Inspekce-oddíl</string>
+    <string name="text_pleasemark">Označte tento soubor jako kritický pouze v případě, že jej chcete zvýraznit ze všech souborů</string>
+    <string name="s_loading">Načítání...</string>
+    <string name="text_invalidpass">Neplatné heslo</string>
+    <string name="s_na">N/A</string>
+    <string name="text_time">Čas</string>
+
+
+    <!--Executive Summary strings-->
+    <string name="text_summary_n">Shrnutí:</string>
+    <string name="text_key_positive">Klíčové pozitivní:</string>
+    <string name="text_key_negative">Klíčové negativní:</string>
+    <string name="text_recommendation">Doporučení:</string>
+    <string name="text_date">Datum</string>
+    <string name="text_executive_summary_s">Shrnutí</string>
+    <string name="text_approveby">Schvalovatel</string>
+    <string name="text_approveto">Schválit Pro</string>
+    <string name="text_comment_error">Zadejte prosím alespoň 50 znaků</string>
+    <string name="text_support">Podpora</string>
+    <string name="text_support_text">Brzy se vám ozveme</string>
+    <string name="text_please_reachus">Kontaktujte nás prosím na některém z následujících kanálů:</string>
+    <string name="text_email">Email:</string>
+    <string name="text_whatsapp">Whatsapp:</string>
+    <string name="text_callus">Zavolejte nám:</string>
+    <string name="text_wechat">WeChat ID:</string>
+    <string name="text_lineid">Line ID:</string>
+    <string name="text_youremail">Váš e-mail:</string>
+    <string name="text_media">Media</string>
+    <string name="text_this_audit_could">Tento akční plán není připraven k označení jako kompletní</string>
+    <string name="s_french">Francouzština</string>
+    <string name="text_spanish">Španělština</string>
+    <string name="text_chinies">Čínština</string>
+    <string name="text_english">Angličtina</string>
+    <string name="text_invite">Pozvánka</string>
+    <string name="text_select_member">Vyberte prosím alespoň jednoho člena</string>
+    <string name="text_view_team">Zobrazit</string>
+    <string name="text_team_member">Členové týmu</string>
+    <string name="text_audit_id_name">ID inspekce, název auditu, jméno příjemce, e-mailové ID</string>
+    <string name="text_noncomplence">Neshody</string>
+    <string name="text_auditscore">Skóre inspekce</string>
+    <string name="text_completedate">Datum dokončení</string>
+    <string name="text_startdate">Počáteční datum</string>
+    <string name="text_assignedby">Přiřazeno</string>
+    <string name="text_checklist">Kontrolní seznam</string>
+	
+    <string name="text_audit_type">Typ inspekce</string>
+    <string name="text_audit_id">ID inspekce</string>
+	
+	
+    <string name="text_share">Sdílet</string>
+    <string name="text_export">Exportovat</string>
+    <string name="text_view">Zobrazit</string>
+    <string name="textx_reset_seletion">Obnovit výběr</string>
+    <string name="text_all">Všechny</string>
+    <string name="text_team">Teams</string>
+    <string name="text_addnew_member">Vytvořit nový tým</string>
+    <string name="text_name_emaili_roll">Jméno, E-mailové ID, role</string>
+    <string name="text_entor_data">Zadejte vyhledávací údaje</string>
+    <string name="text_selet_filter">Vyberte filtry</string>
+    <string name="text_date_range">Rozsah data</string>
+    <string name="text_date_from">Od data</string>
+    <string name="text_date_to">Do data</string>
+    <string name="text_top_five_audit">5 nejlepších/nejhorších inspekcí</string>
+    <string name="text_auditorname">JMÉNO PŘÍJEMCE</string>
+    <string name="text_download_report">Pro zobrazení si prosím stáhněte zprávu</string>
+    <string name="text_no_viewer">Nebyl nalezen žádný prohlížeč PDF</string>
+    <string name="text_add">Přidat</string>
+    <string name="text_not_allowed_team">Nejste oprávněni přidat tým</string>
+    <string name="text_auditor_name">JMÉNO PŘÍJEMCE</string>
+    <string name="text_template">Šablona</string>
+    <string name="text_designation">Označení</string>
+    <string name="text_not_applicable">NEUPLATŇUJE SE</string>
+    <string name="text_username">Jméno uživatele</string>
+    <string name="s_entervallidname">Zadejte platný název</string>
+    <string name="enter_name_team">Zadejte název týmu</string>
+    <string name="text_create">Vytvořit</string>
+    <string name="text_enter_team_name">Prosím, zadejte název týmu</string>
+    <string name="text_goto">Vytvořit</string>
+    <string name="text_noofaudits">Počet inspekcí</string>
+    <string name="text_noofnon">Neshody</string>
+    <string name="text_nooflocation">Místa</string>
+    <string name="text_average_non_com">Průměrný počet NC</string>
+    <string name="text_count">0</string>
+    <string name="text_auditbenchmark">VÝKONNOSTNÍ TEST</string>
+    <string name="text_inspection">Inspekce</string>
+    <string name="text_sheduled">Naplánováno</string>
+    <string name="text_more_option">Více možností</string>
+    <string name="text_create_audit">Vytvořit kontrolu</string>
+    <string name="text_duedate">Termín plnění</string>
+    <string name="text_select_date">Vyberte prosím datum</string>
+    <string name="text_benchmark">Referenční hodnota (%)</string>
+    <string name="text_doyouneed">Potřebujete recenzenta?</string>
+    <string name="text_instruction_note">Pokyn/Poznámka</string>
+    <string name="text_addd_attachment">Přidat přílohu(y)</string>
+    <string name="text_total">Celkem</string>
+    <string name="text_failed">Neúspěšné</string>
+    <string name="text_complete">Dokončeno</string>
+    <string name="text_open">Otevřít</string>
+    <string name="text_inprogress">Probíhá</string>
+    <string name="text_overduesmall">Zpožděné</string>
+    <string name="text_inspectioncaps">KONTROLY</string>
+    <string name="text_actionplan">PLÁN AKCÍ</string>
+    <string name="text_audit">Inspekce</string>
+    <string name="text_create_action">Vytvořit akci</string>
+    <string name="text_selectreviwer">Vyberte alespoň jednoho příjemce</string>
+    <string name="text_users">Uživatelé</string>
+    <string name="text_assignee">Nabyvatel</string>
+    <string name="text_assigneeselect">Vyberte příjemce (příjemce)</string>
+    <string name="text_reviewerselect">Vyberte kontrolora</string>
+    <string name="text_inspectionnote">Zadejte případné poznámky ke kontrole nebo pokyny</string>
+    <string name="text_totalinspection">CELKOVÁ INSPEKCE</string>
+    <string name="text_pendigapr">Čeká na schválení</string>
+    <string name="text_aproved">Schválený</string>
+    <string name="text_benchmarkerror">Zadejte referenční hodnotu v rozmezí 0 až 100</string>
+    <string name="text_datetime">Vyberte datum a čas</string>
+    <string name="text_alert_dialog_na">Jste si jisti, že chcete oddíl označit jako Nepoužitelné (NA)? Pokud tak učiníte, vymažete všechny dříve uložené údaje v této sekci, pokud nějaké jsou.</string>
+    <string name="text_auditsubmited"> „Zpráva byla úspěšně odeslána“</string>
+    <string name="text_updatedsuccessfully">Odesláno úspěšně</string>
+    <string name="expand_string">Více</string>
+    <string name="collapsed_string">méně</string>
+
+    <string name="dummytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="text_chatsupport">Chat a podpora</string>
+
+    <string name="text_titleh">Název:  </string>
+    <string name="text_locationh">Umístění: </string>
+    <string name="text_checklisth">Kontrolní seznam:  </string>
+    <string name="text_selecttemplet">Vybrat šablonu</string>
+    <string name="text_videogallery">Video Galerie</string>
+    <string name="text_starttime">Čas zahájení</string>
+    <string name="text_firstname">Křestní Jméno</string>
+    <string name="text_lastname">Příjmení</string>
+    <string name="text_company">Společnost</string>
+    <string name="text_phone">Telefonní číslo</string>
+    <string name="text_schedule_demo">Naplánujte ukázku</string>
+    <string name="text_entervallidname">Zadejte prosím křestní jméno</string>
+    <string name="s_entervallidphone">Zadejte prosím platné číslo mobilního telefonu</string>
+    <string name="text_upcominfeature">Nadcházející funkce</string>
+    <string name="text_feedback">Zpětná vazba</string>
+    <string name="text_enter_feedback">Popište svou zpětnou vazbu</string>
+    <string name="text_demo">Naplánujte ukázku</string>
+    <string name="s_entervalliddate">Zadejte platné datum</string>
+    <string name="text_thanksforcontact">Děkujeme, že jste kontaktovali tým Oditly. Vaše zpráva byla přijata a my vás budeme brzy kontaktovat</string>
+    <string name="text_feedback_des">Byli bychom rádi, kdybyste nám sdělili své názory, návrhy, obavy nebo problémy s čímkoli, abychom se mohli zlepšit!</string>
+    <string name="text_schedule_demo_oditly">Nemáte účet Oditly? <b><u>Click here</u></b> Klikněte zde a naplánujte si s námi ukázku.</string>
+    <string name="text_teamoditlyisworking">Tým Oditly neustále pracuje na přidávání dalších funkcí do aplikace, Podívejte se na některé z funkcí, které jsou v aplikaci plánovány v blízké budoucnosti.</string>
+    <string name="text_passed">Úspěšné</string>
+    <string name="text_priority">Priorita</string>
+    <string name="s_entertitle">Zadejte prosím název</string>
+    <string name="s_enterdetails">Zadejte prosím podrobnosti</string>
+    <string name="s_enterplandate">Zadejte datum plánu</string>
+    <string name="text_section">Oddíl</string>
+    <string name="text_actioncreate">Akce Vytvořit</string>
+    <string name="s_enterAssignee">Zvolte příjemce</string>
+    <string name="text_action_title">Název akce</string>
+    <string name="text_department">Oddíl</string>
+    <string name="text_correctiveaction">Je potřeba nápravná akce</string>
+    <string name="text_mediacount">Důkaz uzavření</string>
+    <string name="text_complition">Dokončení</string>
+    <string name="text_chatwithus">Chatujte s námi</string>
+    <string name="text_entercount">Zadejte počet</string>
+    <string name="s_create">Vytvořit</string>
+    <string name="s_signin_microsoft">Přihlásit s účtem Microsoft</string>
+    <string name="text_actiopnplan_id">Id akčního plánu</string>
+
+</resources>

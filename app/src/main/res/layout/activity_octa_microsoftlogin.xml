@@ -17,8 +17,15 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:orientation="vertical"
-        android:layout_marginBottom="@dimen/d_170dp"
-        android:layout_alignParentBottom="true">
+        android:layout_centerInParent="true"
+        >
+        <ImageView
+            android:id="@+id/iv_octa"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d_80dp"
+            android:src="@mipmap/ic_okta"
+            android:layout_margin="@dimen/d_5dp"
+            />
         <Button
             android:id="@+id/btn_signin_octa"
             android:layout_width="match_parent"
@@ -31,7 +38,15 @@
             android:focusable="false"
             android:textSize="@dimen/text_size_20"
             android:textAllCaps="false"
-            android:text="Sign in with Okta"/>
+            android:text="@string/common_signin_button_text"/>
+        <ImageView
+            android:id="@+id/iv_microsoft"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d_80dp"
+            android:visibility="gone"
+            android:src="@mipmap/ic_microsoft_new"
+            android:layout_margin="@dimen/d_10dp"
+            />
         <Button
             android:id="@+id/btn_signin_microsoft"
             android:layout_width="match_parent"
@@ -43,13 +58,12 @@
             android:layout_marginTop="@dimen/d_5dp"
             android:gravity="center"
             android:visibility="gone"
-            android:drawableStart="@mipmap/ic_microsoft"
             android:drawablePadding="@dimen/d_5dp"
             android:paddingLeft="@dimen/d_10dp"
             android:focusable="false"
             android:textSize="@dimen/text_size_20"
             android:textAllCaps="false"
-            android:text="@string/s_signin_microsoft"/>
+            android:text="@string/common_signin_button_text"/>
     </LinearLayout>
     <include
         android:layout_width="@dimen/d_progressbar"

@@ -1,0 +1,333 @@
+<resources>
+<!--
+    <string name="app_name">Oditly polish</string>
+-->
+    Change everywhere from Department to Section
+    <string name="navigation_drawer_open">Otwórz zakładkę nawigacji</string>
+    <string name="navigation_drawer_close">Zamknij zakładkę nawigacji</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Nagłówek nawigacji</string>
+    <string name="action_settings">Ustawienia</string>
+
+    <string name="menu_home">Strona główna</string>
+    <string name="menu_gallery">Galeria</string>
+    <string name="menu_slideshow">Pokaz slajdów</string>
+
+    <string name="home_second">Druga Strona Domowa</string>
+    <string name="s_digitize">Automatyzacja Procesów Kontroli</string>
+    <string name="s_signin">Zaloguj się</string>
+    <string name="s_next">Następny</string>
+    <string name="s_signin_to_oditly">Zaloguj się do Oditly</string>
+    <string name="h_email">E-mail</string>
+    <string name="s_forgot_pass">Nie Pamiętasz Hasła?</string>
+    <string name="s_remember">Zapamiętaj Mnie</string>
+    <string name="default_progress_dialog_message">Ładowanie...</string>
+    <string name="s_enter">Wprowadź</string>
+    <string name="h_password">Hasło</string>
+    <string name="s_description">Ta sekcja zawiera wszystkie działania, Które Zostały Utworzone, Otwarte lub Zaległe</string>
+    <string name="s_description_insp">Ta sekcja zawiera wszystkie kontrole, Które są Zaplanowane, w Toku lub Zaległe</string>
+    <string name="s_scheduled_audit">Zaplanowany</string>
+    <string name="s_progress_audit">W trakcie</string>
+
+    <string name="s_scheduled">Stworzony</string>
+    <string name="s_progress">Otwarte</string>
+    <string name="s_overdue">Przeterminowane</string>
+    <string name="s_audit_des">„Ta Sekcja Zawiera wszystkie działania, które są w odpowiednim czasie i są w toku, ale niekompletne. Kliknij przycisk Wznów, aby kontynuować i zakończyć przypisane działanie.”</string>
+    <string name="s_resume">Wznowienie</string>
+    <string name="s_setting">Ustawienia</string>
+    <string name="s_change_pass">Zmień Hasło</string>
+    <string name="s_language">Mowa</string>
+    <string name="s_support">Pomoc</string>
+    <string name="s_privacy_policy">Polityka Prywatności</string>
+    <string name="s_term">Warunki Korzystania z Usługi</string>
+    <string name="s_version">Wersja</string>
+    <string name="s_logout">WYLOGUJ SIĘ</string>
+    <string name="cancel">Anuluj</string>
+    <string name="send">Wyślij</string>
+    <string name="enter_email">Wprowadź Adres E-mail</string>
+    <string name="s_schedule">Harmonogram</string>
+    <string name="s_mytask">Moje zadania</string>
+    <string name="s_analytics">Analityka</string>
+    <string name="s_user">Użytkownicy</string>
+    <string name="s_reports">Raporty</string>
+    <string name="app_name_small">Oditly</string>
+    <string name="s_signout">Wyloguj Się</string>
+    <string name="s_account">Konto</string>
+    <string name="s_entervallidemail">Wprowadź Prawidłowy Adres E-mail</string>
+    <string name="s_entercorrectpass">Wprowadź prawidłowe hasło</string>
+    <string name="s_entercorrectpass_conf">Wprowadzić prawidłowe Potwierdź Hasło</string>
+    <string name="oops">Ups.. Coś poszło nie tak..</string>
+
+    <string name="internet_error">Sprawdź połączenie Internetowe.</string>
+    <string name="s_nodatafound">Nie Znaleziono Kontroli.</string>
+    <string name="text_ok">OK</string>
+    <string name="text_youarenot">Nie masz uprawnień do wykonywania żadnej funkcji w tej kontroli</string>
+    <string name="text_start">Początek</string>
+
+    <string name="text_audit_target">Twój Cel Kontroli</string>
+    <string name="text_you_need">Należy wykonać następujące czynności</string>
+    <string name="text_your_goal">Twój Cel</string>
+    <string name="text_you_need_assignmnt">Należy wykonać następujące czynności</string>
+    <string name="text_search_with_auditid">Wyszukaj przy użyciu ID Kontroli, ID E-maila osoby Odpowiedzialnej</string>
+    <string name="text_sorrynoauditfound">Przepraszamy, Nie Znaleziono Kontroli</string>
+
+
+    <string name="text_password_contain">Hasło powinno zawierać:</string>
+
+    <string name="text_password_rule">1. between 8 and 20 characters  \n2. at least one lower case letter \n3. at least one upper case letter
+ \n4. at least one digit \n5.  at least one of these special characters ~!@#$%^&amp;*()_+</string>
+
+
+
+    <string name="text_brand_standard">STANDARD MARKI</string>
+    <string name="text_executive_summary">STRESZCZENIE</string>
+    <string name="text_detailed_summary">SZCZEGÓŁOWE PODSUMOWANIE</string>
+    <string name="text_detailed_summary_s">Szczegółowe Podsumowanie</string>
+    <string name="text_auditor">NAZWISKO OSOBY ODPOWIEDZIALNEJ</string>
+    <string name="text_reviewer">NAZWA RECENZENTA</string>
+    <string name="text_reviewersmall">Nazwa Recenzenta</string>
+    <string name="text_overdue">Przeterminowane</string>
+
+    <string name="text_location">Lokalizacja</string>
+    <string name="text_brand">Marka</string>
+    <string name="text_audit_name">Nazwa kontroli</string>
+    <string name="text_save">Zapisz</string>
+    <string name="text_submit">Wyślij</string>
+    <string name="text_submitgoto">Przejdź do Opcji Wyślij</string>
+    <string name="text_submitfinal">Końcowe Przesłanie</string>
+    <string name="text_photo">Media</string>
+    <string name="text_summary">Podsumowanie</string>
+    <string name="text_comment_comp">Zabezpieczenie przed zamknięciem</string>
+    <string name="text_comment_complt">Komentarz do zakończenia</string>
+    <string name="text_comment">Komentarz</string>
+    <string name="text_ref_image">Referencja</string>
+    <string name="rtext_esume">Wznowienie</string>
+    <string name="text_na">NIE DOTYCZY</string>
+    <string name="text_resume">Wznowienie</string>
+    <string name="text_assigned">Przypisany</string>
+    <string name="text_submitted">Przesłano</string>
+    <string name="text_reviewed">Przejrzane</string>
+    <string name="text_rejected">Odrzucony</string>
+    <string name="text_audit_option">Inspekcja</string>
+    <string name="text_prev">Wstecz</string>
+    <string name="text_next">Następny</string>
+    <string name="you_can_not_upload">Można dodać do 20 załączników i\\n wybrać tylko 10 obrazów naraz</string>
+    <string name="text_enter_desc">Wprowadź Opis</string>
+
+    <string name="text_image_choose">Prześlij z</string>
+
+    <string name="text_video">Wideo</string>
+    <string name="text_gallery">Galeria</string>
+    <string name="text_camera">Kamera</string>
+    <string name="text_edit">edytuj</string>
+
+    <string name="text_attachment_name">Nazwa Załącznika</string>
+    <string name="text_critical">Krytyczny</string>
+    <string name="text_staff_name">Nazwisko pracownika</string>
+    <string name="text_reservation">Rezerwacja</string>
+    <string name="text_attachment">Załącznik</string>
+    <string name="text_clear_pad">Wyczyść</string>
+    <string name="text_signature_pad">Tablet</string>
+    <string name="text_yes">Tak </string>
+    <string name="text_no">Nie</string>
+
+    <string name="text_logout">Wyloguj Się</string>
+    <string name="text_alert_dialog_logout_msg">Czy na pewno chcesz się Wylogować?</string>
+
+    <string name="text_re_enter_password">Wprowadź ponownie hasło.</string>
+    <string name="text_password_not_same"> Hasło nie jest zgodne.</string>
+    <string name="text_enter_pass">Wprowadź Hasło</string>
+
+
+    <!--SignIn strings-->
+    <string name="text_resetpassword">Zresetuj hasło</string>
+    <string name="text_enteryourotp">Wprowadź Hasło OTP wysłane na E-mail</string>
+    <string name="text_enteryourpassword">Wprowadź Hasło</string>
+    <string name="text_reenteredpassword">Potwierdź Hasło</string>
+    <string name="s_view">Widok</string>
+    <string name="text_auditname">Nazwa kontroli</string>
+    <string name="text_auditname_a">Nazwa kontroli</string>
+    <string name="text_enter_comment">Wprowadź Komentarz (minimum 50 znaków)</string>
+    <string name="text_enter_commentaction">Wpisz swój komentarz</string>
+    <string name="text_title">Tytuł</string>
+    <string name="text_action">Akcja</string>
+    <string name="text_plandate">ZAPLANOWANA RANDKA</string>
+    <string name="text_details">Szczegóły</string>
+    <string name="text_assignedto">Przypisany do</string>
+    <string name="text_ccemail">E-mail CC</string>
+    <string name="text_douwanttoexit">Czy chcesz wyjść z Aplikacji?</string>
+    <string name="text_coming_soon">Już wkrótce.</string>
+    <string name="s_entervallidotp">Wprowadź prawidłowe hasło OTP</string>
+    <string name="text_brush">Szczotka</string>
+    <string name="text_opacity">Nieprzezroczystość</string>
+    <string name="text_done">Gotowe</string>
+    <string name="text_emoji">Emoii</string>
+    <string name="text_sticker">Naklejka</string>
+    <string name="text_filter">Filtr</string>
+    <string name="text_eraser">Gumka</string>
+    <string name="text_text">Tekst</string>
+    <string name="s_no_action_found">Nie znaleziono działania</string>
+    <string name="inspection_option">Kontrola-Sekcja</string>
+    <string name="text_pleasemark">Zaznacz ten plik jako krytyczny tylko wtedy, gdy chcesz go podświetlić ze wszystkich plików</string>
+    <string name="s_loading">Ładowanie...</string>
+    <string name="text_invalidpass">Nieprawidłowe hasło</string>
+    <string name="s_na">NIE DOTYCZY</string>
+    <string name="text_time">Czas</string>
+
+
+    <!--Executive Summary strings-->
+    <string name="text_summary_n">Podsumowanie:</string>
+    <string name="text_key_positive">Klucz Dodatni:</string>
+    <string name="text_key_negative">Klucz Ujemny:</string>
+    <string name="text_recommendation">Zalecenie:</string>
+    <string name="text_date">Data</string>
+    <string name="text_executive_summary_s">STRESZCZENIE</string>
+    <string name="text_approveby">Zaakceptowany Przez</string>
+    <string name="text_approveto">Zatwierdź Do</string>
+    <string name="text_comment_error">Wprowadź co najmniej 50 znaków</string>
+    <string name="text_support">Pomoc</string>
+    <string name="text_support_text">Wkrótce do Ciebie wrócimy</string>
+    <string name="text_please_reachus">Prosimy o kontakt z nami na dowolnym z następujących kanałów:</string>
+    <string name="text_email">E-mail:</string>
+    <string name="text_whatsapp">WhatsApp:</string>
+    <string name="text_callus">Zadzwoń do Nas:</string>
+    <string name="text_wechat">ID WeChat:</string>
+    <string name="text_lineid">ID linii:</string>
+    <string name="text_youremail">Twój adres E-mail:</string>
+    <string name="text_media">Media</string>
+    <string name="text_this_audit_could">Ten plan działania nie jest gotowy do oznaczenia jako kompletny</string>
+    <string name="s_french">Francuski</string>
+    <string name="text_spanish">Hiszpański</string>
+    <string name="text_chinies">Chiński</string>
+    <string name="text_english">Język angielski</string>
+    <string name="text_invite">Zaproś</string>
+    <string name="text_select_member">Wybierz co najmniej jednego członka</string>
+    <string name="text_view_team">Widok</string>
+    <string name="text_team_member">Członkowie Zespołu</string>
+    <string name="text_audit_id_name">ID Kontroli, Nazwa Audytu, Nazwisko Osoby Odpowiedzialnej, ID E-mail</string>
+    <string name="text_noncomplence">Niezgodności</string>
+    <string name="text_auditscore">Wynik Kontroli</string>
+    <string name="text_completedate">Data Zakończenia</string>
+    <string name="text_startdate">Data Rozpoczęcia</string>
+    <string name="text_assignedby">Przypisany przez</string>
+    <string name="text_checklist">Lista Kontrolna</string>
+    <string name="text_audit_type">Typ kontroli</string>
+    <string name="text_audit_id">ID kontroli</string>
+    <string name="text_share">Udostępnij</string>
+    <string name="text_export">Eksport</string>
+    <string name="text_view">Widok</string>
+    <string name="textx_reset_seletion">Zresetuj Wybór</string>
+    <string name="text_all">Wszystkie</string>
+    <string name="text_team">Zespoły</string>
+    <string name="text_addnew_member">Utwórz nowy zespół</string>
+    <string name="text_name_emaili_roll">Imię i nazwisko, ID E-mail, Rola</string>
+    <string name="text_entor_data">Wprowadź dane wyszukiwania</string>
+    <string name="text_selet_filter">Wybierz opcję Filtrów</string>
+    <string name="text_date_range">Zakres dat</string>
+    <string name="text_date_from">Od Daty</string>
+    <string name="text_date_to">Do Daty</string>
+    <string name="text_top_five_audit">5 Najlepszych/Najgorszych Kontroli</string>
+    <string name="text_auditorname">Nazwisko Osoby Odpowiedzialnej</string>
+    <string name="text_download_report">Pobierz raport, aby go wyświetlić</string>
+    <string name="text_no_viewer">Nie znaleziono przeglądarki PDF</string>
+    <string name="text_add">DODAJ</string>
+    <string name="text_not_allowed_team">Nie masz uprawnień do dodawania zespołu</string>
+    <string name="text_auditor_name">NAZWISKO OSOBY ODPOWIEDZIALNEJ</string>
+    <string name="text_template">Szablon</string>
+    <string name="text_designation">Oznaczenie</string>
+    <string name="text_not_applicable">NIE DOTYCZY</string>
+    <string name="text_username">Nazwa Użytkownika</string>
+    <string name="s_entervallidname">Wprowadź prawidłową nazwę</string>
+    <string name="enter_name_team">Wprowadź Nazwę Zespołu</string>
+    <string name="text_create">Stwórz</string>
+    <string name="text_enter_team_name">Prosimy Wprowadź nazwę zespołu</string>
+    <string name="text_goto">Stwórz</string>
+    <string name="text_noofaudits">Ilość Kontroli</string>
+    <string name="text_noofnon">Niezgodności</string>
+    <string name="text_nooflocation">Lokalizacje</string>
+    <string name="text_average_non_com">Średnie NCs</string>
+    <string name="text_count">0</string>
+    <string name="text_auditbenchmark">BENCHMARKING</string>
+    <string name="text_inspection">Inspekcja</string>
+    <string name="text_sheduled">Zaplanowany</string>
+    <string name="text_more_option">Więcej Opcji</string>
+    <string name="text_create_audit">Utwórz inspekcję</string>
+    <string name="text_duedate">Termin Wykonania</string>
+    <string name="text_select_date">Wybierz Datę</string>
+    <string name="text_benchmark">Benchmark (%)</string>
+    <string name="text_doyouneed">Potrzebujesz Recenzenta?</string>
+    <string name="text_instruction_note">Instrukcja/Uwaga</string>
+    <string name="text_addd_attachment">Dodaj Załącznik(i)</string>
+    <string name="text_total">Całkowite</string>
+    <string name="text_failed">Odrzucone</string>
+    <string name="text_complete">Zakończone</string>
+    <string name="text_open">Otwarte</string>
+    <string name="text_inprogress">W trakcie</string>
+    <string name="text_overduesmall">Przeterminowane</string>
+    <string name="text_inspectioncaps">Inspekcje</string>
+    <string name="text_actionplan">Plan Akcji</string>
+    <string name="text_audit">Inspekcja</string>
+    <string name="text_create_action">Utwórz Działanie</string>
+    <string name="text_selectreviwer">Wybierz co Najmniej Jednego Pełnomocnika</string>
+    <string name="text_users">Użytkownicy</string>
+    <string name="text_assignee">Przypisany</string>
+    <string name="text_assigneeselect">Wybierz Pełnomocnika/ów</string>
+    <string name="text_reviewerselect">Wybierz Recenzenta</string>
+    <string name="text_inspectionnote">Wprowadź uwagi lub instrukcje dotyczące kontroli, jeśli takie istnieją</string>
+    <string name="text_totalinspection">CAŁKOWITA KONTROLA</string>
+    <string name="text_pendigapr">Oczekuje na Zatwierdzenie</string>
+    <string name="text_aproved">Zatwierdzone</string>
+    <string name="text_benchmarkerror">Wprowadź test wydajności w zakresie od 0 do 100</string>
+    <string name="text_datetime">Wybierz Datę i Godzinę</string>
+    <string name="text_alert_dialog_na">Czy na pewno oznaczyć sekcję jako nieodpowiednią (NA)? Spowoduje to skasowanie wszystkich wcześniej zapisanych danych, jeśli takie istnieją, w tej sekcji</string>
+    <string name="text_auditsubmited">„Raport został pomyślnie przesłany”</string>
+    <string name="text_updatedsuccessfully">Przesyłanie Powiodło się</string>
+    <string name="expand_string">Więcej</string>
+    <string name="collapsed_string">Mniej</string>
+
+    <string name="dummytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="text_chatsupport">Czat i Pomoc Techniczna</string>
+
+    <string name="text_titleh">Tytuł: </string>
+    <string name="text_locationh">Lokalizacja:  </string>
+    <string name="text_checklisth">Lista kontrolna: </string>
+    <string name="text_selecttemplet">Wybierz szablon</string>
+    <string name="text_videogallery">Galeria wideo</string>
+    <string name="text_starttime">Godzina Rozpoczęcia</string>
+    <string name="text_firstname">Imię</string>
+    <string name="text_lastname">Nazwisko</string>
+    <string name="text_company">Firma</string>
+    <string name="text_phone">Numer Telefonu</string>
+    <string name="text_schedule_demo">Zaplanuj Prezentację</string>
+    <string name="text_entervallidname">Wprowadź Imię</string>
+    <string name="s_entervallidphone">Wprowadź właściwy numer Telefonu komórkowego</string>
+    <string name="text_upcominfeature">Najbliższe Funkcje</string>
+    <string name="text_feedback">Informacja zwrotna</string>
+    <string name="text_enter_feedback">Opisz swoje opinie</string>
+    <string name="text_demo">Zaplanuj Prezentację</string>
+    <string name="s_entervalliddate">Wprowadź Poprawną Datę</string>
+    <string name="text_thanksforcontact">Dziękujemy za skontaktowanie się z zespołem Oditly. Twoja wiadomość została odebrana i wkrótce się z Tobą skontaktujemy</string>
+    <string name="text_feedback_des">Chcielibyśmy poznać wasze myśli, sugestie, obawy lub problemy, abyśmy mogli je ulepszyć!</string>
+    <string name="text_schedule_demo_oditly">Nie masz konta Oditly? <b><u>Click here</u></b> Kliknij tutaj, aby zaplanować z nami prezentację.</string>
+    <string name="text_teamoditlyisworking">Zespół Oditly pracuje nieprzerwanie, aby dodać więcej funkcji do aplikacji, zapoznaj się z niektórymi funkcjami, które mają być dostępne w aplikacji w niedalekiej przyszłości.</string>
+    <string name="text_passed">Zaliczone</string>
+    <string name="text_priority">Priorytet</string>
+    <string name="s_entertitle">Wprowadź tytuł</string>
+    <string name="s_enterdetails">Wprowadź szczegóły</string>
+    <string name="s_enterplandate">Wprowadź zaplanowaną datę</string>
+    <string name="text_section">Sekcja</string>
+    <string name="text_actioncreate">Utwórz Czynność</string>
+    <string name="s_enterAssignee">Wybierz Pełnomocnika</string>
+    <string name="text_action_title">Tytuł Akcji</string>
+    <string name="text_department">Sekcja</string>
+    <string name="text_correctiveaction">Wymagane Działania Naprawcze</string>
+    <string name="text_mediacount">Zabezpieczenie przed zamknięciem</string>
+    <string name="text_complition">Zakończenie</string>
+    <string name="text_chatwithus">Porozmawiaj z nami</string>
+    <string name="text_entercount">Wprowadź Liczbę</string>
+    <string name="s_create">Stwórz</string>
+    <string name="s_signin_microsoft">Zaloguj się przez Microsoft</string>
+    <string name="text_actiopnplan_id">ID planu działania</string>
+
+</resources>

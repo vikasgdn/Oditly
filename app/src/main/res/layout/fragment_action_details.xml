@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_title"
+        android:text="@string/text_action_title"
         android:textColor="@color/c_gray_text"
         android:padding="@dimen/d_10dp"
         android:textSize="@dimen/text_size_16"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="@string/text_title"
         android:textColor="@color/c_gray_text"
-        android:theme="@style/TextViewAccount"
+        android:theme="@style/TextViewaudit_details"
         />
     <View
         android:layout_width="match_parent"
@@ -42,19 +42,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_action"
+        android:text="@string/text_audit_id"
         android:textColor="@color/c_gray_text"
         android:padding="@dimen/d_10dp"
         android:textSize="@dimen/text_size_16"
         android:fontFamily="@font/nunitosans_bold"
         />
     <TextView
-        android:id="@+id/tv_action"
+        android:id="@+id/tv_auditid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_action"
         android:textColor="@color/c_gray_text"
-        android:theme="@style/TextViewAccount"
+        android:theme="@style/TextViewaudit_details"
         />
     <View
         android:layout_width="match_parent"
@@ -65,19 +65,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_plandate"
+        android:text="@string/text_actiopnplan_id"
         android:textColor="@color/c_gray_text"
         android:padding="@dimen/d_10dp"
         android:textSize="@dimen/text_size_16"
         android:fontFamily="@font/nunitosans_bold"
         />
     <TextView
-        android:id="@+id/tv_plandate"
+        android:id="@+id/tv_action_plan_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_plandate"
+        android:text="@string/text_actiopnplan_id"
         android:textColor="@color/c_gray_text"
-        android:theme="@style/TextViewAccount"
+        android:theme="@style/TextViewaudit_details"
         />
     <View
         android:layout_width="match_parent"
@@ -88,7 +88,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_details"
+        android:text="@string/text_correctiveaction"
         android:textColor="@color/c_gray_text"
         android:padding="@dimen/d_10dp"
         android:textSize="@dimen/text_size_16"
@@ -100,7 +100,53 @@
         android:layout_height="wrap_content"
         android:text="@string/text_details"
         android:textColor="@color/c_gray_text"
-        android:theme="@style/TextViewAccount"
+        android:theme="@style/TextViewaudit_details"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/size_2dp"
+        android:background="#e0e0e0"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_duedate"
+        android:textColor="@color/c_gray_text"
+        android:padding="@dimen/d_10dp"
+        android:textSize="@dimen/text_size_16"
+        android:fontFamily="@font/nunitosans_bold"
+        />
+    <TextView
+        android:id="@+id/tv_duedate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_duedate"
+        android:textColor="@color/c_gray_text"
+        android:theme="@style/TextViewaudit_details"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/size_2dp"
+        android:background="#e0e0e0"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_assignee"
+        android:textColor="@color/c_gray_text"
+        android:padding="@dimen/d_10dp"
+        android:textSize="@dimen/text_size_16"
+        android:fontFamily="@font/nunitosans_bold"
+        />
+    <TextView
+        android:id="@+id/tv_assignee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_assignedto"
+        android:textColor="@color/c_gray_text"
+        android:theme="@style/TextViewaudit_details"
         />
     <View
         android:layout_width="match_parent"
@@ -110,19 +156,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_assigned"
+        android:text="@string/text_assignedby"
         android:textColor="@color/c_gray_text"
         android:padding="@dimen/d_10dp"
         android:textSize="@dimen/text_size_16"
         android:fontFamily="@font/nunitosans_bold"
         />
     <TextView
-        android:id="@+id/tv_assignedto"
+        android:id="@+id/tv_assigned_by"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_assignedto"
         android:textColor="@color/c_gray_text"
-        android:theme="@style/TextViewAccount"
+        android:theme="@style/TextViewaudit_details"
         />
     <View
         android:layout_width="match_parent"
@@ -144,7 +190,7 @@
         android:layout_height="wrap_content"
         android:text="@string/text_location"
         android:textColor="@color/c_gray_text"
-        android:theme="@style/TextViewAccount"
+        android:theme="@style/TextViewaudit_details"
         />
     <View
         android:layout_width="match_parent"
@@ -169,7 +215,7 @@
         android:text="@string/text_approveto"
         android:visibility="gone"
         android:textColor="@color/c_gray_text"
-        android:theme="@style/TextViewAccount"
+        android:theme="@style/TextViewaudit_details"
         />
     <View
         android:layout_width="match_parent"
@@ -194,17 +240,19 @@
         android:text="@string/text_ccemail"
         android:visibility="gone"
         android:textColor="@color/c_gray_text"
-        android:theme="@style/TextViewAccount"
+        android:theme="@style/TextViewaudit_details"
         />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/size_2dp"
+        android:visibility="gone"
         android:background="#e0e0e0"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_attachment"
+        android:visibility="gone"
         android:textColor="@color/c_gray_text"
         android:padding="@dimen/d_10dp"
         android:textSize="@dimen/text_size_16"
@@ -215,8 +263,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_attachment"
+        android:visibility="gone"
         android:textColor="@color/c_dark_gray"
-        android:theme="@style/TextViewAccount"
+        android:theme="@style/TextViewaudit_details"
         />
     <View
         android:layout_width="match_parent"

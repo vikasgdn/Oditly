@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity {
     /* access modifiers changed from: private */
     public void setPageSelection(int position) {
         if (position == 0) {
-            this.mTitleTV.setText(getResources().getString(R.string.s_schedule));
+            this.mTitleTV.setText(getResources().getString(R.string.s_mytask));
             getSupportFragmentManager().beginTransaction().replace(R.id.container, LandingFragment.newInstance(this.mAuditTypeID)).commitAllowingStateLoss();
         } else if (position == 1) {
             this.mTitleTV.setText(getResources().getString(R.string.s_analytics));

@@ -72,14 +72,14 @@
             android:visibility="visible"
             android:layout_marginTop="10dp"
             >
+
             <Spinner
                 android:id="@+id/spn_audittype"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawSelectorOnTop="true"
                 android:background="@null"
-                android:popupBackground="@color/colorWhite"
-                />
+                android:drawSelectorOnTop="true"
+                android:popupBackground="@color/colorWhite" />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

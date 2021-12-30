@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,7 +53,6 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
     protected void initView() {
         super.initView();
 
-
         TextView textView=(TextView)findViewById(R.id.tv_title);
         textView.setText(getResources().getString(R.string.s_account));
 
@@ -60,7 +60,6 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
         mNameTV=(TextView)findViewById(R.id.tv_name);
         mEmailTV=(TextView)findViewById(R.id.tv_email);
         mProgressBarRL=(RelativeLayout)findViewById(R.id.ll_parent_progress);
-
 
 
         findViewById(R.id.tv_signout).setOnClickListener(this);
@@ -78,7 +77,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
     @Override
     protected void initVar() {
         super.initVar();
-        mNameTV.setText(AppPreferences.INSTANCE.getUserFname(this)+AppPreferences.INSTANCE.getUserLName(this));
+        mNameTV.setText(AppPreferences.INSTANCE.getUserFname(this)+" "+AppPreferences.INSTANCE.getUserLName(this));
         mEmailTV.setText(AppPreferences.INSTANCE.getUserEmail(this));
         mNameLetterTV.setText(AppUtils.returnFirstLetter(this));
     }
@@ -131,10 +130,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                // Intent callIntent = new Intent(this, ChatSupportActivity.class);
                 //startActivity(callIntent);
                 break;
-
         }
-
-
     }
     public void setOTPServer()
     {
@@ -144,8 +140,8 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
             params.put(NetworkConstant.REQ_PARAM_USER, AppPreferences.INSTANCE.getUserEmail(this));
             NetworkService networkService = new NetworkService(NetworkURL.SENDOTP, NetworkConstant.METHOD_POST, this,this);
             networkService.call(params);
-        } else
-
+        }
+        else
             AppUtils.toast(this, getString(R.string.internet_error));
 
     }
@@ -169,11 +165,15 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
             });
             dialog.findViewById(R.id.btn_yes).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-
+                public void onClick(View v)
+                {
                     wipeDataAfterLogout();
                     FirebaseAuth.getInstance().signOut();
-                    //logOutServerData();
+                    if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.PROVIDER_MICROSOFT))
+                    {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://login.microsoftonline.com/common/oauth2/logout"));
+                        startActivity(browserIntent);
+                    }
                     dialog.dismiss();
                 }
             });

@@ -20,6 +20,7 @@ import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.OAuthProvider;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkService;
@@ -49,6 +50,8 @@ public class MicroSoftLoginActivity extends BaseActivity implements INetworkEven
     protected void initView() {
         super.initView();
         findViewById(R.id.btn_signin_octa).setVisibility(View.GONE);
+        findViewById(R.id.iv_octa).setVisibility(View.GONE);
+        findViewById(R.id.iv_microsoft).setVisibility(View.VISIBLE);
         findViewById(R.id.btn_signin_microsoft).setVisibility(View.VISIBLE);
         findViewById(R.id.btn_signin_microsoft).setOnClickListener(this);
 
@@ -97,11 +100,14 @@ public class MicroSoftLoginActivity extends BaseActivity implements INetworkEven
                 String roleId=object.getJSONObject("data").optString("role_id");
                 if (TextUtils.isEmpty(roleId))
                 {
-                    AppUtils.toast(this, "Role not assigned to this user");
+                    AppDialogs.messageDialogWithOKButton(this,"You dont have any access previleges yet. Please contact "+object.getJSONObject("data").optString("created_by_email"));
                 }
                 else {
                     AppPreferences.INSTANCE.setUserId(object.getJSONObject("data").getInt("user_id"), this);
+                    AppPreferences.INSTANCE.setUserFName(object.getJSONObject("data").optString("fname"));
+                    AppPreferences.INSTANCE.setUserLName(object.getJSONObject("data").optString("lname"),this);
                     AppPreferences.INSTANCE.setUserRole(Integer.parseInt(roleId), this);
+                    AppPreferences.INSTANCE.setUserEmail(object.getJSONObject("data").optString("email"));
                     AppPreferences.INSTANCE.setLogin(true, this);
                     startActivity(new Intent(this, MainActivity.class));
                 }
@@ -198,7 +204,7 @@ public class MicroSoftLoginActivity extends BaseActivity implements INetworkEven
                                         AppUtils.toastDisplayForLong(MicroSoftLoginActivity.this,"The sign-in user's account does not belong to one of the tenants that this Web App accepts users from.");
                                     }
 
-                                    AppPreferences.INSTANCE.setLogin(true,MicroSoftLoginActivity.this);
+                                   /* AppPreferences.INSTANCE.setLogin(true,MicroSoftLoginActivity.this);
                                     AppPreferences.INSTANCE.setUserEmail(userEmail);
                                     String []Name=username.split(" ");
                                     if (Name.length>1) {
@@ -208,28 +214,29 @@ public class MicroSoftLoginActivity extends BaseActivity implements INetworkEven
                                     else  if (Name.length==1)
                                     {
                                         AppPreferences.INSTANCE.setUserFName(Name[0]);
-                                    }
+                                    }*/
 
                                     GetTokenResult getTokenResult= authResult.getUser().getIdToken(false).getResult();
                                     String tokenAuth=  getTokenResult.getToken();
                                     AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
 
-                                    String userId= getTokenResult.getClaims().get("userId")==null?"":getTokenResult.getClaims().get("userId").toString();
-                                    String roleId= getTokenResult.getClaims().get("roleId")==null?"":getTokenResult.getClaims().get("roleId").toString();
+                                    // String userId= getTokenResult.getClaims().get("userId")==null?"":getTokenResult.getClaims().get("userId").toString();
+                                    // String roleId= getTokenResult.getClaims().get("roleId")==null?"":getTokenResult.getClaims().get("roleId").toString();
 
-                                    getUserProfile();
 
-                                    Log.e("USER ID Microsoft ===> ",""+userId);
 
+                                    //   Log.e("USER ID Microsoft ===> ",""+userId);
+
+/*
 
                                     if (!TextUtils.isEmpty(userId))
                                         AppPreferences.INSTANCE.setUserId(Integer.parseInt(userId), MicroSoftLoginActivity.this);
                                     if (!TextUtils.isEmpty(roleId))
                                         AppPreferences.INSTANCE.setClientRoleId(Integer.parseInt(roleId));
+*/
 
+                                    getUserProfile();
                                     // Log.e("USER TOKEN ",""+AppPreferences.INSTANCE.getFirebaseAccessToken(SplashActivity.this));
-                                    AppPreferences.INSTANCE.setLogin(true, MicroSoftLoginActivity.this);
-                                    startActivity(new Intent(MicroSoftLoginActivity.this, MainActivity.class));
 
                                 }
                             })

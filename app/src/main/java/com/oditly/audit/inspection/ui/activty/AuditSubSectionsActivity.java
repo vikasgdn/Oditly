@@ -1,63 +1,51 @@
  package com.oditly.audit.inspection.ui.activty;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.text.TextUtils;
+ import android.util.Log;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.ProgressBar;
+ import android.widget.RelativeLayout;
+ import android.widget.TextView;
 
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+ import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.oditly.audit.inspection.OditlyApplication;
-import com.oditly.audit.inspection.R;
-import com.oditly.audit.inspection.adapter.SubSectionAdapter;
-import com.oditly.audit.inspection.apppreferences.AppPreferences;
-import com.oditly.audit.inspection.localDB.bsoffline.BsOffLineDB;
-import com.oditly.audit.inspection.localDB.bsoffline.BsOfflineDBImpl;
-import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardInfo;
-import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
-import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRootObject;
-import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
-import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
-import com.oditly.audit.inspection.network.INetworkEvent;
-import com.oditly.audit.inspection.network.NetworkConstant;
-import com.oditly.audit.inspection.network.NetworkService;
-import com.oditly.audit.inspection.network.NetworkServiceJSON;
-import com.oditly.audit.inspection.network.NetworkStatus;
-import com.oditly.audit.inspection.network.NetworkURL;
-import com.oditly.audit.inspection.network.apirequest.BSSaveSubmitJsonRequest;
-import com.oditly.audit.inspection.network.apirequest.GetReportRequest;
-import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
-import com.oditly.audit.inspection.util.AppConstant;
-import com.oditly.audit.inspection.util.AppLogger;
-import com.oditly.audit.inspection.util.AppUtils;
+ import com.google.gson.Gson;
+ import com.google.gson.GsonBuilder;
+ import com.oditly.audit.inspection.OditlyApplication;
+ import com.oditly.audit.inspection.R;
+ import com.oditly.audit.inspection.adapter.SubSectionAdapter;
+ import com.oditly.audit.inspection.apppreferences.AppPreferences;
+ import com.oditly.audit.inspection.localDB.bsoffline.BsOffLineDB;
+ import com.oditly.audit.inspection.localDB.bsoffline.BsOfflineDBImpl;
+ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardInfo;
+ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
+ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRootObject;
+ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
+ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
+ import com.oditly.audit.inspection.network.INetworkEvent;
+ import com.oditly.audit.inspection.network.NetworkConstant;
+ import com.oditly.audit.inspection.network.NetworkService;
+ import com.oditly.audit.inspection.network.NetworkServiceJSON;
+ import com.oditly.audit.inspection.network.NetworkStatus;
+ import com.oditly.audit.inspection.network.NetworkURL;
+ import com.oditly.audit.inspection.network.apirequest.BSSaveSubmitJsonRequest;
+ import com.oditly.audit.inspection.util.AppConstant;
+ import com.oditly.audit.inspection.util.AppLogger;
+ import com.oditly.audit.inspection.util.AppUtils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+ import org.json.JSONArray;
+ import org.json.JSONObject;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
+ import java.text.DecimalFormat;
+ import java.util.ArrayList;
+ import java.util.HashMap;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+ import butterknife.BindView;
+ import butterknife.ButterKnife;
 
 public class AuditSubSectionsActivity extends BaseActivity implements SubSectionAdapter.CustomItemClickListener, INetworkEvent {
 
@@ -172,15 +160,15 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     }
     @Override
     public void onBackPressed() {
-       // if(status.equalsIgnoreCase("1"))
+       if(!TextUtils.isEmpty(status) && status.equalsIgnoreCase("1"))
             finish();
-       /* else
+       else
         {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(AppConstant.FROMWHERE, AppConstant.AUDIT);
             this.startActivity(intent);
             this.finish();
-        }*/
+        }
     }
 
     @Override

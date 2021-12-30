@@ -136,7 +136,7 @@ public class AppUtils {
                     }
                     if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
                     {
-                        AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count);
+                        AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count+ " in section "+ brandStandardSection.get(i).getSection_title());
                         return null;
                     }
                 }
@@ -206,7 +206,7 @@ public class AppUtils {
 
                             if (mCommentCount>0 && question.getAudit_comment().length()<mCommentCount)
                             {
-                                AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count);
+                                AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count+ " in section "+ brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
 
@@ -225,19 +225,26 @@ public class AppUtils {
 
     public static JSONArray getOptionQuestionArray (ArrayList<BrandStandardQuestionsOption> optionsArray){
         try {
-            JSONArray jsonArray = new JSONArray();
-
             for (int i=0;i<optionsArray.size();i++)
             {
-                JSONObject jsonObject = new JSONObject();
                 BrandStandardQuestionsOption questionsOption= optionsArray.get(i);
-                if (questionsOption.getQuestions()!=null && questionsOption.getQuestions().size()>0 ) {
-                    jsonObject.put("option_id", questionsOption.getOption_id());
-                    jsonObject.put("questions", geSubQusetionsArrayArray(questionsOption.getQuestions()));
-                    jsonArray.put(jsonObject);
+                if (questionsOption.getQuestions()!=null && questionsOption.getQuestions().size()>0 )
+                {
+                    for (int j=0;j<questionsOption.getQuestions().size();j++)
+                    {
+                        if (questionsOption.getQuestions().get(j).getAudit_option_id()!=null && questionsOption.getQuestions().get(j).getAudit_option_id().size()>0 )
+                        {
+                            JSONArray jsonArray = new JSONArray();
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("option_id", questionsOption.getOption_id());
+                            jsonObject.put("questions", geSubQusetionsArrayArray(questionsOption.getQuestions()));
+                            jsonArray.put(jsonObject);
+                            return jsonArray;
+                        }
+                    }
                 }
             }
-            return jsonArray;
+            return new JSONArray();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -297,6 +304,9 @@ public class AppUtils {
         }
         return jsArray;
     }
+
+
+
     public static void toast(Activity activity, String message) {
         if (message != null && !message.equals("") && activity != null) {
             Snackbar snack = Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);

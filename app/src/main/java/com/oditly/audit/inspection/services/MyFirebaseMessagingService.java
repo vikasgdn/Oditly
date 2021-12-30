@@ -71,15 +71,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
             Bitmap bigPicture = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
 
 
-            NotificationCompat.Builder  mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setColor(context.getResources().getColor(R.color.colorAccent))
-                    .setSmallIcon(R.mipmap.ic_notification_push)
-                    .setLargeIcon(bigPicture)
-                    .setContentTitle(title)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
-                    .setContentIntent(contentIntent)
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setAutoCancel(true);
+            NotificationCompat.Builder mBuilder;
+            mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
+            mBuilder.setColor(context.getResources().getColor(R.color.colorAccent));
+            mBuilder.setSmallIcon(R.mipmap.ic_notification_push);
+            mBuilder.setLargeIcon(bigPicture);
+            mBuilder.setContentTitle(title);
+            mBuilder.setContentText(msg);
+            mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
+            mBuilder.setContentIntent(contentIntent);
+            mBuilder.setDefaults(Notification.DEFAULT_ALL);
+            mBuilder.setAutoCancel(true);
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 createNotificationChanel(mBuilder);
@@ -88,6 +90,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
     private void createNotificationChanel(NotificationCompat.Builder mBuilder) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

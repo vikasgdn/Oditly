@@ -49,9 +49,10 @@
                 android:layout_weight="10"
                 android:maxLines="1"
                 android:focusable="false"
-                android:enabled="false"
+                android:enabled="true"
                 android:layout_marginStart="@dimen/d_5dp"
                 android:textSize="@dimen/text_size_14"
+                android:autoLink="web"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textColor="@color/c_gray_text" />
             <ImageView

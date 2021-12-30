@@ -201,23 +201,10 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
             try {
                 JSONObject object = new JSONObject(response);
                 JSONObject dataObj=object.optJSONObject("data");
-                JSONObject providerObj=dataObj.optJSONObject("provider");
+
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
                 if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                  /*  {
-                        "error": false,
-                            "data": {
-                        "fname": "vikas",
-                                "lname": "gdn",
-                                "role_id": null,
-                                "provider": {
-                            "provider_id": "saml.okta-saml-dev-39590758",
-                                    "name": "okta",
-                                    "display_name": "Okta"
-                        }
-                    },
-                        "message": "Data found"
-                    }*/
+                    JSONObject providerObj=dataObj.optJSONObject("provider");
                     AppPreferences.INSTANCE.setProviderName(providerObj.optString("name"));
                     if (!TextUtils.isEmpty(providerObj.optString("name")) && providerObj.optString("name").equalsIgnoreCase(AppConstant.OKTA))
                     {
@@ -226,22 +213,24 @@ public class SignInEmailActivity extends BaseActivity implements INetworkEvent {
                         startActivity(intent);
                         finish();
                     }
-                    else if(providerObj.optString("name").equalsIgnoreCase(AppConstant.PASSWORD_LOGIN))
+                    else if(providerObj.optString("name").equalsIgnoreCase(AppConstant.PROVIDER_PASSWORD))
                     {
                         Intent intent = new Intent(this, SignInPasswordActivity.class);
                         intent.putExtra(AppConstant.EMAIL, mEmailET.getText().toString());
                         startActivity(intent);
+
                     }
                     else {
                         Intent intent = new Intent(this, MicroSoftLoginActivity.class);
                         intent.putExtra(AppConstant.EMAIL, mEmailET.getText().toString());
                         startActivity(intent);
+                        finish();
                     }
                 } else {
                     mEmailErrorTV.setVisibility(View.VISIBLE);
                     mEmailErrorTV.setText("" + message);
+                    AppUtils.toast(this, message);
                 }
-                // AppUtils.toast(this, message);
             } catch (Exception e) {
                 AppUtils.toast(this, getString(R.string.oops));
             }

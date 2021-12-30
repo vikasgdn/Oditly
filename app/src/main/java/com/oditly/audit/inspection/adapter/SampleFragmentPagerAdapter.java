@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.ui.fragment.AuditFragment;
 import com.oditly.audit.inspection.ui.fragment.actionplan.ActionFragment;
 
@@ -48,6 +49,10 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         // Generate title based on item position
-        return tabTitles[position];
+        String title=context.getString(R.string.text_action);
+        if (position==0)
+            title=context.getString(R.string.text_inspection);
+
+        return title;
     }
 }

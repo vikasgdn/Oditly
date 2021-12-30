@@ -1,5 +1,8 @@
 <resources>
+<!--
     <string name="app_name">Oditly</string>
+-->
+    Change everywhere from Department to Section
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -44,6 +47,7 @@
     <string name="send">Send</string>
     <string name="enter_email">Enter Email</string>
     <string name="s_schedule">Schedule</string>
+    <string name="s_mytask">My Tasks</string>
     <string name="s_analytics">Analytics</string>
     <string name="s_user">Users</string>
     <string name="s_reports">Reports</string>
@@ -65,7 +69,7 @@
     <string name="text_you_need">You need to complete the following sections</string>
     <string name="text_your_goal">Your Goal</string>
     <string name="text_you_need_assignmnt">You need to complete the following sections</string>
-    <string name="text_search_with_auditid">Search with Inspection ID, Auditor Email ID</string>
+    <string name="text_search_with_auditid">Search with Inspection ID, Assignee Email ID</string>
     <string name="text_sorrynoauditfound">Sorry, No Inspection Found</string>
 
 
@@ -80,7 +84,7 @@
     <string name="text_executive_summary">EXECUTIVE SUMMARY</string>
     <string name="text_detailed_summary">DETAILED SUMMARY</string>
     <string name="text_detailed_summary_s">Detailed Summary</string>
-    <string name="text_auditor">AUDITOR NAME</string>
+    <string name="text_auditor">ASSIGNEE NAME</string>
     <string name="text_reviewer">REVIEWER NAME</string>
     <string name="text_reviewersmall">Reviewer Name</string>
     <string name="text_overdue">OVERDUE</string>
@@ -95,6 +99,7 @@
     <string name="text_photo">Media</string>
     <string name="text_summary">Summary</string>
     <string name="text_comment_comp">Closure Proof</string>
+    <string name="text_comment_complt">Completion Comment</string>
     <string name="text_comment">Comment</string>
     <string name="text_ref_image">Reference</string>
     <string name="rtext_esume">Resume</string>
@@ -142,7 +147,7 @@
     <string name="text_reenteredpassword">Confirm your password</string>
     <string name="s_view">View</string>
     <string name="text_auditname">Inspection Name</string>
-    <string name="text_auditname_a">Audit Name</string>
+    <string name="text_auditname_a">Inspection Name</string>
     <string name="text_enter_comment">Enter Comment (50 characters minimum)</string>
     <string name="text_enter_commentaction">Type your comment</string>
     <string name="text_title">Title</string>
@@ -163,7 +168,7 @@
     <string name="text_eraser">Eraser</string>
     <string name="text_text">Text</string>
     <string name="s_no_action_found">No Action Found</string>
-    <string name="inspection_option">Inspection-Department</string>
+    <string name="inspection_option">Inspection-Section</string>
     <string name="text_pleasemark">Please only mark this file as critical if you want to highlight this file out of all the file</string>
     <string name="s_loading">Loading...</string>
     <string name="text_invalidpass">Invalid Password</string>
@@ -200,15 +205,15 @@
     <string name="text_select_member">Please select atleast one member</string>
     <string name="text_view_team">View</string>
     <string name="text_team_member">Team Members</string>
-    <string name="text_audit_id_name">Audit ID, Audit Name, Auditor Name, Email ID</string>
+    <string name="text_audit_id_name">Inspection ID, Audit Name, Assignee Name, Email ID</string>
     <string name="text_noncomplence">Non Compliances</string>
-    <string name="text_auditscore">Audit Score</string>
+    <string name="text_auditscore">Inspection Score</string>
     <string name="text_completedate">Completion Date</string>
     <string name="text_startdate">Start Date</string>
     <string name="text_assignedby">Assigned By</string>
     <string name="text_checklist">Checklist</string>
     <string name="text_audit_type">Inspection Type</string>
-    <string name="text_audit_id">Audit ID</string>
+    <string name="text_audit_id">Inspection ID</string>
     <string name="text_share">Share</string>
     <string name="text_export">Export</string>
     <string name="text_view">View</string>
@@ -222,13 +227,13 @@
     <string name="text_date_range">Date Range</string>
     <string name="text_date_from">From Date</string>
     <string name="text_date_to">To Date</string>
-    <string name="text_top_five_audit">Top/Worst 5 Audits</string>
-    <string name="text_auditorname">Auditor Name</string>
+    <string name="text_top_five_audit">Top/Worst 5 Inspections</string>
+    <string name="text_auditorname">Assignee Name</string>
     <string name="text_download_report">Please download report to view</string>
     <string name="text_no_viewer">No PDF viewer found</string>
     <string name="text_add">Add</string>
     <string name="text_not_allowed_team">You are not allowed to add team</string>
-    <string name="text_auditor_name">Auditor Name</string>
+    <string name="text_auditor_name">Assignee Name</string>
     <string name="text_template">Template</string>
     <string name="text_designation">Designation</string>
     <string name="text_not_applicable">N/A</string>
@@ -238,7 +243,7 @@
     <string name="text_create">Create</string>
     <string name="text_enter_team_name">Please enter the team name</string>
     <string name="text_goto">Create</string>
-    <string name="text_noofaudits">No of Audits</string>
+    <string name="text_noofaudits">No of Inspections</string>
     <string name="text_noofnon">Non Compliances</string>
     <string name="text_nooflocation">Locations</string>
     <string name="text_average_non_com">Average NCs</string>
@@ -315,7 +320,7 @@
     <string name="text_actioncreate">Action Create</string>
     <string name="s_enterAssignee">Select Assignee</string>
     <string name="text_action_title">Action Title</string>
-    <string name="text_department">Department</string>
+    <string name="text_department">Section</string>
     <string name="text_correctiveaction">Corrective Action Required</string>
     <string name="text_mediacount">Closure Proof</string>
     <string name="text_complition">Completion</string>
@@ -323,5 +328,6 @@
     <string name="text_entercount">Enter Count</string>
     <string name="s_create">Create</string>
     <string name="s_signin_microsoft">Sign in with Microsoft</string>
+    <string name="text_actiopnplan_id">Action Plan Id</string>
 
 </resources>

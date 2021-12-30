@@ -1,0 +1,333 @@
+<resources>
+<!--
+    <string name="app_name">Oditly</string>
+-->
+    Change everywhere from Department to Section
+    <string name="navigation_drawer_open">Navigationsschublade öffnen</string>
+    <string name="navigation_drawer_close">Navigationsschublade schließen</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigationskopf</string>
+    <string name="action_settings">Einstellungen</string>
+
+    <string name="menu_home">Heim</string>
+    <string name="menu_gallery">Galerie</string>
+    <string name="menu_slideshow">Diashow</string>
+
+    <string name="home_second">Heimsekunde</string>
+    <string name="s_digitize">Inspektionsworkflows automatisieren</string>
+    <string name="s_signin">Anmeldung</string>
+    <string name="s_next">Weiter</string>
+    <string name="s_signin_to_oditly">Melden Sie sich bei Oditly an</string>
+    <string name="h_email">E-Mail</string>
+    <string name="s_forgot_pass">Passwort vergessen?</string>
+    <string name="s_remember">Erinnere dich an mich</string>
+    <string name="default_progress_dialog_message">Wird geladen...</string>
+    <string name="s_enter">Eintreten</string>
+    <string name="h_password">Passwort</string>
+    <string name="s_description">Dieser Abschnitt enthält alle Aktionen, die erstellt, offen oder überfällig sind</string>
+    <string name="s_description_insp">Dieser Abschnitt enthält alle geplanten, laufenden, oder überfälligen Inspektionen</string>
+    <string name="s_scheduled_audit">Geplant</string>
+    <string name="s_progress_audit">In Arbeit</string>
+
+    <string name="s_scheduled">Erstellt</string>
+    <string name="s_progress">Öffnen</string>
+    <string name="s_overdue">Überfällig</string>
+    <string name="s_audit_des">"Dieser Abschnitt enthält alle Aktionen, die fällig sind und in Bearbeitung sind, aber noch nicht abgeschlossen sind. Klicken Sie auf "Fortsetzen", um fortzufahren und die zugewiesene Aktion abzuschließen. "</string>
+    <string name="s_resume">Lebenslauf</string>
+    <string name="s_setting">Einstellungen</string>
+    <string name="s_change_pass">Passwort ändern</string>
+    <string name="s_language">Sprache</string>
+    <string name="s_support">Unterstützung</string>
+    <string name="s_privacy_policy">Datenschutz-Bestimmungen</string>
+    <string name="s_term">Nutzungsbedingungen</string>
+    <string name="s_version">Ausführung</string>
+    <string name="s_logout">Logout</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="send">Senden</string>
+    <string name="enter_email">Email eingeben</string>
+    <string name="s_schedule">Zeitplan</string>
+    <string name="s_mytask">Meine Aufgaben</string>
+    <string name="s_analytics">Analytik</string>
+    <string name="s_user">Benutzer</string>
+    <string name="s_reports">Berichte</string>
+    <string name="app_name_small">oditly</string>
+    <string name="s_signout">Ausloggen</string>
+    <string name="s_account">Konto</string>
+    <string name="s_entervallidemail">Geben Sie eine gültige E-Mail ein</string>
+    <string name="s_entercorrectpass">Geben Sie das richtige Passwort ein</string>
+    <string name="s_entercorrectpass_conf">Geben Sie das richtige Bestätigen Passwort ein</string>
+    <string name="oops">Ups! Irgendwas lief schief..</string>
+
+    <string name="internet_error">Bitte überprüfe deine Internetverbindung.</string>
+    <string name="s_nodatafound">Keine Inspektion gefunden.</string>
+    <string name="text_ok">OK</string>
+    <string name="text_youarenot">Sie dürfen bei dieser Inspektion keine Funktion ausführen</string>
+    <string name="text_start">Start</string>
+
+    <string name="text_audit_target">Ihr Inspektionsziel</string>
+    <string name="text_you_need">Sie müssen die folgenden Abschnitte ausfüllen</string>
+    <string name="text_your_goal">Dein Ziel</string>
+    <string name="text_you_need_assignmnt">Sie müssen die folgenden Abschnitte ausfüllen</string>
+    <string name="text_search_with_auditid">Suche mit Inspektions-ID, E-Mail-ID des Bevollmächtigten</string>
+    <string name="text_sorrynoauditfound">Entschuldigung, keine Inspektion gefunden</string>
+
+
+    <string name="text_password_contain">Das Passwort sollte enthalten:</string>
+
+    <string name="text_password_rule">1. between 8 and 20 characters  \n2. at least one lower case letter \n3. at least one upper case letter
+ \n4. at least one digit \n5.  at least one of these special characters ~!@#$%^&amp;*()_+</string>
+
+
+
+    <string name="text_brand_standard">MARKENSTANDARD</string>
+    <string name="text_executive_summary">ZUSAMMENFASSUNG</string>
+    <string name="text_detailed_summary">DETAILLIERTE ZUSAMMENFASSUNG</string>
+    <string name="text_detailed_summary_s">Detaillierte Zusammenfassung</string>
+    <string name="text_auditor">NAME DES BEAUFTRAGTER</string>
+    <string name="text_reviewer">NAME DES REZENSENT</string>
+    <string name="text_reviewersmall">Name des Rezensent</string>
+    <string name="text_overdue">ÜBERFÄLLIG</string>
+
+    <string name="text_location">Standort</string>
+    <string name="text_brand">Marke</string>
+    <string name="text_audit_name">Prüfname</string>
+    <string name="text_save">Speichern Sie</string>
+    <string name="text_submit">Einreichen</string>
+    <string name="text_submitgoto">Gehe zum Senden</string>
+    <string name="text_submitfinal">Endgültige Übermittlung</string>
+    <string name="text_photo">Medien</string>
+    <string name="text_summary">Zusammenfassung</string>
+    <string name="text_comment_comp">Verschlusssicherheit</string>
+    <string name="text_comment_complt">Abschlusskommentar</string>
+    <string name="text_comment">Kommentar</string>
+    <string name="text_ref_image">Referenz</string>
+    <string name="rtext_esume">Lebenslauf</string>
+    <string name="text_na">N/A</string>
+    <string name="text_resume">Lebenslauf</string>
+    <string name="text_assigned">Zugewiesen</string>
+    <string name="text_submitted">Eingereicht</string>
+    <string name="text_reviewed">Bewertet</string>
+    <string name="text_rejected">Abgelehnt</string>
+    <string name="text_audit_option">Inspektion</string>
+    <string name="text_prev">Zurück</string>
+    <string name="text_next">Weiter</string>
+    <string name="you_can_not_upload">Sie können bis zu 20 Anhänge hinzufügen und\ \n jeweils nur 10 Bilder auswählen</string>
+    <string name="text_enter_desc">Beschreibung eingeben</string>
+
+    <string name="text_image_choose">Hochladen von</string>
+
+    <string name="text_video">Video</string>
+    <string name="text_gallery">Galerie</string>
+    <string name="text_camera">Kamera</string>
+    <string name="text_edit">Bearbeiten </string>
+
+    <string name="text_attachment_name">Anhangsname</string>
+    <string name="text_critical">Kritisch</string>
+    <string name="text_staff_name">Personal Name</string>
+    <string name="text_reservation">Reservierung</string>
+    <string name="text_attachment">Anlage</string>
+    <string name="text_clear_pad">Klar</string>
+    <string name="text_signature_pad">Unterschriftenblock</string>
+    <string name="text_yes">Ja</string>
+    <string name="text_no">Nein</string>
+
+    <string name="text_logout">Ausloggen</string>
+    <string name="text_alert_dialog_logout_msg">Möchten Sie sich wirklich abmelden?</string>
+
+    <string name="text_re_enter_password">Kennwort erneut eingeben..</string>
+    <string name="text_password_not_same"> Das Kennwort stimmt nicht überein.</string>
+    <string name="text_enter_pass">Passwort eingeben</string>
+
+
+    <!--SignIn strings-->
+    <string name="text_resetpassword">Passwort zurücksetzen</string>
+    <string name="text_enteryourotp">Geben Sie das an Ihre E-Mail gesendete OTP ein</string>
+    <string name="text_enteryourpassword">Geben Sie Ihr Passwort ein</string>
+    <string name="text_reenteredpassword">Bestätigen Sie Ihr Passwort</string>
+    <string name="s_view">Siehe </string>
+    <string name="text_auditname">Prüfname</string>
+    <string name="text_auditname_a">Prüfname</string>
+    <string name="text_enter_comment">Kommentar eingeben (mindestens 50 Zeichen)</string>
+    <string name="text_enter_commentaction">Geben Sie Ihren Kommentar ein</string>
+    <string name="text_title">Titel</string>
+    <string name="text_action">Aktion</string>
+    <string name="text_plandate">geplanter Termin</string>
+    <string name="text_details">Einzelheiten</string>
+    <string name="text_assignedto">Zugewiesen an</string>
+    <string name="text_ccemail">CC-E-Mail</string>
+    <string name="text_douwanttoexit">Möchten Sie die App verlassen?</string>
+    <string name="text_coming_soon">Kommt demnächst..</string>
+    <string name="s_entervallidotp">Geben Sie das korrekte OTP ein</string>
+    <string name="text_brush">Bürste</string>
+    <string name="text_opacity">Opazität</string>
+    <string name="text_done">Fertig</string>
+    <string name="text_emoji">Emoii</string>
+    <string name="text_sticker">Aufkleber</string>
+    <string name="text_filter">Filter</string>
+    <string name="text_eraser">Radiergummi</string>
+    <string name="text_text">Text</string>
+    <string name="s_no_action_found">Keine Aktion gefunden</string>
+    <string name="inspection_option">Inspektions-Sektion</string>
+    <string name="text_pleasemark">Bitte markieren Sie diese Datei nur dann als kritisch, wenn Sie diese Datei aus allen Dateien hervorheben möchten</string>
+    <string name="s_loading">Wird geladen...</string>
+    <string name="text_invalidpass">Ungültiges Passwort</string>
+    <string name="s_na">N/A</string>
+    <string name="text_time">Zeit</string>
+
+
+    <!--Executive Summary strings-->
+    <string name="text_summary_n">Zusammenfassung:</string>
+    <string name="text_key_positive">Schlüssel positiv:</string>
+    <string name="text_key_negative">Schlüssel negativ:</string>
+    <string name="text_recommendation">Empfehlung:</string>
+    <string name="text_date">Datum</string>
+    <string name="text_executive_summary_s">Zusammenfassung</string>
+    <string name="text_approveby">Genehmigt Von</string>
+    <string name="text_approveto">Genehmigen für</string>
+    <string name="text_comment_error">Bitte geben Sie mindestens 50 Zeichen ein</string>
+    <string name="text_support">Unterstützung</string>
+    <string name="text_support_text">Wir kommen bald auf Sie zurück</string>
+    <string name="text_please_reachus">Bitte erreichen Sie uns auf einem der folgenden Kanäle:</string>
+    <string name="text_email">Email:</string>
+    <string name="text_whatsapp">WhatsApp:</string>
+    <string name="text_callus">Rufen Sie uns an:</string>
+    <string name="text_wechat">WeChat ID:</string>
+    <string name="text_lineid">Zeilen-ID:</string>
+    <string name="text_youremail">Deine E-Mail:</string>
+    <string name="text_media">Medien</string>
+    <string name="text_this_audit_could">Dieser Aktionsplan kann noch nicht als abgeschlossen markiert werden</string>
+    <string name="s_french">French</string>
+    <string name="text_spanish">Spanish</string>
+    <string name="text_chinies">Chinese</string>
+    <string name="text_english">English</string>
+    <string name="text_invite">Einladen</string>
+    <string name="text_select_member">Bitte wählen Sie mindestens ein Mitglied aus</string>
+    <string name="text_view_team">Siehe</string>
+    <string name="text_team_member">Teammitglieder</string>
+    <string name="text_audit_id_name">Inspektions-ID, Audit-Name, Name des Beauftragten, E-Mail-ID</string>
+    <string name="text_noncomplence">Nichteinhaltungen</string>
+    <string name="text_auditscore">Prüfergebnis</string>
+    <string name="text_completedate">Fertigstellungstermin</string>
+    <string name="text_startdate">Beginndatum</string>
+    <string name="text_assignedby">Zugeteilt von</string>
+    <string name="text_checklist">Checkliste</string>
+    <string name="text_audit_type">Prüftyp</string>
+    <string name="text_audit_id">Inspektions-ID</string>
+    <string name="text_share">Teilen</string>
+    <string name="text_export">Exportieren</string>
+    <string name="text_view">Siehe</string>
+    <string name="textx_reset_seletion">Auswahl zurücksetzen</string>
+    <string name="text_all">Alle</string>
+    <string name="text_team">Teams</string>
+    <string name="text_addnew_member">Erstelle ein neues Team</string>
+    <string name="text_name_emaili_roll">Name, E-Mail-ID, Rolle</string>
+    <string name="text_entor_data">Bitte Suchdaten eingeben</string>
+    <string name="text_selet_filter">Filter auswählen</string>
+    <string name="text_date_range">Datumsbereich</string>
+    <string name="text_date_from">Ab Datum</string>
+    <string name="text_date_to">Miteinander ausgehen</string>
+    <string name="text_top_five_audit">Die 5 besten/schlechtesten Inspektionen</string>
+    <string name="text_auditorname">Name des Beauftragter</string>
+    <string name="text_download_report">Bitte laden Sie den Bericht herunter, um ihn anzuzeigen</string>
+    <string name="text_no_viewer">Kein PDF-Anzeigeprogramm gefunden</string>
+    <string name="text_add">Hinzufügen</string>
+    <string name="text_not_allowed_team">Du darfst kein Team hinzufügen</string>
+    <string name="text_auditor_name">Name des Beauftragter</string>
+    <string name="text_template">Vorlage</string>
+    <string name="text_designation">Bezeichnung</string>
+    <string name="text_not_applicable">N/A</string>
+    <string name="text_username">Nutzername</string>
+    <string name="s_entervallidname">Geben Sie einen gültigen Namen ein</string>
+    <string name="enter_name_team">Teamnamen eingeben</string>
+    <string name="text_create">Erstellen</string>
+    <string name="text_enter_team_name">Bitte geben Sie den Teamnamen ein</string>
+    <string name="text_goto">Erstellen</string>
+    <string name="text_noofaudits">Anzahl der Inspektionen</string>
+    <string name="text_noofnon">Nichteinhaltungen</string>
+    <string name="text_nooflocation">Standorte</string>
+    <string name="text_average_non_com">Durchschnittliche NCen</string>
+    <string name="text_count">0</string>
+    <string name="text_auditbenchmark">BENCHMARKING</string>
+    <string name="text_inspection">Inspektion</string>
+    <string name="text_sheduled">Geplant</string>
+    <string name="text_more_option">Mehr Optionen</string>
+    <string name="text_create_audit">Prüfung erstellen</string>
+    <string name="text_duedate">Fälligkeitsdatum</string>
+    <string name="text_select_date">Bitte Datum auswählen</string>
+    <string name="text_benchmark">Benchmark (%)</string>
+    <string name="text_doyouneed">Brauchen Sie einen Prüfer?</string>
+    <string name="text_instruction_note">Anleitung/Hinweis</string>
+    <string name="text_addd_attachment">Anhang/Anhänge hinzufügen</string>
+    <string name="text_total">Insgesamt</string>
+    <string name="text_failed">Gescheitert</string>
+    <string name="text_complete">Abgeschlossen</string>
+    <string name="text_open">Öffnen</string>
+    <string name="text_inprogress">In Arbeit</string>
+    <string name="text_overduesmall">Überfällig</string>
+    <string name="text_inspectioncaps">Inspektionen</string>
+    <string name="text_actionplan">Aktionsplan</string>
+    <string name="text_audit">Inspektion</string>
+    <string name="text_create_action">Aktion erstellen</string>
+    <string name="text_selectreviwer">Wählen Sie mindestens einen Beauftragter aus</string>
+    <string name="text_users">Benutzer</string>
+    <string name="text_assignee">Rechtsnachfolger</string>
+    <string name="text_assigneeselect">Beauftragter(n) auswählen</string>
+    <string name="text_reviewerselect">Prüfer auswählen</string>
+    <string name="text_inspectionnote">Geben Sie ggf. Inspektionsnotizen oder Anweisungen ein</string>
+    <string name="text_totalinspection">VOLLSTÄNDIGE INSPEKTION</string>
+    <string name="text_pendigapr">Genehmigung Ausstehend</string>
+    <string name="text_aproved">Zugelassen</string>
+    <string name="text_benchmarkerror">Bitte geben Sie den Benchmark zwischen 0 und 100 ein</string>
+    <string name="text_datetime">Datum Uhrzeit auswählen</string>
+    <string name="text_alert_dialog_na">Sind Sie sicher, dass Sie den Abschnitt als Nicht anwendbar (NA) markieren? Dadurch werden alle zuvor gespeicherten Daten, falls vorhanden, in diesem Abschnitt gelöscht</string>
+    <string name="text_auditsubmited">"Bericht wurde erfolgreich übermittelt"</string>
+    <string name="text_updatedsuccessfully">Erfolgreich hochgeladen</string>
+    <string name="expand_string">Mehr</string>
+    <string name="collapsed_string">weniger</string>
+
+    <string name="dummytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="text_chatsupport">Chat &amp; Support</string>
+
+    <string name="text_titleh">Titel: </string>
+    <string name="text_locationh">Standort:  </string>
+    <string name="text_checklisth">Checkliste: </string>
+    <string name="text_selecttemplet">Vorlage auswählen</string>
+    <string name="text_videogallery">Galerie-Video</string>
+    <string name="text_starttime">Startzeit</string>
+    <string name="text_firstname">Vornamen </string>
+    <string name="text_lastname">Nachname</string>
+    <string name="text_company">Gesellschaft</string>
+    <string name="text_phone">Telefonnummer</string>
+    <string name="text_schedule_demo">Demo planen</string>
+    <string name="text_entervallidname">Bitte Vornamen eingeben</string>
+    <string name="s_entervallidphone">Bitte gültige Handynummer eingeben</string>
+    <string name="text_upcominfeature">Beschreiben Sie Ihre Rückmeldung</string>
+    <string name="text_feedback">Feedback</string>
+    <string name="text_enter_feedback">Beschreiben Sie Ihre Rückmeldung</string>
+    <string name="text_demo">Demo planen</string>
+    <string name="s_entervalliddate">Geben Sie das gültige Datum ein</string>
+    <string name="text_thanksforcontact">Vielen Dank, dass Sie sich an Team Oditly gewendet haben. Ihre Nachricht ist eingegangen und wir werden uns in Kürze bei Ihnen melden</string>
+    <string name="text_feedback_des">Wir würden uns freuen, hier Ihre Gedanken, Vorschläge, Bedenken oder Probleme mit allem zu teilen, damit wir uns verbessern können!</string>
+    <string name="text_schedule_demo_oditly">Sie haben kein Oditly-Konto? <b><u>Click here</u></b> Klicken Sie hier, um eine Demo mit uns zu vereinbaren.</string>
+    <string name="text_teamoditlyisworking">Team Oditly arbeitet kontinuierlich daran, der App weitere Funktionen hinzuzufügen. Sehen Sie sich einige der Funktionen an, die in naher Zukunft in der App live gehen sollen.</string>
+    <string name="text_passed">Bestanden</string>
+    <string name="text_priority">Priorität</string>
+    <string name="s_entertitle">Bitte Titel eingeben</string>
+    <string name="s_enterdetails">Bitte geben Sie Details ein</string>
+    <string name="s_enterplandate">Geben Sie das Plandatum ein</string>
+    <string name="text_section">Abschnitt</string>
+    <string name="text_actioncreate">Aktion erstellen</string>
+    <string name="s_enterAssignee">Beauftragten auswählen</string>
+    <string name="text_action_title">Aktionstitel</string>
+    <string name="text_department">Abschnitt</string>
+    <string name="text_correctiveaction">Erforderliche Abhilfemaßnahmen</string>
+    <string name="text_mediacount">Verschlusssicherheit</string>
+    <string name="text_complition">Fertigstellung</string>
+    <string name="text_chatwithus">Chatte mit uns</string>
+    <string name="text_entercount">Anzahl eingeben</string>
+    <string name="s_create">Erstellen</string>
+    <string name="s_signin_microsoft">Anmeldung mit Microsoft</string>
+    <string name="text_actiopnplan_id">Aktionsplan-ID</string>
+
+</resources>

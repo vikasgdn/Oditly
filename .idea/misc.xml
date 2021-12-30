@@ -3,21 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/gray_border_whitebg.xml" value="0.209375" />
+        <entry key="app/src/main/res/drawable/ic_schedule_d.xml" value="0.16296296296296298" />
         <entry key="app/src/main/res/layout/activity_account.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_brand_standard_audit_pagignation.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_brand_standard_optionbased_question.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/activity_camera.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_create_action.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/activity_create_audit.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_microsoftlogin.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_octa_microsoftlogin.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_octalogin.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_report_details.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_report_filter.xml" value="0.1824074074074074" />
         <entry key="app/src/main/res/layout/activity_signin.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/brand_standard_audit_layout.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/dialog_language.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/dialog_version.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/dialog_with_okbutton.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/fragment_action.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/fragment_action_complete.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_action_details.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_analytics.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/include_header.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/menu/main.xml" value="0.19322916666666667" />
       </map>
     </option>
   </component>

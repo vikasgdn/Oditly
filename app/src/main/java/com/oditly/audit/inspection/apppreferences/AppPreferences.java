@@ -61,6 +61,18 @@ public enum AppPreferences
         mEditor.commit();
     }
 
+
+    public String getSelectedLang()
+    {
+        return mPreferences.getString(SharedPreferencesKeys.language.toString(), "en");
+    }
+
+    public void setSelectedLang(String value)
+    {
+        mEditor.putString(SharedPreferencesKeys.language.toString(), value);
+        mEditor.commit();
+    }
+
     public String getAddress()
     {
         return mPreferences.getString(SharedPreferencesKeys.address.toString(), "");
@@ -392,6 +404,7 @@ public enum AppPreferences
         userpic,
         client_role_name,
         address,
+        language,
         local_db,
         fname,
         lname,

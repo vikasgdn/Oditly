@@ -155,7 +155,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 AppUtils.parseRefreshTokenRespone(jsonObject,this);
-                sendToNewActivity();
+               // sendToNewActivity();
             } catch (Exception e) {
                 AppUtils.toast(this, getString(R.string.oops));
                 e.printStackTrace();
@@ -295,4 +295,17 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
 
     }
 
+
+    /*App notification issue --
+    App signature issue back issue --
+ 1. Remove Action Plan Attachments while we view it
+
+2. No pop up warning when exiting sub section for mandatory logic - only working for comment characters logic, not working for media or action plan or mandatory questions
+
+3. Mandatory mark disappears when returning to question from main menu, only for Action Plan
+
+4. Video files not being counted against mandatory media
+
+5. On completing and AP it takes me back to the AP page but does not auto refresh so the old AP still shows and then gives an error when trying to submit
+*/
 }

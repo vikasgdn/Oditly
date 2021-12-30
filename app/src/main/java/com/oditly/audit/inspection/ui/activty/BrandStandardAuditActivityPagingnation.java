@@ -29,6 +29,7 @@ import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.localDB.bsoffline.BsOffLineDB;
 import com.oditly.audit.inspection.localDB.bsoffline.BsOfflineDBImpl;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRefrence;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
@@ -299,7 +300,6 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     private void setLocalJSON(BrandStandardSection brandStandardSection) {
         try{
             setQuestionList(brandStandardSection.getQuestions());
-            // setSubSectionQuestionList(brandStandardSection.getSub_sections());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -309,17 +309,60 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         boolean validate = true;
         int count = 0;
         ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
+        int mMediaCount=0,mCommentCount=0,mActionPlanRequred=0;
 
         for (int i = 0; i < brandStandardQuestions.size(); i++) {
             BrandStandardQuestion question = brandStandardQuestions.get(i);
             count += 1;
-            if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer())))
+            mMediaCount=question.getMedia_count();
+            mCommentCount=question.getHas_comment();
+            mActionPlanRequred=0;
+            if (question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0)
             {
-                if (question.getHas_comment() > 0 && question.getHas_comment() > question.getAudit_comment().length()) {
-                    String message = "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                for (int k = 0; k < question.getOptions().size(); k++) {
+                    BrandStandardQuestionsOption option = question.getOptions().get(k);
+                    if (question.getAudit_option_id() != null && question.getAudit_option_id().contains(new Integer(option.getOption_id()))) {
+                        if (question.getQuestion_type().equalsIgnoreCase("checkbox"))
+                        {
+                            if (mActionPlanRequred==0)
+                                mActionPlanRequred=option.getAction_plan_required();
+                            if (mMediaCount<option.getMedia_count())
+                                mMediaCount = option.getMedia_count();
+                            if (mCommentCount<option.getCommentCount())
+                                mCommentCount = option.getCommentCount();
+                        }
+                        else {
+                            mMediaCount = option.getMedia_count();
+                            mCommentCount = option.getCommentCount();
+                            mActionPlanRequred=option.getAction_plan_required();
+                            break;
+                        }
+
+                    }
+                }
+            }
+
+            if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()))) {
+
+                if(mActionPlanRequred>0 && question.getAction_plan()==null)
+                {
+                    String message = "Please Create the Action Plan for question no. " + count;
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this, message);
                     return false;
                 }
+                if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
+                {
+                    String message = "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section";
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this, message);
+                    return false;
+                }
+                if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
+                {
+                    String message = "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this, message);
+                   return  false;
+                }
+
             }
         }
         return validate;

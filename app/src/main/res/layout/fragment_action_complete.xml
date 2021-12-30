@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:background="@color/c_white" android:layout_width="match_parent" android:layout_height="match_parent">
     <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_centerInParent="true">
-        <TextView android:textSize="@dimen/text_size_20" android:textColor="@color/c_gray" android:gravity="left" android:id="@+id/tv_appname" android:paddingBottom="2dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/d_20dp" android:layout_marginTop="@dimen/d_40dp" android:layout_marginRight="@dimen/d_20dp" android:text="@string/text_comment_comp" android:fontFamily="@font/nunitosans_semibold"/>
+        <TextView
+            android:textSize="@dimen/text_size_20"
+            android:textColor="@color/c_gray"
+            android:gravity="left"
+            android:id="@+id/tv_appname"
+            android:paddingBottom="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d_20dp"
+            android:layout_marginTop="@dimen/d_40dp"
+            android:layout_marginRight="@dimen/d_20dp" android:text="@string/text_comment_complt" android:fontFamily="@font/nunitosans_semibold"/>
         <TextView android:textSize="@dimen/text_size_12" android:textColor="@color/c_red" android:gravity="left" android:id="@+id/tv_comment_error" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/d_20dp" android:layout_marginTop="@dimen/d_5dp" android:layout_marginRight="@dimen/d_20dp" android:layout_marginBottom="@dimen/d_2dp" android:text="@string/text_comment_error" android:fontFamily="@font/nunitosans_regular"/>
         <EditText android:textSize="@dimen/text_size_16" android:textColor="@color/c_gray_text" android:gravity="top" android:id="@+id/et_commentbox" android:background="@drawable/gray_border_whitebg" android:padding="10dp" android:layout_width="match_parent" android:layout_height="180dp" android:layout_marginLeft="@dimen/d_20dp" android:layout_marginRight="@dimen/d_20dp" android:hint="@string/text_enter_commentaction" android:inputType="textMultiLine" android:fontFamily="@font/nunitosans_regular"/>
         <androidx.recyclerview.widget.RecyclerView android:orientation="horizontal" android:id="@+id/rv_imagelist" android:visibility="visible" android:layout_width="match_parent" android:layout_height="150dp" android:layout_margin="@dimen/d_20dp" app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>

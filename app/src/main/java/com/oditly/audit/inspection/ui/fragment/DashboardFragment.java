@@ -219,9 +219,9 @@ public class DashboardFragment extends BaseFragment implements INetworkEvent {
                 mNoOfAuditTV.setText(""+dataObj.optInt("auditor_count"));
                 mNoOfLocationTV.setText(""+dataObj.optInt("location_count"));
                 String first = ""+reportObj.optInt("failed_question_count");
-                String second = "/"+reportObj.optInt("question_count");
-                String next = "<font color='#616161'>"+second+"</font>";
-                mNoOfNonComplianceTV.setText(Html.fromHtml(first + next));
+              //  String second = "/"+reportObj.optInt("question_count");
+              //  String next = "<font color='#616161'>"+second+"</font>";
+                mNoOfNonComplianceTV.setText(Html.fromHtml(first));
                 mNoOfAverageNonCompTV.setText(""+reportObj.optInt("avg_failed_question_count"));
 
                 yValueseBench[0]=reportObj.optInt("audit_count");

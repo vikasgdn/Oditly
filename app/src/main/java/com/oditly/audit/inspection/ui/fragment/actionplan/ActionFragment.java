@@ -16,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.GsonBuilder;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.adapter.ActionPlanListAdapter;
-import com.oditly.audit.inspection.network.NetworkConstant;
-import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.model.actionData.ActionInfo;
 import com.oditly.audit.inspection.model.actionData.ActionRootObject;
 import com.oditly.audit.inspection.network.INetworkEvent;
@@ -26,16 +24,11 @@ import com.oditly.audit.inspection.network.NetworkService;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.ui.activty.ActionCreateActivity;
-import com.oditly.audit.inspection.ui.activty.AuditCreateActivity;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.ui.fragment.BaseFragment;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -112,7 +105,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
         super.initVar();
         mAuditLisBean=new ArrayList<>();
         mAuditListAdapter=new ActionPlanListAdapter(mActivity,mAuditLisBean,status);
-         mAuditListRV.setAdapter(mAuditListAdapter);
+        mAuditListRV.setAdapter(mAuditListAdapter);
 
 
         LinearLayoutManager mLayoutManager;
@@ -233,16 +226,18 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
 
     }
 
+    private int row=20;
     @Override
     public void onNetworkCallCompleted(String type, String service, String response)
     {
         try {
             JSONObject object = new JSONObject(response);
             mNoDataFoundRL.setVisibility(View.GONE);
-            if (!isPagingData) {
+            if (!isPagingData && row>20) {
                 mAuditLisBean.clear();
             }
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                row=object.getInt("rows");
                 mTotalPage=(object.getInt("rows")/object.getInt("limit"))+1;
 
                 ActionRootObject auditRootObject = new GsonBuilder().create().fromJson(object.toString(), ActionRootObject.class);
@@ -267,7 +262,8 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
                     }
 
                 }else {
-                    mNoDataFoundRL.setVisibility(View.VISIBLE);
+                    if (row!=20)
+                        mNoDataFoundRL.setVisibility(View.VISIBLE);
                 }
             } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                 Log.e("ACTION","=====> ELSE IF ");
@@ -280,7 +276,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
         catch (Exception e)
         {
             e.printStackTrace();
-          //  AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
+            //  AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         }
         mSpinKitView.setVisibility(View.GONE);
 
@@ -289,7 +285,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onNetworkCallError(String service, String errorMessage) {
         Log.e("onNetworkCallError","===>"+errorMessage);
-        AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
+        // AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         mSpinKitView.setVisibility(View.GONE);
     }
 }

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -13,7 +14,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -39,6 +43,7 @@ import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
 import java.util.HashSet;
+import java.util.Locale;
 
 
 /**
@@ -47,6 +52,8 @@ import java.util.HashSet;
  */
 public class AppDialogs
 {
+
+
     /**
      * This method is use to show progress dialog when hit web service
      *
@@ -367,7 +374,9 @@ public class AppDialogs
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         try {
+            RadioGroup radioGroup=dialog.findViewById(R.id.radioGroup_lang);
 
+           // setLangDefaultSelection(radioGroup);
 
             dialog.findViewById(R.id.iv_cancel).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -378,6 +387,103 @@ public class AppDialogs
             dialog.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    int selectedId = radioGroup.getCheckedRadioButtonId();
+
+                   RadioButton radioButton = (RadioButton) dialog.findViewById(selectedId);
+
+                    switch (radioButton.getText().toString()) {
+                        case "english":
+                            AppPreferences.INSTANCE.setSelectedLang("en");
+                            Locale locale = new Locale("en");
+                            Locale.setDefault(locale);
+                            Configuration config = new Configuration();
+                            config.locale = locale;
+                            activity.getResources().updateConfiguration(config, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in English !", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "Russian":
+                            AppPreferences.INSTANCE.setSelectedLang("ru");
+                            Locale locale2 = new Locale("ru");
+                            Locale.setDefault(locale2);
+                            Configuration config2 = new Configuration();
+                            config2.locale = locale2;
+                            activity.getResources().updateConfiguration(config2, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in Russian !", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "Polish":
+                            AppPreferences.INSTANCE.setSelectedLang("pl");
+                            Locale locale3 = new Locale("pl");
+                            Locale.setDefault(locale3);
+                            Configuration config3 = new Configuration();
+                            config3.locale = locale3;
+                            activity.getResources().updateConfiguration(config3, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in Polish !", Toast.LENGTH_LONG).show();
+                            break;
+                        case "Czech":
+                            AppPreferences.INSTANCE.setSelectedLang("cs");
+                            Locale locale4 = new Locale("cs");
+                            Locale.setDefault(locale4);
+                            Configuration config4 = new Configuration();
+                            config4.locale = locale4;
+                            activity.getResources().updateConfiguration(config4, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in Czech !", Toast.LENGTH_LONG).show();
+                            break;
+                        case "Korean":
+                            AppPreferences.INSTANCE.setSelectedLang("ko");
+                            Locale locale5 = new Locale("ko");
+                            Locale.setDefault(locale5);
+                            Configuration config5 = new Configuration();
+                            config5.locale = locale5;
+                            activity.getResources().updateConfiguration(config5, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in Korean !", Toast.LENGTH_LONG).show();
+                            break;
+                        case "Dutch":
+                            AppPreferences.INSTANCE.setSelectedLang("nl");
+                            Locale locale6 = new Locale("nl");
+                            Locale.setDefault(locale6);
+                            Configuration config6 = new Configuration();
+                            config6.locale = locale6;
+                            activity.getResources().updateConfiguration(config6, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in Dutch !", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "German":
+                            AppPreferences.INSTANCE.setSelectedLang("de");
+                            Locale locale7 = new Locale("de");
+                            Locale.setDefault(locale7);
+                            Configuration config7 = new Configuration();
+                            config7.locale = locale7;
+                            activity.getResources().updateConfiguration(config7, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in German !", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "Spanish":
+                            AppPreferences.INSTANCE.setSelectedLang("es");
+                            Locale locale8 = new Locale("es");
+                            Locale.setDefault(locale8);
+                            Configuration config8 = new Configuration();
+                            config8.locale = locale8;
+                            activity.getResources().updateConfiguration(config8, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in Spanish !", Toast.LENGTH_LONG).show();
+                            break;
+                        case "Thai":
+                            AppPreferences.INSTANCE.setSelectedLang("th");
+                            Locale locale9 = new Locale("th");
+                            Locale.setDefault(locale9);
+                            Configuration config9 = new Configuration();
+                            config9.locale = locale9;
+                            activity.getResources().updateConfiguration(config9, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in Thai !", Toast.LENGTH_LONG).show();
+                            break;
+                    }
+
+                    Intent intent=new Intent(activity,SplashActivity.class);
+                    activity.startActivity(intent);
+                    activity.finish();
+
                     dialog.dismiss();
                 }
             });
@@ -394,6 +500,39 @@ public class AppDialogs
         }
         dialog.show();
 
+    }
+
+    private static void setLangDefaultSelection(RadioGroup radioGroup) {
+        switch (AppPreferences.INSTANCE.getSelectedLang())
+        {
+            case "en":
+                radioGroup.check(R.id.rd_english);
+                break;
+            case "th":
+                radioGroup.check(R.id.rd_thai);
+                break;
+            case "nl":
+                radioGroup.check(R.id.rd_dutch);
+                break;
+            case "pl":
+                radioGroup.check(R.id.rd_polish);
+                break;
+            case "ru":
+                radioGroup.check(R.id.rd_russian);
+                break;
+            case "de":
+                radioGroup.check(R.id.rd_german);
+                break;
+            case "cs":
+                radioGroup.check(R.id.rd_czech);
+                break;
+            case "ko":
+                radioGroup.check(R.id.rd_korean);
+                break;
+            case "es":
+                radioGroup.check(R.id.rd_spanish);
+                break;
+        }
     }
 
     public static void passwordAlgoDialog(final Activity activity) {
@@ -545,8 +684,10 @@ public class AppDialogs
             dialog.findViewById(R.id.tv_no).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (activity instanceof BrandStandardAuditActivity)
-                        ((BrandStandardAuditActivity)activity).saveBrandStandardQuestion();
+                    if (activity instanceof BrandStandardAuditActivity) {
+                        ((BrandStandardAuditActivity) activity).isDialogSaveClicked=true;
+                        ((BrandStandardAuditActivity) activity).saveBrandStandardQuestion();
+                    }
                     else if (activity instanceof BrandStandardAuditActivityPagingnation)
                         ((BrandStandardAuditActivityPagingnation)activity).saveBrandStandardQuestion();
                     else

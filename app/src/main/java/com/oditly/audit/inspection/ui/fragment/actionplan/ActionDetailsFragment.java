@@ -16,11 +16,13 @@ import com.oditly.audit.inspection.util.AppUtils;
 
 public class ActionDetailsFragment extends BaseFragment {
     public static final String ARG_PAGE = "ARG_PAGE";
-    private TextView mTitleTV;
-    private TextView mActionTV;
-    private TextView mPlannedDateTV;
-    private TextView mDetailsTV;
-    private TextView mAssignedTV;
+    private TextView mActionTitleTV;
+    private TextView mActionPlanIdTV;
+    private TextView mAuditIdTV;
+    private TextView mDueDateTV;
+    private TextView mCorrectiveActionRequiredTV;
+    private TextView mAssignedBYTV;
+    private TextView mAssigneeTV;
     private TextView mCCEmailTV;
     private TextView mAttachmentTV;
     private TextView mLocationTV;
@@ -61,11 +63,13 @@ public class ActionDetailsFragment extends BaseFragment {
     protected void initView(View view) {
         super.initView(view);
 
-        mTitleTV=(TextView)view.findViewById(R.id.tv_title);
-        mActionTV=(TextView)view.findViewById(R.id.tv_action);
-        mPlannedDateTV=(TextView)view.findViewById(R.id.tv_plandate);
-        mDetailsTV=(TextView)view.findViewById(R.id.tv_details);
-        mAssignedTV=(TextView)view.findViewById(R.id.tv_assignedto);
+        mActionTitleTV=(TextView)view.findViewById(R.id.tv_title);
+        mAuditIdTV=(TextView)view.findViewById(R.id.tv_auditid);
+        mActionPlanIdTV=(TextView)view.findViewById(R.id.tv_action_plan_id);
+        mDueDateTV=(TextView)view.findViewById(R.id.tv_duedate);
+        mCorrectiveActionRequiredTV=(TextView)view.findViewById(R.id.tv_details);
+        mAssigneeTV=(TextView)view.findViewById(R.id.tv_assignee);
+        mAssignedBYTV=(TextView)view.findViewById(R.id.tv_assigned_by);
         mCCEmailTV=(TextView)view.findViewById(R.id.tv_ccemail);
         mAttachmentTV=(TextView)view.findViewById(R.id.tv_attachment);
         mLocationTV=(TextView)view.findViewById(R.id.tv_location);
@@ -82,7 +86,7 @@ public class ActionDetailsFragment extends BaseFragment {
             String userEmail="N/A",assignTo="";
             if(mAuditInfoActionPlanData.getAssigned_user_email()!=null && mAuditInfoActionPlanData.getAssigned_user_email().length()>0)
                 userEmail=mAuditInfoActionPlanData.getAssigned_user_email();
-           if(mAuditInfoActionPlanData.getAssigned_users()!=null && mAuditInfoActionPlanData.getAssigned_users().size()>0)
+            if(mAuditInfoActionPlanData.getAssigned_users()!=null && mAuditInfoActionPlanData.getAssigned_users().size()>0)
             {
                 for(int i=0;i<mAuditInfoActionPlanData.getAssigned_users().size();i++)
                 {
@@ -95,12 +99,18 @@ public class ActionDetailsFragment extends BaseFragment {
             else
                 assignTo="N/A";
 
+            String mAuditID="N/A";
+            if (mAuditInfoActionPlanData.getAudit_id()!=0)
+                mAuditID=""+mAuditInfoActionPlanData.getAudit_id();
 
-            mTitleTV.setText(mAuditInfoActionPlanData.getTitle());
-            mActionTV.setText(mAuditInfoActionPlanData.getAction_name());
-            mPlannedDateTV.setText(AppUtils.getFormatedDate(mAuditInfoActionPlanData.getPlanned_date()));
-            mDetailsTV.setText(mAuditInfoActionPlanData.getAction_details());
-            mAssignedTV.setText(assignTo);
+
+            mAuditIdTV.setText(mAuditID);
+            mActionTitleTV.setText(mAuditInfoActionPlanData.getTitle());
+            mActionPlanIdTV.setText(""+mAuditInfoActionPlanData.getAction_plan_id());
+            mDueDateTV.setText(AppUtils.getFormatedDate(mAuditInfoActionPlanData.getPlanned_date()));
+            mCorrectiveActionRequiredTV.setText(mAuditInfoActionPlanData.getAction_details());
+            mAssigneeTV.setText(assignTo);
+            mAssignedBYTV.setText(mAuditInfoActionPlanData.getCreator_fname()+" "+mAuditInfoActionPlanData.getCreator_lname());
             mCCEmailTV.setText(userEmail);
             mLocationTV.setText(mAuditInfoActionPlanData.getLocation_title());
             mAttachmentTV.setText("N/A");

@@ -32,6 +32,7 @@ import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.localDB.bsoffline.BsOffLineDB;
 import com.oditly.audit.inspection.localDB.bsoffline.BsOfflineDBImpl;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRefrence;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
@@ -104,6 +105,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     private boolean isSaveButtonClick=false,isBackButtonClick=false;
     private int isGalleryDisasble=1;
     private String mSectionWeightage="";
+    private int mNextPreviousClick=0; // 0,1=next,2=prev;
+    public boolean isDialogSaveClicked=false;
 
     @Override
     protected void onResume() {
@@ -281,7 +284,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         actionPlan.putExtra(AppConstant.SECTION_ID,sectionId);
         ((OditlyApplication)context.getApplicationContext()).setmSubQuestionForOptions(brandStandardQuestions);
         startActivityForResult(actionPlan, AppConstant.SUBQUESTION_REQUESTCODE);
-   }
+    }
     public void setSubSectionQuestionList(ArrayList<BrandStandardSubSection> subSectionArrayList) {
         subSectionQuestionLayout.removeAllViews();
         if (subSectionArrayList != null || subSectionArrayList.size() != 0)
@@ -387,6 +390,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     private boolean validateCommentOfQuestion() {
         boolean validate = true;
         int count = 0;
+        int mMediaCount=0,mCommentCount=0,mActionPlanRequred=0;
+
         ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
         ArrayList<BrandStandardQuestion> brandStandardSubsectionQuestions = new ArrayList<>();
         for (int i = 0; i < bsSubSectionAuditAdaptersList.size(); i++) {
@@ -395,27 +400,112 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         for (int i = 0; i < brandStandardQuestions.size(); i++) {
             BrandStandardQuestion question = brandStandardQuestions.get(i);
             count += 1;
+
+            mMediaCount=question.getMedia_count();
+            mCommentCount=question.getHas_comment();
+            mActionPlanRequred=0;
+            if (question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0)
+            {
+                for (int k = 0; k < question.getOptions().size(); k++) {
+                    BrandStandardQuestionsOption option = question.getOptions().get(k);
+                    if (question.getAudit_option_id() != null && question.getAudit_option_id().contains(new Integer(option.getOption_id()))) {
+                        if (question.getQuestion_type().equalsIgnoreCase("checkbox"))
+                        {
+                            if (mActionPlanRequred==0)
+                                mActionPlanRequred=option.getAction_plan_required();
+                            if (mMediaCount<option.getMedia_count())
+                                mMediaCount = option.getMedia_count();
+                            if (mCommentCount<option.getCommentCount())
+                                mCommentCount = option.getCommentCount();
+                        }
+                        else {
+                            mMediaCount = option.getMedia_count();
+                            mCommentCount = option.getCommentCount();
+                            mActionPlanRequred=option.getAction_plan_required();
+                            break;
+                        }
+
+                    }
+                }
+            }
+
             if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()))) {
 
-                if (question.getHas_comment() > 0 && question.getHas_comment() > question.getAudit_comment().length()) {
+                if(mActionPlanRequred>0 && question.getAction_plan()==null)
+                {
+                    String message = "Please Create the Action Plan for question no. " + count;
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
+                    return false;
+                }
+                if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
+                {
+                    String message = "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section";
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
+                    return false;
+                }
+                if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
+                {
                     String message = "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
                     return false;
                 }
+
             }
         }
 
         for (int i = 0; i < brandStandardSubsectionQuestions.size(); i++) {
-            BrandStandardQuestion subQuestion = brandStandardSubsectionQuestions.get(i);
+            BrandStandardQuestion question = brandStandardSubsectionQuestions.get(i);
             count += 1;
-            if (((subQuestion.getAudit_option_id()!=null && subQuestion.getAudit_option_id().size()>0) || !TextUtils.isEmpty(subQuestion.getAudit_answer()))) {
-                if (((subQuestion.getAudit_option_id() != null && subQuestion.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(subQuestion.getAudit_answer()))) {
-                    if (subQuestion.getHas_comment() > 0 && subQuestion.getHas_comment() > subQuestion.getAudit_comment().length()) {
-                        String message = "Please enter the  minimum required " + subQuestion.getHas_comment() + " characters comment for question no. " + count;
-                        AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
-                        return false;
+            mMediaCount=question.getMedia_count();
+            mCommentCount=question.getHas_comment();
+            mActionPlanRequred=0;
+            if (question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0)
+            {
+                for (int k = 0; k < question.getOptions().size(); k++) {
+                    BrandStandardQuestionsOption option = question.getOptions().get(k);
+                    if (question.getAudit_option_id() != null && question.getAudit_option_id().contains(new Integer(option.getOption_id()))) {
+                        if (question.getQuestion_type().equalsIgnoreCase("checkbox"))
+                        {
+                            if (mActionPlanRequred==0)
+                                mActionPlanRequred=option.getAction_plan_required();
+                            if (mMediaCount<option.getMedia_count())
+                                mMediaCount = option.getMedia_count();
+                            if (mCommentCount<option.getCommentCount())
+                                mCommentCount = option.getCommentCount();
+                        }
+                        else {
+                            mMediaCount = option.getMedia_count();
+                            mCommentCount = option.getCommentCount();
+                            mActionPlanRequred=option.getAction_plan_required();
+                            break;
+                        }
+
                     }
                 }
+            }
+
+            if (((question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0) || !TextUtils.isEmpty(question.getAudit_answer()))) {
+
+                if(mActionPlanRequred>0 && question.getAction_plan()==null)
+                {
+                    String message = "Please Create the Action Plan for question no. " + count;
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
+                    return false;
+                }
+                if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
+                {
+                    String message = "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section";
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
+                    return false;
+                }
+                if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
+                {
+                    String message = "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                    AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
+
+                    return false;
+                }
+
             }
         }
         return validate;
@@ -478,6 +568,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     AppUtils.toast(this, "Action plan has been created for this Question");
                 break;
             case R.id.bs_save_btn:
+                mNextPreviousClick=0;
                 AppUtils.hideKeyboard(context, view);
                 if (bsSaveBtn.getText().toString().equalsIgnoreCase(getString(R.string.text_submitgoto)))
                     onBackPressed();  // because we want to auto direct on SUbmit paeg like BackButton
@@ -506,6 +597,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 isSaveButtonClick=false;
                 if(isAnswerCliked)
                 {
+                    mNextPreviousClick=1;
                     if (saveSectionOrPagewiseData()) {
                         isAnswerCliked=false;
                         setNextButtonSetUP();
@@ -519,6 +611,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 isSaveButtonClick=false;
                 if(isAnswerCliked)
                 {
+                    mNextPreviousClick=2;
                     if (saveSectionOrPagewiseData()) {
                         isAnswerCliked=false;
                         setPreviousButtonSetUP();
@@ -752,6 +845,16 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     isBackButtonClick=false; // This is only for showing progressBar
                     finish();
                 }
+                else if(isDialogSaveClicked)
+                {
+                    if (mNextPreviousClick==1)
+                        setNextButtonSetUP();
+                    else   if (mNextPreviousClick==2)
+                        setPreviousButtonSetUP();
+
+                    isDialogSaveClicked=false;
+                    mNextPreviousClick=0;
+                }
             } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
                 AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
             }
@@ -768,18 +871,6 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         AppUtils.toast(this, this.getString(R.string.oops));
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e("BRAND onStop",";;;;;onStop");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e("BRAND onPause",";;;;;onPause");
-
-    }
 
     @Override
     protected void onDestroy() {

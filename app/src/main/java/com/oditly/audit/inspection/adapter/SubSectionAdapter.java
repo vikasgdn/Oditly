@@ -44,8 +44,13 @@ public class SubSectionAdapter extends RecyclerView.Adapter<SubSectionAdapter.Su
         int totalQuestionCount = questionCount(brandStandardSection);
         int answerdCount = brandStandardSection.getAnswered_question_count();
 
+
         holder.tvSubSectionTitle.setText(brandStandardSection.getSection_title());
         holder.tvSubSectionTitle.setSelected(true);
+
+        if (answerdCount>totalQuestionCount)
+            answerdCount=totalQuestionCount;
+
         holder.tvQuestionCount.setText("Question: " + answerdCount + "/" + totalQuestionCount);
         if (answerdCount == 0) {
             holder.tvSubSectionStatus.setText("Start");

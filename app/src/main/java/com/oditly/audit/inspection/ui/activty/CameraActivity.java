@@ -127,10 +127,6 @@ public class CameraActivity extends AppCompatActivity{
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
 
-
-
-
-
                         Intent intent=new Intent();
                         intent.putExtra("camerax",mCurrentPhotoPath);
                         setResult(Activity.RESULT_OK,intent);

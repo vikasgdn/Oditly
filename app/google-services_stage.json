@@ -1,0 +1,100 @@
+{
+  "project_info": {
+    "project_number": "487153582834",
+    "project_id": "oditly-stage",
+    "storage_bucket": "oditly-stage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487153582834:android:3b75a59f776664daeac66b",
+        "android_client_info": {
+          "package_name": "com.example.oditlyauthpocandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487153582834-77k9k21pcdc0lg6uvli80qq3j5s06h7m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.oditlyauthpocandroid",
+            "certificate_hash": "6090a023657d1476b37151a4015b0d5e298f91f8"
+          }
+        },
+        {
+          "client_id": "487153582834-e3acafemu73j39o6vknhhpkks2o4ofk3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeby3hYV6jwcJ6cOkJr9Za1RNEvpq_sGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487153582834-e3acafemu73j39o6vknhhpkks2o4ofk3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "487153582834-e8n82k17if05jq03eo7qista3kqenpkf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.oditly.audit.inspection",
+                "app_store_id": "1519558914"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487153582834:android:c85ef6500f37cfc1eac66b",
+        "android_client_info": {
+          "package_name": "com.oditly.audit.inspection.stage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487153582834-3ucv1qlfdlhi0vqogukp7ollhgfhk8df.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.oditly.audit.inspection.stage",
+            "certificate_hash": "5dcd53bbf03919ef287569feb6d91cdc0417ed03"
+          }
+        },
+        {
+          "client_id": "487153582834-e3acafemu73j39o6vknhhpkks2o4ofk3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeby3hYV6jwcJ6cOkJr9Za1RNEvpq_sGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487153582834-e3acafemu73j39o6vknhhpkks2o4ofk3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "487153582834-e8n82k17if05jq03eo7qista3kqenpkf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.oditly.audit.inspection",
+                "app_store_id": "1519558914"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

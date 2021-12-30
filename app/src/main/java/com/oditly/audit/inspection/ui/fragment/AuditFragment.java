@@ -61,6 +61,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
     private int mCurrentPage=1;
     private int mTotalPage=1;
     private boolean isPagingData=false;
+    //private int row;
 
     public static AuditFragment newInstance(String auditType) {
         Bundle args = new Bundle();
@@ -267,7 +268,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                 mAuditLisBean.clear();
             }
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-
+             //   row=object.getInt("rows");
                 mTotalPage=(object.getInt("rows")/object.getInt("limit"))+1;
 
                 AuditRootObject auditRootObject = new GsonBuilder().create().fromJson(object.toString(), AuditRootObject.class);
