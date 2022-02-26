@@ -17,7 +17,7 @@ public class NetworkURL {
 
 
     //API URL'S  TEST SERVER
-  //  public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
+    // public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
    // public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
 
 
@@ -72,6 +72,12 @@ public class NetworkURL {
     public static final String OKTA_DEV_URL="https://oditly-local.web.app/?providerId=";
     public static final String OKTA_LIVE_URL="https://oditly.firebaseapp.com/?providerId=";
     public static final String URL_CHATSUPPORT ="https://go.crisp.chat/chat/embed/?website_id=e6111076-aafa-4cf4-830e-e6582700d1dc";
+
+    //language_id,fname
+    public static final String POST_UPDATE_PROFILE_LANG = API_BASE_URL_NEW+"profile";
+    public static final String GET_LANGUAGE_LIST = API_BASE_URL_NEW+"user/languages";
+
+
 
     // audit_id,action_plan_id,file
 

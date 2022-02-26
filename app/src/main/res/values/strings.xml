@@ -202,7 +202,7 @@
     <string name="text_chinies">Chinese</string>qgit init
     <string name="text_english">English</string>
     <string name="text_invite">Invite</string>
-    <string name="text_select_member">Please select atleast one member</string>
+    <string name="text_select_member">Please select atleast 2 member</string>
     <string name="text_view_team">View</string>
     <string name="text_team_member">Team Members</string>
     <string name="text_audit_id_name">Inspection ID, Audit Name, Assignee Name, Email ID</string>

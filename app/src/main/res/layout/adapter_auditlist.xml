@@ -106,20 +106,21 @@
                 app:percent="0"
                 app:startAngle="0"
                 />
+
             <TextView
                 android:id="@+id/tv_complete_per"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/d_25dp"
-                android:text="0 %"
-                android:gravity="center_vertical|left"
-                android:layout_toRightOf="@id/sv_complete_per"
                 android:layout_marginLeft="@dimen/d_2dp"
                 android:layout_marginTop="@dimen/d_5dp"
+                android:layout_toRightOf="@id/sv_complete_per"
                 android:fontFamily="@font/nunitosans_regular"
-                android:visibility="visible"
+                android:gravity="center_vertical|left"
                 android:singleLine="true"
+                android:text="0 %"
                 android:textColor="@color/c_gray_text"
-                android:textSize="@dimen/text_size_12"/>
+                android:textSize="@dimen/text_size_12"
+                android:visibility="visible" />
             <View
                 android:layout_width="@dimen/d_25dp"
                 android:layout_height="@dimen/d_25dp"

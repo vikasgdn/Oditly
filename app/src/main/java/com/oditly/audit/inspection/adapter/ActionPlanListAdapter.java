@@ -67,6 +67,10 @@ public class ActionPlanListAdapter extends RecyclerView.Adapter<ActionPlanListAd
             holder.mLowMediaumHieghTV.setTextColor(context.getResources().getColor(R.color.c_red));
             holder.mLowMediaumHieghTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,R.drawable.ic_baseline_flag_red ,0);
         }
+       else if(auditInfo.getPriority_name().equalsIgnoreCase("Urgent")) {
+            holder.mLowMediaumHieghTV.setTextColor(context.getResources().getColor(R.color.c_red_urgent));
+            holder.mLowMediaumHieghTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,R.drawable.ic_red_urgent ,0);
+        }
         else if(auditInfo.getPriority_name().equalsIgnoreCase("Low")) {
             holder.mLowMediaumHieghTV.setTextColor(context.getResources().getColor(R.color.c_green));
             holder.mLowMediaumHieghTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,R.drawable.ic_baseline_flag_24 ,0);

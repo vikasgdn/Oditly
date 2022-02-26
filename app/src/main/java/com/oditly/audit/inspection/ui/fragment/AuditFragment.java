@@ -272,7 +272,6 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
                 mTotalPage=(object.getInt("rows")/object.getInt("limit"))+1;
 
                 AuditRootObject auditRootObject = new GsonBuilder().create().fromJson(object.toString(), AuditRootObject.class);
-                Log.e("auditRootObject","=====> size "+auditRootObject.getData().size());
                 if (auditRootObject.getData() != null && auditRootObject.getData().size() > 0) {
 
                      mAuditLisBean.addAll(auditRootObject.getData());

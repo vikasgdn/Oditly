@@ -156,6 +156,7 @@
             android:drawableLeft="@mipmap/ic_lang"
             android:layout_marginLeft="@dimen/d_5dp"
             android:drawablePadding="@dimen/d_10dp"
+            android:visibility="gone"
             android:gravity="center_vertical"
             android:text="@string/s_language"
             android:theme="@style/TextViewAccount"

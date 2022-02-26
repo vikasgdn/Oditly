@@ -60,6 +60,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         initView();
         initVar();
         updateFCMNotification();
+        getLanguageListFromServer();
     }
 
     @Override
@@ -142,14 +143,25 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         }
     }
 
+    private void getLanguageListFromServer() {
+        if (NetworkStatus.isNetworkConnected(this)) {
+            NetworkService networkService = new NetworkService(NetworkURL.GET_LANGUAGE_LIST, NetworkConstant.METHOD_GET, this, this);
+            networkService.call(new HashMap<String, String>());
+        } else {
+            AppUtils.toast(this, getString(R.string.internet_error));
+
+        }
+    }
+
     @Override
     public void onNetworkCallInitiated(String service) {
 
     }
 
+
     @Override
     public void onNetworkCallCompleted(String type, String service, String response) {
-        Log.e("onNetworkCallCompleted "+service, "||||||  "+response);
+      //  Log.e("onNetworkCallCompleted "+service, "||||||  "+response);
         if (service.equalsIgnoreCase(mRefreshTokenURL))
         {
             try {
@@ -163,7 +175,11 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         }
         else if (service.equalsIgnoreCase(NetworkURL.POST_FCM_TOKEN)) {
             Log.e("TOKEN  ", "|||||| UPDATED "+AppPreferences.INSTANCE.getFCMToken());
-        } else if(service.equalsIgnoreCase(NetworkURL.GET_PROFILE_DATA))
+        }
+        else if (service.equalsIgnoreCase(NetworkURL.GET_LANGUAGE_LIST)) {
+            Log.e("LANGUAGE LIST  ", "|||||| "+response);
+        }
+        else if(service.equalsIgnoreCase(NetworkURL.GET_PROFILE_DATA))
         {
             //  {"error":false,"data":{"user_id":3,"uid":"eZqETckFW3Tw53eeIjM3MUWrrOF3","tenant_uid":null,"role_id":200,"client_id":3,"fname":"Test","lname":"Client","email":"testclient@oditly.com","image":"https:\/\/api.account.oditly.com\/assets\/profile\/dummy.jpg","phone":1234567890,"dob":null,"gender":1,"address":"test address","city_id":707,"state_id":10,"country_id":101,"zone_id":194,"zipcode":123456,"user_status":1,"created_on":"2020-05-03 22:09:15","gender_text":"male","custom_role_id":null,"custom_role_name":null,"country_name":"India","zone_name":"Asia\/Kolkata","state_name":"Delhi","city_name":"New Delhi","role_name":"Client SuperAdmin","role_resource":"client","client_status":1,"industry_id":3,"tenant_id":null,"company_contact_email":"info@oditly.com","company_support_email":"support@oditly.com","company_name":"Test Client","company_logo":"https:\/\/api.account.oditly.com\/assets\/company_logo\/20200510_141240_52359315172925.png","ia_status":1,"training_status":1,"star_employee":0,"faq_report_name":"FAQ","can_gm_approve_action_plan":1},
             try {

@@ -321,7 +321,7 @@ public class AppUtils {
         if (message != null && !message.equals("") && activity != null) {
             Snackbar snack = Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
             ViewGroup group = (ViewGroup) snack.getView();
-            group.setMinimumHeight(160);
+            group.setMinimumHeight(200);
             group.setBackgroundColor(ContextCompat.getColor(activity, R.color.c_blue));
             snack.setDuration(8000);
             snack.show();

@@ -402,7 +402,6 @@ public class AppDialogs
                             activity.getResources().updateConfiguration(config, activity.getResources().getDisplayMetrics());
                             Toast.makeText(activity, "Locale in English !", Toast.LENGTH_LONG).show();
                             break;
-
                         case "Russian":
                             AppPreferences.INSTANCE.setSelectedLang("ru");
                             Locale locale2 = new Locale("ru");

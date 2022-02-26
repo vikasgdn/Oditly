@@ -263,7 +263,9 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                         AppPreferences.INSTANCE.setUserEmail(object.getJSONObject("data").optString("email"));
                         AppPreferences.INSTANCE.setUserRole(Integer.parseInt(roleId), this);
                         AppPreferences.INSTANCE.setLogin(true, this);
-                        startActivity(new Intent(this, MainActivity.class));         }
+                        startActivity(new Intent(this, MainActivity.class));
+                        finish();
+                    }
                 }
             }
             catch (Exception e){e.printStackTrace();}

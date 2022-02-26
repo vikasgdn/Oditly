@@ -442,11 +442,14 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
         }
     }
 
-    private void clearCurrentFocus() {
+    private void clearCurrentFocus()
+    {
         View currentFocus = ((BrandStandardAuditActivity)context).getCurrentFocus();
         if (currentFocus != null) {
             currentFocus.clearFocus();
         }
+        Log.e("CLEAR FOCUS====== > ",""+currentFocus);
+
     }
 
     private void clickedOnAnswerTpye() {
@@ -576,6 +579,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                 @Override
                 public void onClick(View view)
                 {
+                    clearCurrentFocus();
                     setQuestionMandtoryMediaCommentActionStar(brandStandardQuestionsOption ,""+brandStandardQuestion.getAudit_question_file_cnt(), holder.mMediaLabelTV, holder.mCommentLabelTV,holder.mActionPlanLabelTV,holder.mCommentLenthTV);
                     // as one option selected
                     BrandStandardAuditActivity.isAnswerCliked=true;
@@ -719,6 +723,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                 @Override
                 public void onClick(View view) {
 
+                    clearCurrentFocus();
                     setQuestionMandtoryMediaCommentActionStar(brandStandardQuestionsOption ,""+brandStandardQuestion.getAudit_question_file_cnt(), holder.mMediaLabelTV, holder.mCommentLabelTV,holder.mActionPlanLabelTV,holder.mCommentLenthTV);
                     clickedOnAnswerTpye();
                     int optionId = brandStandardQuestionsOption.getOption_id();

@@ -166,6 +166,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(AppConstant.FROMWHERE, AppConstant.AUDIT);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(intent);
             this.finish();
         }

@@ -18,6 +18,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/brandstandard_question_bg"
         android:padding="@dimen/d_10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
 
@@ -47,12 +49,13 @@
                 android:focusableInTouchMode="false"
                 android:padding="@dimen/d_10dp"
                 android:layout_weight="10"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:focusable="false"
                 android:enabled="true"
                 android:layout_marginStart="@dimen/d_5dp"
                 android:textSize="@dimen/text_size_14"
-                android:autoLink="web"
+                android:linksClickable="true"
+                android:autoLink="web|email"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textColor="@color/c_gray_text" />
             <ImageView

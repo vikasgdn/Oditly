@@ -37,15 +37,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.e("TAG", "From: " + remoteMessage.getFrom());
-
+        Log.e("TAG", "From: " + remoteMessage.getNotification());
+       /* {
+            "notification": {
+            "title": "title",
+                    "body": "body",
+                    "image": "icon"
+        }
+        }*/
         // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
-            String title=     remoteMessage.getData().get("title");
-            String message=    remoteMessage.getData().get("message");
+        if (remoteMessage.getNotification()!=null)
+        {
+            String notification=     remoteMessage.getData().get("notification");
+          //  String title=     remoteMessage.getData().get("title");
+           // String message=    remoteMessage.getData().get("message");
             Log.d("TAG", "Message data payload: " + remoteMessage.getData());
+            //Log.d("TAG", "Message data NOTIFICATION : " + notification);
             mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-            showNotificationBuilder(getApplicationContext(),message,title,NOTIFICATION_CHANNEL_ID);
+            showNotificationBuilder(getApplicationContext(),remoteMessage.getNotification().getBody(),remoteMessage.getNotification().getTitle(),NOTIFICATION_CHANNEL_ID);
 
         }
         // {icon=https://api.dev.account.oditly.com/assets/report/image/company-logo1.png, title=Oditly, message=You have an audit assigned to you. ID: 1586. Name: 17th Mar 2021/Vikas}

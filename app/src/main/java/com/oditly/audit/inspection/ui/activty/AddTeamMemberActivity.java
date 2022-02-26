@@ -131,10 +131,10 @@ public class AddTeamMemberActivity extends BaseActivity implements INetworkEvent
         {
             case R.id.btn_invite:
               HashSet<Integer>  mTeamMember=mAddTeamListAdapter.getInvitedMember();
-                if(mTeamMember!=null && mTeamMember.size()>0)
+                if(mTeamMember!=null && mTeamMember.size()>1)
                     AppDialogs.showTeamNameDialog(this,mTeamMember);
                 else
-                    AppUtils.toast(this, getString(R.string.text_select_member));
+                    AppUtils.toast(this, "Please select atleast 2 member");
                 break;
             case R.id.cb_select_all:
                 if(mSelectAllCB.isChecked())

@@ -15,6 +15,7 @@
     <color name="c_light_gray_max">#E0E0E0 </color>
     <color name="c_white">#FFFFFF</color>
     <color name="c_red">#C60022</color>
+    <color name="c_red_urgent">#8D0404</color>
     <color name="c_yellow">#FFBA15 </color>
     <color name="c_green">#13855F</color>
     <color name="c_blue">#0B87E4</color>

@@ -2,13 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
-
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "com.oditly.audit.inspection"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1031
         versionName "1031"
 
@@ -26,7 +25,7 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            debuggable true
+            debuggable false
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
@@ -37,8 +36,8 @@ android {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
             resValue "string", "app_name", "Oditly Dev"
         }
         stage{

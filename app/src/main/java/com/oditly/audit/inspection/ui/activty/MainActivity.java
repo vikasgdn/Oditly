@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity {
         imgMenu.setOnClickListener(this);
         String location = getIntent().getStringExtra(AppConstant.FROMWHERE) == null ? "" : getIntent().getStringExtra(AppConstant.FROMWHERE);
         if (!TextUtils.isEmpty(location) && location.equalsIgnoreCase(AppConstant.TEAM)) {
-            this.lastSelectedPosition = 4;
+            this.lastSelectedPosition = 3;
         }
         BottomifyNavigationView navigationView = (BottomifyNavigationView) findViewById(R.id.bottomify_nav);
         navigationView.setActiveNavigationIndex(this.lastSelectedPosition);
