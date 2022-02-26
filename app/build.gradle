@@ -15,6 +15,7 @@ android {
     }
 
     signingConfigs {
+
         release {
             storeFile file("oditly.jks")
             storePassword 'Oditly@123'
