@@ -241,9 +241,18 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
                 }
             }
 
-            if (question.getIs_required() == 1 && (question.getAudit_option_id()==null || question.getAudit_option_id().size()==0)) {
-                AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, "You have not answered " + "question no " + count);
-                return false;
+            if (question.getQuestion_type().equalsIgnoreCase("textarea") || question.getQuestion_type().equalsIgnoreCase("text") || question.getQuestion_type().equalsIgnoreCase("number"))
+            {
+                if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
+                    AppUtils.toastDisplayForLong(this, "You have not answered " + "question no. " + count);
+                    return false;
+                }
+            }
+            else {
+                if (question.getIs_required() == 1 && (question.getAudit_option_id() == null || question.getAudit_option_id().size() == 0)) {
+                    AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, "You have not answered " + "question no " + count);
+                    return false;
+                }
             }
             if (mMediaCount > 0 && question.getAudit_question_file_cnt() < mMediaCount) {
                 AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, "Please submit the required " + mMediaCount + " image(s) for question no. " + count);

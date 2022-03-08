@@ -125,6 +125,59 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
             holder.mRadioSectionLL.setVisibility(View.VISIBLE);
             handleDropDownTypeQuestion(brandStandardQuestion, holder,brandStandardQuestion.getAudit_option_id());
         }
+        else  if(questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") )
+        {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+                holder.mTextAnswerET.setText(brandStandardQuestion.getAudit_answer());
+                holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
+            }
+            setOtherViewHide(holder);
+            if (questionType.equalsIgnoreCase("textarea"))
+                holder.mTextAnswerET.setMinLines(4);
+            else
+                holder.mTextAnswerET.setMinLines(2);
+
+            holder.mTextAnswerET.setVisibility(View.VISIBLE);
+            holder.mTextAnswerET.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable)
+                {
+                    clickedOnAnswerTpye();
+                    brandStandardQuestion.setAudit_answer("" + editable.toString());
+
+                }
+            });
+
+        }
+        else  if(questionType.equalsIgnoreCase("number") )
+        {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+                holder.mNumberDecAnsweET.setText(brandStandardQuestion.getAudit_answer());
+                holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
+            }
+            setOtherViewHide(holder);
+            holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
+            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable)
+                {
+                    clickedOnAnswerTpye();
+                    brandStandardQuestion.setAudit_answer("" + editable.toString());
+
+                }
+            });
+
+        }
         else
         {
             setOtherViewHide(holder);

@@ -155,7 +155,6 @@ public class AppUtils {
                         String questionType=question.getQuestion_type();
                         if (brandStandardSubQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider")|| questionType.equalsIgnoreCase("target")))
                         {
-
                             if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
                                 AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
