@@ -69,74 +69,67 @@ import java.util.regex.Pattern;
 
 public class AppUtils {
 
-    public static JSONArray validateSubmitQuestionFinalSubmission(Activity  activity,ArrayList<BrandStandardSection> brandStandardSection){
+    public static JSONArray validateSubmitQuestionFinalSubmission(Activity activity, ArrayList<BrandStandardSection> brandStandardSection) {
         // boolean validate = true;
         int count = 0;
-        int mMediaCount=0,mCommentCount=0,mActionPlanRequred=0;
+        int mMediaCount = 0, mCommentCount = 0, mActionPlanRequred = 0;
         ArrayList<BrandStandardQuestion> brandStandardQuestionsSubmissions = new ArrayList<>();
-        for (int i = 0 ; i < brandStandardSection.size() ; i++ ) {
+        for (int i = 0; i < brandStandardSection.size(); i++) {
             ArrayList<BrandStandardQuestion> brandStandardQuestion = brandStandardSection.get(i).getQuestions();
             count = 0;
             for (int j = 0; j < brandStandardQuestion.size(); j++) {
                 count += 1;
                 BrandStandardQuestion question = brandStandardQuestion.get(j);
                 brandStandardQuestionsSubmissions.add(question);
-                String questionType=question.getQuestion_type();
-                if (brandStandardQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea")|| questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number")|| questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target"))){
-                    if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
-                        AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section "+ brandStandardSection.get(i).getSection_title());
+                String questionType = question.getQuestion_type();
+                if (brandStandardQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target"))) {
+                    if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required() == 1) {
+                        AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section " + brandStandardSection.get(i).getSection_title());
                         return null;
                     }
-                }else {
-                    if (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required()==1 && !questionType.equalsIgnoreCase("media")) {
-                        AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section "+ brandStandardSection.get(i).getSection_title());
+                } else {
+                    if (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required() == 1 && !questionType.equalsIgnoreCase("media")) {
+                        AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                         return null;
                     }
                 }
 
-                mMediaCount=question.getMedia_count();
-                mCommentCount=question.getHas_comment();
-                if (question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0)
-                {
+                mMediaCount = question.getMedia_count();
+                mCommentCount = question.getHas_comment();
+                if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
                     for (int k = 0; k < question.getOptions().size(); k++) {
                         BrandStandardQuestionsOption option = question.getOptions().get(k);
                         if (question.getAudit_option_id() != null && question.getAudit_option_id().contains(new Integer(option.getOption_id()))) {
-                            if (question.getQuestion_type().equalsIgnoreCase("checkbox"))
-                            {
-                                if (mActionPlanRequred==0)
-                                    mActionPlanRequred=option.getAction_plan_required();
-                                if (mMediaCount<option.getMedia_count())
+                            if (question.getQuestion_type().equalsIgnoreCase("checkbox")) {
+                                if (mActionPlanRequred == 0)
+                                    mActionPlanRequred = option.getAction_plan_required();
+                                if (mMediaCount < option.getMedia_count())
                                     mMediaCount = option.getMedia_count();
-                                if (mCommentCount<option.getCommentCount())
+                                if (mCommentCount < option.getCommentCount())
                                     mCommentCount = option.getCommentCount();
-                            }
-                            else {
+                            } else {
                                 mMediaCount = option.getMedia_count();
                                 mCommentCount = option.getCommentCount();
-                                mActionPlanRequred=option.getAction_plan_required();
+                                mActionPlanRequred = option.getAction_plan_required();
                                 break;
                             }
 
                         }
                     }
                 }
-                Log.e("Media || Comment Count ","===> "+mMediaCount+" || "+mCommentCount);
+                Log.e("Media || Comment Count ", "===> " + mMediaCount + " || " + mCommentCount);
 
-                if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media"))
-                {
-                    if(mActionPlanRequred>0 && question.getAction_plan()==null)
-                    {
-                        AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media")) {
+                    if (mActionPlanRequred > 0 && question.getAction_plan() == null) {
+                        AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                         return null;
                     }
-                    if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
-                    {
-                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                    if (mMediaCount > 0 && question.getAudit_question_file_cnt() < mMediaCount) {
+                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                         return null;
                     }
-                    if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
-                    {
-                        AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count+ " in section "+ brandStandardSection.get(i).getSection_title());
+                    if (mCommentCount > 0 && question.getAudit_comment().length() < mCommentCount) {
+                        AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count + " in section " + brandStandardSection.get(i).getSection_title());
                         return null;
                     }
                 }
@@ -145,67 +138,56 @@ public class AppUtils {
 
             ArrayList<BrandStandardSubSection> brandStandardSubSections = brandStandardSection.get(i).getSub_sections();
             try {
-                for (int k = 0; k < brandStandardSubSections.size(); k++)
-                {
+                for (int k = 0; k < brandStandardSubSections.size(); k++) {
                     ArrayList<BrandStandardQuestion> brandStandardSubQuestion = brandStandardSubSections.get(k).getQuestions();
                     for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
                         brandStandardQuestionsSubmissions.add(brandStandardSubQuestion.get(j));
                         count += 1;
                         BrandStandardQuestion question = brandStandardSubQuestion.get(j);
-                        String questionType=question.getQuestion_type();
-                        if (brandStandardSubQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider")|| questionType.equalsIgnoreCase("target")))
-                        {
-                            if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
+                        String questionType = question.getQuestion_type();
+                        if (brandStandardSubQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("target"))) {
+                            if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required() == 1) {
                                 AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
-                        } else
-                        {
-                            if (brandStandardSubQuestion.size()>0 &&(question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required()==1))
-                            {
-                                AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section "+ brandStandardSection.get(i).getSection_title());
+                        } else {
+                            if (brandStandardSubQuestion.size() > 0 && (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required() == 1)) {
+                                AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
                         }
-                        mMediaCount=question.getMedia_count();
-                        mCommentCount=question.getHas_comment();
-                        if (question.getAudit_option_id()!=null && question.getAudit_option_id().size()>0)
-                        {
+                        mMediaCount = question.getMedia_count();
+                        mCommentCount = question.getHas_comment();
+                        if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
                             for (int y = 0; y < question.getOptions().size(); y++) {
                                 BrandStandardQuestionsOption option = question.getOptions().get(y);
-                                if (question.getQuestion_type().equalsIgnoreCase("checkbox"))
-                                {
-                                    if (mActionPlanRequred==0)
-                                        mActionPlanRequred=option.getAction_plan_required();
-                                    if (mMediaCount<option.getMedia_count())
+                                if (question.getQuestion_type().equalsIgnoreCase("checkbox")) {
+                                    if (mActionPlanRequred == 0)
+                                        mActionPlanRequred = option.getAction_plan_required();
+                                    if (mMediaCount < option.getMedia_count())
                                         mMediaCount = option.getMedia_count();
-                                    if (mCommentCount<option.getCommentCount())
+                                    if (mCommentCount < option.getCommentCount())
                                         mCommentCount = option.getCommentCount();
-                                }
-                                else {
+                                } else {
                                     mMediaCount = option.getMedia_count();
                                     mCommentCount = option.getCommentCount();
-                                    mActionPlanRequred=option.getAction_plan_required();
+                                    mActionPlanRequred = option.getAction_plan_required();
                                     break;
                                 }
                             }
                         }
-                        if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || (question.getAudit_answer()!= null && question.getAudit_answer().length()>0))
-                        {
-                            if(mActionPlanRequred>0 && question.getAction_plan()==null)
-                            {
-                                AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                        if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || (question.getAudit_answer() != null && question.getAudit_answer().length() > 0)) {
+                            if (mActionPlanRequred > 0 && question.getAction_plan() == null) {
+                                AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
-                            if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
-                            {
-                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
+                            if (mMediaCount > 0 && question.getAudit_question_file_cnt() < mMediaCount) {
+                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
 
-                            if (mCommentCount>0 && question.getAudit_comment().length()<mCommentCount)
-                            {
-                                AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count+ " in section "+ brandStandardSection.get(i).getSection_title());
+                            if (mCommentCount > 0 && question.getAudit_comment().length() < mCommentCount) {
+                                AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
 
@@ -213,25 +195,23 @@ public class AppUtils {
 
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            catch (Exception e){e.printStackTrace();}
 
         }
-        return AppUtils.getQuestionsArray (brandStandardQuestionsSubmissions);
+        return AppUtils.getQuestionsArray(brandStandardQuestionsSubmissions);
     }
 
 
-
-    public static JSONArray getOptionQuestionArray (ArrayList<BrandStandardQuestionsOption> optionsArray){
+    public static JSONArray getOptionQuestionArray(ArrayList<BrandStandardQuestionsOption> optionsArray) {
         try {
-            for (int i=0;i<optionsArray.size();i++)
-            {
-                BrandStandardQuestionsOption questionsOption= optionsArray.get(i);
-                if (questionsOption.getQuestions()!=null && questionsOption.getQuestions().size()>0 )
-                {
-                    for (int j=0;j<questionsOption.getQuestions().size();j++)
+            for (int i = 0; i < optionsArray.size(); i++) {
+                BrandStandardQuestionsOption questionsOption = optionsArray.get(i);
+                if (questionsOption.getQuestions() != null && questionsOption.getQuestions().size() > 0) {
+                    for (int j = 0; j < questionsOption.getQuestions().size(); j++)
                     {
-                        if (questionsOption.getQuestions().get(j).getAudit_option_id()!=null && questionsOption.getQuestions().get(j).getAudit_option_id().size()>0 )
+                        if (!TextUtils.isEmpty(questionsOption.getQuestions().get(j).getAudit_answer()))
                         {
                             JSONArray jsonArray = new JSONArray();
                             JSONObject jsonObject = new JSONObject();
@@ -239,6 +219,18 @@ public class AppUtils {
                             jsonObject.put("questions", geSubQusetionsArrayArray(questionsOption.getQuestions()));
                             jsonArray.put(jsonObject);
                             return jsonArray;
+
+                        }
+                        else
+                        {
+                            if (questionsOption.getQuestions().get(j).getAudit_option_id() != null && questionsOption.getQuestions().get(j).getAudit_option_id().size() > 0) {
+                                JSONArray jsonArray = new JSONArray();
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("option_id", questionsOption.getOption_id());
+                                jsonObject.put("questions", geSubQusetionsArrayArray(questionsOption.getQuestions()));
+                                jsonArray.put(jsonObject);
+                                return jsonArray;
+                            }
                         }
                     }
                 }
@@ -250,12 +242,12 @@ public class AppUtils {
         }
         return new JSONArray();
     }
-    public static JSONArray geSubQusetionsArrayArray (ArrayList<BrandStandardQuestion> questionsArray){
+
+    public static JSONArray geSubQusetionsArrayArray(ArrayList<BrandStandardQuestion> questionsArray) {
 
         try {
             JSONArray jsonArray = new JSONArray();
-            for (int i=0;i<questionsArray.size();i++)
-            {
+            for (int i = 0; i < questionsArray.size(); i++) {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("question_id", questionsArray.get(i).getQuestion_id());
                 jsonObject.put("audit_option_id", getOptionIdArray(questionsArray.get(i).getAudit_option_id()));
@@ -267,14 +259,15 @@ public class AppUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return  new JSONArray();
+        return new JSONArray();
     }
-    public static JSONArray getQuestionsArray (ArrayList<BrandStandardQuestion> brandStandardQuestions){
+
+    public static JSONArray getQuestionsArray(ArrayList<BrandStandardQuestion> brandStandardQuestions) {
         JSONArray jsonArray = new JSONArray();
-        if (brandStandardQuestions==null || brandStandardQuestions.size()==0)
+        if (brandStandardQuestions == null || brandStandardQuestions.size() == 0)
             return jsonArray;
 
-        for (int i = 0 ; i < brandStandardQuestions.size() ; i++) {
+        for (int i = 0; i < brandStandardQuestions.size(); i++) {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("question_id", brandStandardQuestions.get(i).getQuestion_id());
@@ -290,20 +283,19 @@ public class AppUtils {
         }
         return jsonArray;
     }
-    public static JSONArray getOptionIdArray (ArrayList<Integer> arrayList){
-        JSONArray jsArray = null ;
-        try
-        {
-            if (arrayList!=null && arrayList.size()>0)
-                jsArray=  new JSONArray(arrayList);
+
+    public static JSONArray getOptionIdArray(ArrayList<Integer> arrayList) {
+        JSONArray jsArray = null;
+        try {
+            if (arrayList != null && arrayList.size() > 0)
+                jsArray = new JSONArray(arrayList);
             else
-                jsArray=  new JSONArray();
+                jsArray = new JSONArray();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return jsArray;
     }
-
 
 
     public static void toast(Activity activity, String message) {
@@ -326,6 +318,7 @@ public class AppUtils {
             snack.show();
         }
     }
+
     public static String capitalizeHeading(final String line) {
         return Character.toUpperCase(line.charAt(0)) + line.substring(1);
     }
@@ -353,6 +346,7 @@ public class AppUtils {
         }
         return 0;
     }
+
     public static String returnFirstLetter(Context context) {
         String name = "";
         try {
@@ -364,9 +358,7 @@ public class AppUtils {
             if (lName.length() > 0)
                 name = name + lName.substring(0, 1);
             return name;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return name;
         }
@@ -377,26 +369,23 @@ public class AppUtils {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("grant_type", "refresh_token");
             jsonObject.put("refresh_token", AppPreferences.INSTANCE.geRefreshTokenOkta());
-            return  jsonObject;
-        }
-        catch (Exception e)
-        {
+            return jsonObject;
+        } catch (Exception e) {
             return new JSONObject();
         }
     }
 
-    public static void parseRefreshTokenRespone(JSONObject jsonObject,Context context)
-    {
-        int expireSecond=jsonObject.optInt("expires_in");
-        long expireMilliSecond=System.currentTimeMillis()+(1600*1000);  // just want hit after 28 minute btw token exp time is 60 minute
-        AppPreferences.INSTANCE.setOktaTokenExpireTime(expireMilliSecond,context);
+    public static void parseRefreshTokenRespone(JSONObject jsonObject, Context context) {
+        int expireSecond = jsonObject.optInt("expires_in");
+        long expireMilliSecond = System.currentTimeMillis() + (1600 * 1000);  // just want hit after 28 minute btw token exp time is 60 minute
+        AppPreferences.INSTANCE.setOktaTokenExpireTime(expireMilliSecond, context);
         AppPreferences.INSTANCE.setOktaToken(jsonObject.optString("id_token"), context);
         AppPreferences.INSTANCE.setRefreshTokenOkta(jsonObject.optString("refresh_token"));
     }
 
     public Bitmap drawTextToBitmap(Context gContext, Bitmap bitmap, String gText) {
-        Log.e("BITMAP TEXT",""+gText);
-        Bitmap drawBitmap=null;
+        Log.e("BITMAP TEXT", "" + gText);
+        Bitmap drawBitmap = null;
         try {
             Resources resources = gContext.getResources();
             float scale = resources.getDisplayMetrics().density;
@@ -432,75 +421,65 @@ public class AppUtils {
             int bottom = drawBitmap.getHeight();
             canvas.drawRect(left, top, right, bottom, mPaint);
             canvas.drawText(gText, x, y, paint);
-        }
-        catch (Exception e)
-        {
-            drawBitmap =bitmap;
+        } catch (Exception e) {
+            drawBitmap = bitmap;
             e.printStackTrace();
         }
 
         return drawBitmap;
     }
 
-    public static String getFormatedDate(String dateS)
-    {
-        String resultDate="N/A";
+    public static String getFormatedDate(String dateS) {
+        String resultDate = "N/A";
         try {
             if (TextUtils.isEmpty(dateS))
                 return resultDate;
             SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
             Date date = dt.parse(dateS);
             SimpleDateFormat dt1 = new SimpleDateFormat("EEE, d MMM yyyy");
-            resultDate=dt1.format(date);
-            return  resultDate;
-        }
-        catch (Exception e)
-        {
+            resultDate = dt1.format(date);
+            return resultDate;
+        } catch (Exception e) {
             e.printStackTrace();
-            return  resultDate;
+            return resultDate;
         }
     }
 
-    public static String getFormatedDateWithTime(String dateS)
-    {
+    public static String getFormatedDateWithTime(String dateS) {
         //2020-09-16 15:48:25
 
-        String resultDate="N/A";
+        String resultDate = "N/A";
         try {
             if (TextUtils.isEmpty(dateS))
                 return resultDate;
             SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm");
             Date date = dt.parse(dateS);
             SimpleDateFormat dt1 = new SimpleDateFormat("EEE, d MMM yyyy, hh:mm aa");
-            resultDate=dt1.format(date);
-            return  resultDate;
-        }
-        catch (Exception e)
-        {
+            resultDate = dt1.format(date);
+            return resultDate;
+        } catch (Exception e) {
             e.printStackTrace();
-            return  resultDate;
+            return resultDate;
         }
     }
 
 
-    public static String getFormatedDateDayMonth(String dateS)
-    {
-        String resultDate="N/A";
+    public static String getFormatedDateDayMonth(String dateS) {
+        String resultDate = "N/A";
         try {
             if (TextUtils.isEmpty(dateS))
                 return resultDate;
             SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
             Date date = dt.parse(dateS);
             SimpleDateFormat dt1 = new SimpleDateFormat("EEE, d MMM");
-            resultDate=dt1.format(date);
-            return  resultDate;
-        }
-        catch (Exception e)
-        {
+            resultDate = dt1.format(date);
+            return resultDate;
+        } catch (Exception e) {
             e.printStackTrace();
-            return  resultDate;
+            return resultDate;
         }
     }
+
     public static boolean isStringEmpty(String string) {
         if (string == null)
             return true;
@@ -520,10 +499,10 @@ public class AppUtils {
 
     public static boolean isValidMobile(String phone) {
         boolean check;
-        if(!Pattern.matches("[a-zA-Z]+", phone)) {
+        if (!Pattern.matches("[a-zA-Z]+", phone)) {
             check = phone.length() >= 6 && phone.length() <= 16;
         } else {
-            check=false;
+            check = false;
         }
         return check;
     }
@@ -559,8 +538,8 @@ public class AppUtils {
         }
     }
 
-    public static boolean hasDigitsOnly(String str){
-        if (str == null){
+    public static boolean hasDigitsOnly(String str) {
+        if (str == null) {
             return false;
         }
         String scoreReplace = str.replace("%", "");
@@ -600,10 +579,9 @@ public class AppUtils {
         return dateFormat.format(date);
     }
 
-    public static String getAuditDateCurrent()
-    {
+    public static String getAuditDateCurrent() {
         String pattern = "yyyy-MM-dd";
-        String dateInString =new SimpleDateFormat(pattern).format(new Date());
+        String dateInString = new SimpleDateFormat(pattern).format(new Date());
         return dateInString;
     }
 
@@ -664,7 +642,7 @@ public class AppUtils {
         }
     }*/
 
-    public static String getShowDate(String date){
+    public static String getShowDate(String date) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -675,13 +653,13 @@ public class AppUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println(""+date);
+        System.out.println("" + date);
         return "";
 
     }
 
 
-    public static byte[] convertImageURIToByte(Uri uri,Context context){
+    public static byte[] convertImageURIToByte(Uri uri, Context context) {
         byte[] data = null;
         try {
             ContentResolver cr = context.getContentResolver();
@@ -692,8 +670,7 @@ public class AppUtils {
             data = baos.toByteArray();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return data;
@@ -712,44 +689,45 @@ public class AppUtils {
             e.printStackTrace();
         }
     }
-    public static String getCurrentDate(){
+
+    public static String getCurrentDate() {
 
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MMM-dd hh:mm:ss");
-        System.out.println(""+date);
+        System.out.println("" + date);
 
         return dateFormat1.format(date);
 
     }
-    public static String getCurrentDateImage(){
+
+    public static String getCurrentDateImage() {
 
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat1 = new SimpleDateFormat("dd-MMM-yy hh:mm");
-        System.out.println(""+date);
+        System.out.println("" + date);
 
         return dateFormat1.format(date);
 
     }
-    public static String getFormateDateYYYYMMMDD(String dateS){
-        String resultDate="";
+
+    public static String getFormateDateYYYYMMMDD(String dateS) {
+        String resultDate = "";
         try {
             if (TextUtils.isEmpty(dateS))
                 return resultDate;
             SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
             Date date = dt.parse(dateS);
             SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
-            resultDate=dt1.format(date);
-            return  resultDate;
-        }
-        catch (Exception e)
-        {
+            resultDate = dt1.format(date);
+            return resultDate;
+        } catch (Exception e) {
             e.printStackTrace();
-            return  resultDate;
+            return resultDate;
         }
 
     }
 
-    public static String getDSAuditDate(String date){
+    public static String getDSAuditDate(String date) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD hh:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -760,12 +738,12 @@ public class AppUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println(""+date);
+        System.out.println("" + date);
         return "";
 
     }
 
-    public static String getDSAuditTime(String date){
+    public static String getDSAuditTime(String date) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD hh:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -776,12 +754,12 @@ public class AppUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println(""+date);
+        System.out.println("" + date);
         return "";
 
     }
 
-    public static String getAuditDate(String date){
+    public static String getAuditDate(String date) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -793,7 +771,7 @@ public class AppUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println(""+date);
+        System.out.println("" + date);
         return "";
 
     }
@@ -845,7 +823,7 @@ public class AppUtils {
     }
 
     public static boolean isNetworkConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null;
     }
@@ -860,7 +838,7 @@ public class AppUtils {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    ((Activity)ctx).finish();
+                    ((Activity) ctx).finish();
                 }
             });
             dialog.show();
@@ -891,7 +869,7 @@ public class AppUtils {
     }
 
     @SuppressLint("NewApi")
-    public static void datePicker(final Context context, final TextView editText, final boolean needTimePicker,final BrandStandardQuestion brandStandardQuestion) {
+    public static void datePicker(final Context context, final TextView editText, final boolean needTimePicker, final BrandStandardQuestion brandStandardQuestion) {
         Calendar c = Calendar.getInstance();
         // Process to get Current Date
         final int currentYear = c.get(Calendar.YEAR);
@@ -936,13 +914,13 @@ public class AppUtils {
                             String date = strYEAR + "-" + strMONTH + "-" + strDATE;
 
                             if (needTimePicker)
-                                timePicker(context,editText, date,brandStandardQuestion);
+                                timePicker(context, editText, date, brandStandardQuestion);
                             else {
                                 editText.setText(date);
                                 brandStandardQuestion.setAudit_answer(date);
                             }
                         } else {
-                            Log.e("","Invalid Date!");
+                            Log.e("", "Invalid Date!");
                         }
                     }
                 }, setYear, setMonth, setDay);
@@ -951,8 +929,8 @@ public class AppUtils {
         //                (currentDay+1)+"/"+(currentMonth+1)+"/"+(currentYear), "dd/MM/yyyy"));
     }
 
-    public static void timePicker(Context context, final TextView editText, final String date,final BrandStandardQuestion brandStandardQuestion) {
-        String time="";
+    public static void timePicker(Context context, final TextView editText, final String date, final BrandStandardQuestion brandStandardQuestion) {
+        String time = "";
         Calendar c = Calendar.getInstance();
         // Process to get Current Date
         final int currentHour = c.get(Calendar.HOUR_OF_DAY);
@@ -974,11 +952,12 @@ public class AppUtils {
                 }
                 String time = (date.isEmpty() ? date : (date + " ")) + strHour + ":" + strMinute + ":00";
                 editText.setText(time);
-                brandStandardQuestion.setAudit_answer(""+time);
+                brandStandardQuestion.setAudit_answer("" + time);
             }
         }, setHour, setMinute, true);
         timePickerDialog.show();
     }
+
     public static Bitmap resizeImage(Uri uriImage, Bitmap image, int maxWidth, int maxHeight) throws IOException {
         if (maxHeight > 0 && maxWidth > 0) {
             int width = image.getWidth();
@@ -989,9 +968,9 @@ public class AppUtils {
             int finalWidth = maxWidth;
             int finalHeight = maxHeight;
             if (ratioMax > ratioBitmap) {
-                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+                finalWidth = (int) ((float) maxHeight * ratioBitmap);
             } else {
-                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+                finalHeight = (int) ((float) maxWidth / ratioBitmap);
             }
 
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
@@ -1006,8 +985,7 @@ public class AppUtils {
     }
 
 
-    private static Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException
-    {
+    private static Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
         ExifInterface ei = new ExifInterface(selectedImage.getPath());
         int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
@@ -1023,8 +1001,7 @@ public class AppUtils {
         }
     }
 
-    private static Bitmap rotateImage(Bitmap img, int degree)
-    {
+    private static Bitmap rotateImage(Bitmap img, int degree) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
         Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
@@ -1033,7 +1010,7 @@ public class AppUtils {
     }
 
 
-    public static  byte[] readBytes(Uri uri,Context context) throws IOException {
+    public static byte[] readBytes(Uri uri, Context context) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(uri);
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;
