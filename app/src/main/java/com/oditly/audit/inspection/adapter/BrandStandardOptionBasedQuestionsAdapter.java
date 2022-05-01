@@ -31,6 +31,7 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardAction
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSlider;
+import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
 import com.oditly.audit.inspection.ui.activty.BrandStandardOptionsBasedQuestionActivity;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
@@ -156,7 +157,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         }
         else  if(questionType.equalsIgnoreCase("number") )
         {
-            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer()) && !brandStandardQuestion.getAudit_answer().equalsIgnoreCase("0")) {
                 holder.mNumberDecAnsweET.setText(brandStandardQuestion.getAudit_answer());
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
@@ -174,6 +175,160 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                     clickedOnAnswerTpye();
                     brandStandardQuestion.setAudit_answer("" + editable.toString());
 
+                }
+            });
+
+        }
+        else  if(questionType.equalsIgnoreCase("slider") )
+        {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer()) && !brandStandardQuestion.getAudit_answer().equalsIgnoreCase("0") )
+            {
+                holder.mFinalValueSliderTV.setText(brandStandardQuestion.getAudit_answer());
+                holder.mRangeSeekBarSlider.setCurrentValue(Integer.parseInt(brandStandardQuestion.getAudit_answer()));
+                holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
+            }
+            setOtherViewHide(holder);
+            holder.mSliderRL.setVisibility(View.VISIBLE);
+
+            BrandStandardSlider sliderOBJ = brandStandardQuestion.getSlider();
+            if (sliderOBJ!=null)
+            {
+                holder.mMinValueSliderTV.setText(""+sliderOBJ.getFrom());
+                holder.mMaxValueSliderTV.setText(""+sliderOBJ.getTo());
+                holder.mRangeSeekBarSlider.setMaxValue(sliderOBJ.getTo());
+                holder.mRangeSeekBarSlider.setMinValue(sliderOBJ.getFrom());
+                holder.mRangeSeekBarSlider.setStep(sliderOBJ.getStep());
+            }
+            holder.mRangeSeekBarSlider.setOnRangeSeekBarViewChangeListener(new OnRangeSeekBarChangeListener() {
+                @Override
+                public void onStopTrackingTouch(RangeSeekBarView rangeSeekBarView, int i) {
+                    //  holder.mFinalValueSliderTV.setText(""+rangeSeekBarView.getCurrentValue());
+                    // brandStandardQuestion.setAudit_answer(String.valueOf(rangeSeekBarView.getCurrentValue()));
+                }
+                @Override
+                public void onStartTrackingTouch(RangeSeekBarView rangeSeekBarView, int i) {
+
+                }
+                @Override
+                public void onProgressChanged(@Nullable RangeSeekBarView seekBar, int progress, boolean fromUser) {
+                    clearCurrentFocus();
+                    clickedOnAnswerTpye();
+                    holder.mFinalValueSliderTV.setText(""+progress);
+                    brandStandardQuestion.setAudit_answer(String.valueOf(progress));
+                }
+            });
+
+        }
+        else if(questionType.equalsIgnoreCase("media"))
+        {
+            setOtherViewHide(holder);
+        }
+        else if(questionType.equalsIgnoreCase("temperature"))
+        {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+                holder.mNumberDecAnsweET.setText(brandStandardQuestion.getAudit_answer());
+                holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
+            }
+            holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
+            setOtherViewHide(holder);
+            holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
+            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable)
+                {
+                    clickedOnAnswerTpye();
+                    brandStandardQuestion.setAudit_answer("" + editable.toString());
+
+                }
+            });
+
+        }
+        else if(questionType.equalsIgnoreCase("measurement"))
+        {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+                holder.mNumberDecAnsweET.setText(brandStandardQuestion.getAudit_answer());
+                holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
+            }
+            setOtherViewHide(holder);
+            holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
+            holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
+            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable)
+                {
+                    clickedOnAnswerTpye();
+                    brandStandardQuestion.setAudit_answer("" + editable.toString());
+
+                }
+            });
+        }
+        else if(questionType.equalsIgnoreCase("target"))
+        {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+                holder.mNumberDecAnsweET.setText(brandStandardQuestion.getAudit_answer());
+                holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
+            }
+            setOtherViewHide(holder);
+            holder.mNumberDecAnsweET.setHint("Target: "+brandStandardQuestion.getMax_mark());
+            holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
+            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable)
+                {
+                    clickedOnAnswerTpye();
+                    brandStandardQuestion.setAudit_answer("" + editable.toString());
+                    // ((BrandStandardAuditActivityPagingnation) context).countNA_Answers();
+                }
+            });
+        }
+        else if(questionType.equalsIgnoreCase("datetime"))
+        {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+                holder.mDateTimePickerTV.setText(brandStandardQuestion.getAudit_answer());
+                holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
+            }
+            setOtherViewHide(holder);
+            holder.mDateTimePickerTV.setVisibility(View.VISIBLE);
+            //  holder.mCommentMediaShowLayout.setVisibility(View.GONE);
+            holder.mDateTimePickerTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickedOnAnswerTpye();
+                    AppUtils.datePicker(context,holder.mDateTimePickerTV,true,brandStandardQuestion);
+                }
+            });
+
+        }
+        else if(questionType.equalsIgnoreCase("date"))
+        {
+            holder.mDateTimePickerTV.setText("Select Date");
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+                holder.mDateTimePickerTV.setText(brandStandardQuestion.getAudit_answer());
+                holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
+            }
+            setOtherViewHide(holder);
+            // holder.mCommentMediaShowLayout.setVisibility(View.GONE);
+            holder.mDateTimePickerTV.setVisibility(View.VISIBLE);
+            holder.mDateTimePickerTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickedOnAnswerTpye();
+                    AppUtils.datePicker(context,holder.mDateTimePickerTV,false,brandStandardQuestion);
                 }
             });
 
@@ -582,7 +737,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                     }
 
                     TextView tvSelected =((TextView)view);
-                    if (tvSelected.getText().toString().equalsIgnoreCase("None of the above") || tvSelected.getText().toString().equalsIgnoreCase("No")|| tvSelected.getText().toString().equalsIgnoreCase("NA")|| tvSelected.getText().toString().equalsIgnoreCase("N/A"))
+                    if (tvSelected.getText().toString().equalsIgnoreCase("None of the above") || tvSelected.getText().toString().equalsIgnoreCase("NA")|| tvSelected.getText().toString().equalsIgnoreCase("N/A"))
                     {
                         for (int j = 0; j < arrayList.size(); j++)
                         {
@@ -603,7 +758,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                         for (int j = 0; j < arrayList.size(); j++)
                         {
                             TextView radio_text = holder.optionListLinearLayout.findViewById(j);
-                            if (radio_text.getText().toString().equalsIgnoreCase("None of the above") || radio_text.getText().toString().equalsIgnoreCase("No")|| radio_text.getText().toString().equalsIgnoreCase("NA")|| radio_text.getText().toString().equalsIgnoreCase("N/A"))
+                            if (radio_text.getText().toString().equalsIgnoreCase("None of the above") || radio_text.getText().toString().equalsIgnoreCase("NA")|| radio_text.getText().toString().equalsIgnoreCase("N/A"))
                                 backToNormalState(radio_text, answerOptionId);
                         }
                         if (answerOptionId.contains(new Integer(optionId))) {

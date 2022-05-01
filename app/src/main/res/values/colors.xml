@@ -60,4 +60,12 @@
     <color name="yellow_green_color_picker">#C5E17A</color>
 
 
+
+    <color name="simpletooltip_background">@color/black</color>
+    <color name="simpletooltip_text">@android:color/white</color>
+    <color name="simpletooltip_arrow">@color/black</color>
+
+
+
+
 </resources>

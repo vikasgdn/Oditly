@@ -180,4 +180,7 @@
     </style>
     <string name="text_search">Search</string>
     <dimen name="drop_down_icon">15dp</dimen>
+
+
+    <style name="simpletooltip_default" parent="@android:style/TextAppearance.Small"></style>
 </resources>

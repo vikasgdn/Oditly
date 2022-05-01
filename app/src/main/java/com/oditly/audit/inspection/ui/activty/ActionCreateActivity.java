@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -73,6 +74,7 @@ import java.util.List;
 
 import in.balakrishnan.easycam.CameraBundleBuilder;
 import in.balakrishnan.easycam.CameraControllerActivity;
+import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
 public class ActionCreateActivity extends BaseActivity implements INetworkEvent, MultiSelectDialog.SubmitCallbackListener,BSImagePicker.OnSingleImageSelectedListener,BSImagePicker.OnMultiImageSelectedListener, BSImagePicker.ImageLoaderDelegate {
 
@@ -119,6 +121,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
     private RelativeLayout mLocationRL;
     private RelativeLayout mSectionRL;
     private TextView mLocationTv,mSectionTV;
+    private TextView tvClosureProofTV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,6 +137,9 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
 
         findViewById(R.id.iv_header_left).setOnClickListener(this);
         findViewById(R.id.btn_create).setOnClickListener(this);
+
+        tvClosureProofTV= findViewById(R.id.tv_closureproof);
+        tvClosureProofTV.setOnClickListener(this);
 
         TextView textView = (TextView) findViewById(R.id.tv_header_title);
         textView.setText(getString(R.string.text_create_action));
@@ -262,6 +268,16 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
         switch (view.getId()) {
             case R.id.iv_header_left:
                 finish();
+                break;
+            case R.id.tv_closureproof:
+                new SimpleTooltip.Builder(this)
+                        .anchorView(mMeidaCountET)
+                        .text("This is the minimum number of attachments required as evidence of completion of the task")
+                        .gravity(Gravity.CENTER)
+                        .animated(true)
+                        .transparentOverlay(true)
+                        .build()
+                        .show();
                 break;
             case R.id.tv_duedate:
                 DatePickerDialog datePickerDialog1 = new DatePickerDialog(this, (datePicker, i, i1, i2) -> ((TextView) view).setText(datePicker.getYear() + "-" + String.format("%02d-%02d", (datePicker.getMonth() + 1), i2)), startYear, startMonth, startDay);

@@ -69,7 +69,7 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
     private String mAuditId="";
     private String mSectionGroupId="";
     private String mSectionId="";
-
+    private int isGalleryDisasble=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +113,7 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
         mAuditId=intent.getStringExtra(AppConstant.AUDIT_ID);
         mSectionGroupId=intent.getStringExtra(AppConstant.SECTION_GROUPID);
         mSectionId=intent.getStringExtra(AppConstant.SECTION_ID);
-
+        isGalleryDisasble= intent.getIntExtra(AppConstant.GALLERY_DISABLE,1);
 
         mBrandStandardSubQuestList=((OditlyApplication)getApplicationContext()).getmSubQuestionForOptions();
         mAdapter = new BrandStandardOptionBasedQuestionsAdapter(this, mBrandStandardSubQuestList, BrandStandardOptionsBasedQuestionActivity.this);
@@ -207,7 +207,7 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
         addAttachment.putExtra("sectionId", mSectionId);
         addAttachment.putExtra("questionId", ""+bsQuestionId);
         addAttachment.putExtra("attachType", attachtype);
-        addAttachment.putExtra(AppConstant.GALLERY_DISABLE, false);
+        addAttachment.putExtra(AppConstant.GALLERY_DISABLE, isGalleryDisasble);
         startActivityForResult(addAttachment, AppConstant.QuestionAttachmentRequest);
     }
     private boolean validateCommentOfQuestion()
@@ -218,7 +218,7 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
         for (int i = 0; i < mBrandStandardSubQuestList.size(); i++) {
             BrandStandardQuestion question = mBrandStandardSubQuestList.get(i);
             count += 1;
-            int mMediaCount=0,mCommentCount=0,mActionPlanRequred=0;
+            int mMediaCount=question.getMedia_count(),mCommentCount=question.getHas_comment(),mActionPlanRequred=0;
             for (int k = 0; k < question.getOptions().size(); k++) {
                 BrandStandardQuestionsOption option = question.getOptions().get(k);
                 if (question.getAudit_option_id() != null && question.getAudit_option_id().contains(new Integer(option.getOption_id()))) {
@@ -241,25 +241,28 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
                 }
             }
 
-            if (question.getQuestion_type().equalsIgnoreCase("textarea") || question.getQuestion_type().equalsIgnoreCase("text") || question.getQuestion_type().equalsIgnoreCase("number"))
+            if (question.getQuestion_type().equalsIgnoreCase("textarea") || question.getQuestion_type().equalsIgnoreCase("text") || question.getQuestion_type().equalsIgnoreCase("number") || question.getQuestion_type().equalsIgnoreCase("datetime") || question.getQuestion_type().equalsIgnoreCase("date") || question.getQuestion_type().equalsIgnoreCase("slider") || question.getQuestion_type().equalsIgnoreCase("temperature") || question.getQuestion_type().equalsIgnoreCase("measurement") || question.getQuestion_type().equalsIgnoreCase("target"))
             {
-                if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
+                if ((AppUtils.isStringEmpty(question.getAudit_answer()) || question.getAudit_answer().equalsIgnoreCase("0")) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
                     AppUtils.toastDisplayForLong(this, "You have not answered " + "question no. " + count);
                     return false;
                 }
             }
             else {
-                if (question.getIs_required() == 1 && (question.getAudit_option_id() == null || question.getAudit_option_id().size() == 0)) {
+                if (question.getIs_required() == 1 && (question.getAudit_option_id() == null || question.getAudit_option_id().size() == 0) && !question.getQuestion_type().equalsIgnoreCase("media")) {
                     AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, "You have not answered " + "question no " + count);
                     return false;
                 }
             }
+
+
+
             if (mMediaCount > 0 && question.getAudit_question_file_cnt() < mMediaCount) {
                 AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, "Please submit the required " + mMediaCount + " image(s) for question no. " + count);
                 return false;
             }
             if (mCommentCount> 0 && mCommentCount > question.getAudit_comment().length()) {
-                String message = "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
                 AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, message);
                 return false;
             }

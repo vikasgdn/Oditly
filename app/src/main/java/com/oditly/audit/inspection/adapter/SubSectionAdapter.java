@@ -41,8 +41,15 @@ public class SubSectionAdapter extends RecyclerView.Adapter<SubSectionAdapter.Su
     @Override
     public void onBindViewHolder(final SubSectionTabViewHolder holder, final int position) {
         final BrandStandardSection brandStandardSection = data.get(position);
-        int totalQuestionCount = questionCount(brandStandardSection);
+        // int totalQuestionCount = questionCount(brandStandardSection);
+        int totalQuestionCount = brandStandardSection.getQuestion_count();
         int answerdCount = brandStandardSection.getAnswered_question_count();
+        if (brandStandardSection.getTotal_obtained_mark()>0) {
+            float sectionScore = ((brandStandardSection.getTotal_obtained_mark() / brandStandardSection.getTotal_max_mark()) * 100);
+            holder.tvScore.setText("Score: " + String.format("%.1f", sectionScore) + "%");
+        }
+        else
+            holder.tvScore.setText("Score: 0%");
 
 
         holder.tvSubSectionTitle.setText(brandStandardSection.getSection_title());
@@ -64,7 +71,7 @@ public class SubSectionAdapter extends RecyclerView.Adapter<SubSectionAdapter.Su
             holder.tvSubSectionStatus.setText("Completed");
             holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.complete_status));
             holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_green));
-          //  holder.naCheckBox.setChecked(true);
+            //  holder.naCheckBox.setChecked(true);
         }
         holder.llSubSectionBorder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,8 +94,9 @@ public class SubSectionAdapter extends RecyclerView.Adapter<SubSectionAdapter.Su
         TextView tvSubSectionStatus;
         ImageView tvSubSectionIcon;
         TextView tvQuestionCount;
+        TextView tvScore;
         LinearLayout llSubSectionBorder;
-      //  CheckBox naCheckBox;
+        //  CheckBox naCheckBox;
 
         public SubSectionTabViewHolder(View itemView) {
             super(itemView);
@@ -98,7 +106,8 @@ public class SubSectionAdapter extends RecyclerView.Adapter<SubSectionAdapter.Su
             tvSubSectionIcon = itemView.findViewById(R.id.iv_sub_section_icon);
             tvQuestionCount = itemView.findViewById(R.id.tv_question_count);
             llSubSectionBorder = itemView.findViewById(R.id.ll_sub_section_border);
-         //   naCheckBox = itemView.findViewById(R.id.cb_brand_standard_na);
+            tvScore = itemView.findViewById(R.id.tv_score);
+            //   naCheckBox = itemView.findViewById(R.id.cb_brand_standard_na);
         }
     }
 
@@ -107,8 +116,8 @@ public class SubSectionAdapter extends RecyclerView.Adapter<SubSectionAdapter.Su
         totalCount = brandStandardSection.getQuestions().size();
         for (int i = 0; i < brandStandardSection.getSub_sections().size(); i++)
         {
-           BrandStandardSubSection subSection = brandStandardSection.getSub_sections().get(i);
-           totalCount = totalCount + subSection.getQuestions().size();
+            BrandStandardSubSection subSection = brandStandardSection.getSub_sections().get(i);
+            totalCount = totalCount + subSection.getQuestions().size();
         }
         return totalCount;
     }

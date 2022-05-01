@@ -8,8 +8,8 @@ android {
         applicationId "com.oditly.audit.inspection"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1032
-        versionName "1032"
+        versionCode 1034
+        versionName "1034"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -115,6 +115,8 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:${camerax_version}"
     implementation"androidx.camera:camera-view:1.0.0-alpha12"
     implementation "androidx.camera:camera-extensions:1.0.0-alpha12"
+    implementation 'com.github.douglasjunior:android-simple-tooltip:1.1.0'
+
 
 }
 

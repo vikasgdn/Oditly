@@ -30,25 +30,36 @@
             android:gravity="center"
             android:singleLine="true"
             android:ellipsize="marquee"
-            android:padding="@dimen/d_4dp"
+            android:paddingHorizontal="@dimen/d_4dp"
+            android:paddingVertical="@dimen/d_2dp"
             android:layout_marginLeft="@dimen/d_4dp"
             android:layout_marginRight="@dimen/d_4dp"
             android:textColor="@color/c_gray"
             android:fontFamily="@font/nunitosans_bold"
             android:textSize="@dimen/text_size_12" />
 
-
         <TextView
             android:id="@+id/tv_question_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0/0"
-            android:padding="@dimen/d_5dp"
-            android:layout_marginBottom="@dimen/d_2dp"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:paddingHorizontal="@dimen/d_3dp"
             android:textAlignment="center"
             android:textColor="@color/c_gray"
-            android:textSize="@dimen/text_size_10" />
-
+            android:textSize="@dimen/text_size_11" />
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score 0%"
+            android:paddingHorizontal="@dimen/d_1dp"
+            android:paddingVertical="@dimen/d_2dp"
+            android:layout_marginBottom="@dimen/d_3dp"
+            android:textAlignment="center"
+            android:textColor="@color/c_blue"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:textSize="@dimen/text_size_11" />
 
         <TextView
             android:id="@+id/tv_sub_section_status"

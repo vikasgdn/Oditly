@@ -332,17 +332,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                     String tokenAuth=  token.getResult().getToken();
                     AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
 
-                   /* String userId= token.getResult().getClaims().get("userId").toString();
-                    String roleId= token.getResult().getClaims().get("roleId").toString();
-                    if (!TextUtils.isEmpty(userId))
-                        AppPreferences.INSTANCE.setUserId(Integer.parseInt(userId), SignInPasswordActivity.this);
-                    if (!TextUtils.isEmpty(roleId))
-                        AppPreferences.INSTANCE.setClientRoleId(Integer.parseInt(roleId));
 
-                    //Log.e("USER TOKEN ",""+AppPreferences.INSTANCE.getFirebaseAccessToken(SignInPasswordActivity.this));
-                    AppPreferences.INSTANCE.setLogin(true, SignInPasswordActivity.this);
-                    startActivity(new Intent(SignInPasswordActivity.this, MainActivity.class));
-          */
                   getUserProfile();
                 }
             }

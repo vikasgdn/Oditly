@@ -259,6 +259,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     this.currentBrandStandardAuditAdapter.setattachmentCount(Integer.parseInt(attachmentCount2), this.itemClickedPos);
                 }
             } else if (requestCode == 1021 && resultCode == -1) {
+                BrandStandardAuditActivity.isAnswerCliked=true;
                 this.currentBrandStandardAuditAdapter.setActionCreatedFlag(this.itemClickedPos);
             }
         } catch (Exception e) {
@@ -282,6 +283,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         actionPlan.putExtra(AppConstant.AUDIT_ID,auditId);
         actionPlan.putExtra(AppConstant.SECTION_GROUPID,sectionGroupId);
         actionPlan.putExtra(AppConstant.SECTION_ID,sectionId);
+        actionPlan.putExtra(AppConstant.GALLERY_DISABLE, isGalleryDisasble);
         ((OditlyApplication)context.getApplicationContext()).setmSubQuestionForOptions(brandStandardQuestions);
         startActivityForResult(actionPlan, AppConstant.SUBQUESTION_REQUESTCODE);
     }
@@ -349,7 +351,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", new JSONArray(brandStandardQuestions.get(i).getAudit_option_id()));
                 jsonObject.put("audit_answer", brandStandardQuestions.get(i).getAudit_answer());
-                jsonObject.put("options", AppUtils.getOptionQuestionArray(brandStandardQuestions.get(i).getOptions()));
+                jsonObject.put("options", AppUtils.getOptionQuestionArray(brandStandardQuestions.get(i).getOptions(),brandStandardQuestions.get(i).getAudit_option_id()));
 
                 jsonArray.put(jsonObject);
 
@@ -366,7 +368,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 jsonObject.put("audit_comment", brandStandardsubsectionQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", new JSONArray(brandStandardsubsectionQuestions.get(i).getAudit_option_id()));
                 jsonObject.put("audit_answer", brandStandardsubsectionQuestions.get(i).getAudit_answer());
-                jsonObject.put("options", AppUtils.getOptionQuestionArray(brandStandardsubsectionQuestions.get(i).getOptions()));
+                jsonObject.put("options", AppUtils.getOptionQuestionArray(brandStandardsubsectionQuestions.get(i).getOptions(),brandStandardsubsectionQuestions.get(i).getAudit_option_id()));
 
                 jsonArray.put(jsonObject);
             } catch (Exception e) {
@@ -445,7 +447,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 }
                 if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
                 {
-                    String message = "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                    String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
                     return false;
                 }
@@ -500,7 +502,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 }
                 if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
                 {
-                    String message = "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                    String message = "Please enter the  minimum required " + mCommentCount+ " characters comment for question no. " + count;
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
 
                     return false;

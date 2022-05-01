@@ -236,6 +236,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 this.mBrandStandardListCurrent.get(this.itemClickedPos).setmImageList(tempList);
                 this.sectionTabAdapter.setattachmentCount(Integer.parseInt(attachmentCount2), this.itemClickedPos);
             } else if (requestCode == 1021 && resultCode == Activity.RESULT_OK) {
+                isAnswerCliked = true;
                 this.sectionTabAdapter.setActionCreatedFlag(this.itemClickedPos);
             }
         } catch (Exception e) {
@@ -255,6 +256,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         actionPlan.putExtra(AppConstant.AUDIT_ID,auditId);
         actionPlan.putExtra(AppConstant.SECTION_GROUPID,sectionGroupId);
         actionPlan.putExtra(AppConstant.SECTION_ID,sectionId);
+        actionPlan.putExtra(AppConstant.GALLERY_DISABLE,mGalleryDisable);
         ((OditlyApplication)context.getApplicationContext()).setmSubQuestionForOptions(brandStandardQuestions);
         startActivityForResult(actionPlan, AppConstant.SUBQUESTION_REQUESTCODE);
     }
@@ -284,7 +286,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 jsonObject.put("audit_answer_na", brandStandardQuestions.get(i).getAudit_answer_na());
                 jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", new JSONArray(brandStandardQuestions.get(i).getAudit_option_id()));
-                jsonObject.put("options", AppUtils.getOptionQuestionArray(brandStandardQuestions.get(i).getOptions()));
+                jsonObject.put("options", AppUtils.getOptionQuestionArray(brandStandardQuestions.get(i).getOptions(),brandStandardQuestions.get(i).getAudit_option_id()));
                 jsonObject.put("audit_answer", brandStandardQuestions.get(i).getAudit_answer());
                 jsonArray.put(jsonObject);
 
@@ -358,7 +360,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 }
                 if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
                 {
-                    String message = "Please enter the  minimum required " + question.getHas_comment() + " characters comment for question no. " + count;
+                    String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this, message);
                    return  false;
                 }

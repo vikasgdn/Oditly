@@ -59,5 +59,16 @@
     <dimen name="d_24dp">24dp</dimen>
     <dimen name="dp_3dp">3dp</dimen>
     <dimen name="d_45dp">45dp</dimen>
+    <dimen name="text_size_11">11sp</dimen>
+
+
+
+    <dimen name="simpletooltip_max_width">150dp</dimen>
+    <dimen name="simpletooltip_overlay_offset">10dp</dimen>
+    <dimen name="simpletooltip_margin">40dp</dimen>
+    <dimen name="simpletooltip_padding">8dp</dimen>
+    <dimen name="simpletooltip_arrow_width">30dp</dimen>
+    <dimen name="simpletooltip_arrow_height">15dp</dimen>
+    <dimen name="simpletooltip_animation_padding">4dp</dimen>
 
 </resources>

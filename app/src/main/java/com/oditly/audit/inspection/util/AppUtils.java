@@ -158,21 +158,26 @@ public class AppUtils {
                         }
                         mMediaCount = question.getMedia_count();
                         mCommentCount = question.getHas_comment();
-                        if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
+                        if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0)
+                        {
                             for (int y = 0; y < question.getOptions().size(); y++) {
                                 BrandStandardQuestionsOption option = question.getOptions().get(y);
-                                if (question.getQuestion_type().equalsIgnoreCase("checkbox")) {
-                                    if (mActionPlanRequred == 0)
-                                        mActionPlanRequred = option.getAction_plan_required();
-                                    if (mMediaCount < option.getMedia_count())
+                                if (question.getAudit_option_id() != null && question.getAudit_option_id().contains(new Integer(option.getOption_id())))
+                                {
+
+                                    if (question.getQuestion_type().equalsIgnoreCase("checkbox")) {
+                                        if (mActionPlanRequred == 0)
+                                            mActionPlanRequred = option.getAction_plan_required();
+                                        if (mMediaCount < option.getMedia_count())
+                                            mMediaCount = option.getMedia_count();
+                                        if (mCommentCount < option.getCommentCount())
+                                            mCommentCount = option.getCommentCount();
+                                    } else {
                                         mMediaCount = option.getMedia_count();
-                                    if (mCommentCount < option.getCommentCount())
                                         mCommentCount = option.getCommentCount();
-                                } else {
-                                    mMediaCount = option.getMedia_count();
-                                    mCommentCount = option.getCommentCount();
-                                    mActionPlanRequred = option.getAction_plan_required();
-                                    break;
+                                        mActionPlanRequred = option.getAction_plan_required();
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -204,38 +209,45 @@ public class AppUtils {
     }
 
 
-    public static JSONArray getOptionQuestionArray(ArrayList<BrandStandardQuestionsOption> optionsArray) {
+    public static JSONArray getOptionQuestionArray(ArrayList<BrandStandardQuestionsOption> optionsArray,ArrayList<Integer> auditOptonID) {
         try {
-            for (int i = 0; i < optionsArray.size(); i++) {
+            ArrayList<JSONObject> mArrayList=new ArrayList<>();
+            for (int i = 0; i < optionsArray.size(); i++)
+            {
                 BrandStandardQuestionsOption questionsOption = optionsArray.get(i);
-                if (questionsOption.getQuestions() != null && questionsOption.getQuestions().size() > 0) {
+                if (questionsOption.getQuestions() != null && questionsOption.getQuestions().size() > 0)
+                {
                     for (int j = 0; j < questionsOption.getQuestions().size(); j++)
                     {
-                        if (!TextUtils.isEmpty(questionsOption.getQuestions().get(j).getAudit_answer()))
+                       if (auditOptonID.contains(new Integer(questionsOption.getOption_id())))
                         {
-                            JSONArray jsonArray = new JSONArray();
-                            JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("option_id", questionsOption.getOption_id());
-                            jsonObject.put("questions", geSubQusetionsArrayArray(questionsOption.getQuestions()));
-                            jsonArray.put(jsonObject);
-                            return jsonArray;
-
-                        }
-                        else
-                        {
-                            if (questionsOption.getQuestions().get(j).getAudit_option_id() != null && questionsOption.getQuestions().get(j).getAudit_option_id().size() > 0) {
-                                JSONArray jsonArray = new JSONArray();
+                            if (questionsOption.getQuestions().get(j).getQuestion_type().equalsIgnoreCase("media") || (!TextUtils.isEmpty(questionsOption.getQuestions().get(j).getAudit_answer()) && !questionsOption.getQuestions().get(j).getAudit_answer().equalsIgnoreCase("0"))) {
+                                //  JSONArray jsonArray = new JSONArray();
                                 JSONObject jsonObject = new JSONObject();
                                 jsonObject.put("option_id", questionsOption.getOption_id());
                                 jsonObject.put("questions", geSubQusetionsArrayArray(questionsOption.getQuestions()));
-                                jsonArray.put(jsonObject);
-                                return jsonArray;
+                                mArrayList.add(jsonObject);
+                                break;
+                                //jsonArray.put(jsonObject);
+                                //return jsonArray;
+
+                            } else {
+                                if (questionsOption.getQuestions().get(j).getAudit_option_id() != null && questionsOption.getQuestions().get(j).getAudit_option_id().size() > 0) {
+                                    // JSONArray jsonArray = new JSONArray();
+                                    JSONObject jsonObject = new JSONObject();
+                                    jsonObject.put("option_id", questionsOption.getOption_id());
+                                    jsonObject.put("questions", geSubQusetionsArrayArray(questionsOption.getQuestions()));
+                                    mArrayList.add(jsonObject);
+                                    break;
+                                    // jsonArray.put(jsonObject);
+                                    //return jsonArray;
+                                }
                             }
                         }
                     }
                 }
             }
-            return new JSONArray();
+            return new JSONArray(mArrayList);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -274,7 +286,7 @@ public class AppUtils {
                 jsonObject.put("audit_answer_na", brandStandardQuestions.get(i).getAudit_answer_na());
                 jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", AppUtils.getOptionIdArray(brandStandardQuestions.get(i).getAudit_option_id()));
-                jsonObject.put("options", getOptionQuestionArray(brandStandardQuestions.get(i).getOptions()));
+                jsonObject.put("options", getOptionQuestionArray(brandStandardQuestions.get(i).getOptions(),brandStandardQuestions.get(i).getAudit_option_id()));
                 jsonObject.put("audit_answer", brandStandardQuestions.get(i).getAudit_answer());
                 jsonArray.put(jsonObject);
             } catch (JSONException e) {

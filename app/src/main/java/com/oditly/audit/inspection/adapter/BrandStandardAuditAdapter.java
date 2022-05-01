@@ -1,7 +1,6 @@
 package com.oditly.audit.inspection.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -19,22 +18,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.mohammedalaa.seekbar.OnRangeSeekBarChangeListener;
 import com.mohammedalaa.seekbar.RangeSeekBarView;
-import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardActionPlan;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSlider;
-import com.oditly.audit.inspection.ui.activty.AudioPlayerActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
-import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
-import com.oditly.audit.inspection.ui.activty.BrandStandardOptionsBasedQuestionActivity;
-import com.oditly.audit.inspection.ui.activty.ShowHowImageActivity;
-import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
@@ -180,7 +175,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
         }
         else  if(questionType.equalsIgnoreCase("number") )
         {
-            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer()) && !brandStandardQuestion.getAudit_answer().equals("0") ) {
                 holder.mNumberDecAnsweET.setText(brandStandardQuestion.getAudit_answer());
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
@@ -426,7 +421,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
             holder.mShowHowLL.setEnabled(false);
         }
         if (brandStandardQuestion.isCan_create_action_plan()) {
-          //  clickedOnAnswerTpye();
+            //  clickedOnAnswerTpye();
             brandStandardQuestion.setmClickPosition(position);
             brandStandardQuestion.setStandardAuditAdapter(this);
             holder.mActionCreateLL.setVisibility(View.VISIBLE);
@@ -632,6 +627,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
         }
     }
 
+    boolean isOptionAlreadySeleted=false;
     private void handleDropDownTypeQuestion(final BrandStandardQuestion brandStandardQuestion, final BrandStandardAuditViewHolder holder,final ArrayList<Integer> answerOptionId) {
 
         final ArrayList<BrandStandardQuestionsOption> arrayList = new ArrayList<>();
@@ -652,6 +648,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
             final BrandStandardQuestionsOption brandStandardQuestionsOption = arrayList.get(i);
             if (brandStandardQuestion.getAudit_option_id()!= null && brandStandardQuestion.getAudit_option_id().contains(new Integer(brandStandardQuestionsOption.getOption_id())))
             {
+                isOptionAlreadySeleted=true;
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
                 answerSpinner.setSelection(i+1);
                 setQuestionMandtoryMediaCommentActionStar(brandStandardQuestionsOption ,""+brandStandardQuestion.getAudit_question_file_cnt(), holder.mMediaLabelTV, holder.mCommentLabelTV,holder.mActionPlanLabelTV,holder.mCommentLenthTV);
@@ -683,6 +680,13 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                         brandStandardQuestion.setAudit_answer_na(1);
                     else
                         brandStandardQuestion.setAudit_answer_na(0);
+
+                    if (!isOptionAlreadySeleted && brandStandardQuestion.getOptions().get(position).getQuestions()!=null &&brandStandardQuestion.getOptions().get(position).getQuestions().size()>0 )
+                    {
+                        ((BrandStandardAuditActivity)context).sendToQuestionBasedActivity(brandStandardQuestion.getOptions().get(position).getQuestions());
+                    }
+
+                    isOptionAlreadySeleted=false;
 
                     ((BrandStandardAuditActivity) context).countNA_Answers();
                 }
@@ -727,8 +731,8 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                     setQuestionMandtoryMediaCommentActionStar(brandStandardQuestionsOption ,""+brandStandardQuestion.getAudit_question_file_cnt(), holder.mMediaLabelTV, holder.mCommentLabelTV,holder.mActionPlanLabelTV,holder.mCommentLenthTV);
                     clickedOnAnswerTpye();
                     int optionId = brandStandardQuestionsOption.getOption_id();
-                    TextView tvSelected =((TextView)view);
-                    if (tvSelected.getText().toString().equalsIgnoreCase("None of the above") || tvSelected.getText().toString().equalsIgnoreCase("No")|| tvSelected.getText().toString().equalsIgnoreCase("NA")|| tvSelected.getText().toString().equalsIgnoreCase("N/A"))
+                 /*   TextView tvSelected =((TextView)view);
+                    if (tvSelected.getText().toString().equalsIgnoreCase("None of the above") || tvSelected.getText().toString().equalsIgnoreCase("NA")|| tvSelected.getText().toString().equalsIgnoreCase("N/A"))
                     {
                         for (int j = 0; j < arrayList.size(); j++)
                         {
@@ -749,17 +753,19 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                         for (int j = 0; j < arrayList.size(); j++)
                         {
                             TextView radio_text = holder.optionListLinearLayout.findViewById(j);
-                            if (radio_text.getText().toString().equalsIgnoreCase("None of the above") || radio_text.getText().toString().equalsIgnoreCase("No")|| radio_text.getText().toString().equalsIgnoreCase("NA")|| radio_text.getText().toString().equalsIgnoreCase("N/A"))
+                            if (radio_text.getText().toString().equalsIgnoreCase("None of the above") || radio_text.getText().toString().equalsIgnoreCase("NA")|| radio_text.getText().toString().equalsIgnoreCase("N/A"))
                                 backToNormalState(radio_text, answerOptionId);
                         }
-                        if (answerOptionId.contains(new Integer(optionId))) {
-                            backToNormalState(answerText, answerOptionId);
-                        }
-                        else
-                        {   answerOptionId.add(optionId);
-                            setSelectionProcess(answerText, brandStandardQuestion, brandStandardQuestionsOption,true);
-                        }
+                 */
+
+                    if (answerOptionId.contains(new Integer(optionId))) {
+                        backToNormalState(answerText, answerOptionId);
                     }
+                    else
+                    {   answerOptionId.add(optionId);
+                        setSelectionProcess(answerText, brandStandardQuestion, brandStandardQuestionsOption,true);
+                    }
+                    // }
                     ((BrandStandardAuditActivity) context).countNA_Answers();
                 }
             });

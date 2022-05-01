@@ -233,7 +233,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
         try {
             JSONObject object = new JSONObject(response);
             mNoDataFoundRL.setVisibility(View.GONE);
-            if (!isPagingData && row>20) {
+            if (!isPagingData) {
                 mAuditLisBean.clear();
             }
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
