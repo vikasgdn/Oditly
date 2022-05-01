@@ -242,6 +242,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
           processQuestionListResponse(response);
 
         mSpinKitView.setVisibility(View.GONE);
+
     }
 
     private void processQuestionListResponse(String response) {
