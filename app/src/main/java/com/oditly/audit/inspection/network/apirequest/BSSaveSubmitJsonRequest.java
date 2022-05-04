@@ -52,7 +52,7 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
             jsonObject.put(REQ_PARAM_SAVE, save);
             jsonObject.put(REQ_PARAM_ANSWER, answer);
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -67,13 +67,13 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(REQ_PARAM_AUDIT_ID, auditId);
-            jsonObject.put(REQ_PARAM_SECTION_ID, sectionid);
-            jsonObject.put(REQ_PARAM_SECTION_GRP_ID, sectionGroupid);
+            jsonObject.put(REQ_PARAM_SECTION_ID, Integer.parseInt(sectionid));
+            jsonObject.put(REQ_PARAM_SECTION_GRP_ID, Integer.parseInt(sectionGroupid));
             jsonObject.put(REQ_PARAM_AUDIT_DATE, auditDate);
             jsonObject.put(REQ_PARAM_SAVE, save);
             jsonObject.put(REQ_PARAM_ANSWER, answer);
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -35,6 +35,7 @@ import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.adapter.ActionMediaAdapter;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.dialog.CustomDialog;
 import com.oditly.audit.inspection.model.actionData.ActionInfo;
 import com.oditly.audit.inspection.network.INetworkEvent;
@@ -315,14 +316,14 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
         try {
             JSONObject object = new JSONObject(response);
             String message = object.getString(AppConstant.RES_KEY_MESSAGE);
-            if (!object.getBoolean("error")) {
-                AppUtils.toastDisplayForLong(this.mActivity, message);
+            if (!object.getBoolean("error"))
+            {
                 this.mCommentET.setText("");
-                this.mActivity.startActivity(new Intent(this.mActivity, MainActivity.class));
-                this.mActivity.finish();
+                AppDialogs.messageDialogWithOKButton(mActivity,message);
             }
             else
-                AppUtils.toastDisplayForLong(this.mActivity, message);
+                AppDialogs.messageDialogWithOKButton(mActivity,message);
+
         } catch (Exception e) {
             e.printStackTrace();
             AppUtils.toastDisplayForLong(this.mActivity, this.mActivity.getString(R.string.oops));

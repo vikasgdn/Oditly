@@ -328,8 +328,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             Log.e(";; answer array  :: ",""+getQuestionsArray());
             if(isSaveButtonClick)
                 mProgressRL.setVisibility(View.VISIBLE);
-            JSONObject object = BSSaveSubmitJsonRequest.createInput(auditId, auditDate, "1", getQuestionsArray());
-            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD, NetworkConstant.METHOD_POST, this, this);
+            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId, auditDate, "1", getQuestionsArray());
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE, NetworkConstant.METHOD_POST, this, this);
             networkService.call(object);
         } else
         {

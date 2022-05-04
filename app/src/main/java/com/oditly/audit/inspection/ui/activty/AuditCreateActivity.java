@@ -292,6 +292,10 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
             mProgressBarRL.setVisibility(View.VISIBLE);
 
             JSONArray jsArray=  new JSONArray(mAuditorsIDSelected);
+
+            ArrayList<String> reviewerList=new ArrayList();
+            reviewerList.add(mReviewerID);
+
             try {
                 JSONObject params = new JSONObject();
                 params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
@@ -302,7 +306,7 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
                 if(!TextUtils.isEmpty(mAuditName))
                     params.put(NetworkConstant.REQ_PARAM_AUDITNAME, mAuditName);
                 if(!TextUtils.isEmpty(mReviewerID))
-                    params.put(NetworkConstant.REQ_PARAM_REVIEWERID, mReviewerID);
+                    params.put(NetworkConstant.REQ_PARAM_REVIEWERID, new JSONArray(reviewerList));
                 if(!TextUtils.isEmpty(mAuditDate))
                     params.put(NetworkConstant.REQ_PARAM_DUEDATE,mAuditDate);
                 if(!TextUtils.isEmpty(mAuditStartDate))
@@ -317,7 +321,8 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
                 networkService.call(params);
             }
             catch (Exception e)
-            { AppUtils.toast(this, getString(R.string.internet_error));
+            {
+                //AppUtils.toast(this, getString(R.string.internet_error));
                 e.printStackTrace(); }
         } else
             AppUtils.toast(this, getString(R.string.internet_error));

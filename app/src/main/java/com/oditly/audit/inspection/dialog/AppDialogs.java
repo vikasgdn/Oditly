@@ -26,6 +26,7 @@ import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.ui.activty.ActionCreateActivity;
+import com.oditly.audit.inspection.ui.activty.ActionPlanLandingActivity;
 import com.oditly.audit.inspection.ui.activty.AddTeamMemberActivity;
 import com.oditly.audit.inspection.ui.activty.AuditCreateActivity;
 import com.oditly.audit.inspection.ui.activty.AuditSubmitSignatureActivity;
@@ -646,6 +647,12 @@ public class AppDialogs
                         AppPreferences.INSTANCE.clearPreferences();
                         Intent intent = new Intent(activity, SplashActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    }
+                    if(activity instanceof ActionPlanLandingActivity)
+                    {
+                        Intent intent = new Intent(activity, MainActivity.class);
                         activity.startActivity(intent);
                         activity.finish();
                     }
