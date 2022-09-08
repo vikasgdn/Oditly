@@ -221,6 +221,12 @@
     <string name="text_team">팀</string>
     <string name="text_addnew_member">새로운 팀 만들기</string>
     <string name="text_name_emaili_roll">이름, 이메일 ID, 역할</string>
+
+    <string name="text_name_team">이름:</string>
+    <string name="text_email_team">이메일:</string>
+    <string name="text_role_team">역할:</string>
+
+
     <string name="text_entor_data">검색 데이터를 입력하십시오</string>
     <string name="text_selet_filter">필터 선택</string>
     <string name="text_date_range">날짜 범위</string>
@@ -328,5 +334,80 @@
     <string name="s_create">창조하다</string>
     <string name="s_signin_microsoft">마이크로 소프트를 이용하여 가입하기</string>
     <string name="text_actiopnplan_id">실행 계획 Id</string>
+
+
+
+    <!--
+        new
+    -->
+
+    <string name="text_pending">보류중</string>
+    <string name="text_score">점수</string>
+    <string name="text_type_your_comment">댓글을 입력하십시오</string>
+    <string name="text_type_your_answer">답변을 기입하십시오.</string>
+    <string name="text_nature_of_complaint">불만 사항</string>
+    <string name="text_overdue_by_days">연체 시작 날짜 XXX 일</string>
+    <string name="text_overdue_by_day">연체 시작 날짜 XXX 일</string>
+    <string name="text_overdue_days_notapplicable">만기일이 적용되지 않습니다.</string>
+    <string name="text_overdue_on">연체한 날짜</string>
+    <string name="text_by">별</string>
+    <string name="text_complted_on">완료일</string>
+    <string name="text_members">멤버들</string>
+    <string name="text_member">"회원"</string>
+    <string name="text_teamname">팀명  :</string>
+    <string name="text_create_date">"생성 날짜" :</string>
+    <string name="text_team_count">"팀 개수"   :</string>
+    <string name="text_action_has_been_created">"작업이 생성되었습니다."</string>
+    <string name="text_inspection_hasbeen_created_and_assigned">"검사가 생성되어 감사자에게 할당되었습니다."</string>
+    <string name="text_inspection_hasbeen_created_and_scheduled">"검사가 예정되어 있고 계획된 시간에 감사관에게 할당됩니다."</string>
+    <string name="text_select_startdate_first">"시작날짜를 선택하십시오."</string>
+    <string name="text_select_duedate_first">"마감일을 선택하십시오"</string>
+    <string name="text_select_time">"시간 선택"</string>
+    <string name="text_select_am_pm">"AM/PM 선택"</string>
+    <string name="text_question">"질문":</string>
+    <string name="text_create_actionplanfor_question">"질문 번호에 대한 액션 플랜을 생성하십시오.".</string>
+
+    <string name="text_submit_requredmedia_count">요청을 제출하십시오 MMM 질문 번호에 대한 이미지들 CCC 섹션에서</string>
+    <string name="text_enter_requredcomment_count">질문 번호에 대한 최소 필수 XXX 문자 설명을 입력하십시오. CCC</string>
+    <string name="text_youhavenot_answer_question">질문 번호에 답변하지 못했습니다. CCC</string>
+    <string name="text_actionplan_has_been_created_forthis_question">이 질문에 대한 액션 플랜이 생성되었습니다.</string>
+    <string name="text_answer_hasbeen_save">답변이 보관되었습니다.</string>
+    <string name="text_back">뒤로가기</string>
+    <string name="text_youhave_not_answer_question_section">질문 번호에 답변하지 못했습니다. CCC 섹션에서 SSS</string>
+    <string name="text_create_actionplan_for_question_section">질문 번호에 대한 액션 플랜을 생성하십시오. CCC 섹션에서 SSS</string>
+    <string name="text_submit_requiredmedia_for_question_section">요청을 제출하십시오 MMM 질문 번호에 대한 이미지들 CCC 섹션에서 SSS</string>
+    <string name="text_submit_require_comment_for_question_section">질문 번호에 대한 최소 필수 MMM 문자 설명을 입력하십시오. CCC 섹션에서 SSS</string>
+    <string name="text_subsection">일부</string>
+
+
+
+   <string name="text_appupdate">Oditly의 몇 가지 중요한 기능을 놓치고 있습니다. 응용 프로그램을 업데이트하십시오..</string>
+   <string name="text_update">업데이트</string>
+   <string name="text_app_uptodate">신청서가 최신 상태입니다</string>
+   <string name="text_update_your_app">Update your App</string>
+
+    <!--new-->
+    <string name="text_submit_requredmedia_action">요청을 제출하십시오 MMM 업로드할 수 있습니다</string>
+    <string name="text_image_not_attched">죄송합니다. 이미지가 첨부되지 않았습니다</string>
+    <string name="text_douwant_to_continue">계속하시겠습니까?</string>
+    <string name="text_please_enterminimum">최소값을 입력하십시오 CCC 문자 </string>
+    <string name="please_enter_valuein">에 값을 입력하세요</string>
+    <string name="text_instruction">지침</string>
+    <string name="text_adhoc">애드 혹</string>
+
+
+
+    <!--new sept-->
+    <string name="text_overall_score">종합 점수</string>
+    <string name="text_actionplan_attachment">실행 계획 첨부</string>
+    <string name="text_answer">Answer</string>
+    <string name="text_response">응답</string>
+    <string name="text_inspection_attachment">검사 첨부</string>
+    <string name="text_root_cause">근본 원인 분석</string>
+    <string name="text_enter_rootcause">실행 계획 첨부</string>
+    <string name="text_notify_user">사용자에게 알림</string>
+    <string name="text_enteremail_commaseperated">이메일 ID를 쉼표로 구분하여 입력하세요.</string>
+    <string name="text_no_attachment">첨부 파일 없음</string>
+
 
 </resources>

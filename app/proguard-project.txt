@@ -60,6 +60,7 @@
     public static <fields>;
 }
 
+
 -keep public class com.oditly.audit.inspection.OditlyApplication {
   *;
 }

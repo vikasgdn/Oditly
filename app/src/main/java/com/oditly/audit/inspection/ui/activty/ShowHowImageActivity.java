@@ -38,11 +38,13 @@ public class ShowHowImageActivity extends BaseActivity {
     TextView mTitalTV;
    // private ProgressDialog progressDialog;
     public static final String TAG = ShowHowImageActivity.class.getSimpleName();
+    private String mFromWhere="";
 
 
-    public static void start(Context context, String data) {
+    public static void start(Context context, String data,String location) {
         Intent i = new Intent(context, ShowHowImageActivity.class);
         i.putExtra(AppConstant.FILE_URL, data);
+        i.putExtra(AppConstant.FROMWHERE, location);
         context.startActivity(i);
     }
     @Override
@@ -62,10 +64,19 @@ public class ShowHowImageActivity extends BaseActivity {
         mTitalTV = findViewById(R.id.tv_header_title);
         mProgressBarRL = findViewById(R.id.ll_parent_progress);
         findViewById(R.id.iv_header_left).setOnClickListener(this);
-        mTitalTV.setText(getString(R.string.text_ref_image));
+
 
         imageView = findViewById(R.id.image_view);
         image = getIntent().getStringExtra(AppConstant.FILE_URL);
+        mFromWhere = getIntent().getStringExtra(AppConstant.FROMWHERE);
+
+
+        if (mFromWhere.equalsIgnoreCase(AppConstant.ACTIONPLAN))
+            mTitalTV.setText(getString(R.string.text_attachment));
+        else
+            mTitalTV.setText(getString(R.string.text_ref_image));
+
+
         mProgressBarRL.setVisibility(View.VISIBLE);
       //  progressDialog.show();
         Glide.with(context)

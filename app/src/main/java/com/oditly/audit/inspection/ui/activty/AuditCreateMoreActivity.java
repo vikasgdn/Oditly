@@ -175,7 +175,7 @@ public class AuditCreateMoreActivity extends BaseActivity {
         {
             case R.id.ll_timeampm:
                 if(TextUtils.isEmpty(mStartDateET.getText().toString()))
-                    AppUtils.toast(this,"Please select Start Date First");
+                    AppUtils.toast(this,getString(R.string.text_select_startdate_first));
                 break;
             case R.id.tv_duedate:
                 DatePickerDialog datePickerDialog1=  new DatePickerDialog(this, (datePicker, i, i1, i2) ->((TextView) view).setText(datePicker.getYear()+"-"+String.format("%02d-%02d",(datePicker.getMonth() + 1),i2)),startYear,startMonth,startDay);
@@ -208,11 +208,11 @@ public class AuditCreateMoreActivity extends BaseActivity {
                             mDueTimeET.setText(selectedHour + ":" + selectedMinute + ":00");
                         }
                     }, startHour, startMinute, true);//Yes 24 hour time
-                    mTimePicker.setTitle("Select Time");
+                    mTimePicker.setTitle(getString(R.string.text_select_time));
                     mTimePicker.show();
                 }
                 else
-                    AppUtils.toast(this,"Please select Due Date First");
+                    AppUtils.toast(this,getString(R.string.text_select_duedate_first));
                 break;
             case R.id.iv_header_left:
                 finish();

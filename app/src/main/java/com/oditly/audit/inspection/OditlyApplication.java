@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 
 
+import com.oditly.audit.inspection.model.LanguageBeanData;
 import com.oditly.audit.inspection.model.actionData.ActionInfo;
 import com.oditly.audit.inspection.model.audit.AuditInfo;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
@@ -36,6 +37,8 @@ public class OditlyApplication extends Application {
     private ArrayList<BrandStandardSection> mBrandStandardSectionList;
     private Context mContext;
     private boolean isGalleryDisable;
+    private List<LanguageBeanData> mLanguageList;
+
 
 
     public List<Uri> getmAttachImageList()
@@ -130,5 +133,13 @@ public class OditlyApplication extends Application {
 
     public void setmSubQuestionForOptions(ArrayList<BrandStandardQuestion> mSubQuestionForOptions) {
         this.mSubQuestionForOptions = mSubQuestionForOptions;
+    }
+
+    public List<LanguageBeanData> getmLanguageList() {
+        return mLanguageList;
+    }
+
+    public void setmLanguageList(List<LanguageBeanData> mLanguageList) {
+        this.mLanguageList = mLanguageList;
     }
 }

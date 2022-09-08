@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:background="@color/c_white" android:layout_width="match_parent" android:layout_height="match_parent">
-    <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_commentlist" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/d_4dp" android:layout_marginBottom="@dimen/d_70dp" android:fadeScrollbars="false" app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-    <ImageView android:id="@+id/iv_send" android:padding="@dimen/d_3dp" android:layout_width="@dimen/d_45dp" android:layout_height="@dimen/d_50dp" android:layout_marginRight="@dimen/d_5dp" android:layout_marginBottom="@dimen/d_10dp" android:src="@drawable/ic_baseline_send_24" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"/>
-    <EditText android:textSize="@dimen/text_size_16" android:textColor="@color/c_gray_text" android:id="@+id/et_comment" android:background="@drawable/gray_border_whitebg_round" android:padding="@dimen/d_10dp" android:layout_width="match_parent" android:layout_height="@dimen/d_45dp" android:layout_margin="@dimen/d_10dp" android:hint="Enter Comment" android:layout_toLeftOf="@+id/iv_send" android:layout_alignParentBottom="true"/>
-    <include android:layout_width="160dp" android:layout_height="160dp" android:layout_centerInParent="true" layout="@layout/spunk_view"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_commentlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/d_4dp"
+        android:layout_marginBottom="@dimen/d_70dp"
+        android:fadeScrollbars="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <ImageView android:id="@+id/iv_send"
+        android:padding="@dimen/d_3dp"
+        android:layout_width="@dimen/d_45dp"
+        android:layout_height="@dimen/d_50dp"
+        android:layout_marginRight="@dimen/d_5dp"
+        android:layout_marginBottom="@dimen/d_10dp"
+        android:src="@drawable/ic_baseline_send_24"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+    <EditText android:textSize="@dimen/text_size_16"
+        android:textColor="@color/c_gray_text"
+        android:id="@+id/et_comment"
+        android:background="@drawable/gray_border_whitebg_round"
+        android:padding="@dimen/d_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d_45dp"
+        android:layout_margin="@dimen/d_10dp"
+        android:hint="@string/text_enter_commentaction"
+        android:layout_toLeftOf="@+id/iv_send"
+        android:layout_alignParentBottom="true"/>
+    <include android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_centerInParent="true"
+        layout="@layout/spunk_view"/>
 </RelativeLayout>

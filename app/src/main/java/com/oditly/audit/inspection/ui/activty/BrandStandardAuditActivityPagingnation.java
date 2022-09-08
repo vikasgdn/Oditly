@@ -198,10 +198,8 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     @Override
     public void onItemClick(int questionNo, BrandStandardAuditAdapterSingleSection brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position) {
         itemClickedPos = questionNo;
-        Log.e("QUESTION NO","+++"+questionNo);
-        Log.e("POSITION  NO","=== "+position);      //  questionCount = questionNo;
-        //  currentBrandStandardAuditAdapter = brandStandardAuditAdapter;
-        mBrandStandardListCurrent=sectionTabAdapter.getArrayList();
+
+         mBrandStandardListCurrent=sectionTabAdapter.getArrayList();
         Intent addAttachment = new Intent(context, AddAttachmentActivity.class);
         addAttachment.putExtra("auditId", auditId);
         addAttachment.putExtra("sectionGroupId", sectionGroupId);
@@ -215,6 +213,8 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
+            AppUtils.deleteCache(this);   // for clearing cache
+
             if (requestCode == AttachmentRequest && resultCode == Activity.RESULT_OK) {
                 try {
                     String attachmentCount = data.getStringExtra("attachmentCount");
@@ -264,7 +264,6 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     {
         if (NetworkStatus.isNetworkConnected(this))
         {
-            Log.e(";; answer array  :: ",""+getQuestionsArray());
             if(isSaveButtonClick)
                 mProgressRL.setVisibility(View.VISIBLE);
             JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId, auditDate, "1", getQuestionsArray());
@@ -294,8 +293,6 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 e.printStackTrace();
             }
         }
-
-        AppLogger.e("BrandStandardJson", "" + jsonArray);
         return jsonArray;
     }
 
@@ -348,19 +345,23 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
 
                 if(mActionPlanRequred>0 && question.getAction_plan()==null)
                 {
-                    String message = "Please Create the Action Plan for question no. " + count;
+                   // String message = "Please Create the Action Plan for question no. " + count;
+                    String message = getString(R.string.text_create_actionplanfor_question)+" " + count;
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this, message);
                     return false;
                 }
                 if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
                 {
-                    String message = "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section";
+                  //  String message = "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section";
+                    String message=getString(R.string.text_submit_requredmedia_count).replace("MMM",""+mMediaCount).replace("CCC",""+count);
+
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this, message);
                     return false;
                 }
                 if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
                 {
-                    String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
+                  //  String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
+                    String message=getString(R.string.text_enter_requredcomment_count).replace("XXX",""+mCommentCount).replace("CCC",""+count);
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this, message);
                    return  false;
                 }
@@ -397,13 +398,13 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 if (bsRefrence!=null)
                 {
                     if (bsRefrence.getFile_type().contains("image"))
-                        ShowHowImageActivity.start(this,bsRefrence.getFile_url());
+                        ShowHowImageActivity.start(this,bsRefrence.getFile_url(),"");
                     else  if (bsRefrence.getFile_type().contains("audio"))
                         AudioPlayerActivity.start(this, bsRefrence.getFile_url());
                     else  if (bsRefrence.getFile_type().contains("video"))
-                        ExoVideoPlayer.start(this, bsRefrence.getFile_url());
+                        ExoVideoPlayer.start(this, bsRefrence.getFile_url(),"");
                     else
-                        ShowHowWebViewActivity.start(this,bsRefrence.getFile_url());
+                        ShowHowWebViewActivity.start(this,bsRefrence.getFile_url(),"");
                 }
                 break;
             case R.id.bs_save_btn:
@@ -424,7 +425,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                     startActivityForResult(actionPlan, 1021);
                 }
                 else
-                    AppUtils.toast(this, "Action plan has been created for this Question");
+                    AppUtils.toast(this, getString(R.string.text_actionplan_has_been_created_forthis_question));
 
                 break;
             case R.id.bs_add_file_btn:
@@ -534,7 +535,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
             }
         }
 
-        scoreText.setText("Score: " + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
+        scoreText.setText(getString(R.string.text_score)+":" + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
 
     }
     //-----------------------Audit Times-------------------------------------

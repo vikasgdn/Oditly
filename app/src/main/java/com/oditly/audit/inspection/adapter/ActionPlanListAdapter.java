@@ -54,9 +54,9 @@ public class ActionPlanListAdapter extends RecyclerView.Adapter<ActionPlanListAd
         holder.tvLocation.setText(auditInfo.getLocation_title());
         holder.mDateTV.setText(AppUtils.getFormatedDate(auditInfo.getPlanned_date()));
         if (auditInfo.getAudit_id()==0)
-            holder.mInspectionORadocTV.setText("Ad Hoc");
+            holder.mInspectionORadocTV.setText(context.getResources().getString(R.string.text_adhoc));
         else
-            holder.mInspectionORadocTV.setText("Inspection: "+auditInfo.getAudit_name());
+            holder.mInspectionORadocTV.setText(context.getResources().getString(R.string.text_audit)+": "+auditInfo.getAudit_name());
         holder.mTitleTV.setText(auditInfo.getTitle());
 
         holder.mStatusTV.setText(auditInfo.getStatus_name());
@@ -90,12 +90,13 @@ public class ActionPlanListAdapter extends RecyclerView.Adapter<ActionPlanListAd
             holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_green));
         else if(auditInfo.getStatus_name().equalsIgnoreCase("Open"))
         {
-            holder.mStatusTV.setText("Overdue On "+AppUtils.getFormatedDate(auditInfo.getPlanned_date()));
+            holder.mStatusTV.setText(context.getResources().getString(R.string.text_overdue_on)+" "+AppUtils.getFormatedDate(auditInfo.getPlanned_date()));
             holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_orange));
         }
         else if(auditInfo.getStatus_name().equalsIgnoreCase("Overdue"))
         {
-            holder.mStatusTV.setText("Overdue By "+auditInfo.getOverdue_days()+" Days");
+           // holder.mStatusTV.setText("Overdue By "+auditInfo.getOverdue_days()+" Days");
+            holder.mStatusTV.setText(context.getResources().getString(R.string.text_overdue_by_days).replace("XXX",auditInfo.getOverdue_days()));
             holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_red));
         }
 

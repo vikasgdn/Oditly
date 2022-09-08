@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:background="@color/c_white" android:layout_width="match_parent" android:layout_height="match_parent">
-    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_centerInParent="true">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
         <TextView
             android:textSize="@dimen/text_size_20"
             android:textColor="@color/c_gray"
@@ -10,16 +14,145 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/d_20dp"
-            android:layout_marginTop="@dimen/d_40dp"
-            android:layout_marginRight="@dimen/d_20dp" android:text="@string/text_comment_complt" android:fontFamily="@font/nunitosans_semibold"/>
-        <TextView android:textSize="@dimen/text_size_12" android:textColor="@color/c_red" android:gravity="left" android:id="@+id/tv_comment_error" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/d_20dp" android:layout_marginTop="@dimen/d_5dp" android:layout_marginRight="@dimen/d_20dp" android:layout_marginBottom="@dimen/d_2dp" android:text="@string/text_comment_error" android:fontFamily="@font/nunitosans_regular"/>
-        <EditText android:textSize="@dimen/text_size_16" android:textColor="@color/c_gray_text" android:gravity="top" android:id="@+id/et_commentbox" android:background="@drawable/gray_border_whitebg" android:padding="10dp" android:layout_width="match_parent" android:layout_height="180dp" android:layout_marginLeft="@dimen/d_20dp" android:layout_marginRight="@dimen/d_20dp" android:hint="@string/text_enter_commentaction" android:inputType="textMultiLine" android:fontFamily="@font/nunitosans_regular"/>
-        <androidx.recyclerview.widget.RecyclerView android:orientation="horizontal" android:id="@+id/rv_imagelist" android:visibility="visible" android:layout_width="match_parent" android:layout_height="150dp" android:layout_margin="@dimen/d_20dp" app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/d_20dp" android:weightSum="10">
-            <TextView android:textSize="16sp" android:textColor="@color/textGrey" android:gravity="center_vertical" android:layout_gravity="left" android:id="@+id/tv_media_count" android:visibility="visible" android:layout_width="0dp" android:layout_height="@dimen/d_40dp" android:text="Media count" android:layout_weight="10" android:fontFamily="@font/nunitosans_semibold"/>
-            <ImageView android:layout_gravity="right" android:id="@+id/fb_media" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/d_20dp" android:src="@mipmap/ic_add_80"/>
+            android:layout_marginTop="@dimen/d_20dp"
+            android:layout_marginRight="@dimen/d_20dp"
+            android:text="@string/text_comment_complt"
+            android:fontFamily="@font/nunitosans_semibold"/>
+        <TextView android:textSize="@dimen/text_size_12"
+            android:textColor="@color/c_red"
+            android:gravity="left"
+            android:id="@+id/tv_comment_error"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d_20dp"
+            android:layout_marginTop="@dimen/d_5dp"
+            android:layout_marginRight="@dimen/d_20dp"
+            android:layout_marginBottom="@dimen/d_2dp"
+            android:text="@string/text_comment_error"
+            android:fontFamily="@font/nunitosans_regular"/>
+        <EditText
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/c_gray_text"
+            android:gravity="top"
+            android:id="@+id/et_commentbox"
+            android:background="@drawable/gray_border_whitebg"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="@dimen/d_20dp"
+            android:layout_marginRight="@dimen/d_20dp"
+            android:hint="@string/text_enter_commentaction"
+            android:inputType="textMultiLine"
+            android:fontFamily="@font/nunitosans_regular"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d_20dp"
+            android:layout_marginRight="@dimen/d_20dp"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/c_gray"
+            android:gravity="left"
+            android:paddingBottom="2dp"
+            android:text="@string/text_root_cause"
+            android:fontFamily="@font/nunitosans_semibold"/>
+
+        <EditText
+            android:id="@+id/et_rootcause_analysis"
+            android:background="@drawable/gray_border_whitebg"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d_80dp"
+            android:layout_marginLeft="@dimen/d_20dp"
+            android:layout_marginTop="@dimen/d_5dp"
+            android:layout_marginRight="@dimen/d_20dp"
+            android:hint="@string/text_enter_rootcause"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/c_gray_text"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:fontFamily="@font/nunitosans_regular"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d_20dp"
+            android:layout_marginRight="@dimen/d_20dp"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/c_gray"
+            android:gravity="left"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:paddingBottom="@dimen/d_2dp"
+            android:text="@string/text_notify_user"
+            android:fontFamily="@font/nunitosans_semibold"/>
+
+        <EditText
+            android:id="@+id/et_notifyuser"
+            android:background="@drawable/gray_border_whitebg"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d_20dp"
+            android:layout_marginRight="@dimen/d_20dp"
+            android:textSize="@dimen/text_size_16"
+            android:hint="@string/text_enteremail_commaseperated"
+            android:textColor="@color/c_gray_text"
+            android:inputType="textMultiLine"
+            android:fontFamily="@font/nunitosans_regular"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:orientation="horizontal"
+            android:id="@+id/rv_imagelist"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_margin="@dimen/d_20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d_20dp"
+            android:weightSum="10">
+
+            <TextView android:textSize="16sp"
+                android:textColor="@color/textGrey"
+                android:gravity="center_vertical"
+                android:layout_gravity="left"
+                android:id="@+id/tv_media_count"
+                android:visibility="visible"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/d_40dp"
+                android:text="@string/text_comment_comp"
+                android:layout_weight="10"
+                android:fontFamily="@font/nunitosans_semibold"/>
+
+            <ImageView android:layout_gravity="right"
+                android:id="@+id/fb_media"
+                android:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/d_20dp"
+                android:src="@mipmap/ic_add_80"/>
         </LinearLayout>
-        <Button android:textSize="@dimen/text_size_18" android:textColor="@color/colorWhite" android:id="@+id/btn_submit" android:background="@drawable/button_border_blue" android:padding="@dimen/d_10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/d_100dp" android:layout_marginTop="@dimen/d_10dp" android:layout_marginRight="100dp" android:layout_marginBottom="@dimen/d_10dp" android:minHeight="@dimen/search_btn_height" android:text="@string/text_submit" android:textAllCaps="false"/>
+        <Button android:textSize="@dimen/text_size_18"
+            android:textColor="@color/colorWhite"
+            android:id="@+id/btn_submit"
+            android:background="@drawable/button_border_blue"
+            android:padding="@dimen/d_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d_100dp"
+            android:layout_marginTop="@dimen/d_10dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginBottom="@dimen/d_10dp"
+            android:minHeight="@dimen/search_btn_height"
+            android:text="@string/text_submit"
+            android:textAllCaps="false"/>
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton android:visibility="gone" android:layout_width="@dimen/d_50dp" android:layout_height="@dimen/d_50dp" android:layout_marginRight="@dimen/d_10dp" android:layout_marginBottom="138dp" android:src="@drawable/ic_camera" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" android:backgroundTint="@color/c_blue" app:fabSize="mini"/>
     <include android:layout_width="160dp" android:layout_height="160dp" android:layout_centerInParent="true" layout="@layout/spunk_view"/>

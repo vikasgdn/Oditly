@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.util.AppUtils;
 
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
@@ -45,6 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onStart()
     {
         super.onStart();
+        AppUtils.setApplicationLanguage(this,AppPreferences.INSTANCE.getSelectedLang());
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         if (mUser!=null) {
             mUser.getIdToken(true)

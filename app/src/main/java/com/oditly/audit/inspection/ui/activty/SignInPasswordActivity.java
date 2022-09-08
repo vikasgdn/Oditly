@@ -205,12 +205,13 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                         AppPreferences.INSTANCE.setAccessToken(signInRootObject.getData().getAccess_token(), this);
                         AppPreferences.INSTANCE.setUserRole(signInRootObject.getData().getRole_id(), this);
                         // AppPreferences.INSTANCE.setUserId(signInRootObject.getData().getUser_id(), this);
-                        AppPreferences.INSTANCE.setUserPic(signInRootObject.getData().getImage());
+                     //   AppPreferences.INSTANCE.setUserPic(signInRootObject.getData().getImage());
                         AppPreferences.INSTANCE.setUserEmail(signInRootObject.getData().getEmail());
                         AppPreferences.INSTANCE.setUserFName(signInRootObject.getData().getFname());
                         AppPreferences.INSTANCE.setUserLName(signInRootObject.getData().getLname(), this);
-                        AppPreferences.INSTANCE.setClientRoleId(signInRootObject.getData().getClient_role_id());
-                        AppPreferences.INSTANCE.setClientRoleName(signInRootObject.getData().getClient_role_name());
+                       // AppPreferences.INSTANCE.setClientRoleId(signInRootObject.getData().getClient_role_id());
+                       // AppPreferences.INSTANCE.setClientRoleName(signInRootObject.getData().getClient_role_name());
+                        AppPreferences.INSTANCE.setSelectedLang(object.getJSONObject("data").optString("language_code")); //newly Added
                         Intent intent = new Intent(this, AnimationActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); //new added
                         startActivity(intent);
@@ -261,6 +262,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                         AppPreferences.INSTANCE.setUserFName(object.getJSONObject("data").optString("fname"));
                         AppPreferences.INSTANCE.setUserLName(object.getJSONObject("data").optString("lname"),this);
                         AppPreferences.INSTANCE.setUserEmail(object.getJSONObject("data").optString("email"));
+                        AppPreferences.INSTANCE.setSelectedLang(object.getJSONObject("data").optString("language_code"));  //newly added
                         AppPreferences.INSTANCE.setUserRole(Integer.parseInt(roleId), this);
                         AppPreferences.INSTANCE.setLogin(true, this);
                         startActivity(new Intent(this, MainActivity.class));
@@ -314,7 +316,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
 
                     FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
 
-                    AppPreferences.INSTANCE.setUserPic(firebaseUser.getPhotoUrl().toString());
+                    //AppPreferences.INSTANCE.setUserPic(firebaseUser.getPhotoUrl().toString());
                  /*   AppPreferences.INSTANCE.setUserEmail(firebaseUser.getEmail());
                     String fullName=firebaseUser.getDisplayName();
                     String []Name=fullName.split(" ");

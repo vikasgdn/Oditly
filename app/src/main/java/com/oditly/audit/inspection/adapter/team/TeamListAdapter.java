@@ -53,9 +53,9 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.AuditV
             holder.mCreateDateTV.setText(AppUtils.getFormatedDate(dArray[0]));
         int member= auditInfo.getTeam_users_count();
         if (member>1)
-            holder.mCountTV.setText(""+auditInfo.getTeam_users_count()+" Members");
+            holder.mCountTV.setText(""+auditInfo.getTeam_users_count()+" "+context.getResources().getString(R.string.text_members));
         else
-            holder.mCountTV.setText(""+auditInfo.getTeam_users_count()+" Member");
+            holder.mCountTV.setText(""+auditInfo.getTeam_users_count()+" "+context.getResources().getString(R.string.text_member));
 
 
 

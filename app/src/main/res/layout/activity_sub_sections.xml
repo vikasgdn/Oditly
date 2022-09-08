@@ -31,6 +31,7 @@
                     android:layout_width="@dimen/d_120dp"
                     android:layout_height="@dimen/d_120dp"
                     android:layout_gravity="center"
+                    android:visibility="gone"
                     android:padding="@dimen/d_10dp"
                     android:src="@mipmap/sub_section_logo"/>
 
@@ -40,6 +41,7 @@
                     android:text="@string/text_your_goal"
                     android:textSize="@dimen/text_size_18"
                     android:padding="@dimen/d_5dp"
+                    android:visibility="gone"
                     android:fontFamily="@font/nunitosans_semibold"
                     android:gravity="center"
                     android:textColor="@color/c_blue" />
@@ -51,6 +53,7 @@
                     android:textColor="@color/c_dark_gray"
                     android:textSize="@dimen/text_size_16"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:padding="@dimen/d_5dp"/>
 
 
@@ -99,7 +102,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/text_audit_name"
                     android:textSize="@dimen/text_size_16"
-                    android:padding="@dimen/d_10dp"
+                    android:paddingTop="@dimen/d_10dp"
+                    android:fontFamily="@font/nunitosans_semibold"
+                    android:gravity="center"
+                    android:textColor="@color/c_blue" />
+
+                <TextView
+                    android:id="@+id/tv_overall_score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_overall_score"
+                    android:textSize="@dimen/text_size_16"
                     android:fontFamily="@font/nunitosans_semibold"
                     android:gravity="center"
                     android:textColor="@color/c_blue" />
@@ -108,6 +121,7 @@
                     android:id="@+id/rv_sub_section_tab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d_10dp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="3"
                     android:nestedScrollingEnabled="false">

@@ -221,6 +221,12 @@
     <string name="text_team">Команды</string>
     <string name="text_addnew_member">Создайте новую команду</string>
     <string name="text_name_emaili_roll">Имя, идентификатор электронной почты, роль</string>
+
+    <string name="text_name_team">Имя:</string>
+    <string name="text_email_team">E-mail:</string>
+    <string name="text_role_team">роль:</string>
+
+
     <string name="text_entor_data">Пожалуйста, введите поисковые данные</string>
     <string name="text_selet_filter">Выберите фильтры.</string>
     <string name="text_date_range">Диапазон дат</string>
@@ -328,5 +334,79 @@
     <string name="s_create">Создать</string>
     <string name="s_signin_microsoft">Войти через Microsoft</string>
     <string name="text_actiopnplan_id">ID плана действий</string>
+
+
+
+    <!--
+        new
+    -->
+
+    <string name="text_pending">В ожидании</string>
+    <string name="text_score">Результат</string>
+    <string name="text_type_your_comment">Напечатайте свой комментарий</string>
+    <string name="text_type_your_answer">Введите ответ</string>
+    <string name="text_nature_of_complaint">Характер жалобы</string>
+    <string name="text_overdue_by_days">Просрочено до XXX Дни</string>
+    <string name="text_overdue_by_day">Просрочено до XXX День</string>
+    <string name="text_overdue_days_notapplicable">Дата истечения срока не применяется</string>
+    <string name="text_overdue_on">Просрочено на</string>
+    <string name="text_by">K</string>
+    <string name="text_complted_on">Завершено</string>
+    <string name="text_members">"Участники"</string>
+    <string name="text_member">"Член"</string>
+    <string name="text_teamname">"Название команды"  :</string>
+    <string name="text_create_date">Дата создания :</string>
+    <string name="text_team_count">Командный счет   :</string>
+    <string name="text_action_has_been_created">Действие создано.</string>
+    <string name="text_inspection_hasbeen_created_and_assigned">Инспекция создана и назначена аудитору</string>
+    <string name="text_inspection_hasbeen_created_and_scheduled">Проверка запланирована и будет назначена аудитору в запланированное время</string>
+    <string name="text_select_startdate_first">Выберите дату начала</string>
+    <string name="text_select_duedate_first">Пожалуйста, выберите срок сдачи</string>
+    <string name="text_select_time">Выбрать время</string>
+    <string name="text_select_am_pm">Выберите до полудня/после полудня</string>
+    <string name="text_question">Вопрос:</string>
+    <string name="text_create_actionplanfor_question">Создайте план действий к вопросу №.</string>
+
+    <string name="text_submit_requredmedia_count">Предоставьте необходимое(-ые) MMM изображение(-я) к вопросу № CCC в разделе</string>
+    <string name="text_enter_requredcomment_count">Введите минимально необходимое количество XXX символов в комментарии к вопросу № CCC</string>
+    <string name="text_youhavenot_answer_question">Вы не ответили на вопрос № CCC</string>
+    <string name="text_actionplan_has_been_created_forthis_question">Для этого вопроса был создан план действий</string>
+    <string name="text_answer_hasbeen_save">Ваш ответ сохранен</string>
+    <string name="text_back">НАЗАД</string>
+    <string name="text_youhave_not_answer_question_section">Вы не ответили на вопрос № CCC в разделе SSS</string>
+    <string name="text_create_actionplan_for_question_section">Создайте план действий к вопросу № CCC в разделе SSS</string>
+    <string name="text_submit_requiredmedia_for_question_section">Предоставьте необходимое(-ые) MMM изображение(-я) к вопросу № CCC в разделе SSS</string>
+    <string name="text_submit_require_comment_for_question_section">Введите минимально необходимое количество MMM символов в комментарии к вопросу № CCC в разделе SSS</string>
+    <string name="text_subsection">Подраздел</string>
+
+
+
+   <string name="text_appupdate">Вы упускаете некоторые важные функции Oditly, пожалуйста, обновите свое приложение.</string>
+   <string name="text_update">Обновить</string>
+   <string name="text_app_uptodate">Ваше приложение обновлено</string>
+   <string name="text_update_your_app">Update your App</string>
+
+    <!--new-->
+    <string name="text_submit_requredmedia_action">Предоставьте необходимое(-ые) MMM изображений</string>
+    <string name="text_image_not_attched">Упс.. Изображение не прикреплено</string>
+    <string name="text_douwant_to_continue">Хотите продолжить?</string>
+    <string name="text_please_enterminimum">Введите минимальное количество CCC символов </string>
+    <string name="please_enter_valuein">Пожалуйста, введите значение в</string>
+    <string name="text_instruction">Инструкция</string>
+    <string name="text_adhoc">Ad Hoc</string>
+
+
+    <!--new sept-->
+    <string name="text_overall_score">Общая оценка</string>
+    <string name="text_actionplan_attachment">Приложение к плану действий</string>
+    <string name="text_answer">Answer</string>
+    <string name="text_response">Ответ</string>
+    <string name="text_inspection_attachment">Инспекционное приложение</string>
+    <string name="text_root_cause">Анализ причин</string>
+    <string name="text_enter_rootcause">Введите первопричину</string>
+    <string name="text_notify_user">Уведомить пользователей</string>
+    <string name="text_enteremail_commaseperated">Введите идентификаторы электронной почты через запятую</string>
+    <string name="text_no_attachment">Нет вложений</string>
+
 
 </resources>

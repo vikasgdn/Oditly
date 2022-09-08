@@ -1,51 +1,52 @@
- package com.oditly.audit.inspection.ui.activty;
+package com.oditly.audit.inspection.ui.activty;
 
- import android.content.Context;
- import android.content.Intent;
- import android.os.Bundle;
- import android.text.TextUtils;
- import android.util.Log;
- import android.view.View;
- import android.widget.Button;
- import android.widget.ProgressBar;
- import android.widget.RelativeLayout;
- import android.widget.TextView;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
- import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
- import com.google.gson.Gson;
- import com.google.gson.GsonBuilder;
- import com.oditly.audit.inspection.OditlyApplication;
- import com.oditly.audit.inspection.R;
- import com.oditly.audit.inspection.adapter.SubSectionAdapter;
- import com.oditly.audit.inspection.apppreferences.AppPreferences;
- import com.oditly.audit.inspection.localDB.bsoffline.BsOffLineDB;
- import com.oditly.audit.inspection.localDB.bsoffline.BsOfflineDBImpl;
- import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardInfo;
- import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
- import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRootObject;
- import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
- import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
- import com.oditly.audit.inspection.network.INetworkEvent;
- import com.oditly.audit.inspection.network.NetworkConstant;
- import com.oditly.audit.inspection.network.NetworkService;
- import com.oditly.audit.inspection.network.NetworkServiceJSON;
- import com.oditly.audit.inspection.network.NetworkStatus;
- import com.oditly.audit.inspection.network.NetworkURL;
- import com.oditly.audit.inspection.network.apirequest.BSSaveSubmitJsonRequest;
- import com.oditly.audit.inspection.util.AppConstant;
- import com.oditly.audit.inspection.util.AppLogger;
- import com.oditly.audit.inspection.util.AppUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.oditly.audit.inspection.OditlyApplication;
+import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.adapter.SubSectionAdapter;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.localDB.bsoffline.BsOffLineDB;
+import com.oditly.audit.inspection.localDB.bsoffline.BsOfflineDBImpl;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardInfo;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRootObject;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
+import com.oditly.audit.inspection.network.INetworkEvent;
+import com.oditly.audit.inspection.network.NetworkConstant;
+import com.oditly.audit.inspection.network.NetworkService;
+import com.oditly.audit.inspection.network.NetworkServiceJSON;
+import com.oditly.audit.inspection.network.NetworkStatus;
+import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.network.apirequest.BSSaveSubmitJsonRequest;
+import com.oditly.audit.inspection.util.AppConstant;
+import com.oditly.audit.inspection.util.AppLogger;
+import com.oditly.audit.inspection.util.AppUtils;
 
- import org.json.JSONArray;
- import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
- import java.text.DecimalFormat;
- import java.util.ArrayList;
- import java.util.HashMap;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 
- import butterknife.BindView;
- import butterknife.ButterKnife;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class AuditSubSectionsActivity extends BaseActivity implements SubSectionAdapter.CustomItemClickListener, INetworkEvent {
 
@@ -74,6 +75,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     private ArrayList<BrandStandardSection> brandStandardSections;
     private static final String TAG = AuditSubSectionsActivity.class.getSimpleName();
     private BsOffLineDB mBsOfflineDB;
+    private TextView mOverallScoreTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         mBsOfflineDB=BsOfflineDBImpl.getInstance(this);
         initView();
         initVar();
+        AppUtils.deleteCache(this);   // for clearing cache
     }
     @Override
     protected void initView() {
@@ -98,6 +101,8 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         statusText= findViewById(R.id.tv_status_text);
         mSpinKitView=findViewById(R.id.ll_parent_progress);
         mAuditNameTV=findViewById(R.id.tv_auditname);
+        mOverallScoreTV=findViewById(R.id.tv_overall_score);
+
 
         findViewById(R.id.iv_header_left).setOnClickListener(this);
         continueBtn.setOnClickListener(this);
@@ -107,7 +112,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     @Override
     protected void initVar() {
         super.initVar();
-        mHeaderTitleTV.setText(R.string.inspection_option);
+        mHeaderTitleTV.setText(R.string.text_inspection);
         auditId = getIntent().getStringExtra(AppConstant.AUDIT_ID);
         mAuditName = getIntent().getStringExtra(AppConstant.AUDIT_NAME);
         mAuditNameTV.setText(mAuditName+" (ID:"+auditId+")");
@@ -115,8 +120,8 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     @Override
     protected void onResume() {
         super.onResume();
-            if (isDataSaved)
-                getAuditQuestionsFromServer();
+        if (isDataSaved)
+            getAuditQuestionsFromServer();
     }
 
     @Override
@@ -125,14 +130,17 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         switch (view.getId())
         {
             case R.id.iv_header_left:
-                 onBackPressed();
+                onBackPressed();
                 break;
             case R.id.continue_btn:
                 if (brandStandardSections !=null)
                 {
                     JSONArray finalAnswerJA = AppUtils.validateSubmitQuestionFinalSubmission(this, brandStandardSections);
                     if (finalAnswerJA != null)
-                        submitFinalBrandStandardQuestion(finalAnswerJA);
+                    {
+                          submitFinalBrandStandardQuestion(finalAnswerJA);
+                       // goForSignature();
+                    }
                 }
                 break;
         }
@@ -149,10 +157,16 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         } else
         {
             AppUtils.toast(this, this.getString(R.string.internet_error));
-          //  processQuestionListResponse(mBsOfflineDB.getOffileQuestionJSONToDB(auditId));
+            //  processQuestionListResponse(mBsOfflineDB.getOffileQuestionJSONToDB(auditId));
         }
     }
     private void setQuestionList(BrandStandardInfo info){
+        //newly added for overaall score
+        if (!TextUtils.isEmpty(info.getScore()))
+            mOverallScoreTV.setText(getResources().getString(R.string.text_overall_score)+": "+info.getScore()+"%");
+        else
+            mOverallScoreTV.setVisibility(View.GONE);
+
         brandStandardSections = new ArrayList<>();
         brandStandardSections.addAll(info.getSections());
         SubSectionAdapter subSectionAdapter = new SubSectionAdapter(this, brandStandardSections, AuditSubSectionsActivity.this);
@@ -160,9 +174,9 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     }
     @Override
     public void onBackPressed() {
-       if(!TextUtils.isEmpty(status) && status.equalsIgnoreCase("1"))
+        if(!TextUtils.isEmpty(status) && status.equalsIgnoreCase("1"))
             finish();
-       else
+        else
         {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(AppConstant.FROMWHERE, AppConstant.AUDIT);
@@ -177,11 +191,11 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         try {
             Intent startAudit=null;
             startAudit = new Intent(context, BrandStandardAuditActivity.class);
-           if (brandStandardSections!=null && brandStandardSections.size()==1 && (brandStandardSections.get(0).getSub_sections()==null || brandStandardSections.get(0).getSub_sections().size()==0) )
-               startAudit = new Intent(context, BrandStandardAuditActivityPagingnation.class);
+            if (brandStandardSections!=null && brandStandardSections.size()==1 && (brandStandardSections.get(0).getSub_sections()==null || brandStandardSections.get(0).getSub_sections().size()==0) )
+                startAudit = new Intent(context, BrandStandardAuditActivityPagingnation.class);
 
             //  startAudit.putParcelableArrayListExtra("sectionObject", brandStandardSections);
-             ((OditlyApplication)getApplication()).setmBrandStandardSectionList(brandStandardSections);
+            ((OditlyApplication)getApplication()).setmBrandStandardSectionList(brandStandardSections);
             String jsonString = new Gson().toJson(brandStandardSections);
             mBsOfflineDB.deleteBrandSectionJSONToDB("bs");
             mBsOfflineDB.saveBrandSectionJSONToDB("bs", jsonString);
@@ -219,7 +233,20 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         Intent  intent=new Intent(this,AuditSubmitSignatureActivity.class);
         intent.putExtra(AppConstant.AUDIT_ID,auditId);
         startActivity(intent);
-        finish();
+       // startActivityForResult(intent,5005);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK)
+        {
+            JSONArray finalAnswerJA = AppUtils.validateSubmitQuestionFinalSubmission(this, brandStandardSections);
+            if (finalAnswerJA != null)
+            {
+                submitFinalBrandStandardQuestion(finalAnswerJA);
+            }
+        }
     }
 
     @Override
@@ -229,17 +256,17 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     {
         if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_FINAL_SAVE))
         { try {
-                JSONObject responseJson = new JSONObject(response);
-                if (!responseJson.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                    status = "" + responseJson.getJSONObject("data").getInt("brand_std_status");
-                    goForSignature();
-                } else if (responseJson.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                    AppUtils.toast((BaseActivity) context, responseJson.getString(AppConstant.RES_KEY_MESSAGE));
-                }
-            } catch (Exception e) { e.printStackTrace(); }
+            JSONObject responseJson = new JSONObject(response);
+            if (!responseJson.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                status = "" + responseJson.getJSONObject("data").getInt("brand_std_status");
+                goForSignature();
+            } else if (responseJson.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                AppUtils.toast((BaseActivity) context, responseJson.getString(AppConstant.RES_KEY_MESSAGE));
+            }
+        } catch (Exception e) { e.printStackTrace(); }
         }
         else
-          processQuestionListResponse(response);
+            processQuestionListResponse(response);
 
         mSpinKitView.setVisibility(View.GONE);
 
@@ -261,7 +288,6 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
                     mAuditTimerSecond=brandStandardRootObject.getData().getAuditTimer();  //new added
                     isGalleryDisable=brandStandardRootObject.getData().isGalleryDisable();
                     //new added for particular client 0 disable  1 enable
-                    Log.e("Gallery disbale","==> "+isGalleryDisable);
                     setQuestionList(brandStandardRootObject.getData());
                     float count = 0;
                     float totalCount = 0;
@@ -318,7 +344,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
             float percent = (filledQuestionCount / totalQuestionCount) * 100;
             DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
-            statusText.setText("" + decimalFormat.format(percent) + "% Completed");
+            statusText.setText("" + decimalFormat.format(percent) + "%"+getString(R.string.text_complete));
             int intValue = (int)percent;
             AppLogger.e(TAG, "value" + intValue);
 

@@ -18,6 +18,8 @@ public class BrandStandardInfo {
     private int has_gallery_access = 1;
     private int audit_questionnaire_file_cnt = 0;
     ArrayList<BrandStandardSection> sections;
+    private String score = "";
+
 
     public int getQuestionnaire_id() {
         return questionnaire_id;
@@ -106,5 +108,13 @@ public class BrandStandardInfo {
 
     public void setAuditTimer(int auditTimer) {
         this.auditTimer = auditTimer;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 }

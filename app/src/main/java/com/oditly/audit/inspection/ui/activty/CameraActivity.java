@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
+import android.util.Size;
 import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +48,10 @@ import static androidx.camera.core.AspectRatio.RATIO_4_3;
 public class CameraActivity extends AppCompatActivity{
     private Executor executor =null;
     private int REQUEST_CODE_PERMISSIONS = 1001;
+    private static final Size DEFAULT_RESOLUTION = new Size(640, 480);
+    private static final Size DEFAULT_MAX_RESOLUTION = new Size(960, 720);
+    //private static final Size DEFAULT_RESOLUTION = new Size(1920, 1080);
+
     private final String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
 
     PreviewView mPreviewView;
@@ -121,7 +126,7 @@ public class CameraActivity extends AppCompatActivity{
                 }
                 catch (Exception e){e.printStackTrace();}
 
-              //  imageCapture.setTargetRotation(Surface.ROTATION_0);
+               // imageCapture.setTargetRotation(Surface.ROTATION_0);
                 ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
                 imageCapture.takePicture(outputFileOptions, executor, new ImageCapture.OnImageSavedCallback () {
                     @Override

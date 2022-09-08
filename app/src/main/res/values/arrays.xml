@@ -9,12 +9,12 @@
     </string-array>
 
     <string-array name="arr_ampm">
-        <item>Select AM/PM </item>
+        <item>@string/text_select_am_pm </item>
         <item>AM</item>
         <item>PM</item>
     </string-array>
     <string-array name="arr_hour">
-        <item>Select Time</item>
+        <item>@string/text_select_time</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -27,5 +27,12 @@
         <item>10</item>
         <item>11</item>
         <item>12</item>
+    </string-array>
+
+
+    <string-array name="arr_action_title">
+        <item>@string/text_details </item>
+        <item>@string/text_update </item>
+        <item>@string/text_complete </item>
     </string-array>
 </resources>

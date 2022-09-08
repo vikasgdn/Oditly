@@ -2,6 +2,8 @@ package com.oditly.audit.inspection.model.audit.BrandStandard;
 
 import android.net.Uri;
 import com.oditly.audit.inspection.adapter.BrandStandardAuditAdapter;
+import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class BrandStandardQuestion {
     //private int mediaCount;
    // private int commentCount;
     ArrayList<BrandStandardQuestionsOption> options;
+    ArrayList<AddAttachmentInfo> files;
     private String question_hint = "";
     private int question_id = 0;
     private String question_title = "";
@@ -244,6 +247,15 @@ public class BrandStandardQuestion {
     public void setHas_comment(int has_comment) {
         this.comment_count = has_comment;
     }
+
+    public ArrayList<AddAttachmentInfo> getFiles() {
+        return files;
+    }
+
+    public void setFiles(ArrayList<AddAttachmentInfo> files) {
+        this.files = files;
+    }
+
 
     /*public int getCommentCountForCondition() {
         return commentCount;

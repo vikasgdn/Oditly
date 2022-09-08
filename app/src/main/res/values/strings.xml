@@ -222,6 +222,11 @@
     <string name="text_team">Team</string>
     <string name="text_addnew_member">Create a new team</string>
     <string name="text_name_emaili_roll">Name, Email ID, Role</string>
+
+    <string name="text_name_team">Name:</string>
+    <string name="text_email_team">Email:</string>
+    <string name="text_role_team">Role:</string>
+
     <string name="text_entor_data">Please enter search data</string>
     <string name="text_selet_filter">Select Filters</string>
     <string name="text_date_range">Date Range</string>
@@ -328,6 +333,77 @@
     <string name="text_entercount">Enter Count</string>
     <string name="s_create">Create</string>
     <string name="s_signin_microsoft">Sign in with Microsoft</string>
-    <string name="text_actiopnplan_id">Action Plan Id</string>
+    <string name="text_actiopnplan_id">Action Plan ID</string>
+
+<!--
+    //newly added
+-->
+
+    <string name="text_pending">Pending</string>
+    <string name="text_score">Score</string>
+    <string name="text_type_your_comment">Type your comment</string>
+    <string name="text_type_your_answer">Type your answer</string>
+    <string name="text_nature_of_complaint">Nature of Complaint</string>
+    <string name="text_overdue_by_days">Overdue By XXX Days</string>
+    <string name="text_overdue_by_day">Overdue By XXX Day</string>
+    <string name="text_overdue_days_notapplicable">Due date is not applicable</string>
+    <string name="text_overdue_on">Overdue On</string>
+    <string name="text_by">By</string>
+    <string name="text_complted_on">Completed On</string>
+    <string name="text_members">Members</string>
+    <string name="text_member">Member</string>
+    <string name="text_teamname">Team Name  :</string>
+    <string name="text_create_date">Created Date :</string>
+    <string name="text_team_count">Team Count   :</string>
+    <string name="text_action_has_been_created">Action plan has been created</string>
+    <string name="text_inspection_hasbeen_created_and_assigned">inspection has been created and assigned to the auditor</string>
+    <string name="text_inspection_hasbeen_created_and_scheduled">inspection has been scheduled and will be assigned to the auditor at the scheduled time</string>
+    <string name="text_select_startdate_first">Please select Start Date First</string>
+    <string name="text_select_duedate_first">Please select Due Date First</string>
+    <string name="text_select_time">Select Time</string>
+    <string name="text_select_am_pm">Select AM/PM</string>
+    <string name="text_question">Question:</string>
+    <string name="text_create_actionplanfor_question">Please Create the Action Plan for question no.</string>
+
+    <string name="text_submit_requredmedia_count">Please submit the required MMM image(s) for question no. CCC in section</string>
+    <string name="text_enter_requredcomment_count">Please enter the  minimum required XXX characters comment for question no. CCC</string>
+    <string name="text_youhavenot_answer_question">You have not answered question no. CCC</string>
+    <string name="text_actionplan_has_been_created_forthis_question">Action plan has been created for this Question</string>
+    <string name="text_answer_hasbeen_save">Your answer has been saved</string>
+    <string name="text_back">Back</string>
+   <string name="text_youhave_not_answer_question_section">You have not answered question no CCC in section SSS</string>
+    <string name="text_create_actionplan_for_question_section">Please Create the Action Plan for question no. CCC in section SSS</string>
+    <string name="text_submit_requiredmedia_for_question_section">Please submit the required MMM image(s) for question no. CCC in section SSS</string>
+    <string name="text_submit_require_comment_for_question_section">Please enter the minimum required MMM characters comment for question no. CCC in section SSS</string>
+    <string name="text_subsection">SubSection</string>
+
+    <string name="text_appupdate">You are missing out on some important features of Oditly, please update your application.</string>
+    <string name="text_update">Update</string>
+    <string name="text_app_uptodate">Your app is up to date</string>
+    <string name="text_update_your_app">Update your App</string>
+
+
+<!--new-->
+    <string name="text_submit_requredmedia_action">Please submit the required MMM image</string>
+    <string name="text_image_not_attched">Opps.. Image Not Attached</string>
+    <string name="text_douwant_to_continue">Do you want to continue?</string>
+    <string name="text_please_enterminimum">Please enter minimum CCC characters </string>
+    <string name="please_enter_valuein">Please enter value in</string>
+    <string name="text_instruction">Instruction</string>
+    <string name="text_adhoc">Ad Hoc</string>
+
+    <!--new in september-->
+
+    <string name="text_overall_score">Overall Score</string>
+    <string name="text_actionplan_attachment">Action Plan Attachment</string>
+    <string name="text_answer">Answer</string>
+    <string name="text_response">Response</string>
+    <string name="text_inspection_attachment">Inspection Attachment</string>
+    <string name="text_root_cause">" Root Cause Analysis"</string>
+    <string name="text_enter_rootcause">Type root cause</string>
+    <string name="text_notify_user">Notify Users</string>
+    <string name="text_enteremail_commaseperated">Enter email IDs separated by comma</string>
+    <string name="text_no_attachment">No Attachment</string>
+
 
 </resources>

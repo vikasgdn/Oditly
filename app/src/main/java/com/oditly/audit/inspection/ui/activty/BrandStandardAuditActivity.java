@@ -1,6 +1,7 @@
 package com.oditly.audit.inspection.ui.activty;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -236,6 +237,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
+            AppUtils.deleteCache(this); // clear Cache
+          //  clearApplicationData();
             if (requestCode == AttachmentRequest && resultCode == Activity.RESULT_OK) {
                 try {
                     String attachmentCount = data.getStringExtra("attachmentCount");
@@ -265,7 +268,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         } catch (Exception e) {
             e.printStackTrace();
             AppLogger.e("AttachmentException", e.getMessage());
-            AppUtils.showHeaderDescription(context, e.getMessage());
+            AppUtils.showHeaderDescription(context, "IMAGE ISSSUE "+e.getMessage());
         }
 
     }
@@ -435,19 +438,21 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
                 if(mActionPlanRequred>0 && question.getAction_plan()==null)
                 {
-                    String message = "Please Create the Action Plan for question no. " + count;
+                    String message = getString(R.string.text_create_actionplanfor_question)+" " + count;
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
                     return false;
                 }
                 if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
                 {
-                    String message = "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section";
+                    // String message = "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section";
+                    String message=getString(R.string.text_submit_requredmedia_count).replace("MMM",""+mMediaCount).replace("CCC",""+count);
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
                     return false;
                 }
                 if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
                 {
-                    String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
+                    //   String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
+                    String message=getString(R.string.text_enter_requredcomment_count).replace("XXX",""+mCommentCount).replace("CCC",""+count);
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
                     return false;
                 }
@@ -490,19 +495,20 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
                 if(mActionPlanRequred>0 && question.getAction_plan()==null)
                 {
-                    String message = "Please Create the Action Plan for question no. " + count;
+                    String message = getString(R.string.text_create_actionplanfor_question)+" " + count;
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
                     return false;
                 }
                 if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
                 {
-                    String message = "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section";
+                    String message=getString(R.string.text_submit_requredmedia_count).replace("MMM",""+mMediaCount).replace("CCC",""+count);
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
                     return false;
                 }
                 if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
                 {
-                    String message = "Please enter the  minimum required " + mCommentCount+ " characters comment for question no. " + count;
+                    // String message = "Please enter the  minimum required " + mCommentCount+ " characters comment for question no. " + count;
+                    String message=getString(R.string.text_enter_requredcomment_count).replace("XXX",""+mCommentCount).replace("CCC",""+count);
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivity.this, message);
 
                     return false;
@@ -540,13 +546,13 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 BrandStandardRefrence bsRefrence = (BrandStandardRefrence) view.getTag();
                 if (bsRefrence != null) {
                     if (bsRefrence.getFile_type().contains("image"))
-                        ShowHowImageActivity.start(this, bsRefrence.getFile_url());
+                        ShowHowImageActivity.start(this, bsRefrence.getFile_url(),"");
                     else if (bsRefrence.getFile_type().contains("audio"))
                         AudioPlayerActivity.start(this, bsRefrence.getFile_url());
                     else if (bsRefrence.getFile_type().contains("video"))
-                        ExoVideoPlayer.start(this, bsRefrence.getFile_url());
+                        ExoVideoPlayer.start(this, bsRefrence.getFile_url(),"");
                     else {
-                        ShowHowWebViewActivity.start(this, bsRefrence.getFile_url());
+                        ShowHowWebViewActivity.start(this, bsRefrence.getFile_url(),"");
                     }
                 }
                 break;
@@ -567,7 +573,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     startActivityForResult(actionPlan, 1021);
                 }
                 else
-                    AppUtils.toast(this, "Action plan has been created for this Question");
+                    AppUtils.toast(this, getString(R.string.text_actionplan_has_been_created_forthis_question));
                 break;
             case R.id.bs_save_btn:
                 mNextPreviousClick=0;
@@ -596,28 +602,34 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 AppDialogs.brandstandardTitleMessageDialog(this, sectionTitle,mLocation,mChecklist);
                 break;
             case R.id.next_btn:
-                isSaveButtonClick=false;
+                isSaveButtonClick=true;  //for showing loader
                 if(isAnswerCliked)
                 {
                     mNextPreviousClick=1;
-                    if (saveSectionOrPagewiseData()) {
+                    isDialogSaveClicked=true;   // as we are having same behaviour like dialog loader and change page after response;
+                    saveSectionOrPagewiseData();
+
+                 /*   if (saveSectionOrPagewiseData()) {
                         isAnswerCliked=false;
                         setNextButtonSetUP();
-                    }
+                    }*/
                 }
                 else
                     setNextButtonSetUP();
 
                 break;
             case R.id.prev_btn:
-                isSaveButtonClick=false;
+                isSaveButtonClick=true;  //for showing loader
                 if(isAnswerCliked)
                 {
                     mNextPreviousClick=2;
-                    if (saveSectionOrPagewiseData()) {
+                    isDialogSaveClicked=true;   // as we are having same behaviour like dialog loader and change page after response;
+                    saveSectionOrPagewiseData();
+
+                  /*  if (saveSectionOrPagewiseData()) {
                         isAnswerCliked=false;
                         setPreviousButtonSetUP();
-                    }
+                    }*/
                 }
                 else
                     setPreviousButtonSetUP();
@@ -638,11 +650,11 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 nextBtn.setText("N/A");
                 nextBtn.setEnabled(false);
                 prevBtn.setEnabled(true);
-                prevBtn.setText("< Back" + " (" + (currentSectionPosition ) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).getSection_title());
+                prevBtn.setText("< " +getString(R.string.text_back)+ " (" + (currentSectionPosition ) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).getSection_title());
             } else {
                 changeSaveButtonToGoToSubmit(true);
                 nextBtn.setText("(" + (currentSectionPosition + 2) + "/" + brandStandardSectionArrayList.size() + ") Next >\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).getSection_title());
-                prevBtn.setText("< Back" + " (" + (currentSectionPosition ) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).getSection_title());
+                prevBtn.setText("< "+getString(R.string.text_back) + " (" + (currentSectionPosition ) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).getSection_title());
                 nextBtn.setEnabled(true);
                 prevBtn.setEnabled(true);
             }
@@ -662,7 +674,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 nextBtn.setEnabled(true);
             } else {
                 nextBtn.setText("(" + (currentSectionPosition + 2) + "/" + brandStandardSectionArrayList.size() + ") Next >\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).getSection_title());
-                prevBtn.setText("< Back" + " (" + (currentSectionPosition ) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).getSection_title());
+                prevBtn.setText("< "+getString(R.string.text_back)+ " (" + (currentSectionPosition ) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).getSection_title());
                 nextBtn.setEnabled(true);
                 prevBtn.setEnabled(true);
             }
@@ -693,16 +705,16 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 changeSaveButtonToGoToSubmit(true);
                 prevBtn.setEnabled(false);
                 prevBtn.setText("N/A");
-                nextBtn.setText("(" + (currentSectionPosition + 2) + "/" + brandStandardSectionArrayList.size() + ") Next >\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).getSection_title());
+                nextBtn.setText("(" + (currentSectionPosition + 2) + "/" + brandStandardSectionArrayList.size() + ")" +getString(R.string.text_next)+ ">\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).getSection_title());
             } else if (currentSectionPosition == brandStandardSectionArrayList.size() - 1) {
                 changeSaveButtonToGoToSubmit(false);
                 nextBtn.setEnabled(false);
                 nextBtn.setText("N/A");
-                prevBtn.setText("< Back" + " (" + (currentSectionPosition ) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).getSection_title());
+                prevBtn.setText("< " +getString(R.string.text_back)+ " (" + (currentSectionPosition ) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).getSection_title());
             } else {
                 changeSaveButtonToGoToSubmit(true);
-                nextBtn.setText("(" + (currentSectionPosition + 2) + "/" + brandStandardSectionArrayList.size() + ") Next >\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).getSection_title());
-                prevBtn.setText("< Back" + " (" + (currentSectionPosition ) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).getSection_title());
+                nextBtn.setText("(" + (currentSectionPosition + 2) + "/" + brandStandardSectionArrayList.size() + ")"+getString(R.string.text_next)+" >\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).getSection_title());
+                prevBtn.setText("< "+getString(R.string.text_back) + " (" + (currentSectionPosition ) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).getSection_title());
             }
         }
     }
@@ -810,7 +822,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             scoreText.setText("Score: " + (int)((marksObtained/totalMarks) * (weightage / 100)) + "% (" + marksObtained + "/" + totalMarks + ")");
         }
         else*/
-        scoreText.setText("Score: " + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
+        scoreText.setText(getString(R.string.text_score)+":" + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
 
     }
 
@@ -836,7 +848,6 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     public void onNetworkCallCompleted(String type, String service, String responseStr) {
         isAnswerCliked=false; // because question is saved
         AuditSubSectionsActivity.isDataSaved=true;
-        AppLogger.e(TAG, "BSResponse: " + responseStr);
         try {
             JSONObject response = new JSONObject(responseStr);
             if (!response.getBoolean(AppConstant.RES_KEY_ERROR))
@@ -869,7 +880,6 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     @Override
     public void onNetworkCallError(String service, String errorMessage) {
         mProgressRL.setVisibility(View.GONE);
-        Log.e("onNetworkCallError","===>"+errorMessage);
         AppUtils.toast(this, this.getString(R.string.oops));
     }
 
@@ -877,8 +887,30 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e("BRAND OnDestroy",";;;;;OnDestroy");
         removeHandlerCallBck();
     }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        ActivityManager.MemoryInfo memoryInfo = getAvailableMemory();
+
+        Toast.makeText(this,"----LOW MEMORY-----"+memoryInfo.totalMem,Toast.LENGTH_SHORT).show();
+
+    }
+
+    // Get a MemoryInfo object for the device's current memory status.
+    private ActivityManager.MemoryInfo getAvailableMemory() {
+        ActivityManager activityManager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        activityManager.getMemoryInfo(memoryInfo);
+        return memoryInfo;
+    }
+
+    private void clearApplicationData()
+    {
+        ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
+    }
+
 
 }

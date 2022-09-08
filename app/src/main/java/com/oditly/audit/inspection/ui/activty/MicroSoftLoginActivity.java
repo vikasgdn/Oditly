@@ -74,7 +74,7 @@ public class MicroSoftLoginActivity extends BaseActivity implements INetworkEven
         super.onClick(view);
         switch (view.getId()) {
             case R.id.btn_signin_microsoft:
-                if (firebaseAuth.getCurrentUser() != null)
+                if (firebaseAuth!=null && firebaseAuth.getCurrentUser() != null)
                     startActivity(new Intent(MicroSoftLoginActivity.this, MainActivity.class));
                 else
                     AuthenticateWithMicrosoftOAuth();

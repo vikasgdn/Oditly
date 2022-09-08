@@ -72,12 +72,12 @@ public class TeamMemberDisplayActivity extends BaseActivity implements INetworkE
 
        int member= getIntent().getIntExtra(AppConstant.TEAM_MEMBER,0);
        if (member>1)
-           mMembeText=""+member+" Members";
+           mMembeText=""+member+" "+getString(R.string.text_members);
        else
-           mMembeText=""+member+" Member";
+           mMembeText=""+member+" "+getString(R.string.text_member);
 
         if(getIntent()!=null)
-            mTeamNameAndSizeTV.setText(""+getIntent().getStringExtra(AppConstant.TEAM_NAME)+"'s Team ( "+mMembeText+" )");
+            mTeamNameAndSizeTV.setText(""+getIntent().getStringExtra(AppConstant.TEAM_NAME)+"'s"+getString(R.string.text_team)+" ( "+mMembeText+" )");
 
 
 

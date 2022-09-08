@@ -14,9 +14,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.oditly.audit.inspection.BuildConfig;
+import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.dialog.AppDialogs;
+import com.oditly.audit.inspection.model.LanguageBeanData;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkService;
@@ -30,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AccountProfileActivity extends BaseActivity implements INetworkEvent {
@@ -38,6 +42,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
     private TextView mNameTV;
     private TextView mEmailTV;
     private RelativeLayout mProgressBarRL;
+    private TextView mUpdateAppTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,9 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
         findViewById(R.id.tv_feedback).setOnClickListener(this);
         findViewById(R.id.tv_upcomingfeature).setOnClickListener(this);
         findViewById(R.id.tv_chatwithus).setOnClickListener(this);
+        findViewById(R.id.tv_updateteyourapp).setOnClickListener(this);
+
+        mUpdateAppTV=findViewById(R.id.tv_updateteyourapp);
     }
     @Override
     protected void initVar() {
@@ -100,8 +108,8 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                 AppDialogs.languageDialog(this);
                 break;
             case R.id.tv_support:
-               // Intent intent=new Intent(this, SupportActivity.class);
-               // startActivity(intent);
+                // Intent intent=new Intent(this, SupportActivity.class);
+                // startActivity(intent);
                 Intent callIntent = new Intent(this, ChatSupportActivity.class);
                 startActivity(callIntent);
                 break;
@@ -127,9 +135,14 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                 startActivity(intent3);
                 break;
             case R.id.tv_chatwithus:
-               // Intent callIntent = new Intent(this, ChatSupportActivity.class);
+                // Intent callIntent = new Intent(this, ChatSupportActivity.class);
                 //startActivity(callIntent);
                 break;
+
+            case R.id.tv_updateteyourapp:
+                getAppUpdateStatusFromServer();
+                 break;
+
         }
     }
     public void setOTPServer()
@@ -139,6 +152,39 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
             Map<String, String> params = new HashMap<>();
             params.put(NetworkConstant.REQ_PARAM_USER, AppPreferences.INSTANCE.getUserEmail(this));
             NetworkService networkService = new NetworkService(NetworkURL.SENDOTP, NetworkConstant.METHOD_POST, this,this);
+            networkService.call(params);
+        }
+        else
+            AppUtils.toast(this, getString(R.string.internet_error));
+
+    }
+
+
+    public void setUpdateLanguageToServer()
+    {
+        if (NetworkStatus.isNetworkConnected(this)) {
+
+            String langCode=AppPreferences.INSTANCE.getSelectedLang();
+            int languageId=1;   //default id English
+
+            List<LanguageBeanData> mLanguageList=((OditlyApplication)getApplicationContext()).getmLanguageList();  //save laguageList
+
+            if (mLanguageList!=null)
+            {
+                for (int i = 0; i < mLanguageList.size(); i++) {
+                    LanguageBeanData beanData = mLanguageList.get(i);
+                    if (langCode.equalsIgnoreCase(beanData.getLanguage_code()))
+                        languageId = beanData.getLanguage_id();
+                }
+            }
+            mProgressBarRL.setVisibility(View.VISIBLE);
+            Map<String, String> params = new HashMap<>();
+
+            params.put(NetworkConstant.FNAME, AppPreferences.INSTANCE.getUserFname(this));
+            params.put(NetworkConstant.LNAME, AppPreferences.INSTANCE.getUserLName(this));
+            params.put(NetworkConstant.LANGUAGE_ID, ""+languageId);
+
+            NetworkService networkService = new NetworkService(NetworkURL.POST_UPDATE_PROFILE_LANG, NetworkConstant.METHOD_POST, this,this);
             networkService.call(params);
         }
         else
@@ -198,6 +244,16 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
         }
 
     }
+    private void getAppUpdateStatusFromServer() {
+        if (NetworkStatus.isNetworkConnected(this)) {
+            mProgressBarRL.setVisibility(View.VISIBLE);
+            NetworkService networkService = new NetworkService(NetworkURL.APP_VERSION, NetworkConstant.METHOD_GET, this, this);
+            networkService.call(new HashMap<String, String>());
+        } else {
+            AppUtils.toast(this, getString(R.string.internet_error));
+
+        }
+    }
 
     @Override
     public void onNetworkCallInitiated(String service) {
@@ -207,6 +263,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
     @Override
     public void onNetworkCallCompleted(String type, String service, String response)
     {
+        Log.e("RESPONSE PROFILE==> ",""+response);
         if(service.equalsIgnoreCase(NetworkURL.LOGOUT)) {
             try {
                 JSONObject object = new JSONObject(response);
@@ -229,6 +286,49 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                     }
                 }
             } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(service.equalsIgnoreCase(NetworkURL.POST_UPDATE_PROFILE_LANG)) {
+            {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String message = object.getString(AppConstant.RES_KEY_MESSAGE);
+
+                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR))
+                    {
+                        Intent intent = new Intent(this, SplashActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        this.startActivity(intent);
+                        this.finish();
+                    }
+                    else
+                        AppUtils.toast(AccountProfileActivity.this, message);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if(service.equalsIgnoreCase(NetworkURL.APP_VERSION))
+        {
+            try {
+                JSONObject object = new JSONObject(response);
+
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    int versionServer = object.getJSONObject("data").getInt("version");
+                    boolean status = object.getJSONObject("data").getBoolean("force_update");
+                    Log.e("version  ", "||||||" + BuildConfig.VERSION_CODE);
+                    if (versionServer > BuildConfig.VERSION_CODE)
+                        AppDialogs.openPlayStoreDialog(AccountProfileActivity.this);
+                    else
+                        AppDialogs.openUpdatePopUpDialog(AccountProfileActivity.this);
+
+
+                }
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }

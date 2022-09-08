@@ -7,10 +7,10 @@ package com.oditly.audit.inspection.network;
 
 public class NetworkURL {
 
-    //API URL'S LIVE SERVER
-   // public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
-   // public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
-
+   /* //API URL'S LIVE SERVER
+    public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
+    public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
+*/
     //API URL'S STAGE SERVER
     //public static final String API_BASE_URL_NEW= "https://api.stage.account.oditly.com/";
     // public static final String API_BASE_URL = "https://api.stage.account.oditly.com/m/";
@@ -78,6 +78,10 @@ public class NetworkURL {
     //language_id,fname
     public static final String POST_UPDATE_PROFILE_LANG = API_BASE_URL_NEW+"profile";
     public static final String GET_LANGUAGE_LIST = API_BASE_URL_NEW+"user/languages";
+
+
+
+    public static final String GET_ACTIONPLAN_DATA = API_BASE_URL_NEW+"ia/action-plan?action_plan_id=";
 
 
 

@@ -7,9 +7,10 @@
     android:layout_height="match_parent"
     android:background="@color/c_white"
     >
+
     <include
         android:id="@+id/header"
-        layout="@layout/include_header_text"/>
+        layout="@layout/include_header_text" />
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"

@@ -19,15 +19,19 @@
             android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/c_gray_text"
-            android:padding="@dimen/d_10dp"
             android:layout_marginLeft="@dimen/d_2dp"
-            android:inputType="text"
-            android:imeOptions="actionSearch"
-            android:fontFamily="@font/nunitosans_regular"
             android:background="@drawable/graydark_border_whitebg"
-            android:textSize="14sp"
-            android:hint="@string/text_audit_id_name"/>
+            android:fontFamily="@font/nunitosans_regular"
+            android:hint="@string/text_audit_id_name"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:inputType="text"
+            android:paddingTop="@dimen/d_10dp"
+            android:paddingBottom="@dimen/d_10dp"
+            android:paddingLeft="@dimen/d_10dp"
+            android:paddingRight="@dimen/d_40dp"
+            android:textColor="@color/c_gray_text"
+            android:textSize="14sp" />
 
 
         <ImageView

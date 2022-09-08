@@ -284,7 +284,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onNetworkCallError(String service, String errorMessage) {
-        Log.e("onNetworkCallError","===>"+errorMessage);
+      //  Log.e("onNetworkCallError","===>"+errorMessage);
         // AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         mSpinKitView.setVisibility(View.GONE);
     }

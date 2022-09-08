@@ -221,6 +221,12 @@
     <string name="text_team">Teams</string>
     <string name="text_addnew_member">Een nieuw team maken</string>
     <string name="text_name_emaili_roll">Naam, E-mail-ID, rol</string>
+
+    <string name="text_name_team">Naam:</string>
+    <string name="text_email_team">E-mail:</string>
+    <string name="text_role_team">rol:</string>
+
+
     <string name="text_entor_data">Voer zoekgegevens in</string>
     <string name="text_selet_filter">Selecteer filters</string>
     <string name="text_date_range">Datumbereik</string>
@@ -328,5 +334,79 @@
     <string name="s_create">Creëren</string>
     <string name="s_signin_microsoft">Aanmelden met Microsoft</string>
     <string name="text_actiopnplan_id">Actieplan-ID</string>
+
+
+    <!--
+        new
+    -->
+
+    <string name="text_pending">"In afwachting"</string>
+    <string name="text_score">Scoren</string>
+    <string name="text_type_your_comment">"Plaats een reactie"</string>
+    <string name="text_type_your_answer">Typ je antwoord</string>
+    <string name="text_nature_of_complaint">Aard van Klacht</string>
+    <string name="text_overdue_by_days">Achterstallig door XXX Dagen</string>
+    <string name="text_overdue_by_day">Achterstallig door XXX Dag</string>
+    <string name="text_overdue_days_notapplicable">Uiterste datum is niet van toepassing</string>
+    <string name="text_overdue_on">Achterstallig op</string>
+    <string name="text_by">Door</string>
+    <string name="text_complted_on">Voltooid Op</string>
+    <string name="text_members">Leden</string>
+    <string name="text_member">Lid</string>
+    <string name="text_teamname">Teamnaam  :</string>
+    <string name="text_create_date">Aanmaakdatum :</string>
+    <string name="text_team_count">Teamtelling   :</string>
+    <string name="text_action_has_been_created">Actie is aangemaakt.</string>
+    <string name="text_inspection_hasbeen_created_and_assigned">Inspectie is aangemaakt en toegewezen aan de auditor</string>
+    <string name="text_inspection_hasbeen_created_and_scheduled">Inspectie is gepland en zal op het geplande tijdstip aan de auditor worden toegewezen</string>
+    <string name="text_select_startdate_first">Selecteer startdatum</string>
+    <string name="text_select_duedate_first">Selecteer de vervaldatum</string>
+    <string name="text_select_time">Selecteer Tijd</string>
+    <string name="text_select_am_pm">Selecteer AM/PM</string>
+    <string name="text_question">Vraag:</string>
+    <string name="text_create_actionplanfor_question">Maak alstublieft het actieplan voor vraag nr.</string>
+
+    <string name="text_submit_requredmedia_count">Dien de vereiste in MMM afbeelding(en) bij vraagnr. CCC in sectie</string>
+    <string name="text_enter_requredcomment_count">Vul a.u.b. het vereiste minimum in XXX karakters opmerking voor vraag nr. CCC</string>
+    <string name="text_youhavenot_answer_question">Je hebt geen antwoord gegeven op vraag nee. CCC</string>
+    <string name="text_actionplan_has_been_created_forthis_question">Er is een actieplan gemaakt voor deze vraag</string>
+    <string name="text_answer_hasbeen_save">Je antwoord is opgeslagen</string>
+    <string name="text_back">TERUG</string>
+    <string name="text_youhave_not_answer_question_section">Je hebt geen antwoord gegeven op vraag nee CCC in sectie SSS</string>
+    <string name="text_create_actionplan_for_question_section">Maak alstublieft het actieplan voor vraag nr. CCC in sectie SSS</string>
+    <string name="text_submit_requiredmedia_for_question_section">Dien de vereiste in MMM afbeelding(en) bij vraagnr. CCC in sectie SSS</string>
+    <string name="text_submit_require_comment_for_question_section">Vul a.u.b. het vereiste minimum in MMM karakters opmerking voor vraag nr. CCC in sectie SSS</string>
+    <string name="text_subsection">Onderafdeling</string>
+
+
+
+   <string name="text_appupdate">Je mist een aantal belangrijke functies van Oditly, update je applicatie a.u.b.</string>
+   <string name="text_update">update</string>
+   <string name="text_app_uptodate">Je app is up-to-date</string>
+   <string name="text_update_your_app">Update your App</string>
+
+    <!--new-->
+    <string name="text_submit_requredmedia_action">Dien de vereiste in MMM beelden</string>
+    <string name="text_image_not_attched">Oeps.. Afbeelding niet bijgevoegd</string>
+    <string name="text_douwant_to_continue">Wil je doorgaan?</string>
+    <string name="text_please_enterminimum">Vul a.u.b. minimum in CCC personages </string>
+    <string name="please_enter_valuein">Vul a.u.b. waarde in</string>
+    <string name="text_instruction">Instructie</string>
+    <string name="text_adhoc">Ad Hoc</string>
+
+
+
+    <!--new sept-->
+    <string name="text_overall_score">Totale score</string>
+    <string name="text_actionplan_attachment">Bijlage bij actieplan</string>
+    <string name="text_answer">Answer</string>
+    <string name="text_response">Antwoord</string>
+    <string name="text_inspection_attachment">Inspectie bijlage</string>
+    <string name="text_root_cause">Analyse van de hoofdoorzaak</string>
+    <string name="text_enter_rootcause">Typ hoofdoorzaak</string>
+    <string name="text_notify_user">Gebruikers informeren</string>
+    <string name="text_enteremail_commaseperated">Voer e-mail-IDs in, gescheiden door kommas</string>
+    <string name="text_no_attachment">Geen bijlage</string>
+
 
 </resources>

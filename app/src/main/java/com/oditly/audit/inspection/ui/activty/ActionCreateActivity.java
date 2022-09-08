@@ -573,11 +573,11 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
                 if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                     if (this.mFromWhere.equalsIgnoreCase("Audit")) {
-                        AppUtils.toast(this, "Action has been created");
+                        AppUtils.toast(this, getString(R.string.text_action_has_been_created));
                         setResult(RESULT_OK, new Intent());
                         finish();
                     } else {
-                        AppDialogs.messageDialogWithOKButton(this, "Action has been created");
+                        AppDialogs.messageDialogWithOKButton(this, getString(R.string.text_action_has_been_created));
                     }
                 } else
                     AppUtils.toastDisplayForLong(this, message);
@@ -752,7 +752,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                AppUtils.toast(this, "Result Some technical error. Please try again." );
+                AppUtils.toast(this, " Some technical error Camera. Please try again." );
             }
         }
     }
@@ -764,7 +764,8 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
             {
                 mURIimageList.addAll(uriList);
                 for (int i=0;i<mURIimageList.size();i++)
-                    mMediaFileList.add(new File(getPath(mURIimageList.get(i))));
+                    if (!mURIimageList.get(i).toString().contains("file"))
+                        mMediaFileList.add(new File(getPath(mURIimageList.get(i))));
 
                 mMediaAdapter.notifyDataSetChanged();
             } else {

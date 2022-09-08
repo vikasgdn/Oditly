@@ -80,14 +80,14 @@
                 android:background="@drawable/gray_border_whitebg"
                 android:visibility="visible"
                 >
+
                 <Spinner
                     android:id="@+id/spn_hour"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/d_10dp"
                     android:background="@null"
                     android:entries="@array/arr_hour"
-                    />
+                    android:padding="@dimen/d_10dp" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -107,14 +107,14 @@
                 android:background="@drawable/gray_border_whitebg"
                 android:visibility="visible"
                 >
+
                 <Spinner
                     android:id="@+id/spn_ampm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/d_10dp"
                     android:background="@null"
                     android:entries="@array/arr_ampm"
-                />
+                    android:padding="@dimen/d_10dp" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

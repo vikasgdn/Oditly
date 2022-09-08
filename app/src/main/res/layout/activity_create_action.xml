@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/d_10dp"
                 android:background="@drawable/gray_border_whitebg"
-                android:hint="Nature of Complaint"
+                android:hint="@string/text_nature_of_complaint"
                 android:padding="@dimen/d_10dp"
                 android:textColor="@color/c_gray_text"
                 android:textSize="@dimen/text_size_16" />

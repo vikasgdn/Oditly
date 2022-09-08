@@ -22,9 +22,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import com.oditly.audit.inspection.BuildConfig;
+import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
+import com.oditly.audit.inspection.ui.activty.AccountProfileActivity;
 import com.oditly.audit.inspection.ui.activty.ActionCreateActivity;
 import com.oditly.audit.inspection.ui.activty.ActionPlanLandingActivity;
 import com.oditly.audit.inspection.ui.activty.AddTeamMemberActivity;
@@ -364,7 +366,7 @@ public class AppDialogs
         dialog.show();
 
     }
-    public static void languageDialog(final Activity activity) {
+    public static void languageDialog(final AccountProfileActivity activity) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_language);
@@ -377,7 +379,7 @@ public class AppDialogs
         try {
             RadioGroup radioGroup=dialog.findViewById(R.id.radioGroup_lang);
 
-           // setLangDefaultSelection(radioGroup);
+            setLangDefaultSelection(radioGroup);
 
             dialog.findViewById(R.id.iv_cancel).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -392,9 +394,8 @@ public class AppDialogs
                     int selectedId = radioGroup.getCheckedRadioButtonId();
 
                    RadioButton radioButton = (RadioButton) dialog.findViewById(selectedId);
-
                     switch (radioButton.getText().toString()) {
-                        case "english":
+                        case "English":
                             AppPreferences.INSTANCE.setSelectedLang("en");
                             Locale locale = new Locale("en");
                             Locale.setDefault(locale);
@@ -480,9 +481,9 @@ public class AppDialogs
                             break;
                     }
 
-                    Intent intent=new Intent(activity,SplashActivity.class);
-                    activity.startActivity(intent);
-                    activity.finish();
+
+
+                    activity.setUpdateLanguageToServer();
 
                     dialog.dismiss();
                 }
@@ -575,9 +576,9 @@ public class AppDialogs
         dialog.setCancelable(false);
 
         dialog.setTitle("Oditly");
-        dialog.setMessage("You are missing out on some important features of Oditly, please update your application.");
+        dialog.setMessage(context.getResources().getString(R.string.text_appupdate));
 
-        dialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton(context.getResources().getString(R.string.text_update), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final String appPackageName = context.getPackageName(); // getPackageName() from Context or Activity object
@@ -593,6 +594,28 @@ public class AppDialogs
 
         dialog.create().show();
     }
+
+
+    public static void openUpdatePopUpDialog(final Activity context)
+    {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setCancelable(false);
+
+        dialog.setTitle("Oditly");
+        dialog.setMessage(context.getResources().getString(R.string.text_app_uptodate));
+
+        dialog.setPositiveButton(context.getResources().getString(R.string.text_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.create().show();
+    }
+
+
 
     public static   void messageDialogWithOKButton(final Activity activity,String message) {
         final Dialog dialog = new Dialog(activity);
@@ -622,10 +645,15 @@ public class AppDialogs
                     }
                     if(activity instanceof AuditSubmitSignatureActivity)
                     {
-                        Intent intent = new Intent(activity,MainActivity.class);
+                       Intent intent = new Intent(activity,MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         activity.startActivity(intent);
                         activity.finish();
+
+                       // Intent data = new Intent();
+                       // activity.setResult(Activity.RESULT_OK,data);
+                        //activity.finish();
+
                     }
                     if(activity instanceof ScheduleDemoActivity)
                     {
@@ -678,7 +706,7 @@ public class AppDialogs
         dialog.getWindow().setAttributes(lp);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         TextView textView=dialog.findViewById(R.id.tv_dialog_message);
-        textView.setText(message+"\n  Do you want to continue?");
+        textView.setText(message+"\n "+activity.getResources().getString(R.string.text_douwant_to_continue));
 
         try {
             dialog.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {

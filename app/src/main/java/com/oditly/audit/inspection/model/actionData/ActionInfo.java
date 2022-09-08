@@ -1,6 +1,10 @@
 package com.oditly.audit.inspection.model.actionData;
 
 
+import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentInfo;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
+import com.oditly.audit.inspection.model.audit.createaudit.SectionBean;
+
 import java.util.ArrayList;
 
 public class ActionInfo {
@@ -24,6 +28,9 @@ public class ActionInfo {
     private boolean can_complete;
 
     private ArrayList<AssignedUserData> assigned_users;
+    private ArrayList<BrandStandardSectionForAction> sections;
+    private ArrayList<AddAttachmentInfo> files;
+
 
 
 
@@ -506,4 +513,22 @@ public class ActionInfo {
     public void setMedia_count(int media_count2) {
         this.media_count = media_count2;
     }
+
+
+    public ArrayList<BrandStandardSectionForAction> getSections() {
+        return sections;
+    }
+
+    public void setSections(ArrayList<BrandStandardSectionForAction> sections) {
+        this.sections = sections;
+    }
+
+    public ArrayList<AddAttachmentInfo> getFiles() {
+        return files;
+    }
+
+    public void setFiles(ArrayList<AddAttachmentInfo> files) {
+        this.files = files;
+    }
+
 }

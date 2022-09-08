@@ -150,7 +150,7 @@
             android:layout_marginEnd="@dimen/d_5dp"
             android:padding="@dimen/d_5dp"
             android:background="@drawable/comment_border"
-            android:hint="Type your answer"
+            android:hint="@string/text_type_your_answer"
             android:textSize="@dimen/text_size_14"
             android:gravity="top"
             android:minLines="2"
@@ -165,7 +165,7 @@
             android:layout_marginStart="@dimen/d_5dp"
             android:layout_marginEnd="@dimen/d_5dp"
             android:background="@drawable/comment_border"
-            android:hint="Type your answer"
+            android:hint="@string/text_type_your_answer"
             android:inputType="number|numberDecimal|numberSigned"
             android:textSize="@dimen/text_size_14"
             android:gravity="left|center_vertical"
@@ -323,9 +323,6 @@
                 </LinearLayout>
 
 
-
-
-
             </LinearLayout>
 
             <EditText
@@ -337,7 +334,7 @@
                 android:layout_marginEnd="@dimen/d_5dp"
                 android:padding="@dimen/d_5dp"
                 android:background="@drawable/comment_border"
-                android:hint="Type your comment"
+                android:hint="@string/text_type_your_comment"
                 android:textSize="@dimen/text_size_14"
                 android:gravity="top"
                 android:minLines="2"

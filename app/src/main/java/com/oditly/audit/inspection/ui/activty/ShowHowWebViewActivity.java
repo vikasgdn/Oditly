@@ -21,16 +21,20 @@ import android.widget.TextView;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.util.AppConstant;
 
+import java.net.URLEncoder;
+
 public class ShowHowWebViewActivity extends BaseActivity  {
 
     private String mDocumentURL;
     private RelativeLayout mProgressBar;
     private WebView webView;
     private int mCounter=0;
+    private String mFromWhere="";
 
-    public static void start(Context context, String data) {
+    public static void start(Context context, String data,String location) {
         Intent i = new Intent(context, ShowHowWebViewActivity.class);
         i.putExtra(AppConstant.FILE_URL, data);
+        i.putExtra(AppConstant.FROMWHERE, location);
         context.startActivity(i);
     }
 
@@ -52,23 +56,38 @@ public class ShowHowWebViewActivity extends BaseActivity  {
         super.initView();
 
         findViewById(R.id.iv_header_left).setOnClickListener(this);
-        TextView textView=(TextView)findViewById(R.id.tv_header_title);
-        textView.setText(getString(R.string.text_ref_image));
         mProgressBar = (RelativeLayout) findViewById(R.id.ll_parent_progress);
         mProgressBar.setVisibility(View.VISIBLE);
-         webView = (WebView) findViewById(R.id.webview);
+        webView = (WebView) findViewById(R.id.webview);
         mDocumentURL=getIntent().getStringExtra(AppConstant.FILE_URL);
+        mFromWhere=getIntent().getStringExtra(AppConstant.FROMWHERE);
+
+        TextView mTitalTV=(TextView)findViewById(R.id.tv_header_title);
+
+        if (mFromWhere.equalsIgnoreCase(AppConstant.ACTIONPLAN))
+            mTitalTV.setText(getString(R.string.text_attachment));
+        else
+            mTitalTV.setText(getString(R.string.text_ref_image));
+
+
+        try {
+            mDocumentURL= URLEncoder.encode(mDocumentURL,"UTF-8");
+        }
+        catch (Exception e){}
+
         String finalUrl ="https://docs.google.com/gview?embedded=true&url="+ mDocumentURL;
+        Log.e("URL FINAL===> ",""+finalUrl);
+
         String iFrameURL="<iframe src='http://docs.google.com/viewer?url="+mDocumentURL+"&embedded=true' width='100%' height='100%' style='border: none;'></iframe>";
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setPluginState(WebSettings.PluginState.ON);
-       // webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
-      //  webView.getSettings().setBuiltInZoomControls(true);
-      //  webView.getSettings().setUseWideViewPort(true);
-       // webView.getSettings().setLoadWithOverviewMode(true);
-          webView.getSettings().setAllowFileAccess(true);
-      //  webView.loadData(iFrameURL,"text/html", "UTF-8");
+        // webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+        //  webView.getSettings().setBuiltInZoomControls(true);
+        //  webView.getSettings().setUseWideViewPort(true);
+        // webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setAllowFileAccess(true);
+        //  webView.loadData(iFrameURL,"text/html", "UTF-8");
         webView.loadUrl(finalUrl);
 
         webView.setWebViewClient(new WebViewClient() {
@@ -92,7 +111,7 @@ public class ShowHowWebViewActivity extends BaseActivity  {
             public void onPageFinished(WebView view, String url) {
                 Log.e(":::: URL  ","onPageFinished   "+webView.getProgress());
                 if (mCounter<3)
-                     view.loadUrl(url);
+                    view.loadUrl(url);
                 mProgressBar.setVisibility(View.GONE);
 
             }

@@ -58,9 +58,9 @@ public class AuditListAdapter extends RecyclerView.Adapter<AuditListAdapter.Audi
         holder.mAuditTypeTV.setText(""+auditInfo.getAudit_type());
         holder.mAuditNameTV.setText(auditInfo.getAudit_name());
         holder.mLocationTV.setText(auditInfo.getLocation_title());
-        holder.mTemplateTV.setText("Template: "+auditInfo.getQuestionnaire_title());
+        holder.mTemplateTV.setText(context.getResources().getString(R.string.text_template)+": "+auditInfo.getQuestionnaire_title());
         holder.mDateTV.setText(AppUtils.getFormatedDateWithTime(auditInfo.getAudit_due_date()));
-        holder.mCompletePercentageTV.setText(""+Math.round(auditInfo.getCompletion_percent())+"% Completed");
+        holder.mCompletePercentageTV.setText(""+Math.round(auditInfo.getCompletion_percent())+"%"+context.getResources().getString(R.string.text_complete));
         holder.mPieChartAuditPer.setPercent(auditInfo.getCompletion_percent());
         holder.mStatusTV.setSelected(true);
         holder.mAuditNameTV.setSelected(true);
@@ -71,27 +71,27 @@ public class AuditListAdapter extends RecyclerView.Adapter<AuditListAdapter.Audi
             holder.mActionTV.setBackgroundResource(R.drawable.button_border_green);
             holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_green));
             if (dateOverDue.equalsIgnoreCase("N/A"))
-                holder.mStatusTV.setText("Due date is not applicable");
+                holder.mStatusTV.setText(context.getResources().getString(R.string.text_overdue_days_notapplicable));
             else
-               holder.mStatusTV.setText("Overdue On "+AppUtils.getFormatedDateDayMonth(auditInfo.getAudit_due_date()));
+               holder.mStatusTV.setText(context.getResources().getString(R.string.text_overdue_on)+" "+AppUtils.getFormatedDateDayMonth(auditInfo.getAudit_due_date()));
         }else if (status==2){
             holder.mActionTV.setText(context.getResources().getString(R.string.text_resume));
             holder.mActionTV.setTextColor(context.getResources().getColor(R.color.c_yellow));
             holder.mActionTV.setBackgroundResource(R.drawable.button_border_yello);
             holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_yellow));
             if (dateOverDue.equalsIgnoreCase("N/A"))
-                holder.mStatusTV.setText("Due date is not applicable");
+                holder.mStatusTV.setText(context.getResources().getString(R.string.text_overdue_days_notapplicable));
             else
-                holder.mStatusTV.setText("Overdue On "+AppUtils.getFormatedDateDayMonth(auditInfo.getAudit_due_date()));
+                holder.mStatusTV.setText(context.getResources().getString(R.string.text_overdue_on)+" "+AppUtils.getFormatedDateDayMonth(auditInfo.getAudit_due_date()));
         }else if (status==3){
             holder.mActionTV.setText(context.getResources().getString(R.string.s_overdue));
             holder.mActionTV.setTextColor(context.getResources().getColor(R.color.c_red));
             holder.mActionTV.setBackgroundResource(R.drawable.button_border_red);
             holder.mStatusTV.setTextColor(context.getResources().getColor(R.color.c_red));
             if(auditInfo.getOverdue_days()>1)
-                holder.mStatusTV.setText("Overdue By "+auditInfo.getOverdue_days()+" Days");
+                holder.mStatusTV.setText(context.getResources().getString(R.string.text_overdue_by_days).replace("XXX",""+auditInfo.getOverdue_days()));
             else
-                holder.mStatusTV.setText("Overdue By "+auditInfo.getOverdue_days()+" Day");
+                holder.mStatusTV.setText(context.getResources().getString(R.string.text_overdue_by_day).replace("XXX",""+auditInfo.getOverdue_days()));
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

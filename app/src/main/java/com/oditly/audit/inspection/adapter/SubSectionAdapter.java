@@ -46,30 +46,32 @@ public class SubSectionAdapter extends RecyclerView.Adapter<SubSectionAdapter.Su
         int answerdCount = brandStandardSection.getAnswered_question_count();
         if (brandStandardSection.getTotal_obtained_mark()>0) {
             float sectionScore = ((brandStandardSection.getTotal_obtained_mark() / brandStandardSection.getTotal_max_mark()) * 100);
-            holder.tvScore.setText("Score: " + String.format("%.1f", sectionScore) + "%");
+            holder.tvScore.setText(context.getResources().getString(R.string.text_score)+": " + String.format("%.1f", sectionScore) + "%");
         }
         else
-            holder.tvScore.setText("Score: 0%");
+            holder.tvScore.setText(context.getResources().getString(R.string.text_score)+": 0%");
 
 
         holder.tvSubSectionTitle.setText(brandStandardSection.getSection_title());
+        holder.tvSectionTitle.setText(brandStandardSection.getSection_group_title());
         holder.tvSubSectionTitle.setSelected(true);
+        holder.tvSectionTitle.setSelected(true);
 
         if (answerdCount>totalQuestionCount)
             answerdCount=totalQuestionCount;
 
-        holder.tvQuestionCount.setText("Question: " + answerdCount + "/" + totalQuestionCount);
+        holder.tvQuestionCount.setText(context.getResources().getString(R.string.text_question)+" " + answerdCount + "/" + totalQuestionCount);
         if (answerdCount == 0) {
-            holder.tvSubSectionStatus.setText("Start");
-            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.start_status));
+            holder.tvSubSectionStatus.setText(context.getResources().getString(R.string.text_start));
+            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.start_status1));
             holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_red));
         } else if (answerdCount < totalQuestionCount) {
-            holder.tvSubSectionStatus.setText("Pending");
-            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.pending_status));
+            holder.tvSubSectionStatus.setText(context.getResources().getString(R.string.text_pending));
+            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.pending_status1));
             holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_orange));
         } else {
-            holder.tvSubSectionStatus.setText("Completed");
-            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.complete_status));
+            holder.tvSubSectionStatus.setText(context.getResources().getString(R.string.text_complete));
+            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.complete_status1));
             holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.c_green));
             //  holder.naCheckBox.setChecked(true);
         }
@@ -95,12 +97,17 @@ public class SubSectionAdapter extends RecyclerView.Adapter<SubSectionAdapter.Su
         ImageView tvSubSectionIcon;
         TextView tvQuestionCount;
         TextView tvScore;
+        TextView tvSectionTitle;
+
         LinearLayout llSubSectionBorder;
+
+
         //  CheckBox naCheckBox;
 
         public SubSectionTabViewHolder(View itemView) {
             super(itemView);
 
+            tvSectionTitle = itemView.findViewById(R.id.tv_section_title);
             tvSubSectionTitle = itemView.findViewById(R.id.tv_sub_section_title);
             tvSubSectionStatus = itemView.findViewById(R.id.tv_sub_section_status);
             tvSubSectionIcon = itemView.findViewById(R.id.iv_sub_section_icon);

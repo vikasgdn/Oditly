@@ -9,6 +9,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -63,6 +64,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -84,12 +86,14 @@ public class AppUtils {
                 String questionType = question.getQuestion_type();
                 if (brandStandardQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target"))) {
                     if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required() == 1) {
-                        AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                       // String message="You have not answered question no " + count + " in section " + brandStandardSection.get(i).getSection_title();
+                        AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
                         return null;
                     }
                 } else {
                     if (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required() == 1 && !questionType.equalsIgnoreCase("media")) {
-                        AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                      //  AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                        AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
                         return null;
                     }
                 }
@@ -121,15 +125,18 @@ public class AppUtils {
 
                 if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media")) {
                     if (mActionPlanRequred > 0 && question.getAction_plan() == null) {
-                        AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                       // String message="Please Create the Action Plan for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title();
+                        AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_create_actionplan_for_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()) );
                         return null;
                     }
                     if (mMediaCount > 0 && question.getAudit_question_file_cnt() < mMediaCount) {
-                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                       // String message="Please submit the required " + mMediaCount + " image(s) for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title();
+                        AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_submit_requiredmedia_for_question_section).replace("MMM",""+mMediaCount).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
                         return null;
                     }
                     if (mCommentCount > 0 && question.getAudit_comment().length() < mCommentCount) {
-                        AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count + " in section " + brandStandardSection.get(i).getSection_title());
+                      //  String  message="Please enter the minimum required " + mCommentCount + " characters comment for question no." + count + " in section " + brandStandardSection.get(i).getSection_title();
+                        AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_submit_require_comment_for_question_section).replace("MMM",""+mCommentCount).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
                         return null;
                     }
                 }
@@ -147,12 +154,16 @@ public class AppUtils {
                         String questionType = question.getQuestion_type();
                         if (brandStandardSubQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("target"))) {
                             if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required() == 1) {
-                                AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                              //  AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                                AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
+
                                 return null;
                             }
                         } else {
                             if (brandStandardSubQuestion.size() > 0 && (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required() == 1)) {
-                                AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                                //AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                                AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
+
                                 return null;
                             }
                         }
@@ -183,16 +194,20 @@ public class AppUtils {
                         }
                         if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || (question.getAudit_answer() != null && question.getAudit_answer().length() > 0)) {
                             if (mActionPlanRequred > 0 && question.getAction_plan() == null) {
-                                AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                                AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_create_actionplan_for_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()) );
+                             //   AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
                             if (mMediaCount > 0 && question.getAudit_question_file_cnt() < mMediaCount) {
-                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                                AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_submit_requiredmedia_for_question_section).replace("MMM",""+mMediaCount).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
+                               // AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
 
                             if (mCommentCount > 0 && question.getAudit_comment().length() < mCommentCount) {
-                                AppUtils.toastDisplayForLong(activity, "Please enter the minimum required " + mCommentCount + " characters comment for question no." + count + " in section " + brandStandardSection.get(i).getSection_title());
+                                AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_submit_require_comment_for_question_section).replace("MMM",""+mCommentCount).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
+                              //  String message="Please enter the minimum required " + mCommentCount + " characters comment for question no." + count +" in section " + brandStandardSection.get(i).getSection_title();
+                               // AppUtils.toastDisplayForLong(activity, message);
                                 return null;
                             }
 
@@ -1080,6 +1095,45 @@ public class AppUtils {
         Log.e("Firebase Token : ",""+tokenFirebase);
         return tokenFirebase;
     }*/
+
+    public static void setApplicationLanguage(Context context, String newLanguage) {
+        Resources activityRes = context.getResources();
+        Configuration activityConf = activityRes.getConfiguration();
+        Locale newLocale = new Locale(newLanguage);
+        activityConf.setLocale(newLocale);
+        activityRes.updateConfiguration(activityConf, activityRes.getDisplayMetrics());
+
+        Resources applicationRes = context.getResources();
+        Configuration applicationConf = applicationRes.getConfiguration();
+        applicationConf.setLocale(newLocale);
+        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+    }
+
+
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+
+            deleteDir(dir);
+        } catch (Exception e) { e.printStackTrace();}
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
 
 }
 

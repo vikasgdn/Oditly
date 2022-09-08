@@ -86,8 +86,6 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
     @Override
     protected void initView() {
         super.initView();
-        AppLogger.e(TAG, ":::: ON CreateCall BRAND STANDARD");
-
         mTitleTV = findViewById(R.id.tv_header_title);
         mProgressRL=findViewById(R.id.ll_parent_progress);
         questionListRecyclerView = findViewById(R.id.rv_bs_question);
@@ -149,19 +147,19 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
                 if (bsRefrence!=null)
                 {
                     if (bsRefrence.getFile_type().contains("image"))
-                        ShowHowImageActivity.start(this,bsRefrence.getFile_url());
+                        ShowHowImageActivity.start(this,bsRefrence.getFile_url(),"");
                     else  if (bsRefrence.getFile_type().contains("audio"))
                         AudioPlayerActivity.start(this, bsRefrence.getFile_url());
                     else  if (bsRefrence.getFile_type().contains("video"))
-                        ExoVideoPlayer.start(this, bsRefrence.getFile_url());
+                        ExoVideoPlayer.start(this, bsRefrence.getFile_url(),"");
                     else
-                        ShowHowWebViewActivity.start(this,bsRefrence.getFile_url());
+                        ShowHowWebViewActivity.start(this,bsRefrence.getFile_url(),"");
                 }
                 break;
             case R.id.bs_save_btn:
                 AppUtils.hideKeyboard(context, view);
                 if (saveSectionOrPagewiseData())
-                    AppUtils.toast(this,"Your answer has been saved");
+                    AppUtils.toast(this,getString(R.string.text_answer_hasbeen_save));
                 break;
 
             case R.id.iv_header_left:
@@ -183,7 +181,7 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
                     startActivityForResult(actionPlan, 1021);
                 }
                 else
-                    AppUtils.toast(this, "Action plan has been created for this Question");
+                    AppUtils.toast(this, getString(R.string.text_actionplan_has_been_created_forthis_question));
 
 
         }
@@ -244,13 +242,15 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
             if (question.getQuestion_type().equalsIgnoreCase("textarea") || question.getQuestion_type().equalsIgnoreCase("text") || question.getQuestion_type().equalsIgnoreCase("number") || question.getQuestion_type().equalsIgnoreCase("datetime") || question.getQuestion_type().equalsIgnoreCase("date") || question.getQuestion_type().equalsIgnoreCase("slider") || question.getQuestion_type().equalsIgnoreCase("temperature") || question.getQuestion_type().equalsIgnoreCase("measurement") || question.getQuestion_type().equalsIgnoreCase("target"))
             {
                 if ((AppUtils.isStringEmpty(question.getAudit_answer()) || question.getAudit_answer().equalsIgnoreCase("0")) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
-                    AppUtils.toastDisplayForLong(this, "You have not answered " + "question no. " + count);
+                    String message=getString(R.string.text_youhavenot_answer_question);
+                    AppUtils.toastDisplayForLong(this,message.replace("CCC",""+count));
                     return false;
                 }
             }
             else {
                 if (question.getIs_required() == 1 && (question.getAudit_option_id() == null || question.getAudit_option_id().size() == 0) && !question.getQuestion_type().equalsIgnoreCase("media")) {
-                    AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, "You have not answered " + "question no " + count);
+                    String message=getString(R.string.text_youhavenot_answer_question);
+                    AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, message.replace("CCC",""+count));
                     return false;
                 }
             }
@@ -258,17 +258,21 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
 
 
             if (mMediaCount > 0 && question.getAudit_question_file_cnt() < mMediaCount) {
-                AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, "Please submit the required " + mMediaCount + " image(s) for question no. " + count);
+               // String message="Please submit the required " + mMediaCount + " image(s) for question no. " + count;
+                String message=getString(R.string.text_submit_requredmedia_count).replace("MMM",""+mMediaCount).replace("CCC",""+count);
+                AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, message);
                 return false;
             }
             if (mCommentCount> 0 && mCommentCount > question.getAudit_comment().length()) {
-                String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
+              //  String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
+                String message=getString(R.string.text_enter_requredcomment_count).replace("XXX",""+mCommentCount).replace("CCC",""+count);
                 AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, message);
                 return false;
             }
             if(mActionPlanRequred>0 && question.getAction_plan()==null)
             {
-                AppUtils.toastDisplayForLong(this, "Please Create the Action Plan for question no. " + count);
+                String message = getString(R.string.text_create_actionplanfor_question)+" " + count;
+                AppUtils.toastDisplayForLong(this,message);
                 return false;
             }
         }

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,9 +21,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.JsonArray;
+import com.oditly.audit.inspection.BuildConfig;
+import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.dialog.AppDialogs;
+import com.oditly.audit.inspection.model.LanguageBeanData;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkService;
@@ -33,21 +38,26 @@ import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class SplashActivity extends BaseActivity implements INetworkEvent {
 
     private static final long SPLACE_TIMEOUT = 2000;
-    private static final int UPDATE_CHECK = 1000 * 60 * 1200;   // 20 hour
+    private static final int UPDATE_CHECK =  5*60*1000;   // 5 minute
     private Animation uptodown, downtoup, fromLeft;
     private ImageView mLogoImageIV;
     private TextView mAppNameTv;
     private TextView mSloglanTV;
     FirebaseAuth firebaseAuth;
     private String mRefreshTokenURL=NetworkURL.GET_RefreshToke_OKTA_URL;
+    private TextView mScheduleTV;
+    private Button mLoginBTN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +65,13 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         setContentView(R.layout.activity_splash);
         AppPreferences.INSTANCE.initAppPreferences(this);
 
-        Log.e("CURRENT TIME MILLIS","===> "+System.currentTimeMillis());
-        Log.e("OKTA EXPIRE MILLIS","===> "+AppPreferences.INSTANCE.getOktaTokenExpireTime(this));
+        AppUtils.setApplicationLanguage(this,AppPreferences.INSTANCE.getSelectedLang());
+
         initView();
         initVar();
         updateFCMNotification();
         getLanguageListFromServer();
+        checkRefreshTokenAndForceUpdate();
     }
 
     @Override
@@ -79,6 +90,10 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         mLogoImageIV = (ImageView) findViewById(R.id.iv_logoimage);
         mAppNameTv = (TextView) findViewById(R.id.tv_appname);
         mSloglanTV = (TextView) findViewById(R.id.tv_slogan);
+        mScheduleTV = (TextView) findViewById(R.id.tv_schedule);
+        mLoginBTN = (Button) findViewById(R.id.btn_signin);
+
+
 
     }
 
@@ -91,13 +106,10 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
 
         mAppNameTv.setAnimation(fromLeft);
         mSloglanTV.setAnimation(downtoup);
+        mScheduleTV.setText(getString(R.string.text_schedule_demo_oditly));
+        mLoginBTN.setText(getString(R.string.s_signin));
+        mSloglanTV.setText(getString(R.string.s_digitize));
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkRefreshTokenAndForceUpdate();
     }
 
     @Override
@@ -109,27 +121,19 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
                 Intent intent=new Intent(this,ScheduleDemoActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.btn_signin_microsoft:
-                break;
             case R.id.btn_signin:
-                if (AppPreferences.INSTANCE.isLogin(this)) {
-                    Intent intent2 = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(intent2);
-                }else {
-                    Intent intent1 = new Intent(this, SignInEmailActivity.class);
-                    startActivity(intent1);
-                }
+                sendToNewActivity();
                 break;
-
         }
-
-
     }
 
     private void sendToNewActivity() {
         if (AppPreferences.INSTANCE.isLogin(this)) {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(intent);
+            Intent intent2 = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent2);
+        }else {
+            Intent intent1 = new Intent(this, SignInEmailActivity.class);
+            startActivity(intent1);
         }
     }
 
@@ -161,23 +165,49 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
 
     @Override
     public void onNetworkCallCompleted(String type, String service, String response) {
-      //  Log.e("onNetworkCallCompleted "+service, "||||||  "+response);
+        Log.e("onNetworkCallCompleted "+service, "||||||  "+response);
         if (service.equalsIgnoreCase(mRefreshTokenURL))
         {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 AppUtils.parseRefreshTokenRespone(jsonObject,this);
-               // sendToNewActivity();
+                // sendToNewActivity();
             } catch (Exception e) {
-                AppUtils.toast(this, getString(R.string.oops));
                 e.printStackTrace();
             }
         }
         else if (service.equalsIgnoreCase(NetworkURL.POST_FCM_TOKEN)) {
             Log.e("TOKEN  ", "|||||| UPDATED "+AppPreferences.INSTANCE.getFCMToken());
         }
-        else if (service.equalsIgnoreCase(NetworkURL.GET_LANGUAGE_LIST)) {
-            Log.e("LANGUAGE LIST  ", "|||||| "+response);
+        else if (service.equalsIgnoreCase(NetworkURL.GET_LANGUAGE_LIST))
+        {
+            Log.e("GET_LANGUAGE_LIST  ", "|||||| "+response);
+            try {
+                JSONObject object = new JSONObject(response);
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR))
+                {
+                    JSONArray jsonArray= object.optJSONArray("data");
+
+                    List<LanguageBeanData> mLaguageList=new ArrayList<LanguageBeanData>();
+
+                    for (int i=0;i<jsonArray.length();i++)
+                    {
+                        JSONObject jsonObject=jsonArray.getJSONObject(i);
+                        LanguageBeanData beanData=new LanguageBeanData();
+                        beanData.setLanguage_id(jsonObject.optInt("language_id",0));
+                        beanData.setLanguage_code(jsonObject.optString("language_code"));
+                        beanData.setLanguage_name(jsonObject.optString("language_name"));
+                        beanData.setDisplay_name(jsonObject.optString("display_name"));
+                        mLaguageList.add(beanData);
+                    }
+                    ((OditlyApplication)getApplicationContext()).setmLanguageList(mLaguageList);  //save laguageList
+
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
         }
         else if(service.equalsIgnoreCase(NetworkURL.GET_PROFILE_DATA))
         {
@@ -196,21 +226,13 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         else {
             try {
                 JSONObject object = new JSONObject(response);
-
                 if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                     int versionServer = object.getJSONObject("data").getInt("version");
-                    boolean status = object.getJSONObject("data").getBoolean("force_update");
-                    Log.e("version  ", "||||||" + getVersionCode(this));
-                    if (versionServer > getVersionCode(this))
+                    if (versionServer > BuildConfig.VERSION_CODE)
                         AppDialogs.openPlayStoreDialog(SplashActivity.this);
-                    else
-                        sendToNewActivity();
-                } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                    sendToNewActivity();
                 }
             } catch(JSONException e){
                 e.printStackTrace();
-                sendToNewActivity();
             }
         }
     }
@@ -218,27 +240,8 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
     @Override
     public void onNetworkCallError(String service, String errorMessage) {
         AppLogger.e("", "forceUpdateError: " + errorMessage);
-        AppUtils.toast(SplashActivity.this, "Server temporary unavailable, Please try again");
-
     }
 
-    public  int getVersionCode(Context context) {
-        try
-        {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(getPackageName(), 0);
-            if(pInfo!=null)
-                return pInfo.versionCode;
-
-        } catch(PackageManager.NameNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return  0;
-    }
 
     private void updateFCMNotification() {
         FirebaseMessaging.getInstance().getToken()
@@ -292,36 +295,13 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
 
     private void checkRefreshTokenAndForceUpdate()
     {
-        if (System.currentTimeMillis() - AppPreferences.INSTANCE.getLastHitTime(this) > UPDATE_CHECK) {
+        if ((System.currentTimeMillis() - AppPreferences.INSTANCE.getLastHitTime(this)) > UPDATE_CHECK) {
             AppPreferences.INSTANCE.setLastHitTime(this, System.currentTimeMillis());
             getAppUpdateStatusFromServer();
         } else
         {
             if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA) && System.currentTimeMillis()>AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
                 hitGenerateOktaTokeAPI();
-          /*  else {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        sendToNewActivity();
-                    }
-                }, SPLACE_TIMEOUT);
-            }*/
         }
-
     }
-
-
-    /*App notification issue --
-    App signature issue back issue --
- 1. Remove Action Plan Attachments while we view it
-
-2. No pop up warning when exiting sub section for mandatory logic - only working for comment characters logic, not working for media or action plan or mandatory questions
-
-3. Mandatory mark disappears when returning to question from main menu, only for Action Plan
-
-4. Video files not being counted against mandatory media
-
-5. On completing and AP it takes me back to the AP page but does not auto refresh so the old AP still shows and then gives an error when trying to submit
-*/
 }

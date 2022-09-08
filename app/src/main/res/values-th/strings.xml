@@ -221,6 +221,12 @@
     <string name="text_team">ทีม</string>
     <string name="text_addnew_member">สร้างทีมใหม่</string>
     <string name="text_name_emaili_roll">ชื่อ ID อีเมล บทบาท</string>
+
+    <string name="text_name_team">ชื่อ:</string>
+    <string name="text_email_team">อีเมล:</string>
+    <string name="text_role_team">บทบาท:</string>
+
+
     <string name="text_entor_data">โปรดป้อนข้อมูลการค้นหา</string>
     <string name="text_selet_filter">เลือกตัวกรอง</string>
     <string name="text_date_range">ช่วงวันที่</string>
@@ -328,5 +334,81 @@
     <string name="s_create">สร้าง</string>
     <string name="s_signin_microsoft">เข้าสู่ระบบด้วย Microsoft</string>
     <string name="text_actiopnplan_id">รหัสแผนปฏิบัติการ</string>
+
+
+
+    <!--
+        new
+    -->
+
+    <string name="text_pending">รอดำเนินการ</string>
+    <string name="text_score">คะแนน</string>
+    <string name="text_type_your_comment">พิมพ์ความคิดเห็นของคุณ</string>
+    <string name="text_type_your_answer">พิมพ์คำตอบของคุณ</string>
+    <string name="text_nature_of_complaint">ลักษณะการร้องเรียน</string>
+    <string name="text_overdue_by_days">ค้างชำระโดย XXX วัน</string>
+    <string name="text_overdue_by_day">ค้างชำระโดย XXX วัน</string>
+    <string name="text_overdue_days_notapplicable">วันครบกำหนดใช้ไม่ได้</string>
+    <string name="text_overdue_on">เกินกำหนดในวันที่</string>
+    <string name="text_by">โดย</string>
+    <string name="text_complted_on">เสร็จสิ้นเมื่อ</string>
+    <string name="text_members">สมาชิก</string>
+    <string name="text_member">สมาชิก</string>
+    <string name="text_teamname">ชื่อทีม  :</string>
+    <string name="text_create_date">วันที่สร้าง :</string>
+    <string name="text_team_count">ทีมนับ   :</string>
+    <string name="text_action_has_been_created">สร้างการดำเนินการแล้ว</string>
+    <string name="text_inspection_hasbeen_created_and_assigned">มีการสร้างและมอบหมายการตรวจสอบให้ผู้ตรวจสอบแล้ว</string>
+    <string name="text_inspection_hasbeen_created_and_scheduled">ได้กำหนดเวลาการตรวจสอบแล้ว และจะมอบหมายให้ผู้ตรวจสอบตามเวลาที่กำหนด</string>
+    <string name="text_select_startdate_first">กรุณาเลือกวันที่เริ่มต้น</string>
+    <string name="text_select_duedate_first">โปรดเลือกวันที่ครบกำหนด</string>
+    <string name="text_select_time">เลือกเวลา</string>
+    <string name="text_select_am_pm">เลือก AM/PM</string>
+    <string name="text_question">คำถาม :</string>
+    <string name="text_create_actionplanfor_question">กรุณาสร้างแผนปฏิบัติการสำหรับคำถามหมายเลข.</string>
+
+    <string name="text_submit_requredmedia_count">กรุณาส่งสิ่งที่จำเป็น MMM รูปภาพสำหรับคำถามหมายเลข CCC ในมาตรา</string>
+    <string name="text_enter_requredcomment_count">โปรดป้อนอักขระขั้นต่ำที่จำเป็น XXX แสดงความคิดเห็นสำหรับคำถามที่ไม่มี CCC</string>
+    <string name="text_youhavenot_answer_question">คุณยังไม่ได้ตอบคำถาม ไม่. CCC</string>
+    <string name="text_actionplan_has_been_created_forthis_question">สร้างแผนปฏิบัติการสำหรับคำถามนี้แล้ว</string>
+    <string name="text_answer_hasbeen_save">บันทึกคำตอบของคุณแล้ว</string>
+    <string name="text_back">ย้อนกลับ</string>
+    <string name="text_youhave_not_answer_question_section">คุณยังไม่ได้ตอบคำถาม ไม่ CCC ในมาตรา SSS</string>
+    <string name="text_create_actionplan_for_question_section">กรุณาสร้างแผนปฏิบัติการสำหรับคำถามหมายเลข CCC ในมาตรา SSS</string>
+    <string name="text_submit_requiredmedia_for_question_section">กรุณาส่งสิ่งที่จำเป็น MMM รูปภาพสำหรับคำถามหมายเลข CCC ในมาตรา SSS</string>
+    <string name="text_submit_require_comment_for_question_section">โปรดป้อนอักขระขั้นต่ำที่จำเป็น MMM แสดงความคิดเห็นสำหรับคำถามที่ไม่มี CCC ในมาตรา SSS</string>
+
+    <string name="text_subsection">หมวดย่อย</string>
+
+
+
+   <string name="text_appupdate">คุณกำลังพลาดคุณสมบัติที่สำคัญบางอย่างของ Oditly โปรดอัปเดตแอปพลิเคชันของคุณ.</string>
+   <string name="text_update">อัปเดต</string>
+   <string name="text_app_uptodate">แอปของคุณเป็นเวอร์ชันล่าสุด</string>
+   <string name="text_update_your_app">Update your App</string>
+
+    <!--new-->
+    <string name="text_submit_requredmedia_action">กรุณาส่งสิ่งที่จำเป็น MMM ภาพ</string>
+    <string name="text_image_not_attched">อ๊ะ.. ไม่ติดภาพ</string>
+    <string name="text_douwant_to_continue">คุณต้องการที่จะดำเนินการต่อ?</string>
+    <string name="text_please_enterminimum">กรุณาใส่ขั้นต่ำ CCC ตัวอักษร</string>
+    <string name="please_enter_valuein">กรุณากรอกค่าใน</string>
+    <string name="text_instruction">คำแนะนำ</string>
+    <string name="text_adhoc">Ad Hoc</string>
+
+
+    <!--new sept-->
+    <string name="text_overall_score">คะแนนทั้งหมด</string>
+    <string name="text_actionplan_attachment">เอกสารแนบแผนปฏิบัติการ</string>
+    <string name="text_answer">Answer</string>
+    <string name="text_response">การตอบสนอง</string>
+    <string name="text_inspection_attachment">เอกสารแนบการตรวจสอบ</string>
+    <string name="text_root_cause">การวิเคราะห์สาเหตุ</string>
+    <string name="text_enter_rootcause">พิมพ์สาเหตุ</string>
+    <string name="text_notify_user">แจ้งผู้ใช้</string>
+    <string name="text_enteremail_commaseperated">ป้อน ID อีเมลคั่นด้วยเครื่องหมายจุลภาค</string>
+    <string name="text_no_attachment">สิ่งที่แนบมาไม่มี</string>
+
+
 
 </resources>

@@ -5,18 +5,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.ui.fragment.actionplan.ActionCompleteFragment;
 import com.oditly.audit.inspection.ui.fragment.actionplan.ActionDetailsFragment;
 import com.oditly.audit.inspection.ui.fragment.actionplan.ActionUpdateFragment;
 
 public class ActionPlanPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "Details","Update", "Complete"};
+    //private String tabTitles[] = new String[] { "Details","Update", "Complete"};
+    private String[] tabTitles =null;
     private Context context;
 
     public ActionPlanPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
+        tabTitles=context.getResources().getStringArray(R.array.arr_action_title);
     }
 
     @Override
@@ -46,9 +49,11 @@ public class ActionPlanPagerAdapter extends FragmentPagerAdapter {
         return  fragment;
     }
 
+
     @Override
     public CharSequence getPageTitle(int position) {
         // Generate title based on item position
         return tabTitles[position];
+
     }
 }

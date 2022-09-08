@@ -222,6 +222,13 @@
     <string name="text_team">Zespoły</string>
     <string name="text_addnew_member">Utwórz nowy zespół</string>
     <string name="text_name_emaili_roll">Imię i nazwisko, ID E-mail, Rola</string>
+
+
+    <string name="text_name_team">Imię i nazwisko:</string>
+    <string name="text_email_team">E-mail:</string>
+    <string name="text_role_team">Rola:</string>
+
+
     <string name="text_entor_data">Wprowadź dane wyszukiwania</string>
     <string name="text_selet_filter">Wybierz opcję Filtrów</string>
     <string name="text_date_range">Zakres dat</string>
@@ -329,5 +336,79 @@
     <string name="s_create">Stwórz</string>
     <string name="s_signin_microsoft">Zaloguj się przez Microsoft</string>
     <string name="text_actiopnplan_id">ID planu działania</string>
+
+
+
+    <!--
+        new
+    -->
+
+    <string name="text_pending">W oczekiwaniu na</string>
+    <string name="text_score">Wynik</string>
+    <string name="text_type_your_comment">Wpisz swój komentarz</string>
+    <string name="text_type_your_answer">Wpisz swoją odpowiedź</string>
+    <string name="text_nature_of_complaint">Rodzaj Skargi</string>
+    <string name="text_overdue_by_days">Przeterminowany powyżej XXX Dni</string>
+    <string name="text_overdue_by_day">Przeterminowany powyżej XXX Dzień</string>
+    <string name="text_overdue_days_notapplicable">Termin płatności nie dotyczy</string>
+    <string name="text_overdue_on">Opóźnienie w</string>
+    <string name="text_by">Za pomocą</string>
+    <string name="text_complted_on">Ukończono Dnia</string>
+    <string name="text_members">Członkowie</string>
+    <string name="text_member">"Członek"</string>
+    <string name="text_teamname">Nazwa Zespołu  :</string>
+    <string name="text_create_date">Utwórz Datę :</string>
+    <string name="text_team_count">Liczba Zespołów   :</string>
+    <string name="text_action_has_been_created">Działanie zostało utworzone.</string>
+    <string name="text_inspection_hasbeen_created_and_assigned">Kontrola została utworzona i przypisana do audytora</string>
+    <string name="text_inspection_hasbeen_created_and_scheduled">Inspekcja została zaplanowana i zostanie przypisana do audytora w zaplanowanym czasie</string>
+    <string name="text_select_startdate_first">Proszę wybrać datę rozpoczęcia</string>
+    <string name="text_select_duedate_first">Wybierz termin</string>
+    <string name="text_select_time">Wybierz opcję czas</string>
+    <string name="text_select_am_pm">Wybierz AM/PM</string>
+    <string name="text_question">Zapytanie:</string>
+    <string name="text_create_actionplanfor_question">Proszę stworzyć plan działania dla pytania nr.</string>
+
+    <string name="text_submit_requredmedia_count">Proszę przesłać wymagane MMM Zdjęcie(a) do pytania nr. CCC W sekcji</string>
+    <string name="text_enter_requredcomment_count">Proszę wpisać minimalną wymaganą ilość XXX Znaków komentarza dla pytania nr CCC</string>
+    <string name="text_youhavenot_answer_question">Nie odpowiedziałeś na pytanie nr CCC</string>
+    <string name="text_actionplan_has_been_created_forthis_question">Pan działania został stworzony dla tego Zapytania</string>
+    <string name="text_answer_hasbeen_save">Twoja odpowiedź została zapisana</string>
+    <string name="text_back">Cofnij</string>
+    <string name="text_youhave_not_answer_question_section">Nie odpowiedziałeś na pytanie nr CCC W sekcji SSS</string>
+    <string name="text_create_actionplan_for_question_section">Proszę stworzyć plan działania dla pytania nr. CCC W sekcji SSS</string>
+    <string name="text_submit_requiredmedia_for_question_section">Proszę przesłać wymagane MMM Zdjęcie(a) do pytania nr CCC W sekcji SSS</string>
+    <string name="text_submit_require_comment_for_question_section">Proszę wpisać minimalną wymaganą ilość MMM Znaków komentarza dla pytania nr CCC W sekcji SSS</string>
+    <string name="text_subsection">Podrozdział</string>
+
+
+   <string name="text_appupdate">Brakuje Ci ważnych funkcji Oditly, zaktualizuj swoją aplikację.</string>
+   <string name="text_update">aktualizacja</string>
+   <string name="text_app_uptodate">Twoja aplikacja jest aktualna</string>
+   <string name="text_update_your_app">Update your App</string>
+
+    <!--new-->
+    <string name="text_submit_requredmedia_action">Proszę przesłać wymagane MMM obrazó</string>
+    <string name="text_image_not_attched">Ups... Obraz nie dołączony</string>
+    <string name="text_douwant_to_continue">Czy chcesz kontynuować?</string>
+    <string name="text_please_enterminimum">Proszę wprowadź wartość minimalną CCC znaki </string>
+    <string name="please_enter_valuein">Wprowadź wartość w</string>
+    <string name="text_instruction">Instrukcja</string>
+    <string name="text_adhoc">Ad Hoc</string>
+
+
+
+    <!--new sept-->
+    <string name="text_overall_score">Ogólny wynik</string>
+    <string name="text_actionplan_attachment">Załącznik do planu działania</string>
+    <string name="text_answer">Answer</string>
+    <string name="text_response">Odpowiedź</string>
+    <string name="text_inspection_attachment">Załącznik inspekcyjny</string>
+    <string name="text_root_cause">Analiza przyczyn</string>
+    <string name="text_enter_rootcause">Wpisz główną przyczynę</string>
+    <string name="text_notify_user">Powiadom użytkowników</string>
+    <string name="text_enteremail_commaseperated">Wpisz identyfikatory e-mail oddzielone przecinkami</string>
+    <string name="text_no_attachment">Brak załącznika</string>
+
 
 </resources>

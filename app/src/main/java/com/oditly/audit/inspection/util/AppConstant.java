@@ -105,6 +105,7 @@ public class AppConstant {
     public static final String PROVIDER_OKTA = "Okta";
     public static final String PROVIDER_PASSWORD = "password";
     public static final String PROVIDER_MICROSOFT = "microsoft";
+    public static final String ACTIONPLAN = "actionplan";
 
 
     public static String DEVICE_ID = "";

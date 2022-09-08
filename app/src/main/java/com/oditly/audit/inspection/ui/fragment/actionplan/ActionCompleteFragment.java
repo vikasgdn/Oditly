@@ -69,6 +69,8 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
     private boolean isVideoPermission = false;
     private ActionInfo mAuditInfoActionPlanData;
     private EditText mCommentET;
+    private EditText mRootCauseET;
+    private EditText mNotifyUserET;
     private TextView mCommentErrorTV;
     private ImageView mFabMedia;
     private ArrayList<File> mFileimageList;
@@ -120,7 +122,7 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
         this.mMediaAdapter = actionMediaAdapter;
         this.mMediaRecycleView.setAdapter(actionMediaAdapter);
         TextView textView = this.mMediaCountTV;
-        textView.setText("Media (0/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
+        textView.setText(getString(R.string.text_media)+" (0/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
     }
 
     /* access modifiers changed from: protected */
@@ -132,6 +134,10 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
         this.mSubmitButton = (Button) view.findViewById(R.id.btn_submit);
         this.mCommentET = (EditText) view.findViewById(R.id.et_commentbox);
         this.mCommentErrorTV = (TextView) view.findViewById(R.id.tv_comment_error);
+        mRootCauseET= (EditText) view.findViewById(R.id.et_rootcause_analysis);
+        mNotifyUserET= (EditText) view.findViewById(R.id.et_notifyuser);
+
+
         this.mSpinKitView = (RelativeLayout) view.findViewById(R.id.ll_parent_progress);
         this.mSubmitButton.setOnClickListener(this);
         this.mFabMedia.setOnClickListener(this);
@@ -150,22 +156,22 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
             String obj = this.mCommentET.getText().toString();
             if (this.mURIimageList.size() < this.mAuditInfoActionPlanData.getMedia_count()) {
                 int remainCount = this.mAuditInfoActionPlanData.getMedia_count() - this.mURIimageList.size();
-                AppUtils.toast(mActivity, "Please upload " + remainCount + " media first.");
+                AppUtils.toast(mActivity, getString(R.string.text_submit_requredmedia_action).replace("MMM",""+remainCount));
             }
             else {
-                if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
-                    if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(mActivity))
-                    {
-                        postActionCreateServerData(AppPreferences.INSTANCE.getOktaToken(mActivity));                    }
-                    else
-                    {
+                if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA)) {
+
+                    if (System.currentTimeMillis() < AppPreferences.INSTANCE.getOktaTokenExpireTime(mActivity)) {
+                        postActionCreateServerData(AppPreferences.INSTANCE.getOktaToken(mActivity));
+                    } else {
                         Response.Listener<JSONObject> jsonListener = new Response.Listener<JSONObject>() {
                             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                             @Override
                             public void onResponse(JSONObject response) {
                                 AppLogger.e("TAG", " Token SUCCESS Response: " + response);
                                 AppUtils.parseRefreshTokenRespone(response, mActivity);
-                                postActionCreateServerData(AppPreferences.INSTANCE.getOktaToken(mActivity));                            }
+                                postActionCreateServerData(AppPreferences.INSTANCE.getOktaToken(mActivity));
+                            }
                         };
                         Response.ErrorListener errListener = new Response.ErrorListener() {
                             @Override
@@ -173,9 +179,10 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
                                 AppLogger.e("TAG", "ERROR Response: " + error);
                             }
                         };
-                        OktaTokenRefreshRequest tokenRequest = new OktaTokenRefreshRequest(AppUtils.getTokenJson(mActivity),jsonListener, errListener);
+                        OktaTokenRefreshRequest tokenRequest = new OktaTokenRefreshRequest(AppUtils.getTokenJson(mActivity), jsonListener, errListener);
                         VolleyNetworkRequest.getInstance(mActivity).addToRequestQueue(tokenRequest);
                     }
+                }
                 else {
                     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                         FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
@@ -202,6 +209,9 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
             bean.setAudit_id("" + this.mAuditInfoActionPlanData.getAudit_id());
             bean.setAction_plan_id("" + this.mAuditInfoActionPlanData.getAction_plan_id());
             bean.setComplete_comment(this.mCommentET.getText().toString());
+            bean.setCc_emails(this.mNotifyUserET.getText().toString());
+            bean.setIssue_fix_comment(this.mRootCauseET.getText().toString());
+
             NetworkServiceMultipartActionComplete actionComplete=new NetworkServiceMultipartActionComplete(NetworkURL.ACTION_PLAN_COMPLETE, bean, mFileimageList,tokenFirebase, this, this.mActivity);
             actionComplete.call(null);
         }
@@ -289,7 +299,7 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
                 try {
                     String[] list = data.getStringArrayExtra("resultData");
                     if (list == null || list.length <= 0) {
-                        AppUtils.toast(this.mActivity, "Image Not Attached");
+                        AppUtils.toast(this.mActivity, getString(R.string.text_image_not_attched));
                         return;
                     }
                     for (int i = 0; i < list.length; i++) {
@@ -297,11 +307,11 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
                         this.mFileimageList.add(new File(list[i]));
                     }
                     TextView textView = this.mMediaCountTV;
-                    textView.setText("Media (" + this.mURIimageList.size() + "/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
+                    textView.setText(getResources().getString(R.string.text_comment_comp)+" (" + this.mURIimageList.size() + "/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
                     this.mMediaAdapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    AppUtils.toast(this.mActivity, "Result Some technical error. Please try again.");
+                    AppUtils.toast(this.mActivity, getString(R.string.oops));
                 }
             }
         }
@@ -341,14 +351,14 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
                 this.mURIimageList.add(uri);
                 this.mFileimageList.add(new File(getPath(uri)));
                 TextView textView = this.mMediaCountTV;
-                textView.setText("Media (" + this.mURIimageList.size() + "/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
+                textView.setText(getString(R.string.text_comment_comp)+" (" + this.mURIimageList.size() + "/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
                 this.mMediaAdapter.notifyDataSetChanged();
             } catch (Exception e) {
-                AppUtils.toast(this.mActivity, "Some technical error. Please try again.");
+                AppUtils.toast(this.mActivity, getString(R.string.oops));
             }
         } else {
             Activity activity = this.mActivity;
-            AppUtils.toast(activity, "Image Not Attached" + tag);
+            AppUtils.toast(activity, getString(R.string.text_image_not_attched) + tag);
         }
     }
 
@@ -360,14 +370,14 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
                     this.mFileimageList.add(new File(getPath(uriList.get(i))));
                 }
                 TextView textView = this.mMediaCountTV;
-                textView.setText("Media (" + this.mURIimageList.size() + "/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
+                textView.setText(getString(R.string.text_comment_comp)+" (" + this.mURIimageList.size() + "/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
                 this.mMediaAdapter.notifyDataSetChanged();
             } catch (Exception e) {
-                AppUtils.toast(this.mActivity, "Some technical error. Please try again.");
+                AppUtils.toast(this.mActivity, getString(R.string.oops));
             }
         } else {
             Activity activity = this.mActivity;
-            AppUtils.toast(activity, "Image Not Attached" + tag);
+            AppUtils.toast(activity, getString(R.string.text_image_not_attched) + tag);
         }
     }
 

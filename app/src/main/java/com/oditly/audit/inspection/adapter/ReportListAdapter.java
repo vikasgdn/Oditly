@@ -45,11 +45,11 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Au
         final AuditInfo auditInfo = data.get(position);
         holder.mAuditTypeTV.setText(""+auditInfo.getAudit_name());
         holder.mAuditNameTV.setText(auditInfo.getAudit_name());
-        holder.mAuditIDTV.setText("Audit ID: "+auditInfo.getAudit_id());
+        holder.mAuditIDTV.setText(context.getResources().getString(R.string.text_audit_id)+": "+auditInfo.getAudit_id());
         holder.mLocationTV.setText(auditInfo.getLocation_title());
-        holder.mScoreTV.setText(auditInfo.getScore_text());
-        holder.mAuditorNameTV.setText("By "+auditInfo.getCreator_name());
-        holder.mDateTV.setText("Completed On "+AppUtils.getFormatedDate(auditInfo.getAudit_date()));
+        holder.mScoreTV.setText(" "+auditInfo.getScore_text());
+        holder.mAuditorNameTV.setText(context.getResources().getString(R.string.text_by)+" "+auditInfo.getCreator_name());
+        holder.mDateTV.setText(context.getResources().getString(R.string.text_complted_on)+" "+AppUtils.getFormatedDate(auditInfo.getAudit_date()));
 
         if (!TextUtils.isEmpty(auditInfo.getCompleted_late_key()))
             holder.mCompletedLateTV.setVisibility(View.VISIBLE);
@@ -59,10 +59,10 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Au
         if (!TextUtils.isEmpty(auditInfo.getIs_passed())) {
             holder.mAuditStatusTV.setVisibility(View.VISIBLE);
             if (auditInfo.getIs_passed().equalsIgnoreCase("true")) {
-                holder.mAuditStatusTV.setText("  Passed");
+                holder.mAuditStatusTV.setText(" "+context.getResources().getString(R.string.text_passed));
                 holder.mAuditStatusTV.setTextColor(context.getResources().getColor(R.color.c_green));
             } else if (auditInfo.getIs_passed().equalsIgnoreCase("false")) {
-                holder.mAuditStatusTV.setText("  Failed");
+                holder.mAuditStatusTV.setText(" "+context.getResources().getString(R.string.text_failed));
                 holder.mAuditStatusTV.setTextColor(context.getResources().getColor(R.color.c_red));
             }
         }
@@ -86,6 +86,7 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Au
         TextView mAuditIDTV;
         TextView mDateTV;
         TextView mScoreTV;
+        TextView mScoreTextTV;
         TextView mAuditorNameTV;
         TextView mAuditStatusTV;
         TextView mCompletedLateTV;
@@ -99,6 +100,7 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Au
             mAuditIDTV = itemView.findViewById(R.id.tv_auditid);
             mDateTV = itemView.findViewById(R.id.tv_date);
             mScoreTV = itemView.findViewById(R.id.tv_score);
+            mScoreTextTV = itemView.findViewById(R.id.tv_score_text);
             mAuditorNameTV = itemView.findViewById(R.id.tv_auditorname);
             mAuditStatusTV= itemView.findViewById(R.id.tv_auditstatus);
             mCompletedLateTV= itemView.findViewById(R.id.tv_completelate);

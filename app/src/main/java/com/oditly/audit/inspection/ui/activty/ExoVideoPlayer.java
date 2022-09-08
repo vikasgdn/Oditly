@@ -3,7 +3,9 @@ package com.oditly.audit.inspection.ui.activty;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.util.AppConstant;
@@ -14,10 +16,12 @@ public class ExoVideoPlayer extends BaseActivity implements CustomVideoPlayer.Pl
 {
 
     private String url;
+    private String mFromWhere="";
     private CustomVideoPlayer customVideoPlayer;
-    public static void start(Context context, String data) {
+    public static void start(Context context, String data,String location) {
         Intent i = new Intent(context, ExoVideoPlayer.class);
         i.putExtra(AppConstant.FILE_URL, data);
+        i.putExtra(AppConstant.FROMWHERE, location);
         context.startActivity(i);
     }
 
@@ -38,7 +42,13 @@ public class ExoVideoPlayer extends BaseActivity implements CustomVideoPlayer.Pl
          Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             url = getIntent().getExtras().getString(AppConstant.FILE_URL);
+            mFromWhere= getIntent().getExtras().getString(AppConstant.FROMWHERE);
         }
+        TextView mTitleTV=(TextView) findViewById(R.id.tv_header_title);
+
+        if (!TextUtils.isEmpty(mFromWhere) && mFromWhere.equalsIgnoreCase(AppConstant.ACTIONPLAN))
+            mTitleTV.setText(getString(R.string.text_attachment));
+
         findViewById(R.id.iv_header_left).setOnClickListener(this);
         customVideoPlayer = findViewById(R.id.customVideoPlayer);
         customVideoPlayer.setMediaUrl(url);

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -87,7 +88,11 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
         if (fileType.contains("image/")) {
             holder.playButton.setVisibility(View.GONE);
             if (!AppUtils.isStringEmpty(addAttachmentInfo.getThumb_url())) {
-                Glide.with(context).load(Headers.getUrlWithHeaders(addAttachmentInfo.getThumb_url(), AppPreferences.INSTANCE.getAccessToken(context))).into(holder.attachedImage);
+                RequestOptions requestOptions = new RequestOptions()
+                        .override(600,200)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE) // because file name is always same
+                        .skipMemoryCache(true);
+                Glide.with(context).load(Headers.getUrlWithHeaders(addAttachmentInfo.getThumb_url(), AppPreferences.INSTANCE.getAccessToken(context))).apply(requestOptions).into(holder.attachedImage);
             }
         }
         else
@@ -121,7 +126,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
                         intent.putExtra("editable", "0");
                         context.startActivity(intent);
                     } else {
-                        ExoVideoPlayer.start(context,orderData.get(pos).getFile_url());
+                        ExoVideoPlayer.start(context,orderData.get(pos).getFile_url(),"");
                     }
                 }
                 catch (Exception e)

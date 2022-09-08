@@ -28,40 +28,6 @@ public enum AppPreferences
         mEditor = mPreferences.edit();
     }
 
-    public String getLocalDB()
-    {
-        return mPreferences.getString(SharedPreferencesKeys.local_db.toString(), "");
-    }
-
-    public void setLocalDB(String value)
-    {
-        mEditor.putString(SharedPreferencesKeys.local_db.toString(), value);
-        mEditor.commit();
-    }
-
-    public String getUserPic()
-    {
-        return mPreferences.getString(SharedPreferencesKeys.userpic.toString(), "");
-    }
-
-    public void setUserPic(String value)
-    {
-        mEditor.putString(SharedPreferencesKeys.userpic.toString(), value);
-        mEditor.commit();
-    }
-
-    public String getUserMob()
-    {
-        return mPreferences.getString(SharedPreferencesKeys.mobile.toString(), "");
-    }
-
-    public void setUserMob(String value)
-    {
-        mEditor.putString(SharedPreferencesKeys.mobile.toString(), value);
-        mEditor.commit();
-    }
-
-
     public String getSelectedLang()
     {
         return mPreferences.getString(SharedPreferencesKeys.language.toString(), "en");
@@ -73,56 +39,6 @@ public enum AppPreferences
         mEditor.commit();
     }
 
-    public String getAddress()
-    {
-        return mPreferences.getString(SharedPreferencesKeys.address.toString(), "");
-    }
-
-    public void setAddress(String value)
-    {
-        mEditor.putString(SharedPreferencesKeys.address.toString(), value);
-        mEditor.commit();
-    }
-
-
-
-
-    public String getCity()
-    {
-        return mPreferences.getString(SharedPreferencesKeys.city.toString(), "");
-    }
-
-    public void setCity(String value)
-    {
-        mEditor.putString(SharedPreferencesKeys.city.toString(), value);
-        mEditor.commit();
-    }
-
-
-
-    public String getPincode()
-    {
-        return mPreferences.getString(SharedPreferencesKeys.pincode.toString(), "");
-    }
-
-    public void setPincode(String value)
-    {
-        mEditor.putString(SharedPreferencesKeys.pincode.toString(), value);
-        mEditor.commit();
-    }
-
-
-
-    public String getDOB()
-    {
-        return mPreferences.getString(SharedPreferencesKeys.dob.toString(), "");
-    }
-
-    public void setDOB(String value)
-    {
-        mEditor.putString(SharedPreferencesKeys.dob.toString(), value);
-        mEditor.commit();
-    }
 
     public String getProviderName()
     {
@@ -134,35 +50,6 @@ public enum AppPreferences
         mEditor.putString(SharedPreferencesKeys.provider_name.toString(), value);
         mEditor.commit();
     }
-
-
-    public String getClientRoleName()
-    {
-        return mPreferences.getString(SharedPreferencesKeys.client_role_name.toString(), "");
-    }
-
-    public void setClientRoleName(String value)
-    {
-        mEditor.putString(SharedPreferencesKeys.client_role_name.toString(), value);
-        mEditor.commit();
-    }
-
-    public int getClientRoleId(Context context)
-    {
-        if(mPreferences==null)
-            mPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
-
-        return mPreferences.getInt(SharedPreferencesKeys.client_role_id.toString(), 0);
-    }
-
-    public void setClientRoleId(int value)
-    {
-        mEditor.putInt(SharedPreferencesKeys.client_role_id.toString(), value);
-        mEditor.commit();
-    }
-
-
-
 
     public int getUserId(Context context)
     {
@@ -258,13 +145,6 @@ public enum AppPreferences
         mEditor.putString(SharedPreferencesKeys.firebase_accessToken.toString(), accessToken);
         mEditor.commit();
     }
-/*
-    public String getFirebaseAccessToken(Context context)
-    {
-        if(mPreferences==null)
-            mPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
-        return mPreferences.getString(SharedPreferencesKeys.firebase_accessToken.toString(), "");
-    }*/
 
     public String getAccessToken(Context context)
     {
@@ -279,10 +159,6 @@ public enum AppPreferences
         mEditor.putString(SharedPreferencesKeys.accessToken.toString(), accessToken);
         mEditor.commit();
     }
-
-
-
-
 
     public String getOktaToken(Context context)
     {
@@ -311,11 +187,6 @@ public enum AppPreferences
         mEditor.commit();
     }
 
-    public  String getDSLocalDB()
-    {
-        return mPreferences.getString(SharedPreferencesKeys.dsdatabase.toString(), "");
-
-    }
 
     public  void setRefreshTokenOkta(String val) {
         mEditor.putString(SharedPreferencesKeys.refresh_token.toString(), val);
@@ -324,7 +195,6 @@ public enum AppPreferences
     public  String geRefreshTokenOkta()
     {
         return mPreferences.getString(SharedPreferencesKeys.refresh_token.toString(), "");
-
     }
 
     public  void setFCMToken(String val) {
@@ -337,10 +207,6 @@ public enum AppPreferences
 
     }
 
-    public  void setESLocalDB(String val) {
-        mEditor.putString(SharedPreferencesKeys.esdatabase.toString(), val);
-        mEditor.commit();
-    }
 
 
 
@@ -384,7 +250,6 @@ public enum AppPreferences
 
     public enum SharedPreferencesKeys
     {
-        sessionId,
         userId,
         email,
         isLogin,
@@ -412,7 +277,8 @@ public enum AppPreferences
         esdatabase,
         fcm_token,
         oktaToken,
-        firebase_accessToken
+        firebase_accessToken,
+        app_version
         ;
 
 

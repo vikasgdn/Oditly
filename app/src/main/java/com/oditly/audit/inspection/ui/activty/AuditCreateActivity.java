@@ -370,9 +370,9 @@ public class AuditCreateActivity extends BaseActivity implements INetworkEvent,M
                 if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                   //  AppUtils.toastDisplayForLong(this, message);
                     if (TextUtils.isEmpty(mAuditStartDate))
-                        AppDialogs.messageDialogWithOKButton(this,mAuditName+" inspection has been created and assigned to the auditor");
+                        AppDialogs.messageDialogWithOKButton(this,mAuditName+" "+getString(R.string.text_inspection_hasbeen_created_and_assigned));
                     else
-                        AppDialogs.messageDialogWithOKButton(this,mAuditName+" inspection has been scheduled and will be assigned to the auditor at the scheduled time");
+                        AppDialogs.messageDialogWithOKButton(this,mAuditName+" "+getString(R.string.text_inspection_hasbeen_created_and_scheduled));
 
                 } else
                     AppUtils.toastDisplayForLong(this, message);

@@ -86,7 +86,8 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
         if (brandStandardQuestion.getHas_comment()>0)
         {
             holder.mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
-            holder.mCommentLenthTV.setText("Please enter minimum "+brandStandardQuestion.getHas_comment()+" characters");
+          //  holder.mCommentLenthTV.setText("Please enter minimum "+brandStandardQuestion.getHas_comment()+" characters");
+            holder.mCommentLenthTV.setText(context.getResources().getString(R.string.text_please_enterminimum).replace("CCC",""+brandStandardQuestion.getHas_comment()));
         }
         else {
             holder.mCommentLenthTV.setVisibility(View.GONE);
@@ -247,7 +248,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                 holder.mNumberDecAnsweET.setText(brandStandardQuestion.getAudit_answer());
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
-            holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
+            holder.mNumberDecAnsweET.setHint(context.getResources().getString(R.string.please_enter_valuein)+" "+brandStandardQuestion.getUnit().getUnit_name());
             setOtherViewHide(holder);
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
             holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
@@ -273,7 +274,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
             setOtherViewHide(holder);
-            holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
+            holder.mNumberDecAnsweET.setHint(context.getResources().getString(R.string.please_enter_valuein)+" "+brandStandardQuestion.getUnit().getUnit_name());
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
             holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -389,7 +390,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
         if (!AppUtils.isStringEmpty(brandStandardQuestion.getHint()))
         {
             holder.hintLayout.setVisibility(View.VISIBLE);
-            holder.note.setText("Instruction: "+brandStandardQuestion.getHint());
+            holder.note.setText(context.getResources().getString(R.string.text_instruction)+" "+brandStandardQuestion.getHint());
             holder.mCollapseExpandIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)
@@ -398,12 +399,12 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                     if (holder.note.getMaxLines()>10)
                     {
                         holder.note.setMaxLines(1);
-                        holder.note.setText("Instruction: "+brandStandardQuestion.getHint());
+                        holder.note.setText(context.getResources().getString(R.string.text_instruction)+" "+brandStandardQuestion.getHint());
                     }
                     else
                     {
                         holder.note.setMaxLines(12);
-                        holder.note.setText("Instruction: "+brandStandardQuestion.getHint());
+                        holder.note.setText(context.getResources().getString(R.string.text_instruction)+" "+brandStandardQuestion.getHint());
                     }
                 }
             });
@@ -613,7 +614,8 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
         }
         if (brandStandardQuestionsOption.getCommentCount()>0) {
             mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
-            mCommentLenthTV.setText("Please enter minimum "+brandStandardQuestionsOption.getCommentCount()+" characters");
+          //  mCommentLenthTV.setText("Please enter minimum "+brandStandardQuestionsOption.getCommentCount()+" characters");
+            mCommentLenthTV.setText(context.getResources().getString(R.string.text_please_enterminimum).replace("CCC",""+brandStandardQuestionsOption.getCommentCount()));
         }
         else {
             mCommentLenthTV.setVisibility(View.GONE);

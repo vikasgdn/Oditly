@@ -225,6 +225,12 @@
     <string name="text_team">Teams</string>
     <string name="text_addnew_member">Vytvořit nový tým</string>
     <string name="text_name_emaili_roll">Jméno, E-mailové ID, role</string>
+
+    <string name="text_name_team">Jméno:</string>
+    <string name="text_email_team">E-mailové:</string>
+    <string name="text_role_team">Role:</string>
+
+
     <string name="text_entor_data">Zadejte vyhledávací údaje</string>
     <string name="text_selet_filter">Vyberte filtry</string>
     <string name="text_date_range">Rozsah data</string>
@@ -332,5 +338,77 @@
     <string name="s_create">Vytvořit</string>
     <string name="s_signin_microsoft">Přihlásit s účtem Microsoft</string>
     <string name="text_actiopnplan_id">Id akčního plánu</string>
+
+
+<!--
+    new
+-->
+
+    <string name="text_pending">Čekající</string>
+    <string name="text_score">Skóre</string>
+    <string name="text_type_your_comment">Zadejte svůj komentář</string>
+    <string name="text_type_your_answer">Napište svou odpověď</string>
+    <string name="text_nature_of_complaint">Povaha Reklamace</string>
+    <string name="text_overdue_by_days">Po splatnosti do XXX Dny</string>
+    <string name="text_overdue_by_day">Po splatnosti do XXX Den</string>
+    <string name="text_overdue_days_notapplicable">Datum splatnosti neplatí</string>
+    <string name="text_overdue_on">Po splatnosti na</string>
+    <string name="text_by">Podle</string>
+    <string name="text_complted_on">Dokončeno dne</string>
+    <string name="text_members">Členové</string>
+    <string name="text_member">Člen</string>
+    <string name="text_teamname">Název Týmu  :</string>
+    <string name="text_create_date">Datum Vytvoření :</string>
+    <string name="text_team_count">Počet Týmů   :</string>
+    <string name="text_action_has_been_created">"Akce byla vytvořena."</string>
+    <string name="text_inspection_hasbeen_created_and_assigned">Inspekce byla vytvořena a přidělena auditorovi</string>
+    <string name="text_inspection_hasbeen_created_and_scheduled">Kontrola byla naplánována a bude přidělena auditorovi v plánovaném čase</string>
+    <string name="text_select_startdate_first">"Prosím, vyberte datum zahájení"</string>
+    <string name="text_select_duedate_first">"Prosím, vyberte datum splatnosti"</string>
+    <string name="text_select_time">Vyberte čas</string>
+    <string name="text_select_am_pm">Vyberte AM/PM</string>
+    <string name="text_question">Otázka :</string>
+    <string name="text_create_actionplanfor_question">Vytvořte akční plán pro otázku č.</string>
+
+    <string name="text_submit_requredmedia_count">Odešlete prosím požadované MMM obrázek(y) pro otázku č. CCC v sekci</string>
+    <string name="text_enter_requredcomment_count">Prosím zadejte požadované minimum XXX znaky komentář k otázce č. CCC</string>
+    <string name="text_youhavenot_answer_question">Nezodpověděli jste otázku č. CCC</string>
+    <string name="text_actionplan_has_been_created_forthis_question">Pro tuto otázku byl vytvořen plán akcí</string>
+    <string name="text_answer_hasbeen_save">Vaše odpověď byla uložena</string>
+    <string name="text_back">Zpět</string>
+    <string name="text_youhave_not_answer_question_section">Nezodpověděli jste otázku č CCC v sekci SSS</string>
+    <string name="text_create_actionplan_for_question_section">Vytvořte akční plán pro otázku č. CCC v sekci SSS</string>
+    <string name="text_submit_requiredmedia_for_question_section">Odešlete prosím požadované MMM obrázek(y) pro otázku č. CCC v sekci SSS</string>
+    <string name="text_submit_require_comment_for_question_section">Prosím zadejte požadované minimum MMM znaky komentář k otázce č. CCC v sekci SSS</string>
+    <string name="text_subsection">Podsekce</string>
+
+
+
+   <string name="text_update">Aktualizace</string>
+   <string name="text_app_uptodate">Vaše přihláška je aktuální</string>
+   <string name="text_update_your_app">Update your App</string>
+    <string name="text_appupdate">Chybí vám některé důležité funkce Oditly, aktualizujte prosím svou aplikaci.</string>
+
+
+    <string name="text_submit_requredmedia_action">Odešlete prosím požadované MMM Obrázky</string>
+    <string name="text_image_not_attched">Jejda.. Obrázek není připojen</string>
+    <string name="text_douwant_to_continue">Chcete pokračovat?</string>
+    <string name="text_please_enterminimum">Zadejte prosím minimum CCC postavy </string>
+    <string name="please_enter_valuein">Zadejte prosím hodnotu</string>
+    <string name="text_instruction">Návod</string>
+    <string name="text_adhoc">Ad Hoc</string>
+
+
+    <string name="text_overall_score">Celkové skóre</string>
+    <string name="text_actionplan_attachment">Příloha akčního plánu</string>
+    <string name="text_answer">Answer</string>
+    <string name="text_response">Odezva</string>
+    <string name="text_inspection_attachment">Inspekční příloha</string>
+    <string name="text_root_cause">Analýza kořenových příčin</string>
+    <string name="text_enter_rootcause">Zadejte hlavní příčinu</string>
+    <string name="text_notify_user">Upozornit uživatele</string>
+    <string name="text_enteremail_commaseperated">Zadejte e-mailová ID oddělená čárkou</string>
+    <string name="text_no_attachment">Bez přílohy</string>
+
 
 </resources>

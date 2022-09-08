@@ -264,7 +264,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
 
     private void chooseImagesFromGallery() {
         BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
-                .setMaximumDisplayingImages(200)
+                .setMaximumDisplayingImages(5000)
                 .isMultiSelect()
                 .setTag("")
                 .setMinimumMultiSelectCount(1)
@@ -314,10 +314,9 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
         takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 8);
         //  takeVideoIntent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 10);
-
-        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+       // if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, AppConstant.REQUEST_TAKE_VDO);
-        }
+       // }
     }
     private void takePhotoFromCamera() {
       /*  Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -341,7 +340,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         Intent intent = new Intent(this, CameraControllerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("inputData", new CameraBundleBuilder()
-                .setFullscreenMode(false)
+                .setFullscreenMode(true)
                 .setDoneButtonString("Add")
                 .setDoneButtonDrawable(R.drawable.circle_color_green)
                 .setSinglePhotoMode(true)
@@ -356,7 +355,6 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 .createCameraBundle());
         startActivityForResult(intent, AppConstant.REQUEST_TAKE_PHOTO);
 
-        // photoEasy = PhotoEasy.builder().setActivity(this).build();
 
     }
 

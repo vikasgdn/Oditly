@@ -19,8 +19,47 @@
             android:id="@+id/iv_sub_section_icon"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
-            android:layout_marginTop="@dimen/d_5dp"
-            android:src="@mipmap/completed_status" />
+            android:padding="@dimen/d_6dp"
+            android:src="@mipmap/complete_status1" />
+        <TextView
+            android:id="@+id/tv_section"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_section"
+            android:layout_marginTop="-2dp"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:paddingHorizontal="@dimen/d_3dp"
+            android:textAlignment="center"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_11" />
+
+        <TextView
+            android:id="@+id/tv_section_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_brand_standard"
+            android:gravity="center"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:paddingHorizontal="@dimen/d_4dp"
+            android:paddingVertical="@dimen/d_2dp"
+            android:layout_marginLeft="@dimen/d_4dp"
+            android:layout_marginRight="@dimen/d_4dp"
+            android:textColor="@color/c_gray"
+            android:fontFamily="@font/nunitosans_bold"
+            android:textSize="@dimen/text_size_12" />
+
+        <TextView
+            android:id="@+id/tv_subsection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_subsection"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:paddingHorizontal="@dimen/d_3dp"
+            android:layout_marginTop="@dimen/d_2dp"
+            android:textAlignment="center"
+            android:textColor="@color/c_gray"
+            android:textSize="@dimen/text_size_11" />
 
         <TextView
             android:id="@+id/tv_sub_section_title"
@@ -52,7 +91,7 @@
             android:id="@+id/tv_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Score 0%"
+            android:text="@string/text_score"
             android:paddingHorizontal="@dimen/d_1dp"
             android:paddingVertical="@dimen/d_2dp"
             android:layout_marginBottom="@dimen/d_3dp"
@@ -68,6 +107,7 @@
             android:text="@string/text_start"
             android:padding="@dimen/d_5dp"
             android:layout_margin="@dimen/d_1dp"
+            android:maxLines="1"
             android:textAlignment="center"
             android:background="@color/c_light_gray_max"
             android:textColor="@color/c_green"

@@ -19,8 +19,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.oditly.audit.inspection.BuildConfig;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.ui.fragment.DashboardFragment;
 import com.oditly.audit.inspection.ui.fragment.LandingFragment;
 import com.oditly.audit.inspection.ui.fragment.ReportListFragment;
@@ -45,6 +47,7 @@ public class MainActivity extends BaseActivity {
         this.mAuditTypeID = getIntent().getStringExtra("audit_type_id");
         initView();
         initVar();
+
     }
 
     /* access modifiers changed from: protected */
@@ -66,7 +69,7 @@ public class MainActivity extends BaseActivity {
         }
         BottomifyNavigationView navigationView = (BottomifyNavigationView) findViewById(R.id.bottomify_nav);
         navigationView.setActiveNavigationIndex(this.lastSelectedPosition);
-       // setPageSelection(this.lastSelectedPosition);
+        // setPageSelection(this.lastSelectedPosition);
         navigationView.setOnNavigationItemChangedListener(new OnNavigationItemChangeListener() {
             public void onNavigationItemChanged(BottomifyNavigationView.NavigationItem navigationItem) {
                 MainActivity.this.setPageSelection(navigationItem.getPosition());
@@ -79,6 +82,13 @@ public class MainActivity extends BaseActivity {
         super.initVar();
         setPageSelection(this.lastSelectedPosition);
         checkPermissionRequest();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+      //  if (AppPreferences.INSTANCE.getAppMinimumVersionServer(this)> BuildConfig.VERSION_CODE)
+        //    AppDialogs.openPlayStoreDialog(this);
     }
 
     private void checkLocationEnable() {

@@ -255,8 +255,8 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public void onNetworkCallError(String service, String errorMessage) {
         Log.e("onNetworkCallError","===>"+errorMessage);
-        if (mActivity!=null)
-            AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
+      //  if (mActivity!=null)
+        //    AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         mSpinKitView.setVisibility(View.GONE);
     }
     private void processAuditListResponse(String response) {
