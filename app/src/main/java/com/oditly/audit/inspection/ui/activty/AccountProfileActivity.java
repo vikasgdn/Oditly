@@ -164,7 +164,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
     {
         if (NetworkStatus.isNetworkConnected(this)) {
 
-            String langCode=AppPreferences.INSTANCE.getSelectedLang();
+            String langCode=AppPreferences.INSTANCE.getSelectedLang(this);
             int languageId=1;   //default id English
 
             List<LanguageBeanData> mLanguageList=((OditlyApplication)getApplicationContext()).getmLanguageList();  //save laguageList
@@ -319,7 +319,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                     int versionServer = object.getJSONObject("data").getInt("version");
                     boolean status = object.getJSONObject("data").getBoolean("force_update");
                     Log.e("version  ", "||||||" + BuildConfig.VERSION_CODE);
-                    if (versionServer > BuildConfig.VERSION_CODE)
+                    if (versionServer > BuildConfig.VERSION_CODE && !isFinishing())
                         AppDialogs.openPlayStoreDialog(AccountProfileActivity.this);
                     else
                         AppDialogs.openUpdatePopUpDialog(AccountProfileActivity.this);

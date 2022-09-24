@@ -3,6 +3,7 @@ package com.oditly.audit.inspection.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -379,7 +380,7 @@ public class AppDialogs
         try {
             RadioGroup radioGroup=dialog.findViewById(R.id.radioGroup_lang);
 
-            setLangDefaultSelection(radioGroup);
+            setLangDefaultSelection(radioGroup,activity);
 
             dialog.findViewById(R.id.iv_cancel).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -503,8 +504,8 @@ public class AppDialogs
 
     }
 
-    private static void setLangDefaultSelection(RadioGroup radioGroup) {
-        switch (AppPreferences.INSTANCE.getSelectedLang())
+    private static void setLangDefaultSelection(RadioGroup radioGroup, Context context) {
+        switch (AppPreferences.INSTANCE.getSelectedLang(context))
         {
             case "en":
                 radioGroup.check(R.id.rd_english);

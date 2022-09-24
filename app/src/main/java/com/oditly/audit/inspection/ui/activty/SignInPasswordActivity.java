@@ -153,15 +153,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
     public void resetPasswordServerData(String userEmail)
     {
         if (NetworkStatus.isNetworkConnected(this)) {
-
             resetUserPassword(userEmail);
-            // showAppProgressDialog();
-          /*  mSpinKitView.setVisibility(View.VISIBLE);
-            Map<String, String> params = new HashMap<>();
-            params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
-            params.put(NetworkConstant.REQ_PARAM_USER, userEmail);
-            NetworkService networkService = new NetworkService(NetworkURL.RESET_PASSWORD_NEW, NetworkConstant.METHOD_POST, this,this);
-            networkService.call(params);*/
         } else
 
             AppUtils.toast(this, getString(R.string.internet_error));
@@ -314,27 +306,18 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                     AppUtils.toastDisplayForLong(SignInPasswordActivity.this, "Please enter valid username and password");
                 } else {
 
-                    FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
+                    try {
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-                    //AppPreferences.INSTANCE.setUserPic(firebaseUser.getPhotoUrl().toString());
-                 /*   AppPreferences.INSTANCE.setUserEmail(firebaseUser.getEmail());
-                    String fullName=firebaseUser.getDisplayName();
-                    String []Name=fullName.split(" ");
-                    if (Name.length>1) {
-                        AppPreferences.INSTANCE.setUserFName(Name[0]);
-                        AppPreferences.INSTANCE.setUserLName(Name[1], SignInPasswordActivity.this);
+                        Task<GetTokenResult> token = firebaseUser.getIdToken(false);
+                        String tokenAuth = token.getResult().getToken();
+                        AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer " + tokenAuth, getApplicationContext());
+
                     }
-                    else  if (Name.length==1)
+                    catch (Exception e)
                     {
-                        AppPreferences.INSTANCE.setUserFName(Name[0]);
+                        e.printStackTrace();
                     }
-                    Log.e("USER ID TOKEN ",""+firebaseUser.getIdToken(false).getResult().getToken());
-*/
-                    Task<GetTokenResult> token=   firebaseUser.getIdToken(false);
-                    String tokenAuth=  token.getResult().getToken();
-                    AppPreferences.INSTANCE.setFirebaseAccessToken("Bearer "+tokenAuth,getApplicationContext());
-
-
                   getUserProfile();
                 }
             }
@@ -369,7 +352,6 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
 
     private void getUserProfile() {
         if (NetworkStatus.isNetworkConnected(this)) {
-            //mSpinKitView.setVisibility(View.VISIBLE);
             NetworkService networkService = new NetworkService(NetworkURL.GET_PROFILE_DATA, NetworkConstant.METHOD_GET, this, this);
             networkService.call(new HashMap<String, String>());
         } else {

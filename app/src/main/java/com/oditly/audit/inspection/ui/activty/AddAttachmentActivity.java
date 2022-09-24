@@ -77,6 +77,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.balakrishnan.easycam.CameraBundleBuilder;
 import in.balakrishnan.easycam.CameraControllerActivity;
+import in.balakrishnan.easycam.FileUtils;
 
 public class AddAttachmentActivity extends BaseActivity implements View.OnClickListener,
         BSImagePicker.OnSingleImageSelectedListener,
@@ -346,12 +347,11 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 .setSinglePhotoMode(true)
                 .setMax_photo(1)
                 .setManualFocus(true)
-                .setBucketName(getClass().getName()+""+System.currentTimeMillis())
                 .setPreviewEnableCount(false)
                 .setPreviewIconVisiblity(false)
                 .setPreviewPageRedirection(false)
                 .setEnableDone(false)
-                .setClearBucket(false)
+                .setClearBucket(true)
                 .createCameraBundle());
         startActivityForResult(intent, AppConstant.REQUEST_TAKE_PHOTO);
 
@@ -855,6 +855,8 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        FileUtils.clearAllFiles(this, getClass().getName());   // for image clear
+
         Log.e("ADD onDestroy",";;;;;onDestroy");
 
     }

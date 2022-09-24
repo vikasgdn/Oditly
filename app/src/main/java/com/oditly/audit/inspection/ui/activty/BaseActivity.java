@@ -46,7 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onStart()
     {
         super.onStart();
-        AppUtils.setApplicationLanguage(this,AppPreferences.INSTANCE.getSelectedLang());
+        AppUtils.setApplicationLanguage(this,AppPreferences.INSTANCE.getSelectedLang(this));
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         if (mUser!=null) {
             mUser.getIdToken(true)

@@ -28,8 +28,10 @@ public enum AppPreferences
         mEditor = mPreferences.edit();
     }
 
-    public String getSelectedLang()
+    public String getSelectedLang(Context context)
     {
+        if(mPreferences==null)
+            mPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         return mPreferences.getString(SharedPreferencesKeys.language.toString(), "en");
     }
 
@@ -208,6 +210,21 @@ public enum AppPreferences
     }
 
 
+    public int getAppVersionFromServer(Context context)
+    {
+        if(mPreferences==null)
+            mPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        return mPreferences.getInt(SharedPreferencesKeys.app_version.toString(),0);
+    }
+
+    public void setAppVersionFromServer(int userrole,Context context)
+    {
+        if(mEditor==null)
+            initAppPreferences(context);
+        mEditor.putInt(SharedPreferencesKeys.app_version.toString(), userrole);
+        mEditor.commit();
+    }
+
 
 
     public int getUserRole(Context context)
@@ -238,7 +255,6 @@ public enum AppPreferences
         mEditor.clear();
         mEditor.commit();
     }
-
 
 
 

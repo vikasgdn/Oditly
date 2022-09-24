@@ -122,7 +122,7 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
         this.mMediaAdapter = actionMediaAdapter;
         this.mMediaRecycleView.setAdapter(actionMediaAdapter);
         TextView textView = this.mMediaCountTV;
-        textView.setText(getString(R.string.text_media)+" (0/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
+        textView.setText(getString(R.string.text_comment_comp)+" (0/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
     }
 
     /* access modifiers changed from: protected */

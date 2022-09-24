@@ -7,19 +7,20 @@ package com.oditly.audit.inspection.network;
 
 public class NetworkURL {
 
-   /* //API URL'S LIVE SERVER
+    //API URL'S LIVE SERVER
     public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
     public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
-*/
+
+
     //API URL'S STAGE SERVER
     //public static final String API_BASE_URL_NEW= "https://api.stage.account.oditly.com/";
     // public static final String API_BASE_URL = "https://api.stage.account.oditly.com/m/";
 
 
     //API URL'S  TEST SERVER
-     public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
+   /*  public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
      public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
-
+*/
 
     public static final String SIGNIN = API_BASE_URL + "login";
     public static final String CHECK_USER = API_BASE_URL + "check-user";

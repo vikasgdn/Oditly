@@ -10,8 +10,8 @@ android {
         applicationId "com.oditly.audit.inspection"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1035
-        versionName "1035"
+        versionCode 1037
+        versionName "1037"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -19,6 +19,8 @@ android {
     dexOptions {
         incremental true
         javaMaxHeapSize "4g"
+        preDexLibraries true
+        dexInProcess = true  // for oom issue
     }
     signingConfigs {
 
@@ -32,16 +34,16 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            debuggable true
-            minifyEnabled false
-            shrinkResources false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
             resValue "string", "app_name", "Oditly"
         }
         debug{
             debuggable true
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
@@ -49,8 +51,8 @@ android {
         }
         stage{
             debuggable true
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.release
             applicationIdSuffix ".stage"
             versionNameSuffix "-stage"
@@ -110,7 +112,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
 
     // Import the BoM for the Firebase platform
-    implementation platform('com.google.firebase:firebase-bom:30.0.2')
+  //  implementation platform('com.google.firebase:firebase-bom:30.0.2')
+    implementation platform('com.google.firebase:firebase-bom:29.1.0')
 
     // Declare the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies

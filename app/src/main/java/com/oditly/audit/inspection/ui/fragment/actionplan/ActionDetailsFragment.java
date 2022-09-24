@@ -251,7 +251,10 @@ public class ActionDetailsFragment extends BaseFragment implements View.OnClickL
                         String answerText="";
                         if (questionForAction.getOptions()!=null && questionForAction.getOptions().size()>0) {
                             for (int i = 0; i < questionForAction.getOptions().size(); i++) {
-                                answerText = answerText + "  " + questionForAction.getOptions().get(i).getOption_text();
+                                if (answerText.length()>0)
+                                    answerText = answerText + "  " + questionForAction.getOptions().get(i).getOption_text();
+                                else
+                                    answerText = questionForAction.getOptions().get(i).getOption_text();
                             }
                         }
                         else
@@ -287,7 +290,7 @@ public class ActionDetailsFragment extends BaseFragment implements View.OnClickL
                 actionDetailsBinding.tvComment.setVisibility(View.GONE);
                 actionDetailsBinding.rlQuetionimage.setVisibility(View.GONE);
                 actionDetailsBinding.tvInspectionAttachment.setVisibility(View.GONE);
-             //   actionDetailsBinding.tvInspectionAttachmentNotfount.setVisibility(View.GONE);
+                //   actionDetailsBinding.tvInspectionAttachmentNotfount.setVisibility(View.GONE);
 
 
                 actionDetailsBinding.divQuestion.setVisibility(View.GONE);

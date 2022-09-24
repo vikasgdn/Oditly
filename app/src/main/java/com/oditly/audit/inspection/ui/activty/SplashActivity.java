@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -65,13 +66,15 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         setContentView(R.layout.activity_splash);
         AppPreferences.INSTANCE.initAppPreferences(this);
 
-        AppUtils.setApplicationLanguage(this,AppPreferences.INSTANCE.getSelectedLang());
+        AppUtils.setApplicationLanguage(this,AppPreferences.INSTANCE.getSelectedLang(this));
 
+        AppUtils.deleteCache(this);
         initView();
         initVar();
         updateFCMNotification();
         getLanguageListFromServer();
-        checkRefreshTokenAndForceUpdate();
+        getAppUpdateStatusFromServer();
+        checkRefreshToken();
     }
 
     @Override
@@ -127,13 +130,21 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         }
     }
 
+
     private void sendToNewActivity() {
-        if (AppPreferences.INSTANCE.isLogin(this)) {
-            Intent intent2 = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(intent2);
-        }else {
-            Intent intent1 = new Intent(this, SignInEmailActivity.class);
-            startActivity(intent1);
+        if (AppPreferences.INSTANCE.getAppVersionFromServer(this)>BuildConfig.VERSION_CODE)
+        {
+            if(!isFinishing())
+                AppDialogs.openPlayStoreDialog(this);
+        }
+        else {
+            if (AppPreferences.INSTANCE.isLogin(this)) {
+                Intent intent2 = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(intent2);
+            } else {
+                Intent intent1 = new Intent(this, SignInEmailActivity.class);
+                startActivity(intent1);
+            }
         }
     }
 
@@ -228,8 +239,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
                 JSONObject object = new JSONObject(response);
                 if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                     int versionServer = object.getJSONObject("data").getInt("version");
-                    if (versionServer > BuildConfig.VERSION_CODE)
-                        AppDialogs.openPlayStoreDialog(SplashActivity.this);
+                    AppPreferences.INSTANCE.setAppVersionFromServer(versionServer,this);
                 }
             } catch(JSONException e){
                 e.printStackTrace();
@@ -293,15 +303,11 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         }
     }
 
-    private void checkRefreshTokenAndForceUpdate()
+    private void checkRefreshToken()
     {
-        if ((System.currentTimeMillis() - AppPreferences.INSTANCE.getLastHitTime(this)) > UPDATE_CHECK) {
-            AppPreferences.INSTANCE.setLastHitTime(this, System.currentTimeMillis());
-            getAppUpdateStatusFromServer();
-        } else
-        {
-            if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA) && System.currentTimeMillis()>AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
-                hitGenerateOktaTokeAPI();
-        }
+
+        if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA) && System.currentTimeMillis()>AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
+            hitGenerateOktaTokeAPI();
+
     }
 }
