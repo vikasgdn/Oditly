@@ -61,6 +61,7 @@ public class PrivacyPolicyActivity extends BaseActivity  {
                 super.onPageStarted(view, url, favicon);
                 mCounter++;
                 Log.e(":::: URL  ","onPageStarted");
+
             }
 
             @Override
