@@ -10,13 +10,13 @@ import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.ui.fragment.AuditFragment;
 import com.oditly.audit.inspection.ui.fragment.actionplan.ActionFragment;
 
-public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+public class AuditActionFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
     private String tabTitles[] = new String[] { "Inspection", "Action"};
     private Context context;
     private String mAuditType="";
 
-    public SampleFragmentPagerAdapter(FragmentManager fm, Context context,String auditType) {
+    public AuditActionFragmentPagerAdapter(FragmentManager fm, Context context, String auditType) {
         super(fm);
         this.context = context;
         mAuditType=auditType;

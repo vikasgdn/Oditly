@@ -35,12 +35,15 @@ public class NetworkURL {
     public static final String BSDELETEATTACHMENT = API_BASE_URL + "ia/brand_standard/file/delete";
     public static final String BSATTACHMENT = API_BASE_URL + "ia/brand_standard/file";
     public static final String BSATTACHMENT_UPDATE = API_BASE_URL + "ia/brand_standard/file/update";
+
     public static final String AUDIT_INTERNAL_SIGNATURE = API_BASE_URL + "ia/signature/file";
     public static final String BRANDSTANDARD = API_BASE_URL + "ia/brand_standard";
     public static final String BRANDSTANDARD_FINAL_SAVE = API_BASE_URL_NEW + "internal/audit/answer";
     public static final String BRANDSTANDARD_SECTION_SAVE = API_BASE_URL_NEW + "ia/section/answer";
     public static final String ACTION_PLAN = API_BASE_URL_NEW+ "ia/action-plans";   //remove new as discuss with Manish
     public static final String ACTION_PLAN_COMPLETE= API_BASE_URL_NEW+"ia/action-plan/complete";
+
+
     public static final String APP_VERSION = API_BASE_URL + "appversion";
     public static final String GET_TEAM_LIST_ADD = API_BASE_URL_NEW+ "team/create?";
     public static final String GET_TEAM_LIST = API_BASE_URL_NEW+ "teams";

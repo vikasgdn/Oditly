@@ -11,14 +11,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.oditly.audit.inspection.R;
-import com.oditly.audit.inspection.adapter.SampleFragmentPagerAdapter;
+import com.oditly.audit.inspection.adapter.AuditActionFragmentPagerAdapter;
 import com.oditly.audit.inspection.util.AppConstant;
 
 public class LandingFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private String mAuditTYpeID="";
-    private SampleFragmentPagerAdapter sampleFragmentPagerAdapter;
+    private AuditActionFragmentPagerAdapter sampleFragmentPagerAdapter;
 
     public static LandingFragment newInstance(String auditTYpeID) {
         Bundle args = new Bundle();
@@ -47,7 +47,7 @@ public class LandingFragment extends Fragment {
 
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPagerDynamic);
 
-        sampleFragmentPagerAdapter=new SampleFragmentPagerAdapter(getChildFragmentManager(), getActivity(),mAuditTYpeID);
+        sampleFragmentPagerAdapter=new AuditActionFragmentPagerAdapter(getChildFragmentManager(), getActivity(),mAuditTYpeID);
         viewPager.setAdapter(sampleFragmentPagerAdapter);
 
         // Give the TabLayout the ViewPager

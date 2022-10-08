@@ -50,6 +50,7 @@ public class AppConstant {
     public static final String IMAGE_EXTENSION = ".jpg";
     public static final String SIGN_IN_MESSAGE = "User Details found Successfully";
     public static final String SIGN_UP_MESSAGE = "Sign up successfully.";
+
     public static final String EMAIL = "email";
     public static final String AUDIT_TYPE_NAME = "audit_type_name";
     public static final String AUDIT_TYPE_ID = "audit_type_id";
@@ -77,6 +78,7 @@ public class AppConstant {
     public static final String TEAM = "team";
     public static final String FROM_DATE = "from_date";
     public static final String TO_DATE = "to_date";
+
     public static final String REVIEWRLIST = "reviewerlist";
     public static final String REVIEWRLISTID = "reviewerlistid";
     public static final String AUDIT_INSTRUCTION = "instruction";
