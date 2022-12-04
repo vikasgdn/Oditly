@@ -279,6 +279,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
             JSONObject object = new JSONObject(response);
             messsage =  object.getString(AppConstant.RES_KEY_MESSAGE);
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+
                 BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create().fromJson(object.toString(), BrandStandardRootObject.class);
                 if (brandStandardRootObject.getData() != null && brandStandardRootObject.getData().toString().length() > 0) {
                     auditDate = brandStandardRootObject.getData().getAudit_date();
