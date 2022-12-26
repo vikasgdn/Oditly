@@ -23,10 +23,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import com.oditly.audit.inspection.BuildConfig;
-import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
-import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.ui.activty.AccountProfileActivity;
 import com.oditly.audit.inspection.ui.activty.ActionCreateActivity;
 import com.oditly.audit.inspection.ui.activty.ActionPlanLandingActivity;
@@ -43,7 +42,6 @@ import com.oditly.audit.inspection.ui.activty.SignInEmailActivity;
 import com.oditly.audit.inspection.ui.activty.SignInPasswordActivity;
 import com.oditly.audit.inspection.ui.activty.SplashActivity;
 import com.oditly.audit.inspection.util.AppConstant;
-import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
 import java.util.HashSet;
@@ -57,41 +55,6 @@ import java.util.Locale;
 public class AppDialogs
 {
 
-
-    /**
-     * This method is use to show progress dialog when hit web service
-     *
-     * @param activity
-     * @return void
-     */
-/*
-    public static void answerShowDialog(final BrandStandardSection brandStandardSection,final BrandStandardAuditActivity activity) {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        dialog.setTitle(activity.getString(R.string.app_name));
-        dialog.setMessage("You have unsaved answered locally in your device. Would you like to sync them?");
-        dialog.setPositiveButton("Save", new DialogInterface.OnCNetlickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                */
-/*questionArrayList = brandStandardSection.getQuestions();
-                subSectionArrayList = brandStandardSection.getSub_sections();*//*
-
-                activity.setQuestionList(brandStandardSection.getQuestions());
-                activity.setSubSectionQuestionList(brandStandardSection.getSub_sections());
-                AppLogger.e("TAG", "Replace it in adapter");
-            }
-        });
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                activity.setQuestionList(brandStandardSection.getQuestions());
-                activity.setSubSectionQuestionList(brandStandardSection.getSub_sections());
-                dialog.dismiss();
-            }
-        });
-        dialog.create().show();
-    }
-*/
 
 
     public static void showOtpValidateDialog(final Activity activity) {
@@ -203,6 +166,63 @@ public class AppDialogs
 
     }
 
+
+    public static void showEnterCommentForQuestionBS(BrandStandardQuestion bsQuestion, final Activity activity) {
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_question_comment_bs);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        final EditText mCommentET=(EditText)dialog.findViewById(R.id.et_commentbox);
+        final TextView mCommentErrorTv=(TextView)dialog.findViewById(R.id.tv_commenterror);
+        if (!TextUtils.isEmpty(bsQuestion.getAudit_comment()))
+            mCommentET.setText(bsQuestion.getAudit_comment());
+
+        try {
+           // mCommentErrorTv.setText(activity.getResources().getString(R.string.text_please_enterminimum).replace("CCC",""+bsQuestion.getOptions().));
+
+
+            dialog.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.findViewById(R.id.tv_send).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(TextUtils.isEmpty(mCommentET.getText().toString()))
+                        mCommentErrorTv.setVisibility(View.VISIBLE);
+                    else
+                    {
+                        bsQuestion.setAudit_comment(mCommentET.getText().toString());
+                        // AppUtils.hideKeyboard(activity);
+                        if (activity instanceof BrandStandardAuditActivity)
+                            ((BrandStandardAuditActivity)activity).saveSingleBrandStandardQuestionEveryClick(bsQuestion);
+                       else if (activity instanceof BrandStandardAuditActivityPagingnation)
+                            ((BrandStandardAuditActivityPagingnation)activity).saveSingleBrandStandardQuestionEveryClick(bsQuestion);
+                        else
+                            ((BrandStandardOptionsBasedQuestionActivity)activity).saveSingleBrandStandardQuestionEveryClick(bsQuestion);
+
+                        dialog.dismiss();
+                    }
+
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dialog.show();
+
+    }
+
+
     public static void showForgotPassword(String email,final Activity activity) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -297,6 +317,9 @@ public class AppDialogs
         dialog.show();
 
     }
+
+
+
 
 
     public static void exitDialog(final Activity activity) {

@@ -331,8 +331,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             Log.e(";; answer array  :: ",""+getQuestionsArray());
             if(isSaveButtonClick)
                 mProgressRL.setVisibility(View.VISIBLE);
-            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId, auditDate, "1", getQuestionsArray());
-            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE, NetworkConstant.METHOD_POST, this, this);
+            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId);
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE_NEW, NetworkConstant.METHOD_POST, this, this);
             networkService.call(object);
         } else
         {
@@ -912,5 +912,18 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
     }
 
+
+ public void saveSingleBrandStandardQuestionEveryClick(BrandStandardQuestion bsQuestion)
+    {
+        if (NetworkStatus.isNetworkConnected(this))
+        {
+            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId, auditDate, "1", getQuestionsArray());
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE, NetworkConstant.METHOD_POST, this, this);
+            networkService.call(object);
+        } else
+        {
+            AppUtils.toast(this, getString(R.string.internet_error));
+        }
+    }
 
 }

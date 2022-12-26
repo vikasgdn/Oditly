@@ -8,8 +8,8 @@ package com.oditly.audit.inspection.network;
 public class NetworkURL {
 
     //API URL'S LIVE SERVER
-    public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
-    public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
+  //  public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
+   // public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
 
 
     //API URL'S STAGE SERVER
@@ -18,9 +18,9 @@ public class NetworkURL {
 
 
     //API URL'S  TEST SERVER
-   /*  public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
+     public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
      public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
-*/
+
 
     public static final String SIGNIN = API_BASE_URL + "login";
     public static final String CHECK_USER = API_BASE_URL + "check-user";
@@ -37,9 +37,13 @@ public class NetworkURL {
     public static final String BSATTACHMENT_UPDATE = API_BASE_URL + "ia/brand_standard/file/update";
 
     public static final String AUDIT_INTERNAL_SIGNATURE = API_BASE_URL + "ia/signature/file";
-    public static final String BRANDSTANDARD = API_BASE_URL + "ia/brand_standard";
+    public static final String BRANDSTANDARD = API_BASE_URL_NEW + "internal-audit/questions";
     public static final String BRANDSTANDARD_FINAL_SAVE = API_BASE_URL_NEW + "internal/audit/answer";
+    public static final String BRANDSTANDARD_FINAL_SAVE_NEW = API_BASE_URL_NEW + "internal-audit/submit";
     public static final String BRANDSTANDARD_SECTION_SAVE = API_BASE_URL_NEW + "ia/section/answer";
+    public static final String BRANDSTANDARD_SECTION_SAVE_NEW = API_BASE_URL_NEW + "internal-audit/section/submit";
+
+
     public static final String ACTION_PLAN = API_BASE_URL_NEW+ "ia/action-plans";   //remove new as discuss with Manish
     public static final String ACTION_PLAN_COMPLETE= API_BASE_URL_NEW+"ia/action-plan/complete";
 
@@ -86,6 +90,13 @@ public class NetworkURL {
 
 
     public static final String GET_ACTIONPLAN_DATA = API_BASE_URL_NEW+"ia/action-plan?action_plan_id=";
+
+
+    //new API QUESTION SAVE
+
+    public static final String BRANDSTANDARD_QUESTIONWISE_ANSWER = API_BASE_URL_NEW+"internal-audit/question";
+
+
 
 
 

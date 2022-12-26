@@ -14,7 +14,7 @@ public class BrandStandardSection implements Parcelable {
     private String section_group_title = "";
     private int audit_section_file_cnt = 0;
     private int answered_question_count = 0;
-    private int question_count;
+    private int total_question_count;
     private float total_obtained_mark;
     private float  total_max_mark;
     private String section_weightage="1";
@@ -31,7 +31,7 @@ public class BrandStandardSection implements Parcelable {
         section_group_title = in.readString();
         audit_section_file_cnt = in.readInt();
         answered_question_count = in.readInt();
-        question_count = in.readInt();
+        total_question_count = in.readInt();
         if (in.readByte() == 0x01) {
             questions = new ArrayList<BrandStandardQuestion>();
             in.readList(questions, BrandStandardQuestion.class.getClassLoader());
@@ -59,7 +59,7 @@ public class BrandStandardSection implements Parcelable {
         dest.writeString(section_group_title);
         dest.writeInt(audit_section_file_cnt);
         dest.writeInt(answered_question_count);
-        dest.writeInt(question_count);
+        dest.writeInt(total_question_count);
         if (questions == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -160,11 +160,11 @@ public class BrandStandardSection implements Parcelable {
         this.section_weightage = section_weightage;
     }
     public int getQuestion_count() {
-        return question_count;
+        return total_question_count;
     }
 
     public void setQuestion_count(int question_count) {
-        this.question_count = question_count;
+        this.total_question_count = question_count;
     }
 
     public float getTotal_obtained_mark() {

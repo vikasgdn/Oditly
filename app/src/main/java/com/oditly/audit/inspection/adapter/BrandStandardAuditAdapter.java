@@ -25,11 +25,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mohammedalaa.seekbar.OnRangeSeekBarChangeListener;
 import com.mohammedalaa.seekbar.RangeSeekBarView;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardActionPlan;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSlider;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
+import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
@@ -367,14 +369,16 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
             @Override
             public void onClick(View v) {
                 clearCurrentFocus();
-                if(holder.mCommentET.isShown()) {
+                AppDialogs.showEnterCommentForQuestionBS(brandStandardQuestion,(BrandStandardAuditActivity)context);
+
+              /*  if(holder.mCommentET.isShown()) {
                     holder.mCommentET.setVisibility(View.GONE);
                     holder.mCommentLenthTV.setVisibility(View.GONE);
                 }
                 else {
                     holder.mCommentET.setVisibility(View.VISIBLE);
                     holder.mCommentLenthTV.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
         });
 
@@ -595,6 +599,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                             radio_text.setTextColor(context.getResources().getColor(R.color.c_dark_gray));
                         }
                     }
+                    ((BrandStandardAuditActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
                     ((BrandStandardAuditActivity) context).countNA_Answers();
                 }
             });

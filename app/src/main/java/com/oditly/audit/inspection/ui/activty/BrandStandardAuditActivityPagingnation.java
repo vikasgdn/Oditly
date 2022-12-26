@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -32,7 +31,6 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuesti
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRefrence;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
-import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkServiceJSON;
@@ -199,7 +197,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     public void onItemClick(int questionNo, BrandStandardAuditAdapterSingleSection brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position) {
         itemClickedPos = questionNo;
 
-         mBrandStandardListCurrent=sectionTabAdapter.getArrayList();
+        mBrandStandardListCurrent=sectionTabAdapter.getArrayList();
         Intent addAttachment = new Intent(context, AddAttachmentActivity.class);
         addAttachment.putExtra("auditId", auditId);
         addAttachment.putExtra("sectionGroupId", sectionGroupId);
@@ -266,14 +264,17 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         {
             if(isSaveButtonClick)
                 mProgressRL.setVisibility(View.VISIBLE);
-            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId, auditDate, "1", getQuestionsArray());
-            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE, NetworkConstant.METHOD_POST, this, this);
+            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId);
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE_NEW, NetworkConstant.METHOD_POST, this, this);
             networkService.call(object);
         } else
         {
             AppUtils.toast(this, getString(R.string.internet_error));
         }
     }
+
+
+
     private JSONArray  getQuestionsArray() {
         JSONArray jsonArray = new JSONArray();
         ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
@@ -345,14 +346,14 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
 
                 if(mActionPlanRequred>0 && question.getAction_plan()==null)
                 {
-                   // String message = "Please Create the Action Plan for question no. " + count;
+                    // String message = "Please Create the Action Plan for question no. " + count;
                     String message = getString(R.string.text_create_actionplanfor_question)+" " + count;
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this, message);
                     return false;
                 }
                 if(mMediaCount>0 && question.getAudit_question_file_cnt() < mMediaCount)
                 {
-                  //  String message = "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section";
+                    //  String message = "Please submit the required " + mMediaCount + " image(s) for question no. " + count+ " in section";
                     String message=getString(R.string.text_submit_requredmedia_count).replace("MMM",""+mMediaCount).replace("CCC",""+count);
 
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this, message);
@@ -360,10 +361,10 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 }
                 if (mCommentCount>0 &&  question.getAudit_comment().length() < mCommentCount)
                 {
-                  //  String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
+                    //  String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
                     String message=getString(R.string.text_enter_requredcomment_count).replace("XXX",""+mCommentCount).replace("CCC",""+count);
                     AppDialogs.messageDialogWithYesNo(BrandStandardAuditActivityPagingnation.this, message);
-                   return  false;
+                    return  false;
                 }
 
             }
@@ -461,28 +462,54 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     }
 
 
+    public void saveSingleBrandStandardQuestionEveryClick(BrandStandardQuestion bsQuestion)
+    {
+        if (NetworkStatus.isNetworkConnected(this))
+        {
+            try {
+                JSONObject object = new JSONObject();
+                object.put("audit_id", auditId);
+                object.put("question_id", bsQuestion.getQuestion_id());
+                object.put("audit_answer", bsQuestion.getAudit_answer());
+                object.put("audit_option_id", new JSONArray(bsQuestion.getAudit_option_id()));
+                object.put("audit_comment", bsQuestion.getAudit_comment());
+                Log.e("JSON OBJECT QUESTION==> ",""+object.toString());
+                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER, NetworkConstant.METHOD_POST, this, this);
+                networkService.call(object);
+            }
+            catch (Exception e) {e.printStackTrace();}
+        } else
+        {
+            AppUtils.toast(this, getString(R.string.internet_error));
+        }
+    }
+
     @Override
     public void onNetworkCallInitiated(String service) { }
     @Override
     public void onNetworkCallCompleted(String type, String service, String responseStr) {
-        isAnswerCliked=false; // because question is saved
-        AuditSubSectionsActivity.isDataSaved=true;
         AppLogger.e(TAG, "BSResponse: " + responseStr);
-        try {
-            JSONObject response = new JSONObject(responseStr);
-            if (!response.getBoolean(AppConstant.RES_KEY_ERROR))
-            {
-                AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
-                if (isBackButtonClick)
-                {
-                    isBackButtonClick=false; // This is only for showing progressBar
-                    finish();
+        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER))
+        {
+
+        }
+        else {
+            isAnswerCliked = false; // because question is saved
+            AuditSubSectionsActivity.isDataSaved = true;
+            try {
+                JSONObject response = new JSONObject(responseStr);
+                if (!response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+                    if (isBackButtonClick) {
+                        isBackButtonClick = false; // This is only for showing progressBar
+                        finish();
+                    }
+                } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
                 }
-            } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         mProgressRL.setVisibility(View.GONE);
     }
@@ -538,6 +565,12 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         scoreText.setText(getString(R.string.text_score)+":" + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
 
     }
+
+    public void saveSingleQuestion() {
+
+    }
+
+
     //-----------------------Audit Times-------------------------------------
     public Runnable runnable = new Runnable() {
 

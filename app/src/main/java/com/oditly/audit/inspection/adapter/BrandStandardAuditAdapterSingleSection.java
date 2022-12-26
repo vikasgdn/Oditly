@@ -27,6 +27,7 @@ import com.mohammedalaa.seekbar.OnRangeSeekBarChangeListener;
 import com.mohammedalaa.seekbar.RangeSeekBarView;
 import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardActionPlan;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
@@ -47,7 +48,6 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
     private Context context;
     private ArrayList<BrandStandardQuestion> data;
     CustomItemClickListener customItemClickListener;
-    //  private MediaDBImpl mMediaDB;
 
 
 
@@ -55,7 +55,6 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
         this.context = context;
         this.data = data;
         this.customItemClickListener = customItemClickListener;
-        //  mMediaDB=MediaDBImpl.getInstance(context);
     }
 
     @Override
@@ -87,7 +86,6 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
         }
         if (brandStandardQuestion.getHas_comment()>0) {
             holder.mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
-           // holder.mCommentLenthTV.setText("Please enter minimum "+brandStandardQuestion.getHas_comment()+" characters");
             holder.mCommentLenthTV.setText(context.getResources().getString(R.string.text_please_enterminimum).replace("CCC",""+brandStandardQuestion.getHas_comment()));
 
         }
@@ -364,18 +362,21 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                 brandStandardQuestion.setAudit_comment("" + editable.toString());
             }
         });
+
+        // Here Add comment dialog BOX
         holder.mCommentHideShowLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearCurrentFocus();
-                if(holder.mCommentET.isShown()) {
+                AppDialogs.showEnterCommentForQuestionBS(brandStandardQuestion,(BrandStandardAuditActivityPagingnation)context);
+              /*  if(holder.mCommentET.isShown()) {
                     holder.mCommentET.setVisibility(View.GONE);
                     holder.mCommentLenthTV.setVisibility(View.GONE);
                 }
                 else {
                     holder.mCommentET.setVisibility(View.VISIBLE);
                     holder.mCommentLenthTV.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
         });
 
@@ -592,7 +593,9 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                             radio_text.setTextColor(context.getResources().getColor(R.color.c_dark_gray));
                         }
                     }
+
                     ((BrandStandardAuditActivityPagingnation) context).countNA_Answers();
+                    ((BrandStandardAuditActivityPagingnation) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
                 }
             });
             holder.optionListLinearLayout.addView(view);

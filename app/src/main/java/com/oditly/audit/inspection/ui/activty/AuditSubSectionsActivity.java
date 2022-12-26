@@ -221,7 +221,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         {
             mSpinKitView.setVisibility(View.VISIBLE);
             JSONObject object = BSSaveSubmitJsonRequest.createInput(auditId, auditDate, "0", answerArray);
-            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_FINAL_SAVE, NetworkConstant.METHOD_POST, this, this);
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_FINAL_SAVE_NEW, NetworkConstant.METHOD_POST, this, this);
             networkService.call(object);
         } else
         {
@@ -254,7 +254,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     @Override
     public void onNetworkCallCompleted(String type, String service, String response)
     {
-        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_FINAL_SAVE))
+        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_FINAL_SAVE_NEW))
         { try {
             JSONObject responseJson = new JSONObject(response);
             if (!responseJson.getBoolean(AppConstant.RES_KEY_ERROR)) {

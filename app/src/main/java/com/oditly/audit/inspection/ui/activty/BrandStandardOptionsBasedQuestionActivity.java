@@ -52,7 +52,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity implements View.OnClickListener, BrandStandardOptionBasedQuestionsAdapter.CustomItemClickListener {
+public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity implements View.OnClickListener, BrandStandardOptionBasedQuestionsAdapter.CustomItemClickListener,INetworkEvent {
 
     RecyclerView questionListRecyclerView;
     Button bsSaveBtn;
@@ -280,6 +280,29 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
 
         return validate;
     }
+
+    public void saveSingleBrandStandardQuestionEveryClick(BrandStandardQuestion bsQuestion)
+    {
+        if (NetworkStatus.isNetworkConnected(this))
+        {
+            try {
+                JSONObject object = new JSONObject();
+                object.put("audit_id", mAuditId);
+                object.put("question_id", bsQuestion.getQuestion_id());
+                object.put("audit_answer", bsQuestion.getAudit_answer());
+                object.put("audit_option_id", new JSONArray(bsQuestion.getAudit_option_id()));
+                object.put("audit_comment", bsQuestion.getAudit_comment());
+                Log.e("JSON OBJECT QUESTION==> ",""+object.toString());
+                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER, NetworkConstant.METHOD_POST, this, this);
+                networkService.call(object);
+            }
+            catch (Exception e) {e.printStackTrace();}
+        } else
+        {
+            AppUtils.toast(this, getString(R.string.internet_error));
+        }
+    }
+
     @Override
     public void onBackPressed()
     {
@@ -287,4 +310,18 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
             finish();
     }
 
+    @Override
+    public void onNetworkCallInitiated(String service) {
+
+    }
+
+    @Override
+    public void onNetworkCallCompleted(String type, String service, String response) {
+       Log.e("DATA SAVE ==> ",""+service+" || "+response);
+    }
+
+    @Override
+    public void onNetworkCallError(String service, String errorMessage) {
+
+    }
 }

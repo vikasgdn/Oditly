@@ -81,7 +81,23 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
 
         return jsonObject;
     }
+    public static JSONObject createInputNew(String auditId, String sectionid, String sectionGroupid) {
 
+
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(REQ_PARAM_AUDIT_ID, auditId);
+            jsonObject.put(REQ_PARAM_SECTION_ID, Integer.parseInt(sectionid));
+            jsonObject.put(REQ_PARAM_SECTION_GRP_ID, Integer.parseInt(sectionGroupid));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        AppLogger.e("SearchObject: ",""+jsonObject);
+
+        return jsonObject;
+    }
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         /*HashMap<String, String> headers = new HashMap<String, String>();

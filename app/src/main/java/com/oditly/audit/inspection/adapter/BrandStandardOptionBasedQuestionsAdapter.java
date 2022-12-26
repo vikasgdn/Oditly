@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mohammedalaa.seekbar.OnRangeSeekBarChangeListener;
 import com.mohammedalaa.seekbar.RangeSeekBarView;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.dialog.AppDialogs;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardActionPlan;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
@@ -361,14 +362,16 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
             @Override
             public void onClick(View v) {
                 clearCurrentFocus();
-                if(holder.mCommentET.isShown()) {
+                AppDialogs.showEnterCommentForQuestionBS(brandStandardQuestion,(BrandStandardOptionsBasedQuestionActivity)context);
+
+              /*  if(holder.mCommentET.isShown()) {
                     holder.mCommentET.setVisibility(View.GONE);
                     holder.mCommentLenthTV.setVisibility(View.GONE);
                 }
                 else {
                     holder.mCommentET.setVisibility(View.VISIBLE);
                     holder.mCommentLenthTV.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
         });
 
@@ -599,9 +602,11 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                             radio_text.setTextColor(context.getResources().getColor(R.color.c_dark_gray));
                         }
                     }
+                    ((BrandStandardOptionsBasedQuestionActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
                 }
             });
             holder.optionListLinearLayout.addView(view);
+
         }
     }
 
