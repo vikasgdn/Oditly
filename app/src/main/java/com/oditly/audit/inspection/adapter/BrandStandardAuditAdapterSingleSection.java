@@ -49,7 +49,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
     private ArrayList<BrandStandardQuestion> data;
     CustomItemClickListener customItemClickListener;
 
-
+// vikas
 
     public BrandStandardAuditAdapterSingleSection(Context context, ArrayList<BrandStandardQuestion> data, CustomItemClickListener customItemClickListener) {
         this.context = context;
