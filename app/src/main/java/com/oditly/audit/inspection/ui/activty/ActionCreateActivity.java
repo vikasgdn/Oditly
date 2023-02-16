@@ -413,7 +413,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 bean.setMedia_count(mMeidaCountET.getText().toString());
 
 
-                NetworkServiceMultipart networkService = new NetworkServiceMultipart(NetworkURL.ACTION_PLAN_ADD,bean,mMediaFileList,firebaseToken, this, this);
+                NetworkServiceMultipart networkService = new NetworkServiceMultipart(NetworkURL.ACTION_PLAN_ADD_NEW,bean,mMediaFileList,firebaseToken, this, this);
                 networkService.call(null);
             } catch (Exception e) {
                 AppUtils.toast(this, getString(R.string.internet_error));
@@ -441,7 +441,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 params.put(NetworkConstant.REQ_PARAM_ASSIGNED_USERID, jsArray);
                 params.put(NetworkConstant.REQ_PARAM_ACTION_DETAILS, mCorrectiveActionET.getText().toString());
                 params.put(NetworkConstant.REQ_PARAM_COMPLETE_MEDIA_COUNT,mMeidaCountET.getText().toString());
-                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.ACTION_PLAN_ADD, NetworkConstant.METHOD_POST, this, this);
+                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.ACTION_PLAN_ADD_NEW, NetworkConstant.METHOD_POST, this, this);
                 networkService.call(params);
             } catch (Exception e) {
                 AppUtils.toast(this, getString(R.string.internet_error));

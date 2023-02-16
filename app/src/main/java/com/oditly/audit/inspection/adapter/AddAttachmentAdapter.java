@@ -237,7 +237,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
             }
         };
 
-        String url = NetworkURL.BSDELETEATTACHMENT;
+        String url = NetworkURL.BS_DELETE_ATTACHMENT_NEW;
 
         if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
         {

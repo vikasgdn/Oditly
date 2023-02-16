@@ -31,10 +31,17 @@ public class NetworkURL {
     public static final String RESET_PASSWORD_NEW= API_BASE_URL_NEW+ "reset-password";
     public static final String AUDIT_LIST = API_BASE_URL + "ia/audits";
     public static final String AUDIT_TYPE_LIST = API_BASE_URL + "ia/audit/types";
-    public static final String BSEDITATTACHMENT = API_BASE_URL + "ia/brand_standard/file/description/edit";
-    public static final String BSDELETEATTACHMENT = API_BASE_URL + "ia/brand_standard/file/delete";
-    public static final String BSATTACHMENT = API_BASE_URL + "ia/brand_standard/file";
-    public static final String BSATTACHMENT_UPDATE = API_BASE_URL + "ia/brand_standard/file/update";
+    //public static final String BSEDITATTACHMENT = API_BASE_URL + "ia/brand_standard/file/description/edit";
+    public static final String BS_EDIT_ATTACHMENT_NEW = API_BASE_URL_NEW + "internal-audit/question/file/description";
+   // public static final String BSDELETEATTACHMENT = API_BASE_URL + "ia/brand_standard/file/delete";
+    public static final String BS_DELETE_ATTACHMENT_NEW = API_BASE_URL_NEW + "internal-audit/question/file/delete";
+
+    //public static final String BSATTACHMENT = API_BASE_URL + "ia/brand_standard/file";
+
+    public static final String BS_FILE_UPLOAD_LISTGET_NEW = API_BASE_URL_NEW + "internal-audit/question/file";
+
+    //public static final String BSATTACHMENT_UPDATE = API_BASE_URL + "ia/brand_standard/file/update";
+    public static final String BSATTACHMENT_UPDATE_NEW = API_BASE_URL_NEW + "internal-audit/question/file/update";
 
     public static final String AUDIT_INTERNAL_SIGNATURE = API_BASE_URL + "ia/signature/file";
     public static final String BRANDSTANDARD = API_BASE_URL_NEW + "internal-audit/questions";
@@ -69,7 +76,8 @@ public class NetworkURL {
     public static final String POST_DEMO_URL="https://www.oditly.com/demo_form.php";
     public static final String GET_ACTIONCREATE_USING_LOCATION_API=API_BASE_URL_NEW+"ia/action-plan/create?location_id=";
     public static final String GET_ACTIONCREATE_USING_AUDIT_API=API_BASE_URL_NEW+"ia/action-plan/create?audit_id=";
-    public static final String ACTION_PLAN_ADD = API_BASE_URL_NEW + "ia/action-plan";
+    //public static final String ACTION_PLAN_ADD = API_BASE_URL_NEW + "ia/action-plan";
+    public static final String ACTION_PLAN_ADD_NEW = API_BASE_URL_NEW +"internal-audit/action-plan";
 
     public static final String ACTION_PLAN_ADD_COMMENT = API_BASE_URL_NEW + "ia/action-plan/update-comment";
     public static final String ACTION_PLAN_COMMENT_LIST = API_BASE_URL_NEW + "ia/action-plan/update-comments?action_plan_id=";

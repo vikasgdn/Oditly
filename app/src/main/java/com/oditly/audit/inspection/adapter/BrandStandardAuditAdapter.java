@@ -607,32 +607,6 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
         }
     }
 
-    private void setQuestionMandtoryMediaCommentActionStar(BrandStandardQuestionsOption brandStandardQuestionsOption ,String fileCount,TextView mMediaLabelTV,TextView mCommentLabelTV,TextView mActionPlanLabelTV,TextView mCommentLenthTV )
-    {
-        if (brandStandardQuestionsOption.getMedia_count()>0) {
-            mMediaLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
-            mMediaLabelTV.setText(context.getString(R.string.text_photo) + " (" + fileCount + "/" + brandStandardQuestionsOption.getMedia_count() + ")");
-        }
-        else {
-            mMediaLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
-            mMediaLabelTV.setText(context.getString(R.string.text_photo) + " (" + fileCount + ")");
-        }
-        if (brandStandardQuestionsOption.getCommentCount()>0) {
-            mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
-          //  mCommentLenthTV.setText("Please enter minimum "+brandStandardQuestionsOption.getCommentCount()+" characters");
-            mCommentLenthTV.setText(context.getResources().getString(R.string.text_please_enterminimum).replace("CCC",""+brandStandardQuestionsOption.getCommentCount()));
-        }
-        else {
-            mCommentLenthTV.setVisibility(View.GONE);
-            mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }
-        if (brandStandardQuestionsOption.getAction_plan_required()==1) {
-            mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
-        }
-        else {
-            mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 ,0);
-        }
-    }
 
     boolean isOptionAlreadySeleted=false;
     private void handleDropDownTypeQuestion(final BrandStandardQuestion brandStandardQuestion, final BrandStandardAuditViewHolder holder,final ArrayList<Integer> answerOptionId) {
@@ -696,6 +670,8 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                     isOptionAlreadySeleted=false;
 
                     ((BrandStandardAuditActivity) context).countNA_Answers();
+                    ((BrandStandardAuditActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+
                 }
             }
             @Override
@@ -738,32 +714,6 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                     setQuestionMandtoryMediaCommentActionStar(brandStandardQuestionsOption ,""+brandStandardQuestion.getAudit_question_file_cnt(), holder.mMediaLabelTV, holder.mCommentLabelTV,holder.mActionPlanLabelTV,holder.mCommentLenthTV);
                     clickedOnAnswerTpye();
                     int optionId = brandStandardQuestionsOption.getOption_id();
-                 /*   TextView tvSelected =((TextView)view);
-                    if (tvSelected.getText().toString().equalsIgnoreCase("None of the above") || tvSelected.getText().toString().equalsIgnoreCase("NA")|| tvSelected.getText().toString().equalsIgnoreCase("N/A"))
-                    {
-                        for (int j = 0; j < arrayList.size(); j++)
-                        {
-                            TextView radio_text = holder.optionListLinearLayout.findViewById(j);
-                            if (radio_text.equals(answerText))
-                            {
-                                answerOptionId.clear();
-                                answerOptionId.add(optionId);
-                                setSelectionProcess(answerText,brandStandardQuestion,brandStandardQuestionsOption,true);
-                            } else {
-                                radio_text.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
-                                radio_text.setTextColor(context.getResources().getColor(R.color.c_dark_gray));
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (int j = 0; j < arrayList.size(); j++)
-                        {
-                            TextView radio_text = holder.optionListLinearLayout.findViewById(j);
-                            if (radio_text.getText().toString().equalsIgnoreCase("None of the above") || radio_text.getText().toString().equalsIgnoreCase("NA")|| radio_text.getText().toString().equalsIgnoreCase("N/A"))
-                                backToNormalState(radio_text, answerOptionId);
-                        }
-                 */
 
                     if (answerOptionId.contains(new Integer(optionId))) {
                         backToNormalState(answerText, answerOptionId);
@@ -774,6 +724,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
                     }
                     // }
                     ((BrandStandardAuditActivity) context).countNA_Answers();
+                    ((BrandStandardAuditActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
                 }
             });
             holder.optionListLinearLayout.addView(view);
@@ -811,6 +762,32 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
             ((BrandStandardAuditActivity)context).sendToQuestionBasedActivity(brandStandardQuestionsOption.getQuestions());
         }
 
+    }
+    private void setQuestionMandtoryMediaCommentActionStar(BrandStandardQuestionsOption brandStandardQuestionsOption ,String fileCount,TextView mMediaLabelTV,TextView mCommentLabelTV,TextView mActionPlanLabelTV,TextView mCommentLenthTV )
+    {
+        if (brandStandardQuestionsOption.getMedia_count()>0) {
+            mMediaLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+            mMediaLabelTV.setText(context.getString(R.string.text_photo) + " (" + fileCount + "/" + brandStandardQuestionsOption.getMedia_count() + ")");
+        }
+        else {
+            mMediaLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+            mMediaLabelTV.setText(context.getString(R.string.text_photo) + " (" + fileCount + ")");
+        }
+        if (brandStandardQuestionsOption.getCommentCount()>0) {
+            mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+            //  mCommentLenthTV.setText("Please enter minimum "+brandStandardQuestionsOption.getCommentCount()+" characters");
+            mCommentLenthTV.setText(context.getResources().getString(R.string.text_please_enterminimum).replace("CCC",""+brandStandardQuestionsOption.getCommentCount()));
+        }
+        else {
+            mCommentLenthTV.setVisibility(View.GONE);
+            mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+        if (brandStandardQuestionsOption.getAction_plan_required()==1) {
+            mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+        }
+        else {
+            mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 ,0);
+        }
     }
 
     public ArrayList<BrandStandardQuestion> getArrayList() {

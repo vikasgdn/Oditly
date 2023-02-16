@@ -77,7 +77,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     private static final String TAG = BrandStandardAuditActivityPagingnation.class.getSimpleName();
     private List<BrandStandardQuestion> mBrandStandardListCurrent;
     private  Context context;
-    private String auditId = "",auditDate = "",sectionGroupId = "",sectionId = "",sectionTitle = "",mLocation = "",mChecklist = "",fileCount = "";
+    private String auditId = "",sectionGroupId = "",sectionId = "",sectionTitle = "",mLocation = "",mChecklist = "",fileCount = "";
     private String sectionWeightage="";
     public LayoutInflater inflater;
     private ArrayList<BrandStandardSection> brandStandardSectionArrayList = new ArrayList<>();
@@ -86,8 +86,6 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     private static final int AttachmentRequest = 120;
     private static final int QuestionAttachmentRequest = 130;
     private int  itemClickedPos = 0;
-    // public int questionCount = 0;
-    //private BrandStandardAuditAdapterSingleSection currentBrandStandardAuditAdapter;
     public static boolean isAnswerCliked=false;
     private boolean isSaveButtonClick=false,isBackButtonClick=false;
     private BsOffLineDB mBsOfflineDB;
@@ -148,7 +146,6 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         mBsOfflineDB= BsOfflineDBImpl.getInstance(this);
         Intent intent= getIntent();
         auditId =intent.getStringExtra("auditId");
-        auditDate = intent.getStringExtra("auditDate");
         mLocation = intent.getStringExtra(AppConstant.LOCATION_NAME);
         mChecklist = intent.getStringExtra(AppConstant.AUDIT_CHECKLIST);
         mGalleryDisable = intent.getIntExtra(AppConstant.GALLERY_DISABLE,0);
@@ -451,14 +448,13 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
 
     private boolean saveSectionOrPagewiseData()
     {
-        if (AppUtils.isStringEmpty(auditDate))
-            auditDate=AppUtils.getAuditDateCurrent();
-        if (validateCommentOfQuestion())
-            saveBrandStandardQuestion();
+        if (validateCommentOfQuestion()) {
+            AuditSubSectionsActivity.isDataSaved = true;
+            finish();
+            return true;
+        }
         else
             return false;
-
-        return  true;
     }
 
 
@@ -473,7 +469,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 object.put("audit_answer", bsQuestion.getAudit_answer());
                 object.put("audit_option_id", new JSONArray(bsQuestion.getAudit_option_id()));
                 object.put("audit_comment", bsQuestion.getAudit_comment());
-                Log.e("JSON OBJECT QUESTION==> ",""+object.toString());
+                Log.e("JSON QUESTION==> ",""+object.toString());
                 NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER, NetworkConstant.METHOD_POST, this, this);
                 networkService.call(object);
             }
@@ -565,11 +561,6 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         scoreText.setText(getString(R.string.text_score)+":" + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
 
     }
-
-    public void saveSingleQuestion() {
-
-    }
-
 
     //-----------------------Audit Times-------------------------------------
     public Runnable runnable = new Runnable() {

@@ -336,7 +336,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
             }
         };
 
-        String url = NetworkURL.BSEDITATTACHMENT;
+        String url = NetworkURL.BS_EDIT_ATTACHMENT_NEW;
         if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
         {
             if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
@@ -422,7 +422,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
             }
         };
 
-        String url = NetworkURL.BSEDITATTACHMENT;
+        String url = NetworkURL.BS_EDIT_ATTACHMENT_NEW;
         if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
         {
             if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(this))

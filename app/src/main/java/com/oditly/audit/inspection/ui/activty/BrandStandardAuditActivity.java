@@ -626,10 +626,6 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     isDialogSaveClicked=true;   // as we are having same behaviour like dialog loader and change page after response;
                     saveSectionOrPagewiseData();
 
-                  /*  if (saveSectionOrPagewiseData()) {
-                        isAnswerCliked=false;
-                        setPreviousButtonSetUP();
-                    }*/
                 }
                 else
                     setPreviousButtonSetUP();
@@ -721,14 +717,13 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
     private boolean saveSectionOrPagewiseData()
     {
-        if (AppUtils.isStringEmpty(auditDate))
-            auditDate=AppUtils.getAuditDateCurrent();
-        if (validateCommentOfQuestion())
-            saveBrandStandardQuestion();
+        if (validateCommentOfQuestion()) {
+            AuditSubSectionsActivity.isDataSaved = true;
+            finish();
+            return true;
+        }
         else
             return false;
-
-        return  true;
     }
     public void countNA_Answers() {
         totalMarks = 0;
@@ -917,9 +912,18 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     {
         if (NetworkStatus.isNetworkConnected(this))
         {
-            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId, auditDate, "1", getQuestionsArray());
-            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE, NetworkConstant.METHOD_POST, this, this);
-            networkService.call(object);
+            try {
+                JSONObject object = new JSONObject();
+                object.put("audit_id", auditId);
+                object.put("question_id", bsQuestion.getQuestion_id());
+                object.put("audit_answer", bsQuestion.getAudit_answer());
+                object.put("audit_option_id", new JSONArray(bsQuestion.getAudit_option_id()));
+                object.put("audit_comment", bsQuestion.getAudit_comment());
+                Log.e("JSONOBJECTQUESTION==> ",""+object.toString());
+                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER, NetworkConstant.METHOD_POST, this, this);
+                networkService.call(object);
+            }
+            catch (Exception e) {e.printStackTrace();}
         } else
         {
             AppUtils.toast(this, getString(R.string.internet_error));

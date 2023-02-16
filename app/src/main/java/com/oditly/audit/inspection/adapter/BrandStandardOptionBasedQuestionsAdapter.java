@@ -680,6 +680,9 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                         brandStandardQuestion.setAudit_answer_na(1);
                     else
                         brandStandardQuestion.setAudit_answer_na(0);
+
+                    ((BrandStandardOptionsBasedQuestionActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+
                 }
             }
             @Override
@@ -774,6 +777,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                             setSelectionProcess(answerText, brandStandardQuestion, brandStandardQuestionsOption);
                         }
                     }
+                    ((BrandStandardOptionsBasedQuestionActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
                 }
             });
             holder.optionListLinearLayout.addView(view);

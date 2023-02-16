@@ -661,6 +661,8 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                     isOptionAlreadySeleted=false;
 
                     ((BrandStandardAuditActivityPagingnation) context).countNA_Answers();
+                    ((BrandStandardAuditActivityPagingnation) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+
                 }
             }
             @Override
@@ -730,18 +732,20 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                         }
                   */
                     if (answerOptionId.contains(new Integer(optionId)))
-                        {
-                            backToNormalState(answerText, answerOptionId);
-                        }
-                        else
-                        {   answerOptionId.add(optionId);
-                            setSelectionProcess(answerText, brandStandardQuestion, brandStandardQuestionsOption,true);
-                        }
-                  //  }
+                    {
+                        backToNormalState(answerText, answerOptionId);
+                    }
+                    else
+                    {   answerOptionId.add(optionId);
+                        setSelectionProcess(answerText, brandStandardQuestion, brandStandardQuestionsOption,true);
+                    }
+                    //  }
                     ((BrandStandardAuditActivityPagingnation) context).countNA_Answers();
+                    ((BrandStandardAuditActivityPagingnation) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
                 }
             });
             holder.optionListLinearLayout.addView(view);
+
         }
     }
 
