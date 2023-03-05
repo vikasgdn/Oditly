@@ -141,7 +141,7 @@
                 app:minValue="0"
                 app:stepValue="10" />
         </RelativeLayout>
-        <EditText
+        <TextView
             android:id="@+id/et_textanswer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -149,23 +149,23 @@
             android:layout_marginStart="@dimen/d_5dp"
             android:layout_marginEnd="@dimen/d_5dp"
             android:padding="@dimen/d_5dp"
-            android:background="@drawable/comment_border"
-            android:hint="@string/text_type_your_answer"
+            android:background="@drawable/brand_standard_unselect_btn"
+            android:text="@string/text_type_your_answer"
             android:textSize="@dimen/text_size_14"
             android:gravity="top"
             android:minLines="2"
             android:layout_marginTop="@dimen/d_5dp"
             android:layout_marginBottom="@dimen/d_5dp"
             android:textColor="@color/c_dark_gray" />
-        <EditText
+        <TextView
             android:id="@+id/et_numberanswer"
             android:layout_width="match_parent"
             android:layout_height="@dimen/d_40dp"
             android:visibility="gone"
             android:layout_marginStart="@dimen/d_5dp"
             android:layout_marginEnd="@dimen/d_5dp"
-            android:background="@drawable/comment_border"
-            android:hint="@string/text_type_your_answer"
+            android:background="@drawable/brand_standard_unselect_btn"
+            android:text="@string/text_type_your_answer"
             android:inputType="number|numberDecimal|numberSigned"
             android:textSize="@dimen/text_size_14"
             android:gravity="left|center_vertical"

@@ -47,6 +47,9 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuesti
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
+import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
+import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
+import com.oditly.audit.inspection.ui.activty.BrandStandardOptionsBasedQuestionActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,13 +89,13 @@ public class AppUtils {
                 String questionType = question.getQuestion_type();
                 if (brandStandardQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target"))) {
                     if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required() == 1) {
-                       // String message="You have not answered question no " + count + " in section " + brandStandardSection.get(i).getSection_title();
+                        // String message="You have not answered question no " + count + " in section " + brandStandardSection.get(i).getSection_title();
                         AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
                         return null;
                     }
                 } else {
                     if (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required() == 1 && !questionType.equalsIgnoreCase("media")) {
-                      //  AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                        //  AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                         AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
                         return null;
                     }
@@ -125,17 +128,17 @@ public class AppUtils {
 
                 if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media")) {
                     if (mActionPlanRequred > 0 && question.getAction_plan() == null) {
-                       // String message="Please Create the Action Plan for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title();
+                        // String message="Please Create the Action Plan for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title();
                         AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_create_actionplan_for_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()) );
                         return null;
                     }
                     if (mMediaCount > 0 && question.getAudit_question_file_cnt() < mMediaCount) {
-                       // String message="Please submit the required " + mMediaCount + " image(s) for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title();
+                        // String message="Please submit the required " + mMediaCount + " image(s) for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title();
                         AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_submit_requiredmedia_for_question_section).replace("MMM",""+mMediaCount).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
                         return null;
                     }
                     if (mCommentCount > 0 && question.getAudit_comment().length() < mCommentCount) {
-                      //  String  message="Please enter the minimum required " + mCommentCount + " characters comment for question no." + count + " in section " + brandStandardSection.get(i).getSection_title();
+                        //  String  message="Please enter the minimum required " + mCommentCount + " characters comment for question no." + count + " in section " + brandStandardSection.get(i).getSection_title();
                         AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_submit_require_comment_for_question_section).replace("MMM",""+mCommentCount).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
                         return null;
                     }
@@ -154,7 +157,7 @@ public class AppUtils {
                         String questionType = question.getQuestion_type();
                         if (brandStandardSubQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("target"))) {
                             if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required() == 1) {
-                              //  AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                                //  AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
 
                                 return null;
@@ -195,19 +198,19 @@ public class AppUtils {
                         if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || (question.getAudit_answer() != null && question.getAudit_answer().length() > 0)) {
                             if (mActionPlanRequred > 0 && question.getAction_plan() == null) {
                                 AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_create_actionplan_for_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()) );
-                             //   AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                                //   AppUtils.toastDisplayForLong(activity, "Please Create the Action Plan for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
                             if (mMediaCount > 0 && question.getAudit_question_file_cnt() < mMediaCount) {
                                 AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_submit_requiredmedia_for_question_section).replace("MMM",""+mMediaCount).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
-                               // AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
+                                // AppUtils.toastDisplayForLong(activity, "Please submit the required " + mMediaCount + " image(s) for question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 return null;
                             }
 
                             if (mCommentCount > 0 && question.getAudit_comment().length() < mCommentCount) {
                                 AppUtils.toastDisplayForLong(activity,activity.getResources().getString(R.string.text_submit_require_comment_for_question_section).replace("MMM",""+mCommentCount).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
-                              //  String message="Please enter the minimum required " + mCommentCount + " characters comment for question no." + count +" in section " + brandStandardSection.get(i).getSection_title();
-                               // AppUtils.toastDisplayForLong(activity, message);
+                                //  String message="Please enter the minimum required " + mCommentCount + " characters comment for question no." + count +" in section " + brandStandardSection.get(i).getSection_title();
+                                // AppUtils.toastDisplayForLong(activity, message);
                                 return null;
                             }
 
@@ -234,7 +237,7 @@ public class AppUtils {
                 {
                     for (int j = 0; j < questionsOption.getQuestions().size(); j++)
                     {
-                       if (auditOptonID.contains(new Integer(questionsOption.getOption_id())))
+                        if (auditOptonID.contains(new Integer(questionsOption.getOption_id())))
                         {
                             if (questionsOption.getQuestions().get(j).getQuestion_type().equalsIgnoreCase("media") || (!TextUtils.isEmpty(questionsOption.getQuestions().get(j).getAudit_answer()) && !questionsOption.getQuestions().get(j).getAudit_answer().equalsIgnoreCase("0"))) {
                                 //  JSONArray jsonArray = new JSONArray();
@@ -945,6 +948,14 @@ public class AppUtils {
                             else {
                                 editText.setText(date);
                                 brandStandardQuestion.setAudit_answer(date);
+                                if (context instanceof BrandStandardAuditActivityPagingnation)
+                                    ((BrandStandardAuditActivityPagingnation)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+                                else if (context instanceof BrandStandardAuditActivity)
+                                    ((BrandStandardAuditActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+                                else
+                                    ((BrandStandardOptionsBasedQuestionActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+
+
                             }
                         } else {
                             Log.e("", "Invalid Date!");
@@ -980,6 +991,13 @@ public class AppUtils {
                 String time = (date.isEmpty() ? date : (date + " ")) + strHour + ":" + strMinute + ":00";
                 editText.setText(time);
                 brandStandardQuestion.setAudit_answer("" + time);
+                if (context instanceof BrandStandardAuditActivityPagingnation)
+                    ((BrandStandardAuditActivityPagingnation)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+                else if (context instanceof BrandStandardAuditActivity)
+                    ((BrandStandardAuditActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+                else
+                    ((BrandStandardOptionsBasedQuestionActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+
             }
         }, setHour, setMinute, true);
         timePickerDialog.show();

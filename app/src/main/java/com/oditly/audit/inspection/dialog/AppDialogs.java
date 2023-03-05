@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -183,7 +185,7 @@ public class AppDialogs
             mCommentET.setText(bsQuestion.getAudit_comment());
 
         try {
-           // mCommentErrorTv.setText(activity.getResources().getString(R.string.text_please_enterminimum).replace("CCC",""+bsQuestion.getOptions().));
+            // mCommentErrorTv.setText(activity.getResources().getString(R.string.text_please_enterminimum).replace("CCC",""+bsQuestion.getOptions().));
 
 
             dialog.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
@@ -203,7 +205,87 @@ public class AppDialogs
                         // AppUtils.hideKeyboard(activity);
                         if (activity instanceof BrandStandardAuditActivity)
                             ((BrandStandardAuditActivity)activity).saveSingleBrandStandardQuestionEveryClick(bsQuestion);
-                       else if (activity instanceof BrandStandardAuditActivityPagingnation)
+                        else if (activity instanceof BrandStandardAuditActivityPagingnation)
+                            ((BrandStandardAuditActivityPagingnation)activity).saveSingleBrandStandardQuestionEveryClick(bsQuestion);
+                        else
+                            ((BrandStandardOptionsBasedQuestionActivity)activity).saveSingleBrandStandardQuestionEveryClick(bsQuestion);
+
+                        dialog.dismiss();
+                    }
+
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dialog.show();
+
+    }
+
+    public static void showeTexTypeAnswerForQuestionBS(BrandStandardQuestion bsQuestion,String hint, final Activity activity) {
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_question_text_answer);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        final EditText mAnswerET=(EditText)dialog.findViewById(R.id.et_answerbox);
+        final TextView mErrorTv=(TextView)dialog.findViewById(R.id.tv_error);
+
+        try {
+
+            Log.e("bsQuestion.getQuestion_type()","===>"+bsQuestion.getQuestion_type());
+            if (bsQuestion.getQuestion_type().equalsIgnoreCase("textarea"))
+            {
+                mAnswerET.setInputType(InputType.TYPE_CLASS_TEXT);
+                mAnswerET.setMinLines(4);
+            }
+            else if (bsQuestion.getQuestion_type().equalsIgnoreCase("text"))
+            {
+                mAnswerET.setInputType(InputType.TYPE_CLASS_TEXT);
+                mAnswerET.setMinLines(2);
+
+            }
+            else
+            {
+                mAnswerET.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_NUMBER_FLAG_SIGNED);
+                mAnswerET.setMinLines(1);
+            }
+
+          /*  else if (bsQuestion.getQuestion_type().equalsIgnoreCase("number") || bsQuestion.getQuestion_type().equalsIgnoreCase("temperature") || bsQuestion.getQuestion_type().equalsIgnoreCase("measurement") || bsQuestion.getQuestion_type().equalsIgnoreCase("target") )
+            {
+                mAnswerET.setMinLines(2);
+                mAnswerET.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_NUMBER_FLAG_SIGNED);
+            }
+*/
+
+            mAnswerET.setHint(""+hint);
+            if (!TextUtils.isEmpty(bsQuestion.getAudit_answer()))
+                mAnswerET.setText(bsQuestion.getAudit_answer());
+
+
+            dialog.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.findViewById(R.id.tv_send).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(TextUtils.isEmpty(mAnswerET.getText().toString()))
+                        mErrorTv.setVisibility(View.VISIBLE);
+                    else
+                    {
+                        bsQuestion.setAudit_answer(mAnswerET.getText().toString());
+                        if (activity instanceof BrandStandardAuditActivity)
+                            ((BrandStandardAuditActivity)activity).saveSingleBrandStandardQuestionEveryClick(bsQuestion);
+                        else if (activity instanceof BrandStandardAuditActivityPagingnation)
                             ((BrandStandardAuditActivityPagingnation)activity).saveSingleBrandStandardQuestionEveryClick(bsQuestion);
                         else
                             ((BrandStandardOptionsBasedQuestionActivity)activity).saveSingleBrandStandardQuestionEveryClick(bsQuestion);
@@ -417,7 +499,7 @@ public class AppDialogs
 
                     int selectedId = radioGroup.getCheckedRadioButtonId();
 
-                   RadioButton radioButton = (RadioButton) dialog.findViewById(selectedId);
+                    RadioButton radioButton = (RadioButton) dialog.findViewById(selectedId);
                     switch (radioButton.getText().toString()) {
                         case "English":
                             AppPreferences.INSTANCE.setSelectedLang("en");
@@ -669,13 +751,13 @@ public class AppDialogs
                     }
                     if(activity instanceof AuditSubmitSignatureActivity)
                     {
-                       Intent intent = new Intent(activity,MainActivity.class);
+                        Intent intent = new Intent(activity,MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         activity.startActivity(intent);
                         activity.finish();
 
-                       // Intent data = new Intent();
-                       // activity.setResult(Activity.RESULT_OK,data);
+                        // Intent data = new Intent();
+                        // activity.setResult(Activity.RESULT_OK,data);
                         //activity.finish();
 
                     }
@@ -744,10 +826,14 @@ public class AppDialogs
                 public void onClick(View v) {
                     if (activity instanceof BrandStandardAuditActivity) {
                         ((BrandStandardAuditActivity) activity).isDialogSaveClicked=true;
-                        ((BrandStandardAuditActivity) activity).saveBrandStandardQuestion();
+                        ((BrandStandardAuditActivity)activity).finish();
+                        // ((BrandStandardAuditActivity) activity).saveBrandStandardQuestion();
                     }
                     else if (activity instanceof BrandStandardAuditActivityPagingnation)
-                        ((BrandStandardAuditActivityPagingnation)activity).saveBrandStandardQuestion();
+                    {
+                        // ((BrandStandardAuditActivityPagingnation)activity).saveBrandStandardQuestion();
+                        ((BrandStandardAuditActivityPagingnation)activity).finish();
+                    }
                     else
                     {
                         ((BrandStandardOptionsBasedQuestionActivity)activity).finish();

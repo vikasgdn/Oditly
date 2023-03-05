@@ -38,6 +38,8 @@ import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 
@@ -134,13 +136,19 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
             setOtherViewHide(holder);
-            if (questionType.equalsIgnoreCase("textarea"))
+         /*   if (questionType.equalsIgnoreCase("textarea"))
                 holder.mTextAnswerET.setMinLines(4);
             else
                 holder.mTextAnswerET.setMinLines(2);
-
+*/
             holder.mTextAnswerET.setVisibility(View.VISIBLE);
-            holder.mTextAnswerET.addTextChangedListener(new TextWatcher() {
+            holder.mTextAnswerET.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppDialogs.showeTexTypeAnswerForQuestionBS(brandStandardQuestion, context.getString(R.string.text_type_your_answer), (BrandStandardOptionsBasedQuestionActivity)context);
+                }
+            });
+       /*     holder.mTextAnswerET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
@@ -154,7 +162,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
 
                 }
             });
-
+*/
         }
         else  if(questionType.equalsIgnoreCase("number") )
         {
@@ -164,7 +172,14 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
             }
             setOtherViewHide(holder);
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
-            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+            holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppDialogs.showeTexTypeAnswerForQuestionBS(brandStandardQuestion, context.getString(R.string.text_type_your_answer), (BrandStandardOptionsBasedQuestionActivity)context);
+                }
+            });
+
+        /*    holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
@@ -178,7 +193,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
 
                 }
             });
-
+*/
         }
         else  if(questionType.equalsIgnoreCase("slider") )
         {
@@ -230,10 +245,17 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                 holder.mNumberDecAnsweET.setText(brandStandardQuestion.getAudit_answer());
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
-            holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
+          //  holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
             setOtherViewHide(holder);
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
-            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+            holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppDialogs.showeTexTypeAnswerForQuestionBS(brandStandardQuestion,context.getResources().getString(R.string.please_enter_valuein)+" "+brandStandardQuestion.getUnit().getUnit_name(), (BrandStandardOptionsBasedQuestionActivity)context);
+                }
+            });
+
+        /*    holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
@@ -247,7 +269,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
 
                 }
             });
-
+*/
         }
         else if(questionType.equalsIgnoreCase("measurement"))
         {
@@ -256,9 +278,16 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
             setOtherViewHide(holder);
-            holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
+        //    holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
-            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+            holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppDialogs.showeTexTypeAnswerForQuestionBS(brandStandardQuestion,context.getResources().getString(R.string.please_enter_valuein)+" "+brandStandardQuestion.getUnit().getUnit_name(), (BrandStandardOptionsBasedQuestionActivity)context);
+                }
+            });
+
+          /*  holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
@@ -271,7 +300,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                     brandStandardQuestion.setAudit_answer("" + editable.toString());
 
                 }
-            });
+            });*/
         }
         else if(questionType.equalsIgnoreCase("target"))
         {
@@ -280,9 +309,16 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
             setOtherViewHide(holder);
-            holder.mNumberDecAnsweET.setHint("Target: "+brandStandardQuestion.getMax_mark());
+         //   holder.mNumberDecAnsweET.setHint("Target: "+brandStandardQuestion.getMax_mark());
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
-            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+            holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppDialogs.showeTexTypeAnswerForQuestionBS(brandStandardQuestion,context.getResources().getString(R.string.please_enter_valuein)+" "+brandStandardQuestion.getUnit().getUnit_name(), (BrandStandardOptionsBasedQuestionActivity)context);
+                }
+            });
+
+          /*  holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
@@ -295,7 +331,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                     brandStandardQuestion.setAudit_answer("" + editable.toString());
                     // ((BrandStandardAuditActivityPagingnation) context).countNA_Answers();
                 }
-            });
+            });*/
         }
         else if(questionType.equalsIgnoreCase("datetime"))
         {
@@ -489,8 +525,8 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         RecyclerView mRecyclerView;
 
         TextView mDateTimePickerTV;
-        EditText mTextAnswerET;
-        EditText mNumberDecAnsweET;
+        TextView mTextAnswerET;
+        TextView mNumberDecAnsweET;
         LinearLayout mRadioSectionLL;
         RangeSeekBarView mRangeSeekBarSlider;
         RelativeLayout mSliderRL;
