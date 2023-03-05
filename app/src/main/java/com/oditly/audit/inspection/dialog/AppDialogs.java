@@ -300,6 +300,7 @@ public class AppDialogs
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //vikas
         dialog.show();
 
     }
