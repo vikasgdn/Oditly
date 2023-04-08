@@ -120,7 +120,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     @Override
     protected void onResume() {
         super.onResume();
-        if (isDataSaved)
+      //  if (isDataSaved)
             getAuditQuestionsFromServer();
     }
 
@@ -261,7 +261,11 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
                 status = "" + responseJson.getJSONObject("data").getInt("brand_std_status");
                 goForSignature();
             } else if (responseJson.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                AppUtils.toast((BaseActivity) context, responseJson.getString(AppConstant.RES_KEY_MESSAGE));
+               JSONObject errorOBJ= responseJson.optJSONObject("d");
+               String quesionName="";
+               if (errorOBJ!=null)
+                   quesionName=errorOBJ.optString("question_title");
+                AppUtils.toastDisplayForLong((BaseActivity) context, responseJson.getString(AppConstant.RES_KEY_MESSAGE)+" for Question "+quesionName);
             }
         } catch (Exception e) { e.printStackTrace(); }
         }

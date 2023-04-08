@@ -463,6 +463,11 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         if (NetworkStatus.isNetworkConnected(this))
         {
             try {
+                itemClickedPos=bsQuestion.getmClickPosition();
+                if (bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXTAREA) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_NUMBER) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_MEASUREMENT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TARGET) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEMPRATURE) )
+                    this.sectionTabAdapter.updatehParticularPosition(itemClickedPos);
+
+
                 JSONObject object = new JSONObject();
                 object.put("audit_id", auditId);
                 object.put("question_id", bsQuestion.getQuestion_id());
@@ -487,7 +492,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         AppLogger.e(TAG, "BSResponse: " + responseStr);
         if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER))
         {
-
+           //   this.sectionTabAdapter.updatehParticularPosition(itemClickedPos);
         }
         else {
             isAnswerCliked = false; // because question is saved

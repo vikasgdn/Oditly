@@ -141,7 +141,7 @@
                 app:minValue="0"
                 app:stepValue="10" />
         </RelativeLayout>
-        <TextView
+        <EditText
             android:id="@+id/et_textanswer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -149,15 +149,17 @@
             android:layout_marginStart="@dimen/d_5dp"
             android:layout_marginEnd="@dimen/d_5dp"
             android:padding="@dimen/d_5dp"
+            android:editable="false"
+            android:focusable="false"
             android:background="@drawable/brand_standard_unselect_btn"
-            android:text="@string/text_type_your_answer"
+            android:hint="@string/text_type_your_answer"
             android:textSize="@dimen/text_size_14"
             android:gravity="top"
             android:minLines="2"
             android:layout_marginTop="@dimen/d_5dp"
             android:layout_marginBottom="@dimen/d_5dp"
             android:textColor="@color/c_dark_gray" />
-        <TextView
+        <EditText
             android:id="@+id/et_numberanswer"
             android:layout_width="match_parent"
             android:layout_height="@dimen/d_40dp"
@@ -165,9 +167,11 @@
             android:layout_marginStart="@dimen/d_5dp"
             android:layout_marginEnd="@dimen/d_5dp"
             android:background="@drawable/brand_standard_unselect_btn"
-            android:text="@string/text_type_your_answer"
+            android:hint="@string/text_type_your_answer"
             android:inputType="number|numberDecimal|numberSigned"
             android:textSize="@dimen/text_size_14"
+            android:focusable="false"
+            android:editable="false"
             android:gravity="left|center_vertical"
             android:padding="@dimen/d_5dp"
             android:imeOptions="actionNone"

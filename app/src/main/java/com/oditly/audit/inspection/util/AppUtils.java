@@ -103,9 +103,13 @@ public class AppUtils {
 
                 mMediaCount = question.getMedia_count();
                 mCommentCount = question.getHas_comment();
+                mActionPlanRequred=0;
+
                 if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
                     for (int k = 0; k < question.getOptions().size(); k++) {
                         BrandStandardQuestionsOption option = question.getOptions().get(k);
+                        Log.e("OPTION=== ", "===> " +option.getAction_plan_required()+" || "+option.getOption_id());
+
                         if (question.getAudit_option_id() != null && question.getAudit_option_id().contains(new Integer(option.getOption_id()))) {
                             if (question.getQuestion_type().equalsIgnoreCase("checkbox")) {
                                 if (mActionPlanRequred == 0)
@@ -124,7 +128,8 @@ public class AppUtils {
                         }
                     }
                 }
-                Log.e("Media || Comment Count ", "===> " + mMediaCount + " || " + mCommentCount);
+                Log.e("QUESTION=== ", "===> " +question.getQuestion_title()+" ||  "+question.getOptions().toString());
+                Log.e("Media || Comment Count || mActionPlanRequred ", "===> " + mMediaCount + " || " + mCommentCount+" || "+mActionPlanRequred);
 
                 if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media")) {
                     if (mActionPlanRequred > 0 && question.getAction_plan() == null) {

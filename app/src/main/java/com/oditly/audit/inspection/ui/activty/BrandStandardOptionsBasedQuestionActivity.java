@@ -3,11 +3,7 @@ package com.oditly.audit.inspection.ui.activty;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,26 +14,17 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
-import com.oditly.audit.inspection.adapter.BrandStandardAuditAdapterSingleSection;
 import com.oditly.audit.inspection.adapter.BrandStandardOptionBasedQuestionsAdapter;
-import com.oditly.audit.inspection.apppreferences.AppPreferences;
-import com.oditly.audit.inspection.dialog.AppDialogs;
-import com.oditly.audit.inspection.localDB.bsoffline.BsOffLineDB;
-import com.oditly.audit.inspection.localDB.bsoffline.BsOfflineDBImpl;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRefrence;
-import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkServiceJSON;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
-import com.oditly.audit.inspection.network.apirequest.BSSaveSubmitJsonRequest;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
@@ -45,11 +32,8 @@ import com.oditly.audit.inspection.util.AppUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity implements View.OnClickListener, BrandStandardOptionBasedQuestionsAdapter.CustomItemClickListener,INetworkEvent {
@@ -286,6 +270,10 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
         if (NetworkStatus.isNetworkConnected(this))
         {
             try {
+                itemClickedPos=bsQuestion.getmClickPosition();
+                if (bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXTAREA) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_NUMBER) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_MEASUREMENT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TARGET) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEMPRATURE) )
+                    this.mAdapter.updatehParticularPosition(itemClickedPos);
+
                 JSONObject object = new JSONObject();
                 object.put("audit_id", mAuditId);
                 object.put("question_id", bsQuestion.getQuestion_id());
@@ -318,6 +306,7 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
     @Override
     public void onNetworkCallCompleted(String type, String service, String response) {
        Log.e("DATA SAVE ==> ",""+service+" || "+response);
+       // this.mAdapter.updatehParticularPosition(itemClickedPos);
     }
 
     @Override

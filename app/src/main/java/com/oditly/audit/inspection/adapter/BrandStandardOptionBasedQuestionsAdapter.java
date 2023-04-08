@@ -1,8 +1,6 @@
 package com.oditly.audit.inspection.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -32,13 +30,9 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardAction
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSlider;
-import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
 import com.oditly.audit.inspection.ui.activty.BrandStandardOptionsBasedQuestionActivity;
-import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -71,6 +65,8 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         holder.parentLayout.clearFocus();
 
         holder.questionTitle.setText(""+(position+1) +". " + brandStandardQuestion.getQuestion_title());
+        brandStandardQuestion.setQuestionCount(position); // for refresing that  position
+
         if (brandStandardQuestion.getIs_required()==1)
             holder.questionTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0,R.drawable.ic_astrisk12 , 0);
         else
@@ -231,6 +227,8 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                     clickedOnAnswerTpye();
                     holder.mFinalValueSliderTV.setText(""+progress);
                     brandStandardQuestion.setAudit_answer(String.valueOf(progress));
+                    ((BrandStandardOptionsBasedQuestionActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+
                 }
             });
 
@@ -245,7 +243,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                 holder.mNumberDecAnsweET.setText(brandStandardQuestion.getAudit_answer());
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
-          //  holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
+            holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
             setOtherViewHide(holder);
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
             holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
@@ -278,7 +276,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
             setOtherViewHide(holder);
-        //    holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
+            holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
             holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -309,7 +307,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
             setOtherViewHide(holder);
-         //   holder.mNumberDecAnsweET.setHint("Target: "+brandStandardQuestion.getMax_mark());
+            holder.mNumberDecAnsweET.setHint("Target: "+brandStandardQuestion.getMax_mark());
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
             holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -444,7 +442,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         } else
             holder.hintLayout.setVisibility(View.GONE);
 
-
+        brandStandardQuestion.setmClickPosition(position); //newly added for question refresh
 
         if (brandStandardQuestion.getRef_file()!=null && !AppUtils.isStringEmpty(brandStandardQuestion.getRef_file().getFile_url())) {
             holder.mShowHowLL.setVisibility(View.VISIBLE);
@@ -457,7 +455,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         }
         if (brandStandardQuestion.isCan_create_action_plan()) {
             clickedOnAnswerTpye();
-            brandStandardQuestion.setmClickPosition(position);
+          //  brandStandardQuestion.setmClickPosition(position);
             holder.mActionCreateLL.setVisibility(View.VISIBLE);
             holder.mActionCreateLL.setTag(brandStandardQuestion);
             holder.mActionCreateLL.setOnClickListener(context);
@@ -525,8 +523,8 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         RecyclerView mRecyclerView;
 
         TextView mDateTimePickerTV;
-        TextView mTextAnswerET;
-        TextView mNumberDecAnsweET;
+        EditText mTextAnswerET;
+        EditText mNumberDecAnsweET;
         LinearLayout mRadioSectionLL;
         RangeSeekBarView mRangeSeekBarSlider;
         RelativeLayout mSliderRL;
@@ -867,5 +865,8 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         this.data.get(pos).setAction_plan(new BrandStandardActionPlan());
         notifyItemChanged(pos);
     }
-
+    public void updatehParticularPosition(int pos)
+    {
+        notifyItemChanged(pos);
+    }
 }

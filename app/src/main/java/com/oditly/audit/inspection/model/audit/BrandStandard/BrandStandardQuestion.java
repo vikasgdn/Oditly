@@ -19,6 +19,7 @@ public class BrandStandardQuestion {
     private int comment_count = 0;
     private int is_required = 0;
     private int mClickPosition = 0;
+    private int mQuestionCount = 0;
     List<Uri> mImageList;
     private int media_count = 0;
     private int media_req_type_id;
@@ -254,6 +255,14 @@ public class BrandStandardQuestion {
 
     public void setFiles(ArrayList<AddAttachmentInfo> files) {
         this.files = files;
+    }
+
+    public int getQuestionCount() {
+        return mQuestionCount;
+    }
+
+    public void setQuestionCount(int mQuestionCount) {
+        this.mQuestionCount = mQuestionCount;
     }
 
 

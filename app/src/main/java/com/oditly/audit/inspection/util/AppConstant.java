@@ -108,6 +108,18 @@ public class AppConstant {
     public static final String PROVIDER_PASSWORD = "password";
     public static final String PROVIDER_MICROSOFT = "microsoft";
     public static final String ACTIONPLAN = "actionplan";
+    public static final String QUESTION_RADIO ="radio" ;
+    public static final String QUESTION_CHECKBOX ="checkbox" ;
+    public static final String QUESTION_DROPDOWN ="dropdown" ;
+    public static final String QUESTION_SLIDER ="slider" ;
+    public static final String QUESTION_TEXTAREA = "textarea";
+    public static final String QUESTION_TEXT = "text";
+    public static final String QUESTION_NUMBER = "number";
+    public static final String QUESTION_MEASUREMENT = "measurement";
+    public static final String QUESTION_TARGET = "target";
+    public static final String QUESTION_TEMPRATURE = "temperature";
+
+
 
 
     public static String DEVICE_ID = "";

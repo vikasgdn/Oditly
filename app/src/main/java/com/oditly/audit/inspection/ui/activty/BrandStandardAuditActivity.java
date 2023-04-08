@@ -840,35 +840,41 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     @Override
     public void onNetworkCallInitiated(String service) { }
     @Override
-    public void onNetworkCallCompleted(String type, String service, String responseStr) {
-        isAnswerCliked=false; // because question is saved
-        AuditSubSectionsActivity.isDataSaved=true;
-        try {
-            JSONObject response = new JSONObject(responseStr);
-            if (!response.getBoolean(AppConstant.RES_KEY_ERROR))
-            {
-                AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
-                if (isBackButtonClick)
-                {
-                    isBackButtonClick=false; // This is only for showing progressBar
-                    finish();
-                }
-                else if(isDialogSaveClicked)
-                {
-                    if (mNextPreviousClick==1)
-                        setNextButtonSetUP();
-                    else   if (mNextPreviousClick==2)
-                        setPreviousButtonSetUP();
+    public void onNetworkCallCompleted(String type, String service, String responseStr)
+    {
+        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER)) {
 
-                    isDialogSaveClicked=false;
-                    mNextPreviousClick=0;
-                }
-            } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            //newly added for position refresh
+         //   this.currentBrandStandardAuditAdapter.updatehParticularPosition(itemClickedPos);
         }
+        else
+        {
+            isAnswerCliked = false; // because question is saved
+            AuditSubSectionsActivity.isDataSaved = true;
+            try {
+                JSONObject response = new JSONObject(responseStr);
+                if (!response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+                    if (isBackButtonClick) {
+                        isBackButtonClick = false; // This is only for showing progressBar
+                        finish();
+                    } else if (isDialogSaveClicked) {
+                        if (mNextPreviousClick == 1)
+                            setNextButtonSetUP();
+                        else if (mNextPreviousClick == 2)
+                            setPreviousButtonSetUP();
+
+                        isDialogSaveClicked = false;
+                        mNextPreviousClick = 0;
+                    }
+                } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         mProgressRL.setVisibility(View.GONE);
     }
 
@@ -913,6 +919,12 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         if (NetworkStatus.isNetworkConnected(this))
         {
             try {
+                itemClickedPos=bsQuestion.getmClickPosition();
+                questionCount=bsQuestion.getQuestionCount();
+                this.currentBrandStandardAuditAdapter = bsQuestion.getStandardAuditAdapter();
+                if (bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXTAREA) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_NUMBER) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_MEASUREMENT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TARGET) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEMPRATURE) )
+                    this.currentBrandStandardAuditAdapter.updatehParticularPosition(itemClickedPos);
+
                 JSONObject object = new JSONObject();
                 object.put("audit_id", auditId);
                 object.put("question_id", bsQuestion.getQuestion_id());
