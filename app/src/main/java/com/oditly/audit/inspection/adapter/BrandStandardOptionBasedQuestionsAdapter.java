@@ -30,6 +30,7 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardAction
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSlider;
+import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
 import com.oditly.audit.inspection.ui.activty.BrandStandardOptionsBasedQuestionActivity;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
@@ -312,7 +313,8 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
             holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppDialogs.showeTexTypeAnswerForQuestionBS(brandStandardQuestion,context.getResources().getString(R.string.please_enter_valuein)+" "+brandStandardQuestion.getUnit().getUnit_name(), (BrandStandardOptionsBasedQuestionActivity)context);
+                    AppDialogs.showeTexTypeAnswerForQuestionBS(brandStandardQuestion,"Target: "+brandStandardQuestion.getMax_mark(), (BrandStandardOptionsBasedQuestionActivity)context);
+
                 }
             });
 

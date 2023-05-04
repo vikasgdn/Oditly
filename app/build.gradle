@@ -51,8 +51,8 @@ android {
         }
         stage{
             debuggable true
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             signingConfig signingConfigs.release
             applicationIdSuffix ".stage"
             versionNameSuffix "-stage"
