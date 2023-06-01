@@ -34,7 +34,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.asksira.bsimagepicker.BSImagePicker;
 import com.bumptech.glide.Glide;
-import com.creativechintak.multiimagepicker.builder.MultiImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -265,19 +264,14 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
 
 
     private void chooseImagesFromGallery() {
-      /*  BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
+        BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
                 .setMaximumDisplayingImages(5000)
                 .isMultiSelect()
                 .setTag("")
                 .setMinimumMultiSelectCount(1)
                 .setMaximumMultiSelectCount(10)
                 .build();
-        pickerDialog.show(getSupportFragmentManager(), "picker");*/
-
-
-        MultiImagePicker().with(this) // `this` refers to activity or fragment
-                .setSelectionLimit(10)  // The number of max image selection you want from user at a time, MAX is 30
-                .open(); // This will open image selection activity to select images
+        pickerDialog.show(getSupportFragmentManager(), "picker");
     }
 
     private void chooseImagesFromGalleryVDO() {

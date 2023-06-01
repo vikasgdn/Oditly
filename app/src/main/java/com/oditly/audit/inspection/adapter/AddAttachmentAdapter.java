@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,15 +27,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
-import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentInfo;
 import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.network.apirequest.AddBSAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.AddQuestionAttachmentRequest;
+import com.oditly.audit.inspection.network.apirequest.ApiRequest;
 import com.oditly.audit.inspection.network.apirequest.DeleteBSAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.DeleteBSQuestionAttachmentRequest;
 import com.oditly.audit.inspection.network.apirequest.OktaTokenRefreshRequest;
 import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
 import com.oditly.audit.inspection.ui.activty.AddAttachmentActivity;
+import com.oditly.audit.inspection.ui.activty.AuditSubmitSignatureActivity;
 import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.ui.activty.EditAttachmentActivity;
 import com.oditly.audit.inspection.ui.activty.ExoVideoPlayer;
@@ -298,5 +303,44 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
 
     }
 
+  /*  private void deleteQuestionFileAttachment(AddAttachmentInfo addAttachmentInfo) {
+        ((AddAttachmentActivity) context).showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e("", "DeleteBSQuestionResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
+                        ((AddAttachmentActivity) context).getOldMediaAttachmentList("bsQuestion");
+                    } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ((AddAttachmentActivity) context).hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ((AddAttachmentActivity) context).hideProgressDialog();
+                AppLogger.e("", "AddAttachmentError: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+            }
+        };
+
+        String url = NetworkURL.BSDELETEATTACHMENT;
+        DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(
+                AppPreferences.INSTANCE.getAccessToken(context), url, auditId,
+                addAttachmentInfo.getAudit_section_file_id(),
+                addAttachmentInfo.getAudit_question_file_id(),context,
+                stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+    }*/
 
 }

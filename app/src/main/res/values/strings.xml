@@ -1,5 +1,5 @@
 <resources>
-<!--
+    <!--
     <string name="app_name">Oditly</string>
 -->
     Change everywhere from Department to Section
@@ -77,7 +77,6 @@
 
     <string name="text_password_rule">1. between 8 and 20 characters  \n2. at least one lower case letter \n3. at least one upper case letter
  \n4. at least one digit \n5.  at least one of these special characters ~!@#$%^&amp;*()_+</string>
-
 
 
     <string name="text_brand_standard">BRAND STANDARD</string>
@@ -336,7 +335,7 @@
     <string name="s_signin_microsoft">Sign in with Microsoft</string>
     <string name="text_actiopnplan_id">Action Plan ID</string>
 
-<!--
+    <!--
     //newly added
 -->
 
@@ -372,7 +371,7 @@
     <string name="text_actionplan_has_been_created_forthis_question">Action plan has been created for this Question</string>
     <string name="text_answer_hasbeen_save">Your answer has been saved</string>
     <string name="text_back">Back</string>
-   <string name="text_youhave_not_answer_question_section">You have not answered question no CCC in section SSS</string>
+    <string name="text_youhave_not_answer_question_section">You have not answered question no CCC in section SSS</string>
     <string name="text_create_actionplan_for_question_section">Please Create the Action Plan for question no. CCC in section SSS</string>
     <string name="text_submit_requiredmedia_for_question_section">Please submit the required MMM image(s) for question no. CCC in section SSS</string>
     <string name="text_submit_require_comment_for_question_section">Please enter the minimum required MMM characters comment for question no. CCC in section SSS</string>
@@ -384,7 +383,7 @@
     <string name="text_update_your_app">Update your App</string>
 
 
-<!--new-->
+    <!--new-->
     <string name="text_submit_requredmedia_action">Please submit the required MMM image</string>
     <string name="text_image_not_attched">Opps.. Image Not Attached</string>
     <string name="text_douwant_to_continue">Do you want to continue?</string>
