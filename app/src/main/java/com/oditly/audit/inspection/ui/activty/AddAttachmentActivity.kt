@@ -1,326 +1,341 @@
-package com.oditly.audit.inspection.ui.activty;
+package com.oditly.audit.inspection.ui.activty
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import butterknife.BindView
+import butterknife.ButterKnife
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.asksira.bsimagepicker.BSImagePicker
+import com.asksira.bsimagepicker.BSImagePicker.ImageLoaderDelegate
+import com.asksira.bsimagepicker.BSImagePicker.OnMultiImageSelectedListener
+import com.asksira.bsimagepicker.BSImagePicker.OnSingleImageSelectedListener
+import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GetTokenResult
+import com.google.gson.GsonBuilder
+import com.oditly.audit.inspection.BuildConfig
+import com.oditly.audit.inspection.OditlyApplication
+import com.oditly.audit.inspection.R
+import com.oditly.audit.inspection.adapter.AddAttachmentAdapter
+import com.oditly.audit.inspection.apppreferences.AppPreferences
+import com.oditly.audit.inspection.dialog.CustomDialog
+import com.oditly.audit.inspection.localDB.media.MediaDBImpl
+import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentInfo
+import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentRootObject
+import com.oditly.audit.inspection.network.NetworkURL
+import com.oditly.audit.inspection.network.apirequest.AddBSAttachmentRequest
+import com.oditly.audit.inspection.network.apirequest.AddQuestionAttachmentRequest
+import com.oditly.audit.inspection.network.apirequest.GetReportRequest
+import com.oditly.audit.inspection.network.apirequest.OktaTokenRefreshRequest
+import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest
+import com.oditly.audit.inspection.ui.activty.AddAttachmentActivity.AddAttachmentListAdapter.AddAttachmentListViewHolder
+import com.oditly.audit.inspection.util.AppConstant
+import com.oditly.audit.inspection.util.AppLogger
+import com.oditly.audit.inspection.util.AppUtils
+import com.oditly.audit.inspection.util.CirclePagerIndicatorDecoration
+import com.oditly.audit.inspection.util.LocationUtils
+import com.thorny.photoeasy.PhotoEasy
+import `in`.balakrishnan.easycam.CameraBundleBuilder
+import `in`.balakrishnan.easycam.CameraControllerActivity
+import `in`.balakrishnan.easycam.FileUtils
+import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class AddAttachmentActivity() : BaseActivity(), View.OnClickListener, OnSingleImageSelectedListener, OnMultiImageSelectedListener, ImageLoaderDelegate {
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.asksira.bsimagepicker.BSImagePicker;
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GetTokenResult;
-import com.google.gson.GsonBuilder;
-import com.oditly.audit.inspection.BuildConfig;
-import com.oditly.audit.inspection.OditlyApplication;
-import com.oditly.audit.inspection.R;
-import com.oditly.audit.inspection.adapter.AddAttachmentAdapter;
-import com.oditly.audit.inspection.apppreferences.AppPreferences;
-import com.oditly.audit.inspection.dialog.CustomDialog;
-import com.oditly.audit.inspection.localDB.media.MediaDBImpl;
-import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentInfo;
-import com.oditly.audit.inspection.model.audit.AddAttachment.AddAttachmentRootObject;
-import com.oditly.audit.inspection.network.NetworkURL;
-import com.oditly.audit.inspection.network.apirequest.AddAuditSignatureRequest;
-import com.oditly.audit.inspection.network.apirequest.AddBSAttachmentRequest;
-import com.oditly.audit.inspection.network.apirequest.AddQuestionAttachmentRequest;
-import com.oditly.audit.inspection.network.apirequest.GetReportRequest;
-import com.oditly.audit.inspection.network.apirequest.OktaTokenRefreshRequest;
-import com.oditly.audit.inspection.network.apirequest.VolleyNetworkRequest;
-import com.oditly.audit.inspection.util.AppConstant;
-import com.oditly.audit.inspection.util.AppLogger;
-import com.oditly.audit.inspection.util.AppUtils;
-import com.oditly.audit.inspection.util.CirclePagerIndicatorDecoration;
-import com.oditly.audit.inspection.util.LocationUtils;
-import com.thorny.photoeasy.PhotoEasy;
-
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import in.balakrishnan.easycam.CameraBundleBuilder;
-import in.balakrishnan.easycam.CameraControllerActivity;
-import in.balakrishnan.easycam.FileUtils;
-
-public class AddAttachmentActivity extends BaseActivity implements View.OnClickListener,
-        BSImagePicker.OnSingleImageSelectedListener,
-        BSImagePicker.OnMultiImageSelectedListener,
-        BSImagePicker.ImageLoaderDelegate {
-
-    @BindView(R.id.tv_header_title)
-    TextView mTitleTV;
     @BindView(R.id.tv_attachment_count)
-    TextView tvAttachmentCount;
+    var tvAttachmentCount: TextView? = null
+
     @BindView(R.id.recycler_view_attachment_list)
-    RecyclerView attachmentList;
+    var attachmentList: RecyclerView? = null
+
     @BindView(R.id.add_attachment_layout)
-    LinearLayout addAttachmentLayout;
-    @BindView(R.id.floating_btn_add_attachment)
-    ImageView addAttachmentBtn;
+    var addAttachmentLayout: LinearLayout? = null
+
     @BindView(R.id.add_attachment_text)
-    TextView add_attachment_text;
+    var add_attachment_text: TextView? = null
+
     @BindView(R.id.ll_parent_progress)
-    RelativeLayout mProgressLayoutLL;
-    private LocationUtils mLocationUtils;
-    private boolean isVideoPermission=false;
-    private int isGalleryDisable=1;
-
-    public int EDIT_IMAGE_POS=0;
-    private  String auditId = "",sectionGroupId = "",sectionId = "", questionId = "",attachType = "", longitude = "",latitude = "",date = "";
-    private int attachmentCount = 0;
-    private  Context context;
-    private  CustomDialog customDialog;
-    private CustomDialog imageCustomDialog;
-    //private AppLocationService appLocationService;
-    private static final String TAG = AddAttachmentActivity.class.getSimpleName();
-    private AddAttachmentListAdapter viewPagerAdapter;
-    private int mImageCounter=0;
-    private ArrayList<Uri> mURIimageList;
-    private MediaDBImpl mMediaDB;
-    private String mCurrentPhotoPath="";
-    private PhotoEasy photoEasy;
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_attachment);
-        mLocationUtils=new LocationUtils(this);
-        AppPreferences.INSTANCE.initAppPreferences(this);
-        context = this;
-        ButterKnife.bind(AddAttachmentActivity.this);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 10);
+    var mProgressLayoutLL: RelativeLayout? = null
+    private var mLocationUtils: LocationUtils? = null
+    private var isVideoPermission = false
+    private var isGalleryDisable = 1
+    var EDIT_IMAGE_POS = 0
+    private var auditId: String? = ""
+    private var sectionGroupId: String? = ""
+    private var sectionId: String? = ""
+    private var questionId: String? = ""
+    private var attachType: String? = ""
+    private var longitude = ""
+    private var latitude = ""
+    private var date = ""
+    private var attachmentCount = 0
+    private var context: Context? = null
+    private var customDialog: CustomDialog? = null
+    private var imageCustomDialog: CustomDialog? = null
+    private var viewPagerAdapter: AddAttachmentListAdapter? = null
+    private var mImageCounter = 0
+    private var mURIimageList: ArrayList<Uri?>? = null
+    private var mMediaDB: MediaDBImpl? = null
+    private var mCurrentPhotoPath = ""
+    private val photoEasy: PhotoEasy? = null
+    lateinit var addAttachmentBtn:ImageView
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_add_attachment)
+        mLocationUtils = LocationUtils(this)
+        AppPreferences.INSTANCE.initAppPreferences(this)
+        context = this
+        ButterKnife.bind(this@AddAttachmentActivity)
+        if (ActivityCompat.checkSelfPermission(
+                this@AddAttachmentActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                (context as Activity?)!!,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                10
+            )
         }
-       /* else
+        /* else
             mLocationUtils.beginUpdates(this);*/
 
         //appLocationService = new AppLocationService(context);
-        mMediaDB = MediaDBImpl.getInstance(context);
-
-        initView();
-        initVar();
+        mMediaDB = MediaDBImpl.getInstance(context)
+        initView()
+        initVar()
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent result = new Intent();
-        result.putExtra("attachmentCount", ""+attachmentCount);
-        setResult(RESULT_CANCELED, result);    //set cancell by vikas
-        finish();
+    override fun onBackPressed() {
+        val result = Intent()
+        result.putExtra("attachmentCount", "" + attachmentCount)
+        setResult(RESULT_CANCELED, result) //set cancell by vikas
+        finish()
     }
 
-    @Override
-    protected void initView() {
-        super.initView();
-        mTitleTV = findViewById(R.id.tv_header_title);
-        mTitleTV.setText(R.string.text_attachment);
-        tvAttachmentCount = findViewById(R.id.tv_attachment_count);
-        attachmentList = findViewById(R.id.recycler_view_attachment_list);
-        addAttachmentLayout = findViewById(R.id.add_attachment_layout);
-        add_attachment_text = findViewById(R.id.add_attachment_text);
-        addAttachmentBtn = findViewById(R.id.floating_btn_add_attachment);
-        mProgressLayoutLL=findViewById(R.id.ll_parent_progress);
-        findViewById(R.id.iv_header_left).setOnClickListener(this);
-        addAttachmentBtn.setOnClickListener(this);
-
+    override fun initView() {
+        super.initView()
+        var mTitleTV = findViewById(R.id.tv_header_title) as TextView
+        mTitleTV.setText(R.string.text_attachment)
+        tvAttachmentCount = findViewById(R.id.tv_attachment_count)
+        attachmentList = findViewById(R.id.recycler_view_attachment_list)
+        addAttachmentLayout = findViewById(R.id.add_attachment_layout)
+        add_attachment_text = findViewById(R.id.add_attachment_text)
+        addAttachmentBtn = findViewById(R.id.floating_btn_add_attachment) as ImageView
+        mProgressLayoutLL = findViewById(R.id.ll_parent_progress)
+        findViewById<View>(R.id.iv_header_left).setOnClickListener(this)
+        addAttachmentBtn.setOnClickListener(this)
     }
 
-    @Override
-    protected void initVar() {
-        super.initVar();
-        date = AppUtils.getDate(Calendar.getInstance().getTime());
-        auditId = getIntent().getStringExtra("auditId");
-        attachType = getIntent().getStringExtra("attachType");
-        sectionGroupId = getIntent().getStringExtra("sectionGroupId");
-        sectionId = getIntent().getStringExtra("sectionId");
-        questionId = getIntent().getStringExtra("questionId");
-        isGalleryDisable = getIntent().getIntExtra(AppConstant.GALLERY_DISABLE,1);
-        mURIimageList=new ArrayList<>();
-
-        getOldMediaAttachmentList(attachType);
-        getLatLong();
-
-        addAttachmentBtn.performClick(); // new changes
+    override fun initVar() {
+        super.initVar()
+        date = AppUtils.getDate(Calendar.getInstance().time)
+        auditId = intent.getStringExtra("auditId")
+        attachType = intent.getStringExtra("attachType")
+        sectionGroupId = intent.getStringExtra("sectionGroupId")
+        sectionId = intent.getStringExtra("sectionId")
+        questionId = intent.getStringExtra("questionId")
+        isGalleryDisable = intent.getIntExtra(AppConstant.GALLERY_DISABLE, 1)
+        mURIimageList = ArrayList()
+        getOldMediaAttachmentList(attachType)
+        getLatLong()
+        addAttachmentBtn!!.performClick() // new changes
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.floating_btn_add_attachment:
-                openDCRDialog();
-                break;
-            case R.id.iv_header_left:
-                onBackPressed();
-                break;
+    override fun onClick(view: View) {
+        when (view.id) {
+            R.id.floating_btn_add_attachment -> openDCRDialog()
+            R.id.iv_header_left -> onBackPressed()
         }
     }
 
-    private void getLatLong() {
-        latitude = String.format("%.3f", mLocationUtils.getLatitude());
-        longitude = String.format("%.3f", mLocationUtils.getLongitude());
-    }
-
-    private void openDCRDialog() {
-        imageCustomDialog = new CustomDialog(context, R.layout.upload_image_dailog);
-        imageCustomDialog.setCancelable(true);
-        if (isGalleryDisable==0)
-        {
-            imageCustomDialog.findViewById(R.id.tv_gallery).setVisibility(View.GONE);
-            imageCustomDialog.findViewById(R.id.tv_gallery_vdo).setVisibility(View.GONE);
+        fun getLatLong() {
+            latitude = String.format("%.3f", mLocationUtils!!.latitude)
+            longitude = String.format("%.3f", mLocationUtils!!.longitude)
         }
 
-        imageCustomDialog.findViewById(R.id.tv_gallery).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isVideoPermission=false;
-                if (ActivityCompat.checkSelfPermission(AddAttachmentActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AddAttachmentActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
+    private fun openDCRDialog() {
+        imageCustomDialog = CustomDialog(context, R.layout.upload_image_dailog)
+        imageCustomDialog!!.setCancelable(true)
+        if (isGalleryDisable == 0) {
+            imageCustomDialog!!.findViewById<View>(R.id.tv_gallery).visibility = View.GONE
+            imageCustomDialog!!.findViewById<View>(R.id.tv_gallery_vdo).visibility = View.GONE
+        }
+        imageCustomDialog!!.findViewById<View>(R.id.tv_gallery).setOnClickListener(
+            View.OnClickListener {
+                isVideoPermission = false
+                if (ActivityCompat.checkSelfPermission(
+                        this@AddAttachmentActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this@AddAttachmentActivity,
+                        arrayOf(
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ),
+                        AppConstant.GALLERY_PERMISSION_REQUEST
+                    )
                 } else {
-                    chooseImagesFromGallery();
+                    chooseImagesFromGallery()
                 }
-                imageCustomDialog.dismiss();
-            }
-        });
-        imageCustomDialog.findViewById(R.id.tv_gallery_vdo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                isVideoPermission=true;
-                if (ActivityCompat.checkSelfPermission(AddAttachmentActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AddAttachmentActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
-                } else {
-                    chooseImagesFromGalleryVDO();
+                imageCustomDialog!!.dismiss()
+            })
+        imageCustomDialog!!.findViewById<View>(R.id.tv_gallery_vdo)
+            .setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View) {
+                    isVideoPermission = true
+                    if (ActivityCompat.checkSelfPermission(
+                            this@AddAttachmentActivity,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            this@AddAttachmentActivity,
+                            arrayOf(
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            ),
+                            AppConstant.GALLERY_PERMISSION_REQUEST
+                        )
+                    } else {
+                        chooseImagesFromGalleryVDO()
+                    }
+                    imageCustomDialog!!.dismiss()
                 }
-                imageCustomDialog.dismiss();
-            }
-        });
-        imageCustomDialog.findViewById(R.id.tv_camera).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isVideoPermission=false;
-                cameraPermission();
-                imageCustomDialog.dismiss();
-            }
-        });
-        imageCustomDialog.findViewById(R.id.tv_cameravideo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isVideoPermission=true;
-                cameraPermission();
-                //Intent intent=new Intent(context,AudioRecordActivity.class);
-                //context.startActivity(intent);
-                imageCustomDialog.dismiss();
-            }
-        });
-        imageCustomDialog.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                imageCustomDialog.dismiss();
-            }
-        });
-        imageCustomDialog.show();
-
+            })
+        imageCustomDialog!!.findViewById<View>(R.id.tv_camera)
+            .setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View) {
+                    isVideoPermission = false
+                    cameraPermission()
+                    imageCustomDialog!!.dismiss()
+                }
+            })
+        imageCustomDialog!!.findViewById<View>(R.id.tv_cameravideo)
+            .setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View) {
+                    isVideoPermission = true
+                    cameraPermission()
+                    //Intent intent=new Intent(context,AudioRecordActivity.class);
+                    //context.startActivity(intent);
+                    imageCustomDialog!!.dismiss()
+                }
+            })
+        imageCustomDialog!!.findViewById<View>(R.id.tv_cancel)
+            .setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View) {
+                    imageCustomDialog!!.dismiss()
+                }
+            })
+        imageCustomDialog!!.show()
     }
 
-
-
-    private void chooseImagesFromGallery() {
-        BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
-                .setMaximumDisplayingImages(5000)
-                .isMultiSelect()
-                .setTag("")
-                .setMinimumMultiSelectCount(1)
-                .setMaximumMultiSelectCount(10)
-                .build();
-        pickerDialog.show(getSupportFragmentManager(), "picker");
+    private fun chooseImagesFromGallery() {
+        val pickerDialog = BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
+            .setMaximumDisplayingImages(5000)
+            .isMultiSelect
+            .setTag("")
+            .setMinimumMultiSelectCount(1)
+            .setMaximumMultiSelectCount(10)
+            .build()
+        pickerDialog.show(supportFragmentManager, "picker")
     }
 
-    private void chooseImagesFromGalleryVDO() {
-        System.gc();
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, AppConstant.REQUEST_TAKE_VDO);
+    private fun chooseImagesFromGalleryVDO() {
+        System.gc()
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(galleryIntent, AppConstant.REQUEST_TAKE_VDO)
     }
 
-
-    private void setAttachmentList(ArrayList<AddAttachmentInfo> arrayList) {
-        ArrayList<AddAttachmentInfo> attachmentInfoArrayList = new ArrayList<>();
-
-        for (int i = 0; i < arrayList.size(); i++) {
-            AddAttachmentInfo info = arrayList.get(i);
-            String fileType = info.getFile_type();
-            if (fileType.contains("image/") || fileType.contains("video/")  || fileType.contains("octet-stream") ) {
-                attachmentInfoArrayList.add(info);
+    private fun setAttachmentList(arrayList: ArrayList<AddAttachmentInfo>) {
+        val attachmentInfoArrayList = ArrayList<AddAttachmentInfo>()
+        for (i in arrayList.indices) {
+            val info = arrayList[i]
+            val fileType = info.file_type
+            if (fileType.contains("image/") || fileType.contains("video/") || fileType.contains("octet-stream")) {
+                attachmentInfoArrayList.add(info)
             }
         }
-        AddAttachmentAdapter addAttachmentAdapter = new AddAttachmentAdapter(context, attachmentInfoArrayList, attachType, auditId, sectionGroupId, sectionId, questionId);
-        attachmentList.setLayoutManager(new LinearLayoutManager(context));
-        attachmentList.setAdapter(addAttachmentAdapter);
+        val addAttachmentAdapter = AddAttachmentAdapter(
+            context,
+            attachmentInfoArrayList,
+            attachType,
+            auditId,
+            sectionGroupId,
+            sectionId,
+            questionId
+        )
+        attachmentList!!.layoutManager = LinearLayoutManager(context)
+        attachmentList!!.adapter = addAttachmentAdapter
     }
 
-    private void cameraPermission() {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(AddAttachmentActivity.this, new String[]{Manifest.permission.CAMERA}, AppConstant.REQUEST_FOR_CAMERA);
+    private fun cameraPermission() {
+        if (ContextCompat.checkSelfPermission(
+                (context)!!,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@AddAttachmentActivity,
+                arrayOf(Manifest.permission.CAMERA),
+                AppConstant.REQUEST_FOR_CAMERA
+            )
         } else {
-            System.gc();
-            if (isVideoPermission)
-                takeVideoFromCamera();
-            else {
-                takePhotoFromCamera();
+            System.gc()
+            if (isVideoPermission) takeVideoFromCamera() else {
+                takePhotoFromCamera()
             }
-
         }
     }
-    private void takeVideoFromCamera()
-    {
-        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
-        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 8);
+
+    private fun takeVideoFromCamera() {
+        val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0)
+        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 8)
         //  takeVideoIntent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 10);
-       // if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takeVideoIntent, AppConstant.REQUEST_TAKE_VDO);
-       // }
+        // if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+        startActivityForResult(takeVideoIntent, AppConstant.REQUEST_TAKE_VDO)
+        // }
     }
-    private void takePhotoFromCamera() {
-      /*  Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+    private fun takePhotoFromCamera() {
+        /*  Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             try {
                 File photoFile = createImageFile();
@@ -334,13 +349,13 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             catch (Exception e){e.printStackTrace();}
         }*/
 
-    /*    Intent intent=new Intent(AddAttachmentActivity.this,CameraActivity.class);
+        /*    Intent intent=new Intent(AddAttachmentActivity.this,CameraActivity.class);
         startActivityForResult(intent,AppConstant.REQUEST_TAKE_PHOTO);
         overridePendingTransition(R.anim.pull_in_left,R.anim.pull_from_right);*/
-
-        Intent intent = new Intent(this, CameraControllerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("inputData", new CameraBundleBuilder()
+        val intent = Intent(this, CameraControllerActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.putExtra(
+            "inputData", CameraBundleBuilder()
                 .setFullscreenMode(true)
                 .setDoneButtonString("Add")
                 .setDoneButtonDrawable(R.drawable.circle_color_green)
@@ -352,512 +367,588 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 .setPreviewPageRedirection(false)
                 .setEnableDone(false)
                 .setClearBucket(true)
-                .createCameraBundle());
-        startActivityForResult(intent, AppConstant.REQUEST_TAKE_PHOTO);
-
-
+                .createCameraBundle()
+        )
+        startActivityForResult(intent, AppConstant.REQUEST_TAKE_PHOTO)
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            AppConstant.REQUEST_TAKE_LOCATION -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mLocationUtils!!.beginUpdates(this)
+            }
 
+            AppConstant.REQUEST_FOR_CAMERA -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (isVideoPermission) takeVideoFromCamera() else takePhotoFromCamera()
+            }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case AppConstant.REQUEST_TAKE_LOCATION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationUtils.beginUpdates(this);
-                }
-                break;
-            case AppConstant.REQUEST_FOR_CAMERA:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (isVideoPermission)
-                        takeVideoFromCamera();
-                    else
-                        takePhotoFromCamera();
-                }
-                break;
-            case AppConstant.GALLERY_PERMISSION_REQUEST:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(isVideoPermission)
-                        chooseImagesFromGalleryVDO();
-                    else
-                        chooseImagesFromGallery();
-                }
-                else
-                    AppUtils.toast(this,"Permission Denied");
-                break;
+            AppConstant.GALLERY_PERMISSION_REQUEST -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (isVideoPermission) chooseImagesFromGalleryVDO() else chooseImagesFromGallery()
+            } else AppUtils.toast(this, "Permission Denied")
         }
     }
 
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName,  /* prefix */".jpg",         /* suffix */storageDir      /* directory */);
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "JPEG_" + timeStamp + "_"
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val image = File.createTempFile(
+            imageFileName,  /* prefix */
+            ".jpg",  /* suffix */
+            storageDir /* directory */
+        )
+        mCurrentPhotoPath = image.absolutePath
+        return image
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstant.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            try{
-                String dataPath= data.getStringExtra("camerax");
+            try {
+                val dataPath = data!!.getStringExtra("camerax")
                 // String dataURI= data.getStringExtra("cameraURI");
                 // AppLogger.e("Addattachment uri", "  "+dataURI);
-                AppLogger.e("Addattachment path", "  "+dataPath);
-              /*  Uri uri = Uri.fromFile(new File(dataPath));
+                AppLogger.e("Addattachment path", "  $dataPath")
+                /*  Uri uri = Uri.fromFile(new File(dataPath));
                 AppLogger.e("Addattachment uri", " size "+uri);
                 if (uri != null && uri.toString().length()>10) {
                     mURIimageList.add(uri);
                     addDescriptionDialog();
                 }*/
-                String[] list = data.getStringArrayExtra("resultData");
-                if (list!=null && list.length>0) {
-                    for (int i = 0; i < list.length; i++)
-                        mURIimageList.add(Uri.fromFile(new File(list[i])));
-                    addDescriptionDialog();
+                val list = data.getStringArrayExtra("resultData")
+                if (list != null && list.size > 0) {
+                    for (i in list.indices) mURIimageList!!.add(
+                        Uri.fromFile(
+                            File(
+                                list[i]
+                            )
+                        )
+                    )
+                    addDescriptionDialog()
                 } else {
-                    AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" );
+                    AppUtils.toast(this@AddAttachmentActivity, "Image Not Attached")
                 }
-            }catch (Exception e){
-                e.printStackTrace();
-                AppUtils.toast(AddAttachmentActivity.this, "Result Some technical error. Please try again." );
+            } catch (e: Exception) {
+                e.printStackTrace()
+                AppUtils.toast(
+                    this@AddAttachmentActivity,
+                    "Result Some technical error. Please try again."
+                )
             }
-
-        }
-        else if(requestCode == AppConstant.EDIT_IMAGE && resultCode == RESULT_OK){
+        } else if (requestCode == AppConstant.EDIT_IMAGE && resultCode == RESULT_OK) {
             try {
-                Uri uri = Uri.fromFile(new File(data.getStringExtra("path")));
-                viewPagerAdapter.updateImage(EDIT_IMAGE_POS,uri);
+                val uri = Uri.fromFile(File(data!!.getStringExtra("path")))
+                viewPagerAdapter!!.updateImage(EDIT_IMAGE_POS, uri)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            catch (Exception e)
-            {e.printStackTrace();}
-        }
-        else
-        {
+        } else {
             if (requestCode == AppConstant.REQUEST_TAKE_VDO && resultCode == RESULT_OK) {
                 try {
-                    Uri selectedImageUri = data.getData();
-                    if (selectedImageUri!=null)
-                    {
-                        byte[] imageByteData = AppUtils.readBytes(selectedImageUri, context);
-                        mProgressLayoutLL.setVisibility(View.VISIBLE);
-                        uploadMediaFileAttachment(selectedImageUri.toString(), imageByteData, "Description BS Section video", "video");
-
+                    val selectedImageUri = data!!.data
+                    if (selectedImageUri != null) {
+                        val imageByteData = AppUtils.readBytes(selectedImageUri, context)
+                        mProgressLayoutLL!!.visibility = View.VISIBLE
+                        uploadMediaFileAttachment(
+                            selectedImageUri.toString(),
+                            imageByteData,
+                            "Description BS Section video",
+                            "video"
+                        )
                     }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
         }
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
     }
 
-    private List<Uri> listOfImageString=new ArrayList();
-    private void addDescriptionDialog()
-    {
-        listOfImageString.addAll(mURIimageList);
-        ((OditlyApplication)getApplicationContext()).setmAttachImageList(listOfImageString);
-        customDialog = new CustomDialog(context, R.layout.add_attachment_dailog);
-        customDialog.setCancelable(false);
-
-        RecyclerView attach_List_recycler_view = customDialog.findViewById(R.id.rv_image_list);
-        viewPagerAdapter = new AddAttachmentListAdapter(context, mURIimageList);
-        attach_List_recycler_view.addItemDecoration(new CirclePagerIndicatorDecoration());
-        attach_List_recycler_view.setAdapter(viewPagerAdapter);
-        customDialog.show();
+    private val listOfImageString: MutableList<Uri?> = ArrayList()
+    private fun addDescriptionDialog() {
+        listOfImageString.addAll((mURIimageList)!!)
+        (applicationContext as OditlyApplication).setmAttachImageList(listOfImageString)
+        customDialog = CustomDialog(context, R.layout.add_attachment_dailog)
+        customDialog!!.setCancelable(false)
+        val attach_List_recycler_view =
+            customDialog!!.findViewById<RecyclerView>(R.id.rv_image_list)
+        viewPagerAdapter = AddAttachmentListAdapter(context, mURIimageList)
+        attach_List_recycler_view.addItemDecoration(CirclePagerIndicatorDecoration())
+        attach_List_recycler_view.adapter = viewPagerAdapter
+        customDialog!!.show()
     }
 
-    @Override
-    public void onSingleImageSelected(Uri uri, String tag) {
+    override fun onSingleImageSelected(uri: Uri, tag: String) {
         try {
             if (uri != null) {
-                mURIimageList.add(uri);
-                addDescriptionDialog();
+                mURIimageList!!.add(uri)
+                addDescriptionDialog()
             } else {
-                AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" + tag);
+                AppUtils.toast(this@AddAttachmentActivity, "Image Not Attached$tag")
             }
-        }catch (Exception e){
-            AppUtils.toast(AddAttachmentActivity.this, "Some technical error. Please try again." );
+        } catch (e: Exception) {
+            AppUtils.toast(this@AddAttachmentActivity, "Some technical error. Please try again.")
         }
-
     }
 
-    @Override
-    public void onMultiImageSelected(List<Uri> uriList, String tag) {
-        try{
-            if (uriList != null)
-            {
-                mURIimageList.addAll(uriList);
-                addDescriptionDialog();
+    override fun onMultiImageSelected(uriList: List<Uri>, tag: String) {
+        try {
+            if (uriList != null) {
+                mURIimageList!!.addAll(uriList)
+                addDescriptionDialog()
             } else {
-                AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" + tag);
+                AppUtils.toast(this@AddAttachmentActivity, "Image Not Attached$tag")
             }
-        }catch (Exception e){
-            AppUtils.toast(AddAttachmentActivity.this, "Some technical error. Please try again." );
+        } catch (e: Exception) {
+            AppUtils.toast(this@AddAttachmentActivity, "Some technical error. Please try again.")
         }
-
     }
 
-    @Override
-    public void loadImage(Uri imageUri, ImageView ivImage) {
-        Glide.with(AddAttachmentActivity.this).load(imageUri).into(ivImage);
+    override fun loadImage(imageUri: Uri, ivImage: ImageView) {
+        Glide.with(this@AddAttachmentActivity).load(imageUri).into(ivImage)
     }
 
-    String url="";
-    public void getOldMediaAttachmentList(String attachType)
-    {
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "GetAttachmentResponse: " + response);
+    var url = ""
+    fun getOldMediaAttachmentList(attachType: String?) {
+        val stringListener: Response.Listener<String> = object : Response.Listener<String> {
+            override fun onResponse(response: String) {
+                AppLogger.e(TAG, "GetAttachmentResponse: $response")
                 try {
-                    JSONObject object = new JSONObject(response);
-                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AddAttachmentRootObject addAttachmentRootObject = new GsonBuilder().create().fromJson(object.toString(), AddAttachmentRootObject.class);
-                        if (addAttachmentRootObject.getData() != null && addAttachmentRootObject.getData().toString().length() > 0) {
-                            setAttachmentList(addAttachmentRootObject.getData());
-                            int size = addAttachmentRootObject.getData().size();
-                            attachmentCount =  size;
-                            tvAttachmentCount.setVisibility(View.VISIBLE);
-                            tvAttachmentCount.setText("" + size + "/20 Uploaded");
+                    val `object` = JSONObject(response)
+                    if (!`object`.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                        val addAttachmentRootObject = GsonBuilder().create()
+                            .fromJson(`object`.toString(), AddAttachmentRootObject::class.java)
+                        if (addAttachmentRootObject.data != null && addAttachmentRootObject.data.toString().length > 0) {
+                            setAttachmentList(addAttachmentRootObject.data)
+                            val size = addAttachmentRootObject.data.size
+                            attachmentCount = size
+                            tvAttachmentCount!!.visibility = View.VISIBLE
+                            tvAttachmentCount!!.text = "$size/20 Uploaded"
                             if (size >= 20) {
-                                addAttachmentLayout.setVisibility(View.GONE);
+                                addAttachmentLayout!!.visibility = View.GONE
                             } else {
-                                addAttachmentLayout.setVisibility(View.VISIBLE);
+                                addAttachmentLayout!!.visibility = View.VISIBLE
                             }
                         } else {
-                            tvAttachmentCount.setVisibility(View.VISIBLE);
+                            tvAttachmentCount!!.visibility = View.VISIBLE
                         }
-                    } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE));
+                    } else if (`object`.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                        AppUtils.toast(
+                            context as BaseActivity?,
+                            `object`.getString(AppConstant.RES_KEY_MESSAGE)
+                        )
                     }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+        }
+        val errorListener: Response.ErrorListener = object : Response.ErrorListener {
+            override fun onErrorResponse(error: VolleyError) {
+                AppLogger.e(TAG, "GetAttachmentError: " + error.message)
+                Toast.makeText(
+                    applicationContext,
+                    "Server temporary unavailable, Please try again",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-        };
-
-        if (attachType.equalsIgnoreCase("bsSection"))
-            url = NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId;
-        else
-            url = NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId + "&question_id=" + questionId;
-
-         if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
-         {
-             GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(context), AppPreferences.INSTANCE.getOktaToken(context), context, url, stringListener, errorListener);
-             VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-         }
-         else {
-             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                 FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                         .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                             public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                 if (task.isSuccessful()) {
-                                     String token = task.getResult().getToken();
-                                     GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(context), token, context, url, stringListener, errorListener);
-                                     VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-                                 }
-                             }
-                         });
-             }
-         }
-
+        }
+        if (attachType.equals("bsSection", ignoreCase = true)) url =
+            NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId else url =
+            NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId + "&question_id=" + questionId
+        if (AppPreferences.INSTANCE.providerName.equals(AppConstant.OKTA, ignoreCase = true)) {
+            val getReportRequest = GetReportRequest(
+                AppPreferences.INSTANCE.getAccessToken(context),
+                AppPreferences.INSTANCE.getOktaToken(context),
+                context,
+                url,
+                stringListener,
+                errorListener
+            )
+            VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest)
+        } else {
+            if (FirebaseAuth.getInstance().currentUser != null) {
+                FirebaseAuth.getInstance().currentUser!!.getIdToken(true)
+                    .addOnCompleteListener(object : OnCompleteListener<GetTokenResult> {
+                        override fun onComplete(task: Task<GetTokenResult>) {
+                            if (task.isSuccessful) {
+                                val token = task.result.token
+                                val getReportRequest = GetReportRequest(
+                                    AppPreferences.INSTANCE.getAccessToken(context),
+                                    token,
+                                    context,
+                                    url,
+                                    stringListener,
+                                    errorListener
+                                )
+                                VolleyNetworkRequest.getInstance(context)
+                                    .addToRequestQueue(getReportRequest)
+                            }
+                        }
+                    })
+            }
+        }
     }
 
-
-
-    private void uploadMediaFileAttachment(String media,byte[] imageByteData, String description, String type) {
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                mMediaDB.addMediaToDB(auditId,sectionId,sectionGroupId,questionId,media);
-                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
+    private fun uploadMediaFileAttachment(
+        media: String,
+        imageByteData: ByteArray,
+        description: String,
+        type: String
+    ) {
+        val stringListener: Response.Listener<String> = object : Response.Listener<String> {
+            override fun onResponse(response: String) {
+                mMediaDB!!.addMediaToDB(auditId, sectionId, sectionGroupId, questionId, media)
+                AppLogger.e(TAG, "AddAttachmentResponse: $response")
                 try {
-                    JSONObject object = new JSONObject(response);
-                    if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.text_updatedsuccessfully), Toast.LENGTH_SHORT).show();
-                        getOldMediaAttachmentList(attachType);
+                    val `object` = JSONObject(response)
+                    if (!`object`.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                        Toast.makeText(
+                            applicationContext,
+                            getString(R.string.text_updatedsuccessfully),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        getOldMediaAttachmentList(attachType)
                     } else {
-                        Toast.makeText(getApplicationContext(),object.getString(AppConstant.RES_KEY_MESSAGE), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(
+                            applicationContext,
+                            `object`.getString(AppConstant.RES_KEY_MESSAGE),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                } catch (Exception e)
-                {
-                    e.printStackTrace();
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-                mProgressLayoutLL.setVisibility(View.GONE);
+                mProgressLayoutLL!!.visibility = View.GONE
             }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mProgressLayoutLL.setVisibility(View.GONE);
-                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
-            }
-        };
-
-        String fileName = "Oditly-" + date ;
-
-        if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
-        {
-            if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
-            {
-                if (attachType.equalsIgnoreCase("bsQuestion")) {
-                    AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
-                            AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
-                            sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, type, AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
-                    VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-                } else {
-                    AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
-                            AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
-                            sectionGroupId, sectionId, description, "0", latitude, longitude, type, AppPreferences.INSTANCE.getOktaToken(context), context,
-                            stringListener, errorListener);
-                    VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-                }         }
-            else
-            {
-                Response.Listener<JSONObject> jsonListener = new Response.Listener<JSONObject>() {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        AppLogger.e("TAG", " Token SUCCESS Response: " + response);
-                        AppUtils.parseRefreshTokenRespone(response,AddAttachmentActivity.this);
-                        if (attachType.equalsIgnoreCase("bsQuestion")) {
-                            AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
-                                    AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
-                                    sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, type, AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
-                            VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-                        } else {
-                            AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
-                                    AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
-                                    sectionGroupId, sectionId, description, "0", latitude, longitude, type, AppPreferences.INSTANCE.getOktaToken(context), context,
-                                    stringListener, errorListener);
-                            VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-                        }         }
-                };
-                Response.ErrorListener errListener = new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        AppLogger.e("TAG", "ERROR Response: " + error);
-                    }
-                };
-                OktaTokenRefreshRequest tokenRequest = new OktaTokenRefreshRequest(AppUtils.getTokenJson(AddAttachmentActivity.this),jsonListener, errListener);
-                VolleyNetworkRequest.getInstance(AddAttachmentActivity.this).addToRequestQueue(tokenRequest);
-            }
-
-
         }
-        else {
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                            public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                if (task.isSuccessful()) {
-                                    String token = task.getResult().getToken();
-                                    if (attachType.equalsIgnoreCase("bsQuestion")) {
-                                        AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
-                                                AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
-                                                sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, type, token, context, stringListener, errorListener);
-                                        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-                                    } else {
-                                        AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
-                                                AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
-                                                sectionGroupId, sectionId, description, "0", latitude, longitude, type, token, context,
-                                                stringListener, errorListener);
-                                        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-                                    }
+        val errorListener: Response.ErrorListener = object : Response.ErrorListener {
+            override fun onErrorResponse(error: VolleyError) {
+                mProgressLayoutLL!!.visibility = View.GONE
+                AppLogger.e(TAG, "AddAttachmentError: " + error.message)
+                Toast.makeText(
+                    applicationContext,
+                    "Server temporary unavailable, Please try again",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        val fileName = "Oditly-$date"
+        if (AppPreferences.INSTANCE.providerName.equals(AppConstant.OKTA, ignoreCase = true)) {
+            if (System.currentTimeMillis() < AppPreferences.INSTANCE.getOktaTokenExpireTime(this)) {
+                if (attachType.equals("bsQuestion", ignoreCase = true)) {
+                    val addBSAttachmentRequest = AddQuestionAttachmentRequest(
+                        AppPreferences.INSTANCE.getAccessToken(context),
+                        NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW,
+                        fileName,
+                        imageByteData,
+                        auditId,
+                        sectionGroupId,
+                        sectionId,
+                        questionId,
+                        description,
+                        "0",
+                        latitude,
+                        longitude,
+                        type,
+                        AppPreferences.INSTANCE.getOktaToken(context),
+                        context,
+                        stringListener,
+                        errorListener
+                    )
+                    VolleyNetworkRequest.getInstance(context)
+                        .addToRequestQueue(addBSAttachmentRequest)
+                } else {
+                    val addBSAttachmentRequest = AddBSAttachmentRequest(
+                        AppPreferences.INSTANCE.getAccessToken(context),
+                        NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW,
+                        fileName,
+                        imageByteData,
+                        auditId,
+                        sectionGroupId,
+                        sectionId,
+                        description,
+                        "0",
+                        latitude,
+                        longitude,
+                        type,
+                        AppPreferences.INSTANCE.getOktaToken(context),
+                        context,
+                        stringListener,
+                        errorListener
+                    )
+                    VolleyNetworkRequest.getInstance(context)
+                        .addToRequestQueue(addBSAttachmentRequest)
+                }
+            } else {
+                val jsonListener: Response.Listener<JSONObject> =
+                    object : Response.Listener<JSONObject> {
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                        override fun onResponse(response: JSONObject) {
+                            AppLogger.e("TAG", " Token SUCCESS Response: $response")
+                            AppUtils.parseRefreshTokenRespone(response, this@AddAttachmentActivity)
+                            if (attachType.equals("bsQuestion", ignoreCase = true)) {
+                                val addBSAttachmentRequest = AddQuestionAttachmentRequest(
+                                    AppPreferences.INSTANCE.getAccessToken(context),
+                                    NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW,
+                                    fileName,
+                                    imageByteData,
+                                    auditId,
+                                    sectionGroupId,
+                                    sectionId,
+                                    questionId,
+                                    description,
+                                    "0",
+                                    latitude,
+                                    longitude,
+                                    type,
+                                    AppPreferences.INSTANCE.getOktaToken(context),
+                                    context,
+                                    stringListener,
+                                    errorListener
+                                )
+                                VolleyNetworkRequest.getInstance(context)
+                                    .addToRequestQueue(addBSAttachmentRequest)
+                            } else {
+                                val addBSAttachmentRequest = AddBSAttachmentRequest(
+                                    AppPreferences.INSTANCE.getAccessToken(context),
+                                    NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW,
+                                    fileName,
+                                    imageByteData,
+                                    auditId,
+                                    sectionGroupId,
+                                    sectionId,
+                                    description,
+                                    "0",
+                                    latitude,
+                                    longitude,
+                                    type,
+                                    AppPreferences.INSTANCE.getOktaToken(context),
+                                    context,
+                                    stringListener,
+                                    errorListener
+                                )
+                                VolleyNetworkRequest.getInstance(context)
+                                    .addToRequestQueue(addBSAttachmentRequest)
+                            }
+                        }
+                    }
+                val errListener: Response.ErrorListener = object : Response.ErrorListener {
+                    override fun onErrorResponse(error: VolleyError) {
+                        AppLogger.e("TAG", "ERROR Response: $error")
+                    }
+                }
+                val tokenRequest = OktaTokenRefreshRequest(
+                    AppUtils.getTokenJson(this@AddAttachmentActivity),
+                    jsonListener,
+                    errListener
+                )
+                VolleyNetworkRequest.getInstance(this@AddAttachmentActivity)
+                    .addToRequestQueue(tokenRequest)
+            }
+        } else {
+            if (FirebaseAuth.getInstance().currentUser != null) {
+                FirebaseAuth.getInstance().currentUser!!.getIdToken(true)
+                    .addOnCompleteListener(object : OnCompleteListener<GetTokenResult> {
+                        override fun onComplete(task: Task<GetTokenResult>) {
+                            if (task.isSuccessful) {
+                                val token = task.result.token
+                                if (attachType.equals("bsQuestion", ignoreCase = true)) {
+                                    val addBSAttachmentRequest = AddQuestionAttachmentRequest(
+                                        AppPreferences.INSTANCE.getAccessToken(context),
+                                        NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW,
+                                        fileName,
+                                        imageByteData,
+                                        auditId,
+                                        sectionGroupId,
+                                        sectionId,
+                                        questionId,
+                                        description,
+                                        "0",
+                                        latitude,
+                                        longitude,
+                                        type,
+                                        token,
+                                        context,
+                                        stringListener,
+                                        errorListener
+                                    )
+                                    VolleyNetworkRequest.getInstance(context)
+                                        .addToRequestQueue(addBSAttachmentRequest)
+                                } else {
+                                    val addBSAttachmentRequest = AddBSAttachmentRequest(
+                                        AppPreferences.INSTANCE.getAccessToken(context),
+                                        NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW,
+                                        fileName,
+                                        imageByteData,
+                                        auditId,
+                                        sectionGroupId,
+                                        sectionId,
+                                        description,
+                                        "0",
+                                        latitude,
+                                        longitude,
+                                        type,
+                                        token,
+                                        context,
+                                        stringListener,
+                                        errorListener
+                                    )
+                                    VolleyNetworkRequest.getInstance(context)
+                                        .addToRequestQueue(addBSAttachmentRequest)
                                 }
                             }
-                        });
+                        }
+                    })
             }
         }
-
     }
 
-
-    public class AddAttachmentListAdapter extends RecyclerView.Adapter<AddAttachmentListAdapter.AddAttachmentListViewHolder> {
-        private ArrayList<Uri> imageURI;
-        Context context;
-        byte[] imageByteData = new byte[0];
-        public AddAttachmentListAdapter(Context context, ArrayList<Uri> imageListURI) {
-            this.imageURI = imageListURI;
-            this.context = context;
-        }
-        public void updateImage(int pos, Uri uri){
-            imageURI.set(pos,uri);
-            notifyItemChanged(pos);
+    inner class AddAttachmentListAdapter(
+        var context: Context?,
+        private val imageURI: ArrayList<Uri?>?
+    ) : RecyclerView.Adapter<AddAttachmentListViewHolder>() {
+        var imageByteData = ByteArray(0)
+        fun updateImage(pos: Int, uri: Uri?) {
+            imageURI!![pos] = uri
+            notifyItemChanged(pos)
         }
 
-        @NonNull
-        @Override
-        public AddAttachmentListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_add_attachment, parent, false);
-
-            return new AddAttachmentListViewHolder(view);
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): AddAttachmentListViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.fragment_add_attachment, parent, false)
+            return AddAttachmentListViewHolder(view)
         }
 
-        @Override
-        public void onBindViewHolder(@NonNull final AddAttachmentListViewHolder holder, final int position) {
-            try
-            {
-                Bitmap bitmapPlain  = MediaStore.Images.Media.getBitmap(context.getContentResolver(),mURIimageList.get(position));
-                if (bitmapPlain!=null)
-                {
-                    getLatLong();
-                    String imageText="";
-                    if(!new LocationUtils(AddAttachmentActivity.this).hasLocationEnabled())
-                        imageText="location disabled, "+AppUtils.getCurrentDateImage();
-                    else
-                        imageText=""+latitude+","+longitude+","+AppUtils.getCurrentDateImage();
-
-                    Bitmap bitmap = AppUtils.resizeImage(mURIimageList.get(position),bitmapPlain, 1400, 1400);
-                    Bitmap drawBitmap=new AppUtils().drawTextToBitmap(context,bitmap,imageText);
-                    holder.imageView.setImageBitmap(drawBitmap);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    drawBitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
-                    imageByteData = byteArrayOutputStream.toByteArray();
+        override fun onBindViewHolder(holder: AddAttachmentListViewHolder, position: Int) {
+            try {
+                val bitmapPlain = MediaStore.Images.Media.getBitmap(
+                    context!!.contentResolver,
+                    mURIimageList!![position]
+                )
+                if (bitmapPlain != null) {
+                    getLatLong()
+                    var imageText: String = ""
+                    if (!LocationUtils(this@AddAttachmentActivity).hasLocationEnabled()) imageText =
+                        "location disabled, " + AppUtils.getCurrentDateImage() else imageText =
+                        "" + latitude + "," + longitude + "," + AppUtils.getCurrentDateImage()
+                    val bitmap =
+                        AppUtils.resizeImage(mURIimageList!![position], bitmapPlain, 1400, 1400)
+                    val drawBitmap = AppUtils().drawTextToBitmap(context, bitmap, imageText)
+                    holder.imageView.setImageBitmap(drawBitmap)
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    drawBitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream)
+                    imageByteData = byteArrayOutputStream.toByteArray()
                 }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                AppUtils.toast((AddAttachmentActivity)context,"Some technical error. Please try again.");
+            } catch (e: Exception) {
+                e.printStackTrace()
+                AppUtils.toast(
+                    context as AddAttachmentActivity?,
+                    "Some technical error. Please try again."
+                )
             }
-
-            holder.description.setText("");
-
-            holder.submitButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mImageCounter++;
-                    if (imageURI.size() == 1) {
-                        AppUtils.hideKeyboard(context, view);
+            holder.description.setText("")
+            holder.submitButton.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(view: View) {
+                    mImageCounter++
+                    if (imageURI!!.size == 1) {
+                        AppUtils.hideKeyboard(context, view)
                     }
-                   /* String text = "";
+                    /* String text = "";
                     if (holder.description.getText().toString().length() > 0) {
                         text = holder.description.getText().toString();
-                    }*/
-
-                    if (attachType.equalsIgnoreCase("bsQuestion"))
-                        attachmentCount++;
-
-                    uploadMediaFileAttachment(mURIimageList.get(position).toString(),imageByteData, holder.description.getText().toString(),"image");
-                    imageURI.remove(position);
+                    }*/if (attachType.equals("bsQuestion", ignoreCase = true)) attachmentCount++
+                    uploadMediaFileAttachment(
+                        mURIimageList!![position].toString(),
+                        imageByteData,
+                        holder.description.text.toString(),
+                        "image"
+                    )
+                    imageURI.removeAt(position)
                     //  int size = imageURI.size();
-                    if (imageURI.size() > 0)
-                        AppUtils.toast((AddAttachmentActivity) context, "" + imageURI.size() + " images left");
-
-                    notifyDataSetChanged();
-
-                    if(imageURI.size()==0){
-                        customDialog.dismiss();
-                        Intent result = new Intent();
-                        result.putExtra("attachmentCount", ""+attachmentCount);
-                        setResult(RESULT_OK, result);
-                        finish();
+                    if (imageURI.size > 0) AppUtils.toast(
+                        context as AddAttachmentActivity?,
+                        "" + imageURI.size + " images left"
+                    )
+                    notifyDataSetChanged()
+                    if (imageURI.size == 0) {
+                        customDialog!!.dismiss()
+                        val result = Intent()
+                        result.putExtra("attachmentCount", "" + attachmentCount)
+                        setResult(RESULT_OK, result)
+                        finish()
                     }
                 }
-            });
-            holder.cancelButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            })
+            holder.cancelButton.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View) {
                     // mImageCounter
-                    listOfImageString.remove(mImageCounter);
-                    if (imageURI.size() <= 1) {
-                        Intent result = new Intent();
-                        result.putExtra("attachmentCount", ""+attachmentCount);
-                        setResult(RESULT_OK, result);
-                        finish();
-                        customDialog.dismiss();
+                    listOfImageString.removeAt(mImageCounter)
+                    if (imageURI!!.size <= 1) {
+                        val result = Intent()
+                        result.putExtra("attachmentCount", "" + attachmentCount)
+                        setResult(RESULT_OK, result)
+                        finish()
+                        customDialog!!.dismiss()
                     } else {
-                        imageURI.remove(position);
-                        int size = imageURI.size();
+                        imageURI.removeAt(position)
+                        val size = imageURI.size
                         if (size > 0) {
-                            AppUtils.toast((AddAttachmentActivity) context, "" + size + " images left");
+                            AppUtils.toast(context as AddAttachmentActivity?, "$size images left")
                         }
-                        notifyDataSetChanged();
+                        notifyDataSetChanged()
                     }
                 }
-            });
-
-            holder.editImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    EDIT_IMAGE_POS = position;
-                    Intent intent = new Intent(context, EditImageActivity.class);
-                    intent.putExtra("bitmap", imageURI.get(position).toString());
-                    startActivityForResult(intent,AppConstant.EDIT_IMAGE);
+            })
+            holder.editImage.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(view: View) {
+                    EDIT_IMAGE_POS = position
+                    val intent = Intent(context, EditImageActivity::class.java)
+                    intent.putExtra("bitmap", imageURI!![position].toString())
+                    startActivityForResult(intent, AppConstant.EDIT_IMAGE)
                 }
-            });
-
-
+            })
         }
 
-        @Override
-        public int getItemCount() {
-            return imageURI.size();
+        override fun getItemCount(): Int {
+            return imageURI!!.size
         }
 
-        public class AddAttachmentListViewHolder extends RecyclerView.ViewHolder {
+        inner class AddAttachmentListViewHolder(itemView: View) :
+            RecyclerView.ViewHolder(itemView) {
+            var imageView: ImageView
+            var description: EditText
+            var submitButton: TextView
+            var cancelButton: TextView
+            var editImage: ImageButton
 
-            ImageView imageView;
-            EditText description;
-            TextView submitButton;
-            TextView cancelButton;
-            ImageButton editImage;
-
-            public AddAttachmentListViewHolder(View itemView) {
-                super(itemView);
-
-                imageView = itemView.findViewById(R.id.iv_attached_image);
-                description = itemView.findViewById(R.id.et_description);
-                submitButton = itemView.findViewById(R.id.tv_submit_btn);
-                cancelButton = itemView.findViewById(R.id.tv_cancel_btn);
-                editImage = itemView.findViewById(R.id.edit_image);
+            init {
+                imageView = itemView.findViewById(R.id.iv_attached_image)
+                description = itemView.findViewById(R.id.et_description)
+                submitButton = itemView.findViewById(R.id.tv_submit_btn)
+                cancelButton = itemView.findViewById(R.id.tv_cancel_btn)
+                editImage = itemView.findViewById(R.id.edit_image)
             }
         }
     }
 
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e("Add onStop",";;;;;onStop");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e("ADD onPause",";;;;;onPause");
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FileUtils.clearAllFiles(this, getClass().getName());   // for image clear
-
-        Log.e("ADD onDestroy",";;;;;onDestroy");
-
+    companion object {
+        //private AppLocationService appLocationService;
+        private val TAG = AddAttachmentActivity::class.java.simpleName
     }
 }

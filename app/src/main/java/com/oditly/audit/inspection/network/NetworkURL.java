@@ -18,14 +18,14 @@ public class NetworkURL {
 
 
     //API URL'S STAGE SERVER NEW
-    public static final String API_BASE_URL_NEW= "https://api.account.stage.oditly.com/";
-     public static final String API_BASE_URL = "https://api.account.stage.oditly.com/m/";
+   //  public static final String API_BASE_URL_NEW= "https://api.account.stage.oditly.com/";
+    // public static final String API_BASE_URL = "https://api.account.stage.oditly.com/m/";
 
 
 
     //API URL'S  TEST SERVER
-   //  public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
-     //public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
+     public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
+     public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
 
 
     public static final String SIGNIN = API_BASE_URL + "login";
