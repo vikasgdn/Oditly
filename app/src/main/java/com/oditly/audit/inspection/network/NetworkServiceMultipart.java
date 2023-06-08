@@ -85,7 +85,7 @@ public class NetworkServiceMultipart {
 
                 RequestBody body=builder.build();
                 Request request = new Request.Builder()
-                        .url(NetworkURL.ACTION_PLAN_ADD_NEW)
+                        .url(NetworkURL.ACTION_PLAN_ADD)
                         .method("POST", body)
                         .addHeader("access-token", AppPreferences.INSTANCE.getAccessToken(mContext))
                         .addHeader("Authorization","Bearer "+mFirebaseToken)

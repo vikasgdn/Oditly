@@ -10,6 +10,7 @@ public class AppConstant {
     public static final int REQUEST_FOR_CAMERA = 100;
     public static final int REQUEST_TAKE_PHOTO = 101;
     public static final int REQUEST_TAKE_VDO = 102;
+    public static final int REQUEST_TAKE_PHOTO_GALLERY=1011;
     public static final int GALLERY_PERMISSION_REQUEST = 103;
     public static final int REQUEST_TAKE_LOCATION = 105;
     public static final int EDIT_IMAGE = 123;

@@ -413,7 +413,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 bean.setMedia_count(mMeidaCountET.getText().toString());
 
 
-                NetworkServiceMultipart networkService = new NetworkServiceMultipart(NetworkURL.ACTION_PLAN_ADD_NEW,bean,mMediaFileList,firebaseToken, this, this);
+                NetworkServiceMultipart networkService = new NetworkServiceMultipart(NetworkURL.ACTION_PLAN_ADD,bean,mMediaFileList,firebaseToken, this, this);
                 networkService.call(null);
             } catch (Exception e) {
                 AppUtils.toast(this, getString(R.string.internet_error));
@@ -441,7 +441,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 params.put(NetworkConstant.REQ_PARAM_ASSIGNED_USERID, jsArray);
                 params.put(NetworkConstant.REQ_PARAM_ACTION_DETAILS, mCorrectiveActionET.getText().toString());
                 params.put(NetworkConstant.REQ_PARAM_COMPLETE_MEDIA_COUNT,mMeidaCountET.getText().toString());
-                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.ACTION_PLAN_ADD_NEW, NetworkConstant.METHOD_POST, this, this);
+                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.ACTION_PLAN_ADD, NetworkConstant.METHOD_POST, this, this);
                 networkService.call(params);
             } catch (Exception e) {
                 AppUtils.toast(this, getString(R.string.internet_error));
@@ -650,11 +650,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
         imageCustomDialog.findViewById(R.id.tv_gallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(ActionCreateActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(ActionCreateActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
-                } else {
-                    chooseImagesFromGallery();
-                }
+                chooseImagesFromGallery();
                 imageCustomDialog.dismiss();
             }
         });
@@ -685,14 +681,17 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
         }
     }
     private void chooseImagesFromGallery() {
-        BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
+    /*    BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
                 .setMaximumDisplayingImages(200)
                 .isMultiSelect()
                 .setTag("")
                 .setMinimumMultiSelectCount(1)
                 .setMaximumMultiSelectCount(10)
                 .build();
-        pickerDialog.show(getSupportFragmentManager(),"Picker");
+        pickerDialog.show(getSupportFragmentManager(),"Picker");*/
+
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(photoPickerIntent, AppConstant.REQUEST_TAKE_PHOTO_GALLERY);
     }
 
 
@@ -754,6 +753,12 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 e.printStackTrace();
                 AppUtils.toast(this, " Some technical error Camera. Please try again." );
             }
+        }
+        else{
+            Uri selectedImage = data.getData();
+            mMediaFileList.add(new File(getPath(selectedImage)));
+            mURIimageList.add(selectedImage);
+            mMediaAdapter.notifyDataSetChanged();
         }
     }
 

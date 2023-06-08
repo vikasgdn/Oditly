@@ -47,8 +47,8 @@ public class AddBSMediaAdapter extends RecyclerView.Adapter<AddBSMediaAdapter.Ad
     @Override
     public void onBindViewHolder(@NonNull AddAttachmentViewHolder holder, int position)
     {
-        try {
-            Log.e("image in addABP ", ";;;;;;;;;;;  " + orderData.get(position));
+        /*try {
+            Log.e("image in add ABP ", ";;;;;;;;;;;  " + orderData.get(position));
             Bitmap bitmapPlain  = MediaStore.Images.Media.getBitmap(context.getContentResolver(),orderData.get(position));
             Bitmap bitmap = AppUtils.resizeImage(orderData.get(position), bitmapPlain, 1400, 1400);
 
@@ -64,7 +64,7 @@ public class AddBSMediaAdapter extends RecyclerView.Adapter<AddBSMediaAdapter.Ad
         {
             Log.e("image ERROR ", e.getMessage());
             e.printStackTrace();
-        }
+        }*/
 
     }
 

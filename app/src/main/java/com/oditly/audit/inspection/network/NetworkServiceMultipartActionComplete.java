@@ -65,7 +65,7 @@ public class NetworkServiceMultipartActionComplete {
             try {
                 OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).writeTimeout(80, TimeUnit.SECONDS).readTimeout(80, TimeUnit.SECONDS).build();
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                builder.addFormDataPart(NetworkConstant.REQ_PARAM_MOBILE, NetworkServiceMultipartActionComplete.this.mRequestBean.getMobile());
+                //builder.addFormDataPart(NetworkConstant.REQ_PARAM_MOBILE, NetworkServiceMultipartActionComplete.this.mRequestBean.getMobile());
                 builder.addFormDataPart(NetworkConstant.REQ_PARAM_AUDIT_ID, NetworkServiceMultipartActionComplete.this.mRequestBean.getAudit_id());
                 builder.addFormDataPart(NetworkConstant.REQ_PARAM_ACTION_PLANID, NetworkServiceMultipartActionComplete.this.mRequestBean.getAction_plan_id());
                 builder.addFormDataPart(NetworkConstant.REQ_PARAM_COMMENT, NetworkServiceMultipartActionComplete.this.mRequestBean.getComplete_comment());

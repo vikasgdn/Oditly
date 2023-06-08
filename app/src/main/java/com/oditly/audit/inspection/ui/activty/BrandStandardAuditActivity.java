@@ -331,8 +331,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             Log.e(";; answer array  :: ",""+getQuestionsArray());
             if(isSaveButtonClick)
                 mProgressRL.setVisibility(View.VISIBLE);
-            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId);
-            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE_NEW, NetworkConstant.METHOD_POST, this, this);
+            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId, auditDate, "1", getQuestionsArray());
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE, NetworkConstant.METHOD_POST, this, this);
             networkService.call(object);
         } else
         {
@@ -626,6 +626,10 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     isDialogSaveClicked=true;   // as we are having same behaviour like dialog loader and change page after response;
                     saveSectionOrPagewiseData();
 
+                  /*  if (saveSectionOrPagewiseData()) {
+                        isAnswerCliked=false;
+                        setPreviousButtonSetUP();
+                    }*/
                 }
                 else
                     setPreviousButtonSetUP();
@@ -717,13 +721,14 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
     private boolean saveSectionOrPagewiseData()
     {
-        if (validateCommentOfQuestion()) {
-            AuditSubSectionsActivity.isDataSaved = true;
-            finish();
-            return true;
-        }
+        if (AppUtils.isStringEmpty(auditDate))
+            auditDate=AppUtils.getAuditDateCurrent();
+        if (validateCommentOfQuestion())
+            saveBrandStandardQuestion();
         else
             return false;
+
+        return  true;
     }
     public void countNA_Answers() {
         totalMarks = 0;
@@ -840,41 +845,35 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     @Override
     public void onNetworkCallInitiated(String service) { }
     @Override
-    public void onNetworkCallCompleted(String type, String service, String responseStr)
-    {
-        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER)) {
-
-            //newly added for position refresh
-         //   this.currentBrandStandardAuditAdapter.updatehParticularPosition(itemClickedPos);
-        }
-        else
-        {
-            isAnswerCliked = false; // because question is saved
-            AuditSubSectionsActivity.isDataSaved = true;
-            try {
-                JSONObject response = new JSONObject(responseStr);
-                if (!response.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                    AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
-                    if (isBackButtonClick) {
-                        isBackButtonClick = false; // This is only for showing progressBar
-                        finish();
-                    } else if (isDialogSaveClicked) {
-                        if (mNextPreviousClick == 1)
-                            setNextButtonSetUP();
-                        else if (mNextPreviousClick == 2)
-                            setPreviousButtonSetUP();
-
-                        isDialogSaveClicked = false;
-                        mNextPreviousClick = 0;
-                    }
-                } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                    AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+    public void onNetworkCallCompleted(String type, String service, String responseStr) {
+        isAnswerCliked=false; // because question is saved
+        AuditSubSectionsActivity.isDataSaved=true;
+        try {
+            JSONObject response = new JSONObject(responseStr);
+            if (!response.getBoolean(AppConstant.RES_KEY_ERROR))
+            {
+                AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+                if (isBackButtonClick)
+                {
+                    isBackButtonClick=false; // This is only for showing progressBar
+                    finish();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+                else if(isDialogSaveClicked)
+                {
+                    if (mNextPreviousClick==1)
+                        setNextButtonSetUP();
+                    else   if (mNextPreviousClick==2)
+                        setPreviousButtonSetUP();
 
+                    isDialogSaveClicked=false;
+                    mNextPreviousClick=0;
+                }
+            } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mProgressRL.setVisibility(View.GONE);
     }
 
@@ -913,33 +912,5 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
     }
 
-
- public void saveSingleBrandStandardQuestionEveryClick(BrandStandardQuestion bsQuestion)
-    {
-        if (NetworkStatus.isNetworkConnected(this))
-        {
-            try {
-                itemClickedPos=bsQuestion.getmClickPosition();
-                questionCount=bsQuestion.getQuestionCount();
-                this.currentBrandStandardAuditAdapter = bsQuestion.getStandardAuditAdapter();
-                if (bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXTAREA) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_NUMBER) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_MEASUREMENT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TARGET) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEMPRATURE) )
-                    this.currentBrandStandardAuditAdapter.updatehParticularPosition(itemClickedPos);
-
-                JSONObject object = new JSONObject();
-                object.put("audit_id", auditId);
-                object.put("question_id", bsQuestion.getQuestion_id());
-                object.put("audit_answer", bsQuestion.getAudit_answer());
-                object.put("audit_option_id", new JSONArray(bsQuestion.getAudit_option_id()));
-                object.put("audit_comment", bsQuestion.getAudit_comment());
-                Log.e("JSONOBJECTQUESTION==> ",""+object.toString());
-                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER, NetworkConstant.METHOD_POST, this, this);
-                networkService.call(object);
-            }
-            catch (Exception e) {e.printStackTrace();}
-        } else
-        {
-            AppUtils.toast(this, getString(R.string.internet_error));
-        }
-    }
 
 }

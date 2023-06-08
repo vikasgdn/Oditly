@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/text_save"
                     android:padding="@dimen/d_5dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_weight="1"
                     android:textColor="@color/colorWhite"
                     android:background="@drawable/button_border_blue"

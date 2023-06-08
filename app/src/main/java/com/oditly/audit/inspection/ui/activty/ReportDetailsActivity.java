@@ -156,9 +156,10 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
     }
 
     public void downloadPdf() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
-        }  else {
+        }  else {*/
+
             mProgressBarRL.setVisibility(View.VISIBLE);
             if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA)) {
                 if (System.currentTimeMillis()<AppPreferences.INSTANCE.getOktaTokenExpireTime(this))
@@ -200,7 +201,7 @@ public class ReportDetailsActivity extends BaseActivity implements  DownloadPdfT
             }
 
         }
-    }
+    //}
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

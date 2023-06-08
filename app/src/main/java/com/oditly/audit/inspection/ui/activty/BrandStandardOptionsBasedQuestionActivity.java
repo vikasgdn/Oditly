@@ -3,7 +3,11 @@ package com.oditly.audit.inspection.ui.activty;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +18,26 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.oditly.audit.inspection.OditlyApplication;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.adapter.BrandStandardAuditAdapterSingleSection;
 import com.oditly.audit.inspection.adapter.BrandStandardOptionBasedQuestionsAdapter;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
+import com.oditly.audit.inspection.dialog.AppDialogs;
+import com.oditly.audit.inspection.localDB.bsoffline.BsOffLineDB;
+import com.oditly.audit.inspection.localDB.bsoffline.BsOfflineDBImpl;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestion;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRefrence;
+import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkServiceJSON;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.network.apirequest.BSSaveSubmitJsonRequest;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
@@ -32,11 +45,14 @@ import com.oditly.audit.inspection.util.AppUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity implements View.OnClickListener, BrandStandardOptionBasedQuestionsAdapter.CustomItemClickListener,INetworkEvent {
+public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity implements View.OnClickListener, BrandStandardOptionBasedQuestionsAdapter.CustomItemClickListener {
 
     RecyclerView questionListRecyclerView;
     Button bsSaveBtn;
@@ -216,7 +232,10 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
                     else {
                         mMediaCount = option.getMedia_count();
                         mCommentCount = option.getCommentCount();
-                        mActionPlanRequred=option.getAction_plan_required();
+                        if (!option.isAuto_action_plan())    // if auto action plan true then no need to create action plan
+                            mActionPlanRequred=option.getAction_plan_required();
+                        else
+                            mActionPlanRequred=0;
                         break;
                     }
 
@@ -242,13 +261,13 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
 
 
             if (mMediaCount > 0 && question.getAudit_question_file_cnt() < mMediaCount) {
-               // String message="Please submit the required " + mMediaCount + " image(s) for question no. " + count;
+                // String message="Please submit the required " + mMediaCount + " image(s) for question no. " + count;
                 String message=getString(R.string.text_submit_requredmedia_count).replace("MMM",""+mMediaCount).replace("CCC",""+count);
                 AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, message);
                 return false;
             }
             if (mCommentCount> 0 && mCommentCount > question.getAudit_comment().length()) {
-              //  String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
+                //  String message = "Please enter the  minimum required " + mCommentCount + " characters comment for question no. " + count;
                 String message=getString(R.string.text_enter_requredcomment_count).replace("XXX",""+mCommentCount).replace("CCC",""+count);
                 AppUtils.toastDisplayForLong(BrandStandardOptionsBasedQuestionActivity.this, message);
                 return false;
@@ -264,33 +283,6 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
 
         return validate;
     }
-
-    public void saveSingleBrandStandardQuestionEveryClick(BrandStandardQuestion bsQuestion)
-    {
-        if (NetworkStatus.isNetworkConnected(this))
-        {
-            try {
-                itemClickedPos=bsQuestion.getmClickPosition();
-                if (bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXTAREA) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_NUMBER) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_MEASUREMENT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TARGET) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEMPRATURE) )
-                    this.mAdapter.updatehParticularPosition(itemClickedPos);
-
-                JSONObject object = new JSONObject();
-                object.put("audit_id", mAuditId);
-                object.put("question_id", bsQuestion.getQuestion_id());
-                object.put("audit_answer", bsQuestion.getAudit_answer());
-                object.put("audit_option_id", new JSONArray(bsQuestion.getAudit_option_id()));
-                object.put("audit_comment", bsQuestion.getAudit_comment());
-                Log.e("JSON OBJECT QUESTION==> ",""+object.toString());
-                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER, NetworkConstant.METHOD_POST, this, this);
-                networkService.call(object);
-            }
-            catch (Exception e) {e.printStackTrace();}
-        } else
-        {
-            AppUtils.toast(this, getString(R.string.internet_error));
-        }
-    }
-
     @Override
     public void onBackPressed()
     {
@@ -298,19 +290,4 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
             finish();
     }
 
-    @Override
-    public void onNetworkCallInitiated(String service) {
-
-    }
-
-    @Override
-    public void onNetworkCallCompleted(String type, String service, String response) {
-       Log.e("DATA SAVE ==> ",""+service+" || "+response);
-       // this.mAdapter.updatehParticularPosition(itemClickedPos);
-    }
-
-    @Override
-    public void onNetworkCallError(String service, String errorMessage) {
-
-    }
 }

@@ -205,7 +205,7 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
         if (NetworkStatus.isNetworkConnected(this.mActivity)) {
             this.mSpinKitView.setVisibility(View.VISIBLE);
             ActionCompleteRequestBean bean = new ActionCompleteRequestBean();
-            bean.setMobile("1");
+          //  bean.setMobile("1");
             bean.setAudit_id("" + this.mAuditInfoActionPlanData.getAudit_id());
             bean.setAction_plan_id("" + this.mAuditInfoActionPlanData.getAction_plan_id());
             bean.setComplete_comment(this.mCommentET.getText().toString());
@@ -228,11 +228,7 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
         this.imageCustomDialog.findViewById(R.id.tv_cameravideo).setVisibility(View.GONE);
         this.imageCustomDialog.findViewById(R.id.tv_gallery).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(ActionCompleteFragment.this.mActivity, "android.permission.READ_EXTERNAL_STORAGE") != 0) {
-                    ActionCompleteFragment.this.requestPermissions(new String[]{"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"}, 103);
-                } else {
-                    ActionCompleteFragment.this.chooseImagesFromGallery();
-                }
+                chooseImagesFromGallery();
                 ActionCompleteFragment.this.imageCustomDialog.dismiss();
             }
         });
@@ -262,7 +258,11 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
 
     /* access modifiers changed from: private */
     public void chooseImagesFromGallery() {
-        new BSImagePicker.Builder("com.oditly.audit.inspection.provider").setMaximumDisplayingImages(200).isMultiSelect().setTag("").setMinimumMultiSelectCount(1).setMaximumMultiSelectCount(10).build().show(getChildFragmentManager(), "picker");
+       // new BSImagePicker.Builder("com.oditly.audit.inspection.provider").setMaximumDisplayingImages(200).isMultiSelect().setTag("").setMinimumMultiSelectCount(1).setMaximumMultiSelectCount(10).build().show(getChildFragmentManager(), "picker");
+
+
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(photoPickerIntent, AppConstant.REQUEST_TAKE_PHOTO_GALLERY);
     }
 
     private void chooseImagesFromGalleryVDO() {
@@ -313,6 +313,19 @@ public class ActionCompleteFragment extends BaseFragment implements View.OnClick
                     e.printStackTrace();
                     AppUtils.toast(this.mActivity, getString(R.string.oops));
                 }
+            }
+        }
+        else {
+
+            try {
+                Uri selectedImage = data.getData();
+                this.mURIimageList.add(selectedImage);
+                this.mFileimageList.add(new File(getPath(selectedImage)));
+                TextView textView = this.mMediaCountTV;
+                textView.setText(getString(R.string.text_comment_comp)+" (" + this.mURIimageList.size() + "/" + this.mAuditInfoActionPlanData.getMedia_count() + ")");
+                this.mMediaAdapter.notifyDataSetChanged();
+            } catch (Exception e) {
+                AppUtils.toast(this.mActivity, getString(R.string.oops));
             }
         }
     }

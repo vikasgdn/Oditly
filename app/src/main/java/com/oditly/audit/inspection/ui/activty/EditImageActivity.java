@@ -362,7 +362,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
             }
         };
 
-        String url = NetworkURL.BSATTACHMENT_UPDATE_NEW;
+        String url = NetworkURL.BSATTACHMENT_UPDATE;
         String fileName = "Oditly-"+AppUtils.getDate(Calendar.getInstance().getTime());
 
         if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))

@@ -47,9 +47,6 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuesti
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
-import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
-import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
-import com.oditly.audit.inspection.ui.activty.BrandStandardOptionsBasedQuestionActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,12 +101,9 @@ public class AppUtils {
                 mMediaCount = question.getMedia_count();
                 mCommentCount = question.getHas_comment();
                 mActionPlanRequred=0;
-
                 if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
                     for (int k = 0; k < question.getOptions().size(); k++) {
                         BrandStandardQuestionsOption option = question.getOptions().get(k);
-                        Log.e("OPTION=== ", "===> " +option.getAction_plan_required()+" || "+option.getOption_id());
-
                         if (question.getAudit_option_id() != null && question.getAudit_option_id().contains(new Integer(option.getOption_id()))) {
                             if (question.getQuestion_type().equalsIgnoreCase("checkbox")) {
                                 if (mActionPlanRequred == 0)
@@ -121,15 +115,18 @@ public class AppUtils {
                             } else {
                                 mMediaCount = option.getMedia_count();
                                 mCommentCount = option.getCommentCount();
-                                mActionPlanRequred = option.getAction_plan_required();
+                                if (!option.isAuto_action_plan())
+                                    mActionPlanRequred = option.getAction_plan_required();
+                                else
+                                    mActionPlanRequred = 0;
+
                                 break;
                             }
 
                         }
                     }
                 }
-                Log.e("QUESTION=== ", "===> " +question.getQuestion_title()+" ||  "+question.getOptions().toString());
-                Log.e("Media || Comment Count || mActionPlanRequred ", "===> " + mMediaCount + " || " + mCommentCount+" || "+mActionPlanRequred);
+                Log.e("Media || Comment Count ", "===> " + mMediaCount + " || " + mCommentCount);
 
                 if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()) || questionType.equalsIgnoreCase("media")) {
                     if (mActionPlanRequred > 0 && question.getAction_plan() == null) {
@@ -177,6 +174,7 @@ public class AppUtils {
                         }
                         mMediaCount = question.getMedia_count();
                         mCommentCount = question.getHas_comment();
+                        mActionPlanRequred=0;
                         if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0)
                         {
                             for (int y = 0; y < question.getOptions().size(); y++) {
@@ -194,7 +192,10 @@ public class AppUtils {
                                     } else {
                                         mMediaCount = option.getMedia_count();
                                         mCommentCount = option.getCommentCount();
-                                        mActionPlanRequred = option.getAction_plan_required();
+                                        if (!option.isAuto_action_plan())
+                                            mActionPlanRequred = option.getAction_plan_required();
+                                        else
+                                            mActionPlanRequred = 0;
                                         break;
                                     }
                                 }
@@ -953,14 +954,6 @@ public class AppUtils {
                             else {
                                 editText.setText(date);
                                 brandStandardQuestion.setAudit_answer(date);
-                                if (context instanceof BrandStandardAuditActivityPagingnation)
-                                    ((BrandStandardAuditActivityPagingnation)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
-                                else if (context instanceof BrandStandardAuditActivity)
-                                    ((BrandStandardAuditActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
-                                else
-                                    ((BrandStandardOptionsBasedQuestionActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
-
-
                             }
                         } else {
                             Log.e("", "Invalid Date!");
@@ -996,13 +989,6 @@ public class AppUtils {
                 String time = (date.isEmpty() ? date : (date + " ")) + strHour + ":" + strMinute + ":00";
                 editText.setText(time);
                 brandStandardQuestion.setAudit_answer("" + time);
-                if (context instanceof BrandStandardAuditActivityPagingnation)
-                    ((BrandStandardAuditActivityPagingnation)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
-                else if (context instanceof BrandStandardAuditActivity)
-                    ((BrandStandardAuditActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
-                else
-                    ((BrandStandardOptionsBasedQuestionActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
-
             }
         }, setHour, setMinute, true);
         timePickerDialog.show();
