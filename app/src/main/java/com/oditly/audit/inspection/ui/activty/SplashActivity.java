@@ -88,6 +88,7 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
         findViewById(R.id.btn_signin).setOnClickListener(this);
         findViewById(R.id.btn_signin_microsoft).setOnClickListener(this);
         findViewById(R.id.tv_schedule).setOnClickListener(this);
+        findViewById(R.id.tv_privacy).setOnClickListener(this);
 
 
         mLogoImageIV = (ImageView) findViewById(R.id.iv_logoimage);
@@ -123,6 +124,11 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
             case R.id.tv_schedule:
                 Intent intent=new Intent(this,ScheduleDemoActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.tv_privacy:
+                Intent intent1=new Intent(this, PrivacyPolicyActivity.class);
+                intent1.putExtra(AppConstant.FROMWHERE,AppConstant.PRIVACY_POLICY);
+                startActivity(intent1);
                 break;
             case R.id.btn_signin:
                 sendToNewActivity();

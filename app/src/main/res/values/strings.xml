@@ -405,5 +405,10 @@
     <string name="text_enteremail_commaseperated">Enter email IDs separated by comma</string>
     <string name="text_no_attachment">No Attachment</string>
 
+   <string name="login_privacypolicy">Please read our privacy policy <u>here</u></string>
+
+
+
+
 
 </resources>

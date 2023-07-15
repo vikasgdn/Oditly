@@ -8,8 +8,8 @@ package com.oditly.audit.inspection.network;
 public class NetworkURL {
 
     //API URL'S LIVE SERVER
-  //  public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
-   // public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
+    public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
+    public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
 
 
     //API URL'S STAGE SERVER
@@ -18,8 +18,8 @@ public class NetworkURL {
 
 
     //API URL'S  TEST SERVER
-    public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
-    public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
+  //  public static final String API_BASE_URL_NEW= "https://api.dev.account.oditly.com/";
+   // public static final String API_BASE_URL = "https://api.dev.account.oditly.com/m/";
 
 
     public static final String SIGNIN = API_BASE_URL + "login";
@@ -88,7 +88,8 @@ public class NetworkURL {
     public static final String GET_ACTIONPLAN_DATA = API_BASE_URL_NEW+"ia/action-plan?action_plan_id=";
 
 
-
+  public static final String URL_PRIVACY_POLICY="https://www.oditly.com/privacy_policy";
+    public static final String URL_TERM_AND_CONDITION="https://www.oditly.com/terms_of_use";
     // audit_id,action_plan_id,file
 
 

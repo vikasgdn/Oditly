@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.util.AppConstant;
 
 public class PrivacyPolicyActivity extends BaseActivity  {
 
@@ -39,12 +41,21 @@ public class PrivacyPolicyActivity extends BaseActivity  {
 
         findViewById(R.id.iv_header_left).setOnClickListener(this);
         TextView textView=(TextView)findViewById(R.id.tv_header_title);
-        textView.setText(getString(R.string.s_privacy_policy));
+        String mLocation=getIntent().getStringExtra(AppConstant.FROMWHERE);
+        if (mLocation.equalsIgnoreCase(AppConstant.PRIVACY_POLICY))
+            textView.setText(getString(R.string.s_privacy_policy));
+        else
+            textView.setText(getString(R.string.s_term));
+
         mProgressBar = (RelativeLayout) findViewById(R.id.ll_parent_progress);
         mProgressBar.setVisibility(View.VISIBLE);
         WebView wb = (WebView) findViewById(R.id.webview);
         wb.getSettings().setJavaScriptEnabled(true);
-        wb.loadUrl("https://docs.google.com/gview?embedded=true&url="+PRIVACYPOLICY);
+       // wb.loadUrl("https://docs.google.com/gview?embedded=true&url="+PRIVACYPOLICY);
+        if (mLocation.equalsIgnoreCase(AppConstant.PRIVACY_POLICY))
+            wb.loadUrl(NetworkURL.URL_PRIVACY_POLICY);
+        else
+            wb.loadUrl(NetworkURL.URL_TERM_AND_CONDITION);
         wb.setWebViewClient(new WebViewClient() {
 
 

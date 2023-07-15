@@ -120,6 +120,10 @@ public class AppConstant {
     public static final String QUESTION_TARGET = "target";
     public static final String QUESTION_TEMPRATURE = "temperature";
 
+    public static final String PRIVACY_POLICY = "privacy_policy";
+    public static final String TERM_CONDITION = "term_condition";
+
+
 
 
 

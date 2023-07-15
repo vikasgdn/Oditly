@@ -115,10 +115,13 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                 break;
             case R.id.tv_privacy:
                 Intent intent1=new Intent(this, PrivacyPolicyActivity.class);
+                intent1.putExtra(AppConstant.FROMWHERE,AppConstant.PRIVACY_POLICY);
                 startActivity(intent1);
                 break;
             case R.id.tv_termservice:
-                AppUtils.toast(this,getString(R.string.text_coming_soon));
+                Intent intent2=new Intent(this, PrivacyPolicyActivity.class);
+                intent2.putExtra(AppConstant.FROMWHERE,AppConstant.TERM_CONDITION);
+                startActivity(intent2);
                 break;
             case R.id.tv_changepass:
                 Intent intentChangePass = new Intent(AccountProfileActivity.this, ResetPasswordScreen.class);
@@ -127,8 +130,8 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                 //  setOTPServer();
                 break;
             case R.id.tv_feedback:
-                Intent intent2=new Intent(this,FeedbackActivity.class);
-                startActivity(intent2);
+                Intent intentFeedback=new Intent(this,FeedbackActivity.class);
+                startActivity(intentFeedback);
                 break;
             case R.id.tv_upcomingfeature:
                 Intent intent3=new Intent(this,UpComingFeatureActivity.class);
