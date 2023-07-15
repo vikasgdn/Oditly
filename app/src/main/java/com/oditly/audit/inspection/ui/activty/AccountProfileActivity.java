@@ -108,8 +108,6 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                 AppDialogs.languageDialog(this);
                 break;
             case R.id.tv_support:
-                // Intent intent=new Intent(this, SupportActivity.class);
-                // startActivity(intent);
                 Intent callIntent = new Intent(this, ChatSupportActivity.class);
                 startActivity(callIntent);
                 break;
