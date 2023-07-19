@@ -2,6 +2,7 @@ package com.oditly.audit.inspection.network;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.model.actionData.AddAdHocActionPlan;
@@ -85,14 +86,13 @@ public class NetworkServiceMultipart {
 
                 RequestBody body=builder.build();
                 Request request = new Request.Builder()
-                        .url(NetworkURL.ACTION_PLAN_ADD)
+                        .url(NetworkURL.ACTION_PLAN_ADD_NEW)
                         .method("POST", body)
                         .addHeader("access-token", AppPreferences.INSTANCE.getAccessToken(mContext))
                         .addHeader("Authorization","Bearer "+mFirebaseToken)
                         .build();
 
-              //  Log.e("MULTIPART=====> ",""+body.toString());
-               // Log.e("MULTIPART=====> ",""+NetworkURL.ACTION_PLAN_ADD);
+                Log.e("MULTIPART=====> ",""+NetworkURL.ACTION_PLAN_ADD_NEW);
 
                 Response response = client.newCall(request).execute();
 

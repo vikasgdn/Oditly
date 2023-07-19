@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -32,7 +31,6 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuesti
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRefrence;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
-import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkServiceJSON;
@@ -79,7 +77,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     private static final String TAG = BrandStandardAuditActivityPagingnation.class.getSimpleName();
     private List<BrandStandardQuestion> mBrandStandardListCurrent;
     private  Context context;
-    private String auditId = "",auditDate = "",sectionGroupId = "",sectionId = "",sectionTitle = "",mLocation = "",mChecklist = "",fileCount = "";
+    private String auditId = "",sectionGroupId = "",sectionId = "",sectionTitle = "",mLocation = "",mChecklist = "",fileCount = "";
     private String sectionWeightage="";
     public LayoutInflater inflater;
     private ArrayList<BrandStandardSection> brandStandardSectionArrayList = new ArrayList<>();
@@ -88,8 +86,6 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     private static final int AttachmentRequest = 120;
     private static final int QuestionAttachmentRequest = 130;
     private int  itemClickedPos = 0;
-    // public int questionCount = 0;
-    //private BrandStandardAuditAdapterSingleSection currentBrandStandardAuditAdapter;
     public static boolean isAnswerCliked=false;
     private boolean isSaveButtonClick=false,isBackButtonClick=false;
     private BsOffLineDB mBsOfflineDB;
@@ -150,7 +146,6 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         mBsOfflineDB= BsOfflineDBImpl.getInstance(this);
         Intent intent= getIntent();
         auditId =intent.getStringExtra("auditId");
-        auditDate = intent.getStringExtra("auditDate");
         mLocation = intent.getStringExtra(AppConstant.LOCATION_NAME);
         mChecklist = intent.getStringExtra(AppConstant.AUDIT_CHECKLIST);
         mGalleryDisable = intent.getIntExtra(AppConstant.GALLERY_DISABLE,0);
@@ -235,7 +230,6 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 tempList.addAll(((OditlyApplication) getApplicationContext()).getmAttachImageList());
                 this.mBrandStandardListCurrent.get(this.itemClickedPos).setmImageList(tempList);
                 this.sectionTabAdapter.setattachmentCount(Integer.parseInt(attachmentCount2), this.itemClickedPos);
-
             } else if (requestCode == 1021 && resultCode == Activity.RESULT_OK) {
                 isAnswerCliked = true;
                 this.sectionTabAdapter.setActionCreatedFlag(this.itemClickedPos);
@@ -267,14 +261,17 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         {
             if(isSaveButtonClick)
                 mProgressRL.setVisibility(View.VISIBLE);
-            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId, auditDate, "1", getQuestionsArray());
-            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE, NetworkConstant.METHOD_POST, this, this);
+            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId);
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE_NEW, NetworkConstant.METHOD_POST, this, this);
             networkService.call(object);
         } else
         {
             AppUtils.toast(this, getString(R.string.internet_error));
         }
     }
+
+
+
     private JSONArray  getQuestionsArray() {
         JSONArray jsonArray = new JSONArray();
         ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
@@ -334,10 +331,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                         else {
                             mMediaCount = option.getMedia_count();
                             mCommentCount = option.getCommentCount();
-                            if (!option.isAuto_action_plan())
-                                mActionPlanRequred=option.getAction_plan_required();
-                            else
-                                mActionPlanRequred=0;
+                            mActionPlanRequred=option.getAction_plan_required();
                             break;
                         }
 
@@ -454,39 +448,69 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
 
     private boolean saveSectionOrPagewiseData()
     {
-        if (AppUtils.isStringEmpty(auditDate))
-            auditDate=AppUtils.getAuditDateCurrent();
-        if (validateCommentOfQuestion())
-            saveBrandStandardQuestion();
+        if (validateCommentOfQuestion()) {
+            AuditSubSectionsActivity.isDataSaved = true;
+            finish();
+            return true;
+        }
         else
             return false;
-
-        return  true;
     }
 
+
+    public void saveSingleBrandStandardQuestionEveryClick(BrandStandardQuestion bsQuestion)
+    {
+        if (NetworkStatus.isNetworkConnected(this))
+        {
+            try {
+                itemClickedPos=bsQuestion.getmClickPosition();
+                if (bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXTAREA) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_NUMBER) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_MEASUREMENT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TARGET) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEMPRATURE) )
+                    this.sectionTabAdapter.updatehParticularPosition(itemClickedPos);
+
+
+                JSONObject object = new JSONObject();
+                object.put("audit_id", auditId);
+                object.put("question_id", bsQuestion.getQuestion_id());
+                object.put("audit_answer", bsQuestion.getAudit_answer());
+                object.put("audit_option_id", new JSONArray(bsQuestion.getAudit_option_id()));
+                object.put("audit_comment", bsQuestion.getAudit_comment());
+                Log.e("JSON QUESTION==> ",""+object.toString());
+                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER, NetworkConstant.METHOD_POST, this, this);
+                networkService.call(object);
+            }
+            catch (Exception e) {e.printStackTrace();}
+        } else
+        {
+            AppUtils.toast(this, getString(R.string.internet_error));
+        }
+    }
 
     @Override
     public void onNetworkCallInitiated(String service) { }
     @Override
     public void onNetworkCallCompleted(String type, String service, String responseStr) {
-        isAnswerCliked=false; // because question is saved
-        AuditSubSectionsActivity.isDataSaved=true;
         AppLogger.e(TAG, "BSResponse: " + responseStr);
-        try {
-            JSONObject response = new JSONObject(responseStr);
-            if (!response.getBoolean(AppConstant.RES_KEY_ERROR))
-            {
-                AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
-                if (isBackButtonClick)
-                {
-                    isBackButtonClick=false; // This is only for showing progressBar
-                    finish();
+        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER))
+        {
+           //   this.sectionTabAdapter.updatehParticularPosition(itemClickedPos);
+        }
+        else {
+            isAnswerCliked = false; // because question is saved
+            AuditSubSectionsActivity.isDataSaved = true;
+            try {
+                JSONObject response = new JSONObject(responseStr);
+                if (!response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+                    if (isBackButtonClick) {
+                        isBackButtonClick = false; // This is only for showing progressBar
+                        finish();
+                    }
+                } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
                 }
-            } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         mProgressRL.setVisibility(View.GONE);
     }
@@ -542,6 +566,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         scoreText.setText(getString(R.string.text_score)+":" + (int) (((float) marksObtained / (float) totalMarks) * 100) + "% (" + marksObtained + "/" + totalMarks + ")");
 
     }
+
     //-----------------------Audit Times-------------------------------------
     public Runnable runnable = new Runnable() {
 

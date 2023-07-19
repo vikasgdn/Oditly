@@ -211,7 +211,11 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
                 isVideoPermission=false;
-                chooseImagesFromGallery();
+                if (ActivityCompat.checkSelfPermission(AddAttachmentActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(AddAttachmentActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
+                } else {
+                    chooseImagesFromGallery();
+                }
                 imageCustomDialog.dismiss();
             }
         });
@@ -260,7 +264,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
 
 
     private void chooseImagesFromGallery() {
-      /*  BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
+     /*   BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
                 .setMaximumDisplayingImages(5000)
                 .isMultiSelect()
                 .setTag("")
@@ -271,6 +275,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
 
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(photoPickerIntent, AppConstant.REQUEST_TAKE_PHOTO_GALLERY);
+
     }
 
     private void chooseImagesFromGalleryVDO() {
@@ -314,9 +319,9 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
         takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 8);
         //  takeVideoIntent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 10);
-        // if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
-        startActivityForResult(takeVideoIntent, AppConstant.REQUEST_TAKE_VDO);
-        // }
+       // if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takeVideoIntent, AppConstant.REQUEST_TAKE_VDO);
+       // }
     }
     private void takePhotoFromCamera() {
       /*  Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -472,8 +477,6 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     private void addDescriptionDialog()
     {
         listOfImageString.addAll(mURIimageList);
-        Log.e("===> listOfImageString ",""+listOfImageString.size());
-
         ((OditlyApplication)getApplicationContext()).setmAttachImageList(listOfImageString);
         customDialog = new CustomDialog(context, R.layout.add_attachment_dailog);
         customDialog.setCancelable(false);
@@ -565,29 +568,29 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         };
 
         if (attachType.equalsIgnoreCase("bsSection"))
-            url = NetworkURL.BSATTACHMENT + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId;
+            url = NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId;
         else
-            url = NetworkURL.BSATTACHMENT + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId + "&question_id=" + questionId;
+            url = NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId + "&question_id=" + questionId;
 
-        if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
-        {
-            GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(context), AppPreferences.INSTANCE.getOktaToken(context), context, url, stringListener, errorListener);
-            VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-        }
-        else {
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                            public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                if (task.isSuccessful()) {
-                                    String token = task.getResult().getToken();
-                                    GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(context), token, context, url, stringListener, errorListener);
-                                    VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-                                }
-                            }
-                        });
-            }
-        }
+         if (AppPreferences.INSTANCE.getProviderName().equalsIgnoreCase(AppConstant.OKTA))
+         {
+             GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(context), AppPreferences.INSTANCE.getOktaToken(context), context, url, stringListener, errorListener);
+             VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+         }
+         else {
+             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                 FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                         .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                             public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                 if (task.isSuccessful()) {
+                                     String token = task.getResult().getToken();
+                                     GetReportRequest getReportRequest = new GetReportRequest(AppPreferences.INSTANCE.getAccessToken(context), token, context, url, stringListener, errorListener);
+                                     VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+                                 }
+                             }
+                         });
+             }
+         }
 
     }
 
@@ -632,12 +635,12 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             {
                 if (attachType.equalsIgnoreCase("bsQuestion")) {
                     AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
-                            AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BSATTACHMENT, fileName, imageByteData, auditId,
+                            AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
                             sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, type, AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
                     VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
                 } else {
                     AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
-                            AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BSATTACHMENT, fileName, imageByteData, auditId,
+                            AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
                             sectionGroupId, sectionId, description, "0", latitude, longitude, type, AppPreferences.INSTANCE.getOktaToken(context), context,
                             stringListener, errorListener);
                     VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
@@ -652,12 +655,12 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                         AppUtils.parseRefreshTokenRespone(response,AddAttachmentActivity.this);
                         if (attachType.equalsIgnoreCase("bsQuestion")) {
                             AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
-                                    AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BSATTACHMENT, fileName, imageByteData, auditId,
+                                    AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
                                     sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, type, AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
                             VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
                         } else {
                             AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
-                                    AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BSATTACHMENT, fileName, imageByteData, auditId,
+                                    AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
                                     sectionGroupId, sectionId, description, "0", latitude, longitude, type, AppPreferences.INSTANCE.getOktaToken(context), context,
                                     stringListener, errorListener);
                             VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
@@ -684,12 +687,12 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                                     String token = task.getResult().getToken();
                                     if (attachType.equalsIgnoreCase("bsQuestion")) {
                                         AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
-                                                AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BSATTACHMENT, fileName, imageByteData, auditId,
+                                                AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
                                                 sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, type, token, context, stringListener, errorListener);
                                         VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
                                     } else {
                                         AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
-                                                AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BSATTACHMENT, fileName, imageByteData, auditId,
+                                                AppPreferences.INSTANCE.getAccessToken(context), NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW, fileName, imageByteData, auditId,
                                                 sectionGroupId, sectionId, description, "0", latitude, longitude, type, token, context,
                                                 stringListener, errorListener);
                                         VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);

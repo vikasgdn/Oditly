@@ -120,7 +120,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     @Override
     protected void onResume() {
         super.onResume();
-        if (isDataSaved)
+      //  if (isDataSaved)
             getAuditQuestionsFromServer();
     }
 
@@ -221,7 +221,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         {
             mSpinKitView.setVisibility(View.VISIBLE);
             JSONObject object = BSSaveSubmitJsonRequest.createInput(auditId, auditDate, "0", answerArray);
-            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_FINAL_SAVE, NetworkConstant.METHOD_POST, this, this);
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_FINAL_SAVE_NEW, NetworkConstant.METHOD_POST, this, this);
             networkService.call(object);
         } else
         {
@@ -254,14 +254,18 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     @Override
     public void onNetworkCallCompleted(String type, String service, String response)
     {
-        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_FINAL_SAVE))
+        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_FINAL_SAVE_NEW))
         { try {
             JSONObject responseJson = new JSONObject(response);
             if (!responseJson.getBoolean(AppConstant.RES_KEY_ERROR)) {
                 status = "" + responseJson.getJSONObject("data").getInt("brand_std_status");
                 goForSignature();
             } else if (responseJson.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                AppUtils.toast((BaseActivity) context, responseJson.getString(AppConstant.RES_KEY_MESSAGE));
+               JSONObject errorOBJ= responseJson.optJSONObject("d");
+               String quesionName="";
+               if (errorOBJ!=null)
+                   quesionName=errorOBJ.optString("question_title");
+                AppUtils.toastDisplayForLong((BaseActivity) context, responseJson.getString(AppConstant.RES_KEY_MESSAGE)+" for Question "+quesionName);
             }
         } catch (Exception e) { e.printStackTrace(); }
         }
@@ -279,6 +283,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
             JSONObject object = new JSONObject(response);
             messsage =  object.getString(AppConstant.RES_KEY_MESSAGE);
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+
                 BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create().fromJson(object.toString(), BrandStandardRootObject.class);
                 if (brandStandardRootObject.getData() != null && brandStandardRootObject.getData().toString().length() > 0) {
                     auditDate = brandStandardRootObject.getData().getAudit_date();
