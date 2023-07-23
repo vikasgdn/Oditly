@@ -279,10 +279,11 @@ class AddAttachmentActivity() : BaseActivity(), View.OnClickListener, OnSingleIm
             .open() // This will open image selection activity to select images
 */
         showFilePicker(
-            limitItemSelection = 5,
+            limitItemSelection = 10,
             listDirection = ListDirection.RTL,
-            accentColor = ContextCompat.getColor(this@AddAttachmentActivity, R.color.black),
-            titleTextColor = ContextCompat.getColor(this@AddAttachmentActivity, R.color.black),
+            accentColor = ContextCompat.getColor(this@AddAttachmentActivity, R.color.colorAccent),
+            titleTextColor = ContextCompat.getColor(this@AddAttachmentActivity, R.color.white),
+
             onSubmitClickListener = object : OnSubmitClickListener {
                 override fun onClick(files: List<Media>) {
                     // Do something here with selected files

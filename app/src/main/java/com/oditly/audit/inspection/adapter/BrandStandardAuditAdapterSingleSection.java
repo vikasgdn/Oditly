@@ -93,9 +93,9 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
 
 
         if(brandStandardQuestion.getmImageList()!=null && brandStandardQuestion.getmImageList().size()>0) {
-            holder.mRecyclerView.setVisibility(View.VISIBLE);
-            AddBSMediaAdapter adapterImage = new AddBSMediaAdapter(context, brandStandardQuestion.getmImageList());
-            holder.mRecyclerView.setAdapter(adapterImage);
+            //holder.mRecyclerView.setVisibility(View.VISIBLE);
+            // AddBSMediaAdapter adapterImage = new AddBSMediaAdapter(context, brandStandardQuestion.getmImageList());
+            //holder.mRecyclerView.setAdapter(adapterImage);
         }
         else
             holder.mRecyclerView.setVisibility(View.GONE);

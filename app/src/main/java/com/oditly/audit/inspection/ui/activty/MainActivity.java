@@ -1,6 +1,7 @@
 package com.oditly.audit.inspection.ui.activty;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,6 +31,7 @@ import com.oditly.audit.inspection.ui.fragment.TeamListFragment;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
 import com.oditly.audit.inspection.util.LocationUtils;
+import com.oditly.audit.inspection.util.NotificationPermissionManager;
 import com.volcaniccoder.bottomify.BottomifyNavigationView;
 import com.volcaniccoder.bottomify.OnNavigationItemChangeListener;
 
@@ -47,6 +49,11 @@ public class MainActivity extends BaseActivity {
         this.mAuditTypeID = getIntent().getStringExtra("audit_type_id");
         initView();
         initVar();
+        if (!NotificationPermissionManager.areNotificationsEnabled(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                NotificationPermissionManager.showNotificationPermissionRationale(this);
+            }
+        }
 
     }
 

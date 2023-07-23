@@ -54,16 +54,19 @@
                 android:layout_marginTop="@dimen/d_10dp"
                 android:src="@mipmap/logo_300"/>
 
-            <ImageButton
-                android:id="@+id/edit_image"
-                android:layout_width="wrap_content"
-                android:padding="@dimen/d_5dp"
-                android:layout_margin="10dp"
-                android:layout_alignParentRight="true"
-                android:visibility="visible"
-                android:background="@android:color/transparent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_edit"/>
+                <ImageButton
+                    android:id="@+id/edit_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@android:color/transparent"
+                    android:padding="@dimen/d_5dp"
+                    android:src="@drawable/ic_edit"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 

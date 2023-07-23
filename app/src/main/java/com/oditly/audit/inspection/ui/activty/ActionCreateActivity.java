@@ -298,11 +298,11 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 String details = mCorrectiveActionET.getText().toString();
                 String dueDate = mDueDateET.getText().toString();
                 String all = mAuditorNameET.getText().toString();
-                if (TextUtils.isEmpty(title))
+                if (mSectionID.equalsIgnoreCase("0"))
+                    AppUtils.toast(this,"Please Select Section");
+               else if (TextUtils.isEmpty(title))
                     mTitleErrorTV.setVisibility(View.VISIBLE);
-                    // else if (TextUtils.isEmpty(details))
-                    //    mDetailsErrorTV.setVisibility(View.VISIBLE);
-                else if (TextUtils.isEmpty(dueDate))
+               else if (TextUtils.isEmpty(dueDate))
                     mDueDateErrorTV.setVisibility(View.VISIBLE);
                 else if (all.equalsIgnoreCase("All"))
                     mAssigneeErrorTV.setVisibility(View.VISIBLE);
@@ -405,16 +405,15 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 AddAdHocActionPlan bean=new AddAdHocActionPlan();
                 bean.setLocation_id(mLocatioID);
                 bean.setPriority_id(mPriorityID);
-                bean.setSection_id(mSectionID);
                 bean.setPlanned_date(mDueDateET.getText().toString());
                 bean.setTitle(mTitleET.getText().toString());
-                bean.setAction_details(mCorrectiveActionET.getText().toString());
+               // bean.setAction_details(mCorrectiveActionET.getText().toString());
                 bean.setAssigned_user_id(jsArray);
-                bean.setMedia_count(mMeidaCountET.getText().toString());
+                //bean.setMedia_count(mMeidaCountET.getText().toString());
+               // bean.setSection_id(mSectionID);
 
 
-
-                NetworkServiceMultipart networkService = new NetworkServiceMultipart(NetworkURL.ACTION_PLAN_ADD_NEW,bean,mMediaFileList,firebaseToken, this, this);
+                NetworkServiceMultipart networkService = new NetworkServiceMultipart(NetworkURL.ACTION_PLAN_ADD_ADHOC,bean,mMediaFileList,firebaseToken, this, this);
                 networkService.call(null);
             } catch (Exception e) {
                 AppUtils.toast(this, getString(R.string.internet_error));
@@ -519,6 +518,8 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                             mSectionListID.add("" + atype.getSection_id());
                             mSectionList.add("" + atype.getSection_title());
                         }
+                        mSectionListID.add(0,"0");
+                        mSectionList.add(0,"Please Select Section");
                         ArrayAdapter sectionAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, mSectionList);
                         sectionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mSectionTypeSPN.setAdapter(sectionAdapter);

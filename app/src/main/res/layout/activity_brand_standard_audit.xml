@@ -96,6 +96,7 @@
                 android:id="@+id/brand_standard_btn_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/d_50dp"
+                android:visibility="gone"
                 android:padding="@dimen/d_10dp">
                 <Button
                     android:id="@+id/bs_addmedia"

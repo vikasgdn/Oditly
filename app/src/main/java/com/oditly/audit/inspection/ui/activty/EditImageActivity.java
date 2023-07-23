@@ -242,12 +242,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 break;
 
             case R.id.imgSave:
-                if (ActivityCompat.checkSelfPermission(EditImageActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(EditImageActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
-                } else {
                     saveImage();
-                }
-
                 break;
 
             case R.id.imgClose:
@@ -283,7 +278,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         }
     }
     @SuppressLint("MissingPermission")
-    private void saveImage() {
+    private void  saveImage() {
         mProgressBarRL.setVisibility(View.VISIBLE);
         File file = null;
         try {

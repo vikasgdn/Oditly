@@ -82,7 +82,7 @@ public class NetworkURL {
     public static final String POST_DEMO_URL="https://www.oditly.com/demo_form.php";
     public static final String GET_ACTIONCREATE_USING_LOCATION_API=API_BASE_URL_NEW+"ia/action-plan/create?location_id=";
     public static final String GET_ACTIONCREATE_USING_AUDIT_API=API_BASE_URL_NEW+"ia/action-plan/create?audit_id=";
-    public static final String ACTION_PLAN_ADD = API_BASE_URL_NEW + "ia/action-plan";
+    public static final String ACTION_PLAN_ADD_ADHOC = API_BASE_URL_NEW + "ia/action-plan";
     public static final String ACTION_PLAN_ADD_NEW = API_BASE_URL_NEW +"internal-audit/action-plan";
 
     public static final String ACTION_PLAN_ADD_COMMENT = API_BASE_URL_NEW + "ia/action-plan/update-comment";
