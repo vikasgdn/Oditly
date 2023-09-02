@@ -92,7 +92,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
                         .override(600,200)
                         .diskCacheStrategy(DiskCacheStrategy.NONE) // because file name is always same
                         .skipMemoryCache(true);
-                Glide.with(context).load(Headers.getUrlWithHeaders(addAttachmentInfo.getThumb_url(), AppPreferences.INSTANCE.getAccessToken(context))).apply(requestOptions).into(holder.attachedImage);
+                Glide.with(context).load(Headers.getUrlWithHeaders(addAttachmentInfo.getFile_url(), AppPreferences.INSTANCE.getAccessToken(context))).apply(requestOptions).into(holder.attachedImage);
             }
         }
         else

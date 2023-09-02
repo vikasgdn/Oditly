@@ -146,7 +146,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
 
         }
     }
-    public void setOTPServer()
+  /*  public void setOTPServer()
     {
         if (NetworkStatus.isNetworkConnected(this)) {
             mProgressBarRL.setVisibility(View.VISIBLE);
@@ -158,7 +158,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
         else
             AppUtils.toast(this, getString(R.string.internet_error));
 
-    }
+    }*/
 
 
     public void setUpdateLanguageToServer()
@@ -233,7 +233,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
     }
 
 
-    private void logOutServerData()
+   /* private void logOutServerData()
     {
         if (NetworkStatus.isNetworkConnected(this)) {
             //  showAppProgressDialog();
@@ -244,7 +244,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
             AppUtils.toast(this, getString(R.string.internet_error));
         }
 
-    }
+    }*/
     private void getAppUpdateStatusFromServer() {
         if (NetworkStatus.isNetworkConnected(this)) {
             mProgressBarRL.setVisibility(View.VISIBLE);
@@ -265,7 +265,7 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
     public void onNetworkCallCompleted(String type, String service, String response)
     {
         Log.e("RESPONSE PROFILE==> ",""+response);
-        if(service.equalsIgnoreCase(NetworkURL.LOGOUT)) {
+      /*  if(service.equalsIgnoreCase(NetworkURL.LOGOUT)) {
             try {
                 JSONObject object = new JSONObject(response);
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
@@ -290,7 +290,8 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
                 e.printStackTrace();
             }
         }
-        else if(service.equalsIgnoreCase(NetworkURL.POST_UPDATE_PROFILE_LANG)) {
+        else*/
+        if(service.equalsIgnoreCase(NetworkURL.POST_UPDATE_PROFILE_LANG)) {
             {
                 try {
                     JSONObject object = new JSONObject(response);

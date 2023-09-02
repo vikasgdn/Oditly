@@ -107,6 +107,7 @@ class AddAttachmentActivity() : BaseActivity(), View.OnClickListener, OnSingleIm
     private var mMediaDB: MediaDBImpl? = null
     private var mCurrentPhotoPath = ""
     private val photoEasy: PhotoEasy? = null
+    private lateinit var mRightImageIV:ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_attachment)
@@ -152,6 +153,12 @@ class AddAttachmentActivity() : BaseActivity(), View.OnClickListener, OnSingleIm
         addAttachmentBtn = findViewById(R.id.floating_btn_add_attachment) as ImageView
         mProgressLayoutLL = findViewById(R.id.ll_parent_progress)
         findViewById<View>(R.id.iv_header_left).setOnClickListener(this)
+
+        mRightImageIV = findViewById(R.id.iv_header_right)
+        mRightImageIV.visibility=View.VISIBLE
+        mRightImageIV.setImageResource(R.drawable.baseline_refresh_24)
+        mRightImageIV.setOnClickListener(this)
+
         addAttachmentBtn!!.setOnClickListener(this)
     }
 
@@ -174,6 +181,7 @@ class AddAttachmentActivity() : BaseActivity(), View.OnClickListener, OnSingleIm
         when (view.id) {
             R.id.floating_btn_add_attachment -> openDCRDialog()
             R.id.iv_header_left -> onBackPressed()
+            R.id.iv_header_right -> getOldMediaAttachmentList(attachType)
         }
     }
 
@@ -215,22 +223,9 @@ class AddAttachmentActivity() : BaseActivity(), View.OnClickListener, OnSingleIm
             .setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View) {
                     isVideoPermission = true
-                    if (ActivityCompat.checkSelfPermission(
-                            this@AddAttachmentActivity,
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        ActivityCompat.requestPermissions(
-                            this@AddAttachmentActivity,
-                            arrayOf(
-                                Manifest.permission.READ_EXTERNAL_STORAGE,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            ),
-                            AppConstant.GALLERY_PERMISSION_REQUEST
-                        )
-                    } else {
-                        chooseImagesFromGalleryVDO()
-                    }
+
+                    chooseImagesFromGalleryVDO()
+
                     imageCustomDialog!!.dismiss()
                 }
             })
@@ -305,6 +300,7 @@ class AddAttachmentActivity() : BaseActivity(), View.OnClickListener, OnSingleIm
     }
 
     private fun chooseImagesFromGalleryVDO() {
+
         System.gc()
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(galleryIntent, AppConstant.REQUEST_TAKE_VDO)

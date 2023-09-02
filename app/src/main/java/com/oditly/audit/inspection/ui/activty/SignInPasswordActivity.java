@@ -134,7 +134,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
     }
 
 
-    public void setOTPServer(String userEmail) {
+   /* public void setOTPServer(String userEmail) {
         if (NetworkStatus.isNetworkConnected(this)) {
             mForgotEmail = userEmail;
             // showAppProgressDialog();
@@ -148,7 +148,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
             AppUtils.toast(this, getString(R.string.internet_error));
 
     }
-
+*/
 
     public void resetPasswordServerData(String userEmail)
     {
@@ -160,7 +160,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
 
     }
 
-    private void validateuserCredentialsData() {
+  /*  private void validateuserCredentialsData() {
         if (NetworkStatus.isNetworkConnected(this)) {
             //  showAppProgressDialog();
             mSpinKitView.setVisibility(View.VISIBLE);
@@ -173,7 +173,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
         } else {
             AppUtils.toast(this, getString(R.string.internet_error));
         }
-    }
+    }*/
 
     @Override
     public void onNetworkCallInitiated(String service) {
@@ -184,7 +184,7 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
     public void onNetworkCallCompleted(String type, String service, String response) {
 
         Log.e("Response", "" + response);
-        if (service.equalsIgnoreCase(NetworkURL.SIGNIN)) {
+       /* if (service.equalsIgnoreCase(NetworkURL.SIGNIN)) {
             try {
                 JSONObject object = new JSONObject(response);
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
@@ -220,7 +220,8 @@ public class SignInPasswordActivity extends BaseActivity implements INetworkEven
                 AppUtils.toast(this, getString(R.string.oops));
             }
         }
-        else if(service.equalsIgnoreCase(NetworkURL.RESET_PASSWORD_NEW))
+        else*/
+        if(service.equalsIgnoreCase(NetworkURL.RESET_PASSWORD_NEW))
         {
 
             try {

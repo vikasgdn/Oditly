@@ -114,7 +114,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
     private EditText mMeidaCountET;
     private ArrayList<String> mReviewerList, getmReviewerListID;
     private String mPriorityID = "";
-    private String mSectionID = "", mSectionGroupID, mQuestionID, mAuditID = "";
+    private String mSectionID = "0", mSectionGroupID, mQuestionID, mAuditID = "";
     private TextView mTitleErrorTV, mDetailsErrorTV, mDueDateErrorTV, mAssigneeErrorTV;
     private String mActionCreateUsingLocationURL = "", mActionCreateUsingAuditURL = "";
     private String mFromWhere = "";
@@ -188,7 +188,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
             findViewById(R.id.fb_media).setVisibility(View.GONE);
             getActionCreateDataFromServerUsingAudit();
         } else {
-            mSectionID="";
+            mSectionID="0";
             getLocationFilterListFromServer();
         }
 
@@ -298,9 +298,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 String details = mCorrectiveActionET.getText().toString();
                 String dueDate = mDueDateET.getText().toString();
                 String all = mAuditorNameET.getText().toString();
-                if (mSectionID.equalsIgnoreCase("0"))
-                    AppUtils.toast(this,"Please Select Section");
-               else if (TextUtils.isEmpty(title))
+                 if (TextUtils.isEmpty(title))
                     mTitleErrorTV.setVisibility(View.VISIBLE);
                else if (TextUtils.isEmpty(dueDate))
                     mDueDateErrorTV.setVisibility(View.VISIBLE);
@@ -407,10 +405,14 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 bean.setPriority_id(mPriorityID);
                 bean.setPlanned_date(mDueDateET.getText().toString());
                 bean.setTitle(mTitleET.getText().toString());
-               // bean.setAction_details(mCorrectiveActionET.getText().toString());
+                bean.setAction_details(mCorrectiveActionET.getText().toString());
                 bean.setAssigned_user_id(jsArray);
-                //bean.setMedia_count(mMeidaCountET.getText().toString());
-               // bean.setSection_id(mSectionID);
+                if (mMeidaCountET.getText().toString().length()==0)
+                    bean.setMedia_count("0");
+                else
+                    bean.setMedia_count(mMeidaCountET.getText().toString());
+
+                bean.setSection_id(mSectionID);
 
 
                 NetworkServiceMultipart networkService = new NetworkServiceMultipart(NetworkURL.ACTION_PLAN_ADD_ADHOC,bean,mMediaFileList,firebaseToken, this, this);
@@ -431,8 +433,8 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
             try {
                 JSONObject params = new JSONObject();
               //  params.put(NetworkConstant.REQ_PARAM_MOBILE, "1");
-                // params.put(NetworkConstant.REQ_PARAM_SECTION_GROUP_ID, mSectionGroupID);
-                //params.put(NetworkConstant.REQ_PARAM_SECTIONID, mSectionID);
+               //  params.put(NetworkConstant.REQ_PARAM_SECTION_GROUP_ID, mSectionGroupID);
+               // params.put(NetworkConstant.REQ_PARAM_SECTIONID, mSectionID);
                 params.put(NetworkConstant.REQ_PARAM_AUDIT_ID, mAuditID);
                 params.put(NetworkConstant.REQ_PARAM_QUSITION_ID, mQuestionID);
                 params.put(NetworkConstant.REQ_PARAM_TITLE, mTitleET.getText().toString());
@@ -652,11 +654,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
         imageCustomDialog.findViewById(R.id.tv_gallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(ActionCreateActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(ActionCreateActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.GALLERY_PERMISSION_REQUEST);
-                } else {
                     chooseImagesFromGallery();
-                }
                 imageCustomDialog.dismiss();
             }
         });
@@ -687,14 +685,20 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
         }
     }
     private void chooseImagesFromGallery() {
-        BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
+    /*    BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
                 .setMaximumDisplayingImages(200)
                 .isMultiSelect()
                 .setTag("")
                 .setMinimumMultiSelectCount(1)
                 .setMaximumMultiSelectCount(10)
                 .build();
-        pickerDialog.show(getSupportFragmentManager(),"Picker");
+        pickerDialog.show(getSupportFragmentManager(),"Picker");*/
+
+
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(photoPickerIntent, AppConstant.REQUEST_TAKE_PHOTO_GALLERY);
+
+
     }
 
 
@@ -756,6 +760,12 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 e.printStackTrace();
                 AppUtils.toast(this, " Some technical error Camera. Please try again." );
             }
+        }
+        else{
+            Uri selectedImage = data.getData();
+            mMediaFileList.add(new File(getPath(selectedImage)));
+            mURIimageList.add(selectedImage);
+            mMediaAdapter.notifyDataSetChanged();
         }
     }
 

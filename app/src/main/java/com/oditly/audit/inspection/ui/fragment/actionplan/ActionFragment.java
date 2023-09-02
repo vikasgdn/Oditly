@@ -166,7 +166,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
                 previousTotal=0;
                 mCurrentPage=1;
                 status=1;
-                mURL=NetworkURL.ACTION_PLAN+"?action_plan_status%5B%5D=1";
+                mURL=NetworkURL.ACTION_PLAN+"?action_plan_status%5B%5D=10";
                 getAuditListFromServer(status); //scheduled
                 break;
             case R.id.tv_progress:
@@ -180,7 +180,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
                 previousTotal=0;
                 mCurrentPage=1;
                 status=2;
-                mURL= NetworkURL.ACTION_PLAN+"?action_plan_status%5B%5D=2&action_plan_status%5B%5D=3";
+                mURL= NetworkURL.ACTION_PLAN+"?action_plan_status%5B%5D=2&action_plan_status%5B%5D=30";
 
                 getAuditListFromServer(status); //
                 break;
@@ -195,7 +195,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
                 previousTotal=0;
                 mCurrentPage=1;
                 status=4;
-                mURL=NetworkURL.ACTION_PLAN+"?action_plan_status%5B%5D=4";
+                mURL=NetworkURL.ACTION_PLAN+"?action_plan_status%5B%5D=40";
                 getAuditListFromServer(status); //scheduled
                 break;
             case R.id.fb_create:

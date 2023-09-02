@@ -86,13 +86,13 @@ public class NetworkServiceMultipart {
 
                 RequestBody body=builder.build();
                 Request request = new Request.Builder()
-                        .url(NetworkURL.ACTION_PLAN_ADD_NEW)
+                        .url(NetworkURL.ACTION_PLAN_ADD_ADHOC)
                         .method("POST", body)
                         .addHeader("access-token", AppPreferences.INSTANCE.getAccessToken(mContext))
                         .addHeader("Authorization","Bearer "+mFirebaseToken)
                         .build();
 
-                Log.e("MULTIPART=====> ",""+NetworkURL.ACTION_PLAN_ADD_NEW);
+                Log.e("MULTIPART=====> ",""+NetworkURL.ACTION_PLAN_ADD_ADHOC+" || "+builder.toString());
 
                 Response response = client.newCall(request).execute();
 

@@ -15,7 +15,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
     dexOptions {
         incremental true
         javaMaxHeapSize "4g"
@@ -35,8 +37,8 @@ android {
         release {
             signingConfig signingConfigs.release
             debuggable false
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
             resValue "string", "app_name", "Oditly"
         }

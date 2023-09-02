@@ -1,5 +1,6 @@
 package com.oditly.audit.inspection.ui.activty;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -108,7 +109,7 @@ public class MainActivity extends BaseActivity {
         if (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION") == 0 || ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_COARSE_LOCATION") == 0) {
             checkLocationEnable();
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"}, PointerIconCompat.TYPE_VERTICAL_TEXT);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.POST_NOTIFICATIONS}, PointerIconCompat.TYPE_VERTICAL_TEXT);
         }
     }
 

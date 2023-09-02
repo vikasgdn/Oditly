@@ -294,12 +294,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
                     isGalleryDisable=brandStandardRootObject.getData().isGalleryDisable();
                     //new added for particular client 0 disable  1 enable
                     setQuestionList(brandStandardRootObject.getData());
-                    float count = 0;
-                    float totalCount = 0;
-                    int[] result = statusQuestionCount(brandStandardRootObject.getData().getSections());
-                    count = (float) result[0];
-                    totalCount = (float) result[1];
-                    setProgressBar(count, totalCount);
+                   getPercentage(brandStandardRootObject.getData().getSections());
                 }
             } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                 AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE)); }
@@ -316,35 +311,20 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         AppUtils.toast((BaseActivity) context, this.getString(R.string.oops));
     }
 
+    private void getPercentage(ArrayList<BrandStandardSection> brandStandardSection){
+        float totalAnsweredCount = 0;
+        float totalQuestionCount = 0;
 
-    private int[] statusQuestionCount(ArrayList<BrandStandardSection> brandStandardSection){
-        int totalCount = 0;
-        int count = 0;
-        for (int i = 0 ; i < brandStandardSection.size() ; i++ ) {
-            ArrayList<BrandStandardQuestion> brandStandardQuestion = brandStandardSection.get(i).getQuestions();
-            for (int j = 0; j < brandStandardQuestion.size(); j++)
-            {
-                if (brandStandardQuestion.get(j).getAudit_option_id().size() != 0 || brandStandardQuestion.get(j).getAudit_answer_na() == 1 || !AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())) {
-                    count += 1;
-                }
-                totalCount += 1;
+            for (int k = 0; k < brandStandardSection.size(); k++) {
+                totalAnsweredCount+=brandStandardSection.get(k).getAnswered_question_count();
+                totalQuestionCount+=brandStandardSection.get(k).getQuestion_count();
             }
-            ArrayList<BrandStandardSubSection> brandStandardSubSections = brandStandardSection.get(i).getSub_sections();
-            for (int k = 0; k < brandStandardSubSections.size(); k++) {
-                ArrayList<BrandStandardQuestion> brandStandardSubQuestion = brandStandardSubSections.get(k).getQuestions();
-                for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
-                    if (brandStandardSubQuestion.get(j).getAudit_option_id().size() != 0 || brandStandardSubQuestion.get(j).getAudit_answer_na() == 1 || !AppUtils.isStringEmpty(brandStandardSubQuestion.get(j).getAudit_answer())) {
-                        count += 1;
-                    }
-                    totalCount += 1;
-                }
-            }
-        }
-        Log.e("count || Total Count ",""+count + "|| "+totalCount);
-        return new int[]{count, totalCount};
+            setProgressBar(totalAnsweredCount,totalQuestionCount);
+
     }
     private void setProgressBar(float filledQuestionCount, float totalQuestionCount){
         try {
+            Log.e(" QUETION || ANSWER===> ",filledQuestionCount+" || "+totalQuestionCount);
 
             float percent = (filledQuestionCount / totalQuestionCount) * 100;
             DecimalFormat decimalFormat = new DecimalFormat("0.0");

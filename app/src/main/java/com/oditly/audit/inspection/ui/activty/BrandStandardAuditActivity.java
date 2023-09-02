@@ -609,10 +609,10 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     isDialogSaveClicked=true;   // as we are having same behaviour like dialog loader and change page after response;
                     saveSectionOrPagewiseData();
 
-                 /*   if (saveSectionOrPagewiseData()) {
+                    if (saveSectionOrPagewiseData()) {
                         isAnswerCliked=false;
                         setNextButtonSetUP();
-                    }*/
+                    }
                 }
                 else
                     setNextButtonSetUP();
@@ -624,7 +624,10 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 {
                     mNextPreviousClick=2;
                     isDialogSaveClicked=true;   // as we are having same behaviour like dialog loader and change page after response;
-                    saveSectionOrPagewiseData();
+                    if (saveSectionOrPagewiseData()) {
+                        isAnswerCliked=false;
+                        setPreviousButtonSetUP();
+                    }
 
                 }
                 else
@@ -718,8 +721,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     private boolean saveSectionOrPagewiseData()
     {
         if (validateCommentOfQuestion()) {
-            AuditSubSectionsActivity.isDataSaved = true;
-            finish();
+           // AuditSubSectionsActivity.isDataSaved = true;
+           // finish();
             return true;
         }
         else

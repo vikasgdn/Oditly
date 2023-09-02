@@ -615,11 +615,21 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                         holder.mCommentLenthTV.setVisibility(View.GONE);
                         holder.mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     }
-                    if (brandStandardQuestionsOption.getAction_plan_required()==1) {
-                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+
+                    if (!brandStandardQuestionsOption.isAuto_action_plan())
+                    {
+                        holder.mActionPlanLabelTV.setVisibility(View.VISIBLE);
+                        if (brandStandardQuestionsOption.getAction_plan_required()==1) {
+                            holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+                        }
+                        else {
+                            holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        }
                     }
-                    else {
-                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                    else
+                    {
+                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        holder.mActionPlanLabelTV.setVisibility(View.GONE);
                     }
                     // as one option selected
                     holder.mCommentET.requestFocus();
@@ -704,12 +714,22 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                         holder.mCommentLenthTV.setVisibility(View.GONE);
                         holder.mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     }
-                    if (arrayList.get(position).getAction_plan_required()==1) {
-                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+                    if (!arrayList.get(position).isAuto_action_plan())
+                    {
+                        holder.mActionCreateLL.setVisibility(View.VISIBLE);
+                        if (arrayList.get(position).getAction_plan_required()==1) {
+                            holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+                        }
+                        else {
+                            holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        }
                     }
-                    else {
-                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                    else
+                    {
+                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        holder.mActionCreateLL.setVisibility(View.GONE);
                     }
+
 
                     answerOptionId.add(arrayList.get(position).getOption_id());
                     if (arrayList.get(position).getOption_text().equalsIgnoreCase("N/A") || arrayList.get(position).getOption_text().equalsIgnoreCase("NA"))

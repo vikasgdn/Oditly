@@ -157,7 +157,7 @@ public class AppUtils {
                         count += 1;
                         BrandStandardQuestion question = brandStandardSubQuestion.get(j);
                         String questionType = question.getQuestion_type();
-                        if (brandStandardSubQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("target"))) {
+                        if (brandStandardSubQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target"))) {
                             if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required() == 1) {
                                 //  AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
@@ -165,7 +165,7 @@ public class AppUtils {
                                 return null;
                             }
                         } else {
-                            if (brandStandardSubQuestion.size() > 0 && (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required() == 1)) {
+                            if (brandStandardSubQuestion.size() > 0 && (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required() == 1) && !questionType.equalsIgnoreCase("media")) {
                                 //AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
 
