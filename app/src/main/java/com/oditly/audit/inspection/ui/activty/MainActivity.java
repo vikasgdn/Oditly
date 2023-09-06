@@ -50,7 +50,8 @@ public class MainActivity extends BaseActivity {
         this.mAuditTypeID = getIntent().getStringExtra("audit_type_id");
         initView();
         initVar();
-        if (!NotificationPermissionManager.areNotificationsEnabled(this)) {
+        if (!NotificationPermissionManager.areNotificationsEnabled(this))
+        {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 NotificationPermissionManager.showNotificationPermissionRationale(this);
             }

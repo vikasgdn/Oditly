@@ -827,13 +827,13 @@ public class AppDialogs
                 public void onClick(View v) {
                     if (activity instanceof BrandStandardAuditActivity) {
                         ((BrandStandardAuditActivity) activity).isDialogSaveClicked=true;
-                        ((BrandStandardAuditActivity)activity).finish();
-                        // ((BrandStandardAuditActivity) activity).saveBrandStandardQuestion();
+                       // ((BrandStandardAuditActivity)activity).finish();
+                        ((BrandStandardAuditActivity) activity).handelNextPreviousPopUpYESNoClick();
                     }
                     else if (activity instanceof BrandStandardAuditActivityPagingnation)
                     {
                         // ((BrandStandardAuditActivityPagingnation)activity).saveBrandStandardQuestion();
-                        ((BrandStandardAuditActivityPagingnation)activity).finish();
+                            ((BrandStandardAuditActivityPagingnation)activity).finish();
                     }
                     else
                     {

@@ -339,6 +339,19 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             AppUtils.toast(this, getString(R.string.internet_error));
         }
     }
+
+    public void handelNextPreviousPopUpYESNoClick()
+    {
+        if (isDialogSaveClicked) {
+            if (mNextPreviousClick == 1)
+                setNextButtonSetUP();
+            else if (mNextPreviousClick == 2)
+                setPreviousButtonSetUP();
+
+            isDialogSaveClicked = false;
+            mNextPreviousClick = 0;
+        }
+    }
     private JSONArray  getQuestionsArray() {
         JSONArray jsonArray = new JSONArray();
         ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
@@ -534,7 +547,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         {
             isBackButtonClick=true; // This is for saving last answer data and hold th page
             isSaveButtonClick=true; // This is only for showing progressBar
-            saveSectionOrPagewiseData();
+            if(saveSectionOrPagewiseData())
+                finish();
         }
         else
             finish();
