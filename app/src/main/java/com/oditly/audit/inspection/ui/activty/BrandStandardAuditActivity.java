@@ -621,7 +621,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 {
                     mNextPreviousClick=1;
                     isDialogSaveClicked=true;   // as we are having same behaviour like dialog loader and change page after response;
-                    saveSectionOrPagewiseData();
+                  //  saveSectionOrPagewiseData();
 
                     if (saveSectionOrPagewiseData()) {
                         isAnswerCliked=false;

@@ -8,10 +8,10 @@ android {
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.oditly.audit.inspection"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 33
-        versionCode 1044
-        versionName "1044"
+        versionCode 1045
+        versionName "1045"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

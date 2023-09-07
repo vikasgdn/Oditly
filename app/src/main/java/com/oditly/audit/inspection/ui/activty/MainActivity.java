@@ -2,6 +2,7 @@ package com.oditly.audit.inspection.ui.activty;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -52,11 +53,11 @@ public class MainActivity extends BaseActivity {
         initVar();
         if (!NotificationPermissionManager.areNotificationsEnabled(this))
         {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                NotificationPermissionManager.showNotificationPermissionRationale(this);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
             }
-        }
 
+        }
     }
 
     /* access modifiers changed from: protected */
@@ -115,6 +116,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1009) {
             if (grantResults.length <= 0 || grantResults[0] != 0) {
                 AppUtils.toastDisplayForLong(this, "Please enable permission for geo-tagging of images");

@@ -824,7 +824,8 @@ public class AppDialogs
             });
             dialog.findViewById(R.id.tv_no).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     if (activity instanceof BrandStandardAuditActivity) {
                         ((BrandStandardAuditActivity) activity).isDialogSaveClicked=true;
                        // ((BrandStandardAuditActivity)activity).finish();
