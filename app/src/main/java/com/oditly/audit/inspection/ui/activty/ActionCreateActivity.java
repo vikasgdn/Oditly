@@ -283,6 +283,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 DatePickerDialog datePickerDialog1 = new DatePickerDialog(this, (datePicker, i, i1, i2) -> ((TextView) view).setText(datePicker.getYear() + "-" + String.format("%02d-%02d", (datePicker.getMonth() + 1), i2)), startYear, startMonth, startDay);
                 datePickerDialog1.getDatePicker().setMinDate(System.currentTimeMillis());
                 datePickerDialog1.show();
+              //  AppUtils.datePickerForAction(this,mDueDateET,true);
                 break;
             case R.id.tv_moreoptions:
                 Intent intent = new Intent(this, ActionCreateMoreActivity.class);
@@ -443,6 +444,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 params.put(NetworkConstant.REQ_PARAM_ACTION_DETAILS, mCorrectiveActionET.getText().toString());
                 params.put(NetworkConstant.REQ_PARAM_PLANNED_DATE, mDueDateET.getText().toString());
                 params.put(NetworkConstant.REQ_PARAM_ASSIGNED_USERID, jsArray);
+               // internal-audit/question/action-plan
                 NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.ACTION_PLAN_ADD_NEW, NetworkConstant.METHOD_POST, this, this);
                 networkService.call(params);
             } catch (Exception e) {

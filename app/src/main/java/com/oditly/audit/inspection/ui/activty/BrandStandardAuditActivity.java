@@ -342,7 +342,10 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
     public void handelNextPreviousPopUpYESNoClick()
     {
-        if (isDialogSaveClicked) {
+        if (isBackButtonClick) {
+            isBackButtonClick = false; // This is only for showing progressBar
+            finish();
+        } else if (isDialogSaveClicked) {
             if (mNextPreviousClick == 1)
                 setNextButtonSetUP();
             else if (mNextPreviousClick == 2)

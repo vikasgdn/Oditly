@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -975,6 +976,65 @@ public class AppUtils {
         //                (currentDay+1)+"/"+(currentMonth+1)+"/"+(currentYear), "dd/MM/yyyy"));
     }
 
+
+    public static void datePickerForAction(final Context context, final TextView editText, final boolean needTimePicker) {
+        Calendar c = Calendar.getInstance();
+        // Process to get Current Date
+        final int currentYear = c.get(Calendar.YEAR);
+        final int currentMonth = c.get(Calendar.MONTH);
+        final int currentDay = c.get(Calendar.DAY_OF_MONTH);
+        final int currentHour = c.get(Calendar.HOUR_OF_DAY);
+        final int currentMinute = c.get(Calendar.MINUTE);
+        int setYear = currentYear;
+        int setMonth = currentMonth;
+        int setDay = currentDay;
+        int setHour = currentHour;
+        int setMinute = currentMinute;
+
+
+        int finalSetHour = setHour;
+        int finalSetMinute = setMinute;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        if (year <= (currentYear) /*&& monthOfYear<mMonth && dayOfMonth<mDay*/) {
+                            String strYEAR = String.valueOf(year);
+
+                            //							Adding 0, If Date in Single Digit
+                            String strDATE = "";
+                            if (dayOfMonth < 10)
+                                strDATE = "0" + dayOfMonth;
+                            else
+                                strDATE = String.valueOf(dayOfMonth);
+
+                            //Adding 0, If Month in Single Digit
+                            String strMONTH = "";
+                            int month = monthOfYear + 1;
+                            if (month < 10)
+                                strMONTH = "0" + month;
+                            else
+                                strMONTH = String.valueOf(month);
+
+                            // Display Selected date in TextView
+                            /*DD/MM/YYYY*/
+                            String date = strYEAR + "-" + strMONTH + "-" + strDATE;
+
+                            if (needTimePicker)
+                                timePickerForActionPlan(context, editText, date);
+                            else {
+                                editText.setText(date);
+                            }
+                        } else {
+                            Log.e("", "Invalid Date!");
+                        }
+                    }
+                }, setYear, setMonth, setDay);
+        datePickerDialog.show();
+
+    }
+
     public static void timePicker(Context context, final TextView editText, final String date, final BrandStandardQuestion brandStandardQuestion) {
         String time = "";
         Calendar c = Calendar.getInstance();
@@ -1005,6 +1065,34 @@ public class AppUtils {
                     ((BrandStandardAuditActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
                 else
                     ((BrandStandardOptionsBasedQuestionActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+
+            }
+        }, setHour, setMinute, true);
+        timePickerDialog.show();
+    }
+    public static void timePickerForActionPlan(Context context, final TextView editText, final String date) {
+        String time = "";
+        Calendar c = Calendar.getInstance();
+        // Process to get Current Date
+        final int currentHour = c.get(Calendar.HOUR_OF_DAY);
+        final int currentMinute = c.get(Calendar.MINUTE);
+        int setHour = currentHour;
+        int setMinute = currentMinute;
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String strMinute = String.valueOf(minute);
+                String strHour = String.valueOf(hourOfDay);
+
+                if ((strHour).length() == 1) {
+                    strHour = "0" + strHour;
+                }
+                if ((strMinute).length() == 1) {
+                    strMinute = "0" + strMinute;
+                }
+                String time = (date.isEmpty() ? date : (date + " ")) + strHour + ":" + strMinute + ":00";
+                editText.setText(time);
 
             }
         }, setHour, setMinute, true);

@@ -247,7 +247,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
                     DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), "", "", AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
                     VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
                 } else {
-                    DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
+                    DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(),questionId, AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
                     VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
                 }
             }
@@ -263,7 +263,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
                             DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), "", "", AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
                             VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
                         } else {
-                            DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
+                            DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(),questionId, AppPreferences.INSTANCE.getOktaToken(context), context, stringListener, errorListener);
                             VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
                         }
                     }
@@ -291,7 +291,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
                                         DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), "", "", token, context, stringListener, errorListener);
                                         VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
                                     } else {
-                                        DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), token, context, stringListener, errorListener);
+                                        DeleteBSQuestionAttachmentRequest editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequest(AppPreferences.INSTANCE.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(),questionId, token, context, stringListener, errorListener);
                                         VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
                                     }
 
