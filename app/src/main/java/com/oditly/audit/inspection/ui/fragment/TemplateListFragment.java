@@ -318,7 +318,6 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onItemClick(RecyclerView.Adapter adapter, View v, int position)
     {
-      //  Toast.makeText(mActivity,""+mTeamListBean.get(position).getQuestionnaire_title(),Toast.LENGTH_SHORT).show();
         mQuestioneriesID=mTeamListBean.get(position).getQuestionnaire_id();
         getTemplateCreateListFromServer();
 
