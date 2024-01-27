@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:gravity="center"
+    android:padding="@dimen/d_15dp">
+
+    <RelativeLayout
+        android:layout_width="450dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite">
+
+        <LinearLayout
+            android:id="@+id/ll_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:padding="@dimen/d_15dp"
+               android:text="@string/text_create_audit"
+               android:textSize="@dimen/text_size_22"
+               android:fontFamily="@font/comfortaa_bold"
+               android:gravity="center"
+               android:textColor="@color/c_blue"/>
+        </LinearLayout>
+
+       <androidx.appcompat.widget.LinearLayoutCompat
+           android:id="@+id/ll_container"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/ll_layout"
+           android:layout_margin="@dimen/d_15dp"
+           android:orientation="vertical">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:fontFamily="@font/nunitosans_semibold"
+               android:text="@string/text_location"
+               android:drawableRight="@drawable/ic_star12"
+               android:textColor="@color/c_dark_gray"
+               android:textSize="@dimen/text_size_16" />
+           <RelativeLayout
+               android:id="@+id/rl_location"
+               android:layout_width="match_parent"
+               android:layout_height="45dp"
+               android:background="@drawable/gray_border_whitebg"
+               android:visibility="visible"
+               android:layout_marginTop="10dp"
+               >
+               <Spinner
+                   android:id="@+id/spn_locationtype"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:background="@null"
+                   android:drawSelectorOnTop="true"
+                   android:popupBackground="@color/colorWhite"
+                   />
+               <ImageView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentRight="true"
+                   android:layout_centerVertical="true"
+                   android:scaleType="fitXY"
+                   android:background="@drawable/ic_dropdown_gray"
+                   android:padding="10dp"
+                   />
+           </RelativeLayout>
+           <TextView
+               android:id="@+id/tv_appname"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:fontFamily="@font/nunitosans_semibold"
+               android:text="@string/text_audit_type"
+               android:drawableRight="@drawable/ic_star12"
+               android:layout_marginTop="@dimen/d_20dp"
+               android:textColor="@color/c_dark_gray"
+               android:textSize="@dimen/text_size_16" />
+           <RelativeLayout
+               android:id="@+id/rl_staytple"
+               android:layout_width="match_parent"
+               android:layout_height="45dp"
+               android:background="@drawable/gray_border_whitebg"
+               android:visibility="visible"
+               android:layout_marginTop="10dp"
+               >
+
+               <Spinner
+                   android:id="@+id/spn_audittype"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:background="@null"
+                   android:drawSelectorOnTop="true"
+                   android:popupBackground="@color/colorWhite" />
+               <ImageView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentRight="true"
+                   android:layout_centerVertical="true"
+                   android:scaleType="fitXY"
+                   android:background="@drawable/ic_dropdown_gray"
+                   android:padding="10dp"
+                   />
+           </RelativeLayout>
+
+       </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_container"
+            android:layout_marginTop="@dimen/d_20dp"
+            android:layout_marginLeft="@dimen/d_2dp"
+            android:layout_marginRight="@dimen/d_2dp"
+            android:layout_marginBottom="@dimen/d_2dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="@dimen/d_10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/tv_shape_corner_blue_border"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_size_18"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/c_blue"/>
+
+
+            <TextView
+                android:id="@+id/tv_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="@dimen/d_10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/c_blue"
+                android:text="@string/text_create"
+                android:textSize="@dimen/text_size_18"
+                android:textAllCaps="false"
+                android:textColor="@color/c_white"
+                android:fontFamily="@font/nunitosans_regular"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

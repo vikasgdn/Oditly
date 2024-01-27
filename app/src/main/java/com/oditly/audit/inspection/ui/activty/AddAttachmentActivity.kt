@@ -601,9 +601,10 @@ class AddAttachmentActivity() : BaseActivity(), View.OnClickListener, OnSingleIm
                 ).show()
             }
         }
-        if (attachType.equals("bsSection", ignoreCase = true)) url =
-            NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId else url =
-            NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW + "?audit_id=" + auditId + "&section_group_id=" + sectionGroupId + "&section_id=" + sectionId + "&question_id=" + questionId
+        if (attachType.equals("bsSection", ignoreCase = true))
+            url = NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW + "?audit_id=" + auditId
+        else
+            url = NetworkURL.BS_FILE_UPLOAD_LISTGET_NEW + "?audit_id=" + auditId + "&question_id=" + questionId
         if (AppPreferences.INSTANCE.providerName.equals(AppConstant.OKTA, ignoreCase = true)) {
             val getReportRequest = GetReportRequest(
                 AppPreferences.INSTANCE.getAccessToken(context),

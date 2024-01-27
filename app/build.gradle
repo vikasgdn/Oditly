@@ -10,8 +10,8 @@ android {
         applicationId "com.oditly.audit.inspection"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 1045
-        versionName "1045"
+        versionCode 1048
+        versionName "1048"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,7 +36,7 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            debuggable true
+            debuggable false
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'

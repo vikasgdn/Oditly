@@ -45,7 +45,7 @@ public class AddQuestionAttachmentRequest extends BaseStringRequest {
         params.put(REQ_PARAM_SECTION_GROUP_ID, sectionGroupId);
         params.put(REQ_PARAM_SECTION_ID, sectionId);
         params.put(REQ_PARAM_QUESTION_ID, questionId);
-        params.put(REQ_PARAM_DESCRIPTION, description);
+       // params.put(REQ_PARAM_DESCRIPTION, description);
         params.put(REQ_PARAM_IS_CRITICAL, isCritical);
         params.put(REQ_PARAM_LATITUDE, latitude);
         params.put(REQ_PARAM_LONGITUDE, longitude);
@@ -71,7 +71,9 @@ public class AddQuestionAttachmentRequest extends BaseStringRequest {
 
         AppLogger.e("UploadImageName", ""+fileName);
         AppLogger.e("UploadImageByteData", ""+byteData);
+        AppLogger.e("AttachmentParam-URL", ""+url);
         AppLogger.e("AttachmentParam", ""+params);
+
         AppLogger.e("AttachmentHeader", ""+headerParams);
         AppLogger.e("AttachmentMultiPartParam", ""+multipartParams);
     }

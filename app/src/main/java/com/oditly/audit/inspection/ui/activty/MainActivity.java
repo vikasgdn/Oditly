@@ -30,6 +30,7 @@ import com.oditly.audit.inspection.ui.fragment.DashboardFragment;
 import com.oditly.audit.inspection.ui.fragment.LandingFragment;
 import com.oditly.audit.inspection.ui.fragment.ReportListFragment;
 import com.oditly.audit.inspection.ui.fragment.TeamListFragment;
+import com.oditly.audit.inspection.ui.fragment.TemplateListFragment;
 import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
 import com.oditly.audit.inspection.util.LocationUtils;
@@ -154,7 +155,7 @@ public class MainActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, LandingFragment.newInstance(this.mAuditTypeID)).commitAllowingStateLoss();
         } else {
             this.mTitleTV.setText(getResources().getString(R.string.text_team));
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, TeamListFragment.newInstance(4)).commitAllowingStateLoss();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, TemplateListFragment.newInstance(4)).commitAllowingStateLoss();
         }
     }
 

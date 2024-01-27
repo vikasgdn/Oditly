@@ -191,7 +191,9 @@ public class ReportListFragment extends BaseFragment implements View.OnClickList
     {
         if (NetworkStatus.isNetworkConnected(mActivity)) {
             mSpinKitView.setVisibility(View.VISIBLE);
-            String auditUrl = NetworkURL.AUDIT_LIST + "?" + "filter_report_status=1&" + "page=" + "1" + "&assigned=0&search="+mSerachValue;
+          //  String auditUrl = NetworkURL.AUDIT_LIST + "?" + "filter_report_status=1&" + "page=" + "1" + "&assigned=0&search="+mSerachValue;
+            String auditUrl = NetworkURL.AUDIT_LIST + "?filter[brand_std_status][]=5&page=1&search="+mSerachValue;
+
             System.out.println("==> Report URL==>  "+auditUrl);
             NetworkService networkService = new NetworkService(auditUrl, NetworkConstant.METHOD_GET, this,mActivity);
             networkService.call( new HashMap<String, String>());

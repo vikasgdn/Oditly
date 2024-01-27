@@ -47,7 +47,7 @@ public class TeamListFragment extends BaseFragment implements View.OnClickListen
     public static TeamListFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
-        TeamListFragment fragment = new TeamListFragment();
+            TeamListFragment fragment = new TeamListFragment();
         fragment.setArguments(args);
         return fragment;
     }

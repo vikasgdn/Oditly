@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -88,6 +89,8 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
     private EditText mCorrectiveActionET;
     private TextView mDueDateET;
     private Spinner mPriorityTypeSPN;
+    private Spinner mDueTimeSPN;
+
     private Spinner mLocationTypeSPN;
     private Spinner mSectionTypeSPN;
     private List<String> mLocationList, mLocationListID;
@@ -117,7 +120,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
     private String mSectionID = "0", mSectionGroupID, mQuestionID, mAuditID = "";
     private TextView mTitleErrorTV, mDetailsErrorTV, mDueDateErrorTV, mAssigneeErrorTV;
     private String mActionCreateUsingLocationURL = "", mActionCreateUsingAuditURL = "";
-    private String mFromWhere = "";
+    private String mFromWhere = "",mDueTime="";
     private RelativeLayout mLocationRL;
     private RelativeLayout mSectionRL;
     private TextView mLocationTv,mSectionTV;
@@ -153,6 +156,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
         mSectionRL = (RelativeLayout) findViewById(R.id.rl_section);
 
         mPriorityTypeSPN = findViewById(R.id.spn_priority);
+        mDueTimeSPN = findViewById(R.id.spn_duetime);
         mLocationTypeSPN = findViewById(R.id.spn_locationtype);
 
         mSectionTypeSPN = findViewById(R.id.spn_section);
@@ -224,6 +228,16 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (mSectionListID != null && mSectionListID.size() > 0)
                     mSectionID = mSectionListID.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        mDueTimeSPN.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    mDueTime = mDueTimeSPN.getSelectedItem().toString();
             }
 
             @Override
@@ -303,6 +317,8 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                     mTitleErrorTV.setVisibility(View.VISIBLE);
                else if (TextUtils.isEmpty(dueDate))
                     mDueDateErrorTV.setVisibility(View.VISIBLE);
+                 else if (TextUtils.isEmpty(mDueTime) || mDueTime.equalsIgnoreCase("Select Time"))
+                     mDueDateErrorTV.setVisibility(View.VISIBLE);
                 else if (all.equalsIgnoreCase("All"))
                     mAssigneeErrorTV.setVisibility(View.VISIBLE);
                 else {
@@ -386,7 +402,8 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
     private void getActionCreateDataFromServerUsingAudit() {
         if (NetworkStatus.isNetworkConnected(this)) {
             mProgressBarRL.setVisibility(View.VISIBLE);
-            mActionCreateUsingAuditURL = NetworkURL.GET_ACTIONCREATE_USING_AUDIT_API + mAuditID;
+            https://api.account.stage.oditly.com/internal-audit/question/action-plan/create?audit_id=1620358&question_id=816574
+            mActionCreateUsingAuditURL = NetworkURL.GET_ACTIONCREATE_USING_AUDIT_API + mAuditID+"&question_id="+mQuestionID;
             Log.e("Filter url==> ", "" + mActionCreateUsingAuditURL);
             NetworkService networkService = new NetworkService(mActionCreateUsingAuditURL, NetworkConstant.METHOD_GET, this, this);
             networkService.call(new HashMap<String, String>());
@@ -395,7 +412,6 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
 
         }
     }
-
     private void postActionCreateServerData(String firebaseToken) {
         if (NetworkStatus.isNetworkConnected(this)) {
             mProgressBarRL.setVisibility(View.VISIBLE);
@@ -404,7 +420,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 AddAdHocActionPlan bean=new AddAdHocActionPlan();
                 bean.setLocation_id(mLocatioID);
                 bean.setPriority_id(mPriorityID);
-                bean.setPlanned_date(mDueDateET.getText().toString());
+                bean.setPlanned_date(mDueDateET.getText().toString()+" "+mDueTime+":00");
                 bean.setTitle(mTitleET.getText().toString());
                 bean.setAction_details(mCorrectiveActionET.getText().toString());
                 bean.setAssigned_user_id(jsArray);
@@ -440,9 +456,13 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                 params.put(NetworkConstant.REQ_PARAM_QUSITION_ID, mQuestionID);
                 params.put(NetworkConstant.REQ_PARAM_TITLE, mTitleET.getText().toString());
                 params.put(NetworkConstant.REQ_PARAM_PRIORITYID, mPriorityID);
-                params.put(NetworkConstant.REQ_PARAM_COMPLETE_MEDIA_COUNT,mMeidaCountET.getText().toString());
+                if (mMeidaCountET.getText().toString().length()==0)
+                    params.put(NetworkConstant.REQ_PARAM_COMPLETE_MEDIA_COUNT,"0");
+                else
+                    params.put(NetworkConstant.REQ_PARAM_COMPLETE_MEDIA_COUNT,mMeidaCountET.getText().toString());
+
                 params.put(NetworkConstant.REQ_PARAM_ACTION_DETAILS, mCorrectiveActionET.getText().toString());
-                params.put(NetworkConstant.REQ_PARAM_PLANNED_DATE, mDueDateET.getText().toString());
+                params.put(NetworkConstant.REQ_PARAM_PLANNED_DATE, mDueDateET.getText().toString()+" "+mDueTime+":00");
                 params.put(NetworkConstant.REQ_PARAM_ASSIGNED_USERID, jsArray);
                // internal-audit/question/action-plan
                 NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.ACTION_PLAN_ADD_NEW, NetworkConstant.METHOD_POST, this, this);

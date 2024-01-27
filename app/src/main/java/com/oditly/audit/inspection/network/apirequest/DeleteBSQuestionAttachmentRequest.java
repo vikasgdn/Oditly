@@ -35,7 +35,7 @@ public class DeleteBSQuestionAttachmentRequest extends BaseStringRequest {
                                              Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
         params.put(REQ_PARAM_AUDIT_ID, auditId);
-        params.put(REQ_PARAM_SECTION_FILE_ID, ""+sectionFileId);
+      //  params.put(REQ_PARAM_SECTION_FILE_ID, ""+sectionFileId);
         params.put(REQ_PARAM_QUESTION_FILE_ID, ""+questionFileId);
         params.put(REQ_PARAM_QUESTION_ID, ""+questionId);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);

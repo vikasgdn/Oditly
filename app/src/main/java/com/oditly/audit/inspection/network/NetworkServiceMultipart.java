@@ -71,7 +71,7 @@ public class NetworkServiceMultipart {
                 builder.addFormDataPart("planned_date",mRequestBean.getPlanned_date());
                 builder.addFormDataPart("action_details",mRequestBean.getAction_details());
                 builder.addFormDataPart("media_count",mRequestBean.getMedia_count());
-                builder.addFormDataPart("cc_emails","");
+             //   builder.addFormDataPart("cc_emails","");
                 for (int i=0;i<mRequestBean.getAssigned_user_id().length();i++) {
                     builder.addFormDataPart("assigned_user_id[]", mRequestBean.getAssigned_user_id().get(i).toString());
                 }

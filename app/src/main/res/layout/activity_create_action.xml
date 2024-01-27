@@ -225,25 +225,59 @@
                 android:textColor="@color/c_dark_gray"
                 android:textSize="@dimen/text_size_16" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/d_10dp"
+                android:weightSum="10"
+                >
             <TextView
                 android:id="@+id/tv_duedate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/d_10dp"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="6"
                 android:background="@drawable/gray_border_whitebg"
                 android:drawableLeft="@drawable/ic_date"
                 android:drawablePadding="@dimen/d_5dp"
+                android:layout_marginRight="8dp"
                 android:fontFamily="@font/nunitosans_regular"
                 android:hint="@string/text_select_date"
                 android:padding="@dimen/d_10dp"
                 android:textColor="@color/c_gray_text"
                 android:textSize="@dimen/text_size_16" />
+            <RelativeLayout
+                android:id="@+id/rl_duetime"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="4"
+                android:background="@drawable/gray_border_whitebg"
+                android:visibility="visible">
+
+                <Spinner
+                    android:id="@+id/spn_duetime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:entries="@array/arr_duetime"
+                    android:drawSelectorOnTop="true"
+                    android:popupBackground="@color/colorWhite" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_dropdown_gray"
+                    android:padding="10dp"
+                    android:scaleType="fitXY" />
+            </RelativeLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_plandateerror"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-5dp"
                 android:fontFamily="@font/nunitosans_regular"
                 android:gravity="left"
                 android:padding="@dimen/d_2dp"

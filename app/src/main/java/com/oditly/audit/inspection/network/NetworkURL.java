@@ -18,8 +18,8 @@ public class NetworkURL {
 
 
     //API URL'S STAGE SERVER NEW
-    //  public static final String API_BASE_URL_NEW= "https://api.account.stage.oditly.com/";
-    // public static final String API_BASE_URL = "https://api.account.stage.oditly.com/m/";
+    // public static final String API_BASE_URL_NEW= "https://api.account.stage.oditly.com/";
+     //public static final String API_BASE_URL = "https://api.account.stage.oditly.com/m/";
 
 
 
@@ -60,7 +60,9 @@ public class NetworkURL {
     public static final String CHECK_USER = API_BASE_URL + "check-user";
 
     public static final String RESET_PASSWORD_NEW= API_BASE_URL_NEW+ "reset-password";
-    public static final String AUDIT_LIST = API_BASE_URL + "ia/audits";
+    //  public static final String AUDIT_LIST = API_BASE_URL + "ia/audits";
+    public static final String AUDIT_LIST = API_BASE_URL_NEW + "internal-audits";
+
     public static final String BS_EDIT_ATTACHMENT_NEW = API_BASE_URL_NEW + "internal-audit/question/file/description";
     public static final String BS_DELETE_ATTACHMENT_NEW = API_BASE_URL_NEW + "internal-audit/question/file/delete";
 
@@ -75,7 +77,10 @@ public class NetworkURL {
     public static final String BRANDSTANDARD_SECTION_SAVE_NEW = API_BASE_URL_NEW + "internal-audit/section/submit";
 
 
-    public static final String ACTION_PLAN = API_BASE_URL_NEW+ "ia/action-plans";   //remove new as discuss with Manish
+    public static final String ACTION_PLAN_LIST = API_BASE_URL_NEW+ "ia/action-plans";   //remove new as discuss with Manish
+
+    // public static final String ACTION_PLAN_LIST = API_BASE_URL_NEW+ "internal-audit/question/action-plan";   //remove new as discuss with Manish
+
     public static final String ACTION_PLAN_COMPLETE= API_BASE_URL_NEW+"ia/action-plan/complete";
 
 
@@ -88,12 +93,14 @@ public class NetworkURL {
     public static final String GET_REPORT_URL=API_BASE_URL_NEW+"report/ia/audit/overall/pdf?audit_id="; //for complete audit report
     public static final String GET_DASHBOARD_URL=API_BASE_URL_NEW+"ia/report/dashboard?";
     public static final String AUDIT_LOCATION_LIST =API_BASE_URL+"filter/location?";
-    public static final String GET_AUDITCREATEFILTER_URL=API_BASE_URL_NEW+ "internal/audit/create?location_id=";
-    public static final String POST_AUDIT_ADD_URL=API_BASE_URL_NEW+ "internal/audit";
+    public static final String GET_AUDITCREATEFILTER_URL=API_BASE_URL_NEW+ "internal-audit/create?location_id=";
+    public static final String POST_AUDIT_ADD_URL=API_BASE_URL_NEW+ "internal-audit";
     public static final String GET_ACTIONCREATE_USING_LOCATION_API=API_BASE_URL_NEW+"ia/action-plan/create?location_id=";
-    public static final String GET_ACTIONCREATE_USING_AUDIT_API=API_BASE_URL_NEW+"ia/action-plan/create?audit_id=";
+   // public static final String GET_ACTIONCREATE_USING_AUDIT_API=API_BASE_URL_NEW+"ia/action-plan/create?audit_id=";
+    public static final String GET_ACTIONCREATE_USING_AUDIT_API=API_BASE_URL_NEW+"internal-audit/question/action-plan/create?audit_id=";
+
     public static final String ACTION_PLAN_ADD_ADHOC = API_BASE_URL_NEW + "ia/action-plan";
-    public static final String ACTION_PLAN_ADD_NEW = API_BASE_URL_NEW +"internal-audit/action-plan";
+    public static final String ACTION_PLAN_ADD_NEW = API_BASE_URL_NEW +"internal-audit/question/action-plan";
 
     public static final String ACTION_PLAN_ADD_COMMENT = API_BASE_URL_NEW + "ia/action-plan/update-comment";
     public static final String ACTION_PLAN_COMMENT_LIST = API_BASE_URL_NEW + "ia/action-plan/update-comments?action_plan_id=";
@@ -117,7 +124,10 @@ public class NetworkURL {
     public static final String URL_TERM_AND_CONDITION="https://www.oditly.com/terms_of_use";
     public static final String POST_DEMO_URL="https://www.oditly.com/demo_form.php";
 
-
+ // TEMPLATE
+    public static final String GET_TEMPLATE_LIST=API_BASE_URL_NEW+"internal-questionnaires";
+    public static final String GET_TEMPLATE_CREATELIST=API_BASE_URL_NEW+"internal-questionnaire/create-inspection?questionnaire_id=";
+    public static final String POST_TEMPLATE_CREATE=API_BASE_URL_NEW+"internal-audit";
 
 
     // audit_id,action_plan_id,file

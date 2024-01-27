@@ -76,7 +76,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
 
         initView(getView());
         initVar();
-        mURL= NetworkURL.ACTION_PLAN+"?action_plan_status%5B%5D=1&assigned=1";
+        mURL= NetworkURL.ACTION_PLAN_LIST+"?filter[action_plan_status][]=10&filter[assigned]=1";
 
         getAuditListFromServer(status); //scheduled
 
@@ -166,7 +166,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
                 previousTotal=0;
                 mCurrentPage=1;
                 status=1;
-                mURL=NetworkURL.ACTION_PLAN+"?action_plan_status%5B%5D=10&assigned=1";
+                mURL=NetworkURL.ACTION_PLAN_LIST+"?filter[action_plan_status][]=10&filter[assigned]=1";
                 getAuditListFromServer(status); //scheduled
                 break;
             case R.id.tv_progress:
@@ -180,7 +180,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
                 previousTotal=0;
                 mCurrentPage=1;
                 status=2;
-                mURL= NetworkURL.ACTION_PLAN+"?action_plan_status%5B%5D=2&action_plan_status%5B%5D=30&assigned=1";
+                mURL= NetworkURL.ACTION_PLAN_LIST+"?filter[action_plan_status][]=30&filter[assigned]=1";
 
                 getAuditListFromServer(status); //
                 break;
@@ -195,7 +195,7 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
                 previousTotal=0;
                 mCurrentPage=1;
                 status=4;
-                mURL=NetworkURL.ACTION_PLAN+"?action_plan_status%5B%5D=40&assigned=1";
+                mURL=NetworkURL.ACTION_PLAN_LIST+"?filter[action_plan_status][]=40&filter[assigned]=1";
                 getAuditListFromServer(status); //scheduled
                 break;
             case R.id.fb_create:
@@ -237,8 +237,8 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
                 mAuditLisBean.clear();
             }
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                row=object.getInt("rows");
-                mTotalPage=(object.getInt("rows")/object.getInt("limit"))+1;
+                row=object.optInt("rows");
+             //   mTotalPage=(object.optInt("rows")/object.optInt("limit"))+1;
 
                 ActionRootObject auditRootObject = new GsonBuilder().create().fromJson(object.toString(), ActionRootObject.class);
                 Log.e(" ACTION","=====> size "+auditRootObject.getData().size());

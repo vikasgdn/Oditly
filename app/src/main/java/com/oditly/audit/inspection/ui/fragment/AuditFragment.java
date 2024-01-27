@@ -90,7 +90,8 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
         mBsOfflineDB= BsOfflineDBImpl.getInstance(mActivity);
         initView(getView());
         initVar();
-        mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=1&assigned=1&page=1&skip_overdue=1";
+        //mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=1&assigned=1&page=1&skip_overdue=1";
+        mAuditURL=NetworkURL.AUDIT_LIST+"?filter[brand_std_status][]=1&filter[assigned]=1&filter[skip_overdue]=1";
         getAuditListFromServer(); //scheduled
     }
 
@@ -174,7 +175,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
             case R.id.tv_schedule:
                 mAudityType= AppConstant.SCHEDULE;
                 status =1;
-                mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=1&assigned=1&skip_overdue=1";
+                mAuditURL= NetworkURL.AUDIT_LIST+"?filter[brand_std_status][]=1&filter[assigned]=1&filter[skip_overdue]=1";
                 if(mSheduleTv.isSelected())
                     mSheduleTv.setSelected(false);
                 else
@@ -191,7 +192,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
             case R.id.tv_progress:
                 mAudityType= AppConstant.INPROGRESS;
                 status =2;
-                mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=2&filter_brand_std_status%5B%5D=3&assigned=1&skip_overdue=1";
+                mAuditURL= NetworkURL.AUDIT_LIST+"?filter[brand_std_status][]=2&filter[brand_std_status][]=3&filter[assigned]=1&filter[skip_overdue]=1";
                 if(mResumeTv.isSelected())
                     mResumeTv.setSelected(false);
                 else {
@@ -208,7 +209,7 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
             case R.id.tv_overdue:
                 mAudityType= AppConstant.OVERDUE;
                 status =3;
-                mAuditURL= NetworkURL.AUDIT_LIST+"?assigned=1&overdue=1";
+                mAuditURL= NetworkURL.AUDIT_LIST+"?filter[brand_std_status][]=-1&filter[assigned]=1";
                 if(mOverDueTV.isSelected())
                     mOverDueTV.setSelected(false);
                 else {

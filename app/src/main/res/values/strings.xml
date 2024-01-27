@@ -258,7 +258,7 @@
     <string name="text_sheduled">Scheduled</string>
     <string name="text_more_option">More Options</string>
     <string name="text_create_audit">Create Inspection</string>
-    <string name="text_duedate">Due Date</string>
+    <string name="text_duedate">Due Date Time</string>
     <string name="text_select_date">Please Select Date</string>
     <string name="text_benchmark">Benchmark(%)</string>
     <string name="text_doyouneed">Do you need a reviewer?</string>
@@ -409,6 +409,10 @@
 
 
 
+    <string name="text_templatename">Template</string>
+   <string name="text_templateid">Template ID</string>
+   <string name="text_templateaddedby">Added By</string>
+   <string name="text_template_lastmodifiedon">Last Modified On</string>
 
 
 </resources>

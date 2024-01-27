@@ -33,8 +33,8 @@ public class DeleteBSAttachmentRequest extends BaseStringRequest {
     public DeleteBSAttachmentRequest(String accessToken, String url, String auditId, int sectionFileId, String section_groupid, String sectionid,String tokenFirebase, Context context, Response.Listener<String> listener, Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
         params.put(REQ_PARAM_AUDIT_ID, auditId);
-        params.put(REQ_PARAM_SECTION_FILE_ID, ""+sectionFileId);
-        params.put(REQ_PARAM_SECTION_GROUP_ID, ""+section_groupid);
+       // params.put(REQ_PARAM_SECTION_FILE_ID, ""+sectionFileId);
+       // params.put(REQ_PARAM_SECTION_GROUP_ID, ""+section_groupid);
         params.put(REQ_PARAM_SECTION_ID, ""+sectionid);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);

@@ -48,9 +48,9 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(REQ_PARAM_AUDIT_ID, auditId);
-            jsonObject.put(REQ_PARAM_AUDIT_DATE, auditDate);
-            jsonObject.put(REQ_PARAM_SAVE, save);
-            jsonObject.put(REQ_PARAM_ANSWER, answer);
+           // jsonObject.put(REQ_PARAM_AUDIT_DATE, auditDate);
+          //  jsonObject.put(REQ_PARAM_SAVE, save);
+          //  jsonObject.put(REQ_PARAM_ANSWER, answer);
 
         } catch (Exception e) {
             e.printStackTrace();
