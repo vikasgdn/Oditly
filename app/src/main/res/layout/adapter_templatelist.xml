@@ -36,7 +36,7 @@
                     android:fontFamily="@font/nunitosans_semibold"
                     android:padding="@dimen/d_2dp"
                     android:maxLines="1"
-                    android:textColor="@color/c_gray_text"
+                    android:textColor="@color/c_dark_gray"
                     android:textSize="@dimen/text_size_16"/>
 
                 <TextView
@@ -48,9 +48,9 @@
                     android:singleLine="true"
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
-                    android:fontFamily="@font/nunitosans_regular"
+                    android:fontFamily="@font/nunitosans_semibold"
                     android:padding="@dimen/d_2dp"
-                    android:textColor="@color/c_gray_text"
+                    android:textColor="@color/c_dark_gray"
                     android:textSize="@dimen/text_size_16"/>
 
             </LinearLayout>
@@ -66,7 +66,7 @@
                     android:gravity="left"
                     android:fontFamily="@font/nunitosans_regular"
                     android:padding="@dimen/d_2dp"
-                    android:textColor="@color/c_gray_text"
+                    android:textColor="@color/c_dark_gray"
                     android:textSize="@dimen/text_size_16"/>
                 <TextView
                     android:id="@+id/tv_templateid"
@@ -91,7 +91,7 @@
                     android:gravity="left"
                     android:fontFamily="@font/nunitosans_regular"
                     android:padding="@dimen/d_2dp"
-                    android:textColor="@color/c_gray_text"
+                    android:textColor="@color/c_dark_gray"
                     android:textSize="@dimen/text_size_16"/>
             <TextView
                 android:id="@+id/tv_templateaddedby"
@@ -116,7 +116,7 @@
                     android:gravity="left"
                     android:fontFamily="@font/nunitosans_regular"
                     android:padding="@dimen/d_2dp"
-                    android:textColor="@color/c_gray_text"
+                    android:textColor="@color/c_dark_gray"
                     android:textSize="@dimen/text_size_16"/>
             <TextView
                 android:id="@+id/tv_templatemodifiedon"

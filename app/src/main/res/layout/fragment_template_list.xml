@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_white">
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_clickonthedesiretemplate"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/c_gray"
+        android:padding="@dimen/d_10dp"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_size_14"
+        android:fontFamily="@font/nunitosans_regular"
+        />
+        
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_teamlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_text"
+            android:layout_marginTop="@dimen/d_4dp"
+            android:layout_marginBottom="@dimen/d_50dp"
+            android:fadeScrollbars="false"
+            tools:listitem="@layout/adapter_templatelist"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
+
+    <RelativeLayout
+        android:id="@+id/rl_nodatafound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_settings"
+        android:visibility="gone"
+        android:background="@mipmap/no_data_found"
+        >
+        <TextView
+            android:id="@+id/tv_nodatafound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="0dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:gravity="center"
+            android:padding="@dimen/d_8dp"
+            android:text="@string/s_no_action_found"
+            android:textColor="@color/c_red"
+            android:textSize="@dimen/text_size_18"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <include
+        android:layout_width="@dimen/d_progressbar"
+        android:layout_height="@dimen/d_progressbar"
+        android:layout_centerInParent="true"
+        layout="@layout/spunk_view"
+        />
+
+</RelativeLayout>

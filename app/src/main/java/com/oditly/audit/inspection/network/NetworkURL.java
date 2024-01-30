@@ -125,7 +125,7 @@ public class NetworkURL {
     public static final String POST_DEMO_URL="https://www.oditly.com/demo_form.php";
 
  // TEMPLATE
-    public static final String GET_TEMPLATE_LIST=API_BASE_URL_NEW+"internal-questionnaires";
+    public static final String GET_TEMPLATE_LIST=API_BASE_URL_NEW+"internal-questionnaires?filter%5Bque_status%5D%5B%5D=1";
     public static final String GET_TEMPLATE_CREATELIST=API_BASE_URL_NEW+"internal-questionnaire/create-inspection?questionnaire_id=";
     public static final String POST_TEMPLATE_CREATE=API_BASE_URL_NEW+"internal-audit";
 

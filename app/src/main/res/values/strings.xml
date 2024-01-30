@@ -239,7 +239,7 @@
     <string name="text_add">Add</string>
     <string name="text_not_allowed_team">You are not allowed to add team</string>
     <string name="text_auditor_name">Assignee Name</string>
-    <string name="text_template">Template</string>
+    <string name="text_template">Templates</string>
     <string name="text_designation">Designation</string>
     <string name="text_not_applicable">N/A</string>
     <string name="text_username">User Name</string>
@@ -408,11 +408,11 @@
    <string name="login_privacypolicy">Please read our privacy policy <u>here</u></string>
 
 
-
-    <string name="text_templatename">Template</string>
-   <string name="text_templateid">Template ID</string>
-   <string name="text_templateaddedby">Added By</string>
-   <string name="text_template_lastmodifiedon">Last Modified On</string>
-
+    <string name="text_templatename">Template:</string>
+   <string name="text_templateid">Template ID:</string>
+   <string name="text_templateaddedby">Added By:</string>
+   <string name="text_template_lastmodifiedon">Last Modified On:</string>
+   <string name="text_clickonthedesiretemplate">Please click on the desired template to start the inspection.</string>
+    <string name="text_start_inspection">Start Inspection</string>
 
 </resources>

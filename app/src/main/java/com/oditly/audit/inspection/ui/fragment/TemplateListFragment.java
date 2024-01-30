@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oditly.audit.inspection.R;
@@ -69,6 +70,14 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
     private ArrayAdapter mLocationAdapter;
     private ArrayAdapter mAudittTypeAdapter;
 
+    private int previousTotal = 0;
+    private boolean loading = true;
+    private int visibleThreshold = 4;
+    int firstVisibleItem, visibleItemCount, totalItemCount;
+    private int mCurrentPage=1;
+    private int mTotalPage=1;
+    private String mTemplateListURL="";
+
     public static TemplateListFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
@@ -85,7 +94,7 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_teamlist, container, false);
+        View view = inflater.inflate(R.layout.fragment_template_list, container, false);
 
         return view;
     }
@@ -107,11 +116,11 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
         mTeamListRV=(RecyclerView)view.findViewById(R.id.rv_teamlist);
         mProgressBarRL=(RelativeLayout)view.findViewById(R.id.ll_parent_progress);
         mNoDataFoundRL=(RelativeLayout)view.findViewById(R.id.rl_nodatafound);
-        view.findViewById(R.id.iv_add).setOnClickListener(this);
     }
     @Override
     protected void initVar() {
         super.initVar();
+        mTemplateListURL=NetworkURL.GET_TEMPLATE_LIST;
         mTeamListBean=new ArrayList<>();
 
         mLocationList=new ArrayList<>();
@@ -120,24 +129,48 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
         mAuditsTypeList=new ArrayList<>();
         mAuditTypeIDList=new ArrayList<>();
 
+
+        LinearLayoutManager mLayoutManager;
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mTeamListRV.setLayoutManager(mLayoutManager);
+
+
         mAddTeamListAdapter=new TemplateListAdapter(mActivity,mTeamListBean,this);
         mTeamListRV.setAdapter(mAddTeamListAdapter);
+        mTeamListRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                visibleItemCount = mTeamListRV.getChildCount();
+                totalItemCount = mLayoutManager.getItemCount();
+                firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
+
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                    }
+                }
+                if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                    // Toast.makeText(getActivity()," END PAGE",Toast.LENGTH_SHORT).show();
+                    if (mTotalPage>mCurrentPage) {
+                        mCurrentPage++;
+                         mTemplateListURL = NetworkURL.GET_TEMPLATE_LIST + "&page=" + mCurrentPage + "";
+                        getTeamListFromServer(); //scheduled
+                    }
+                    loading = true;
+                }
+            }
+        });
     }
     @Override
     public void onClick(View view)
     {
         switch (view.getId())
         {
-            case R.id.iv_add:
-                int roleId= AppPreferences.INSTANCE.getUserRole(mActivity);
-                Log.e("role Id===>",""+roleId);
-                if (roleId==200 || roleId==250 || roleId==260 ||roleId ==350) {
-                    Intent intent = new Intent(mActivity, AddTeamMemberActivity.class);
-                    startActivity(intent);
-                }
-                else
-                    AppUtils.toast(mActivity,getString(R.string.text_not_allowed_team));
-                break;
+
 
         }
 
@@ -146,7 +179,8 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
     {
         if (NetworkStatus.isNetworkConnected(mActivity)) {
             mProgressBarRL.setVisibility(View.VISIBLE);
-            NetworkService networkService = new NetworkService(NetworkURL.GET_TEMPLATE_LIST, NetworkConstant.METHOD_GET, this,mActivity);
+            System.out.println("==> mTemplateListURL==>  "+mTemplateListURL);
+            NetworkService networkService = new NetworkService(mTemplateListURL, NetworkConstant.METHOD_GET, this,mActivity);
             networkService.call( new HashMap<String, String>());
         } else
         {
@@ -204,13 +238,16 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
     {
         Log.e("TEMPLATE Response==>",""+response);
 
-        if (service.equalsIgnoreCase(NetworkURL.GET_TEMPLATE_LIST)) {
+        if (service.equalsIgnoreCase(mTemplateListURL)) {
 
             try {
                 mNoDataFoundRL.setVisibility(View.GONE);
                 JSONObject object = new JSONObject(response);
                 String message = object.getString(AppConstant.RES_KEY_MESSAGE);
                 if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+
+                    mTotalPage=(object.getInt("rows")/object.getInt("limit"))+1;
+
                     JSONArray array = object.optJSONArray("data");
                     if (array != null && array.length() > 0) {
                         for (int i = 0; i < array.length(); i++) {
@@ -253,7 +290,7 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
                     Intent startAudit = new Intent(mActivity, AuditSubSectionsActivity.class);
                    // startAudit.putExtra(AppConstant.BRAND_NAME, auditInfo.getBrand_name());
                    // startAudit.putExtra(AppConstant.LOCATION_NAME, auditInfo.getLocation_title());
-                   // startAudit.putExtra(AppConstant.AUDIT_NAME, auditInfo.getAudit_name());
+                    startAudit.putExtra(AppConstant.AUDIT_NAME, cheildData.optString("audit_name"));
                     startAudit.putExtra(AppConstant.AUDIT_ID, "" + cheildData.optString("audit_id"));
                     //startAudit.putExtra(AppConstant.BS_STATUS, "" + auditInfo.getBrand_std_status());
                     mActivity.startActivity(startAudit);

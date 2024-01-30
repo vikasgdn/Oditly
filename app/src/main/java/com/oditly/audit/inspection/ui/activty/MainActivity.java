@@ -146,16 +146,14 @@ public class MainActivity extends BaseActivity {
             this.mTitleTV.setText(getResources().getString(R.string.s_mytask));
             getSupportFragmentManager().beginTransaction().replace(R.id.container, LandingFragment.newInstance(this.mAuditTypeID)).commitAllowingStateLoss();
         } else if (position == 1) {
+            this.mTitleTV.setText(getResources().getString(R.string.text_template));
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, TemplateListFragment.newInstance(0)).commitAllowingStateLoss();
+        } else if (position == 2) {
             this.mTitleTV.setText(getResources().getString(R.string.s_analytics));
             getSupportFragmentManager().beginTransaction().replace(R.id.container, DashboardFragment.newInstance(0)).commitAllowingStateLoss();
-        } else if (position == 2) {
-            this.mTitleTV.setText(getResources().getString(R.string.s_reports));
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, ReportListFragment.newInstance("")).commitAllowingStateLoss();
-        } else if (position != 3) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, LandingFragment.newInstance(this.mAuditTypeID)).commitAllowingStateLoss();
         } else {
-            this.mTitleTV.setText(getResources().getString(R.string.text_team));
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, TemplateListFragment.newInstance(4)).commitAllowingStateLoss();
+            this.mTitleTV.setText(getResources().getString(R.string.s_reports));
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, ReportListFragment.newInstance(this.mAuditTypeID)).commitAllowingStateLoss();
         }
     }
 

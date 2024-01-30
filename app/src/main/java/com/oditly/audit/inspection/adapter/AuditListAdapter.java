@@ -58,7 +58,7 @@ public class AuditListAdapter extends RecyclerView.Adapter<AuditListAdapter.Audi
         holder.mAuditTypeTV.setText(""+auditInfo.getAudit_type());
         holder.mAuditNameTV.setText(auditInfo.getAudit_name()+" || "+auditInfo.getAudit_id());
         holder.mLocationTV.setText(auditInfo.getLocation_title());
-        holder.mTemplateTV.setText(context.getResources().getString(R.string.text_template)+": "+auditInfo.getQuestionnaire_title());
+        holder.mTemplateTV.setText(context.getResources().getString(R.string.text_templatename)+": "+auditInfo.getQuestionnaire_title());
         holder.mDateTV.setText(AppUtils.getFormatedDateWithTime(auditInfo.getAudit_due_date()));
         holder.mCompletePercentageTV.setText(""+Math.round(auditInfo.getCompletion_percent())+"%"+context.getResources().getString(R.string.text_complete));
         holder.mPieChartAuditPer.setPercent(auditInfo.getCompletion_percent());

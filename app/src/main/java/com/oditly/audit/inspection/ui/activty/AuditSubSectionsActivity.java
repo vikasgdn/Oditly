@@ -114,7 +114,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         super.initVar();
         mHeaderTitleTV.setText(R.string.text_inspection);
         auditId = getIntent().getStringExtra(AppConstant.AUDIT_ID);
-        mAuditName = getIntent().getStringExtra(AppConstant.AUDIT_NAME);
+        mAuditName = getIntent().getStringExtra(AppConstant.AUDIT_NAME)==null?"":getIntent().getStringExtra(AppConstant.AUDIT_NAME);
         mAuditNameTV.setText(mAuditName+" (ID:"+auditId+")");
     }
     @Override
