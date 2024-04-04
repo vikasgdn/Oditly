@@ -14,6 +14,7 @@ import com.oditly.audit.inspection.network.NetworkConstant;
 import com.oditly.audit.inspection.network.NetworkService;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
+import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppUtils;
 
 import org.json.JSONObject;
@@ -25,7 +26,7 @@ public class ActionCreateMoreActivity extends BaseActivity implements INetworkEv
 
     private RelativeLayout mProgressBarRL;
     private EditText mInstructionET,mCEmailET;
-
+    private int mPriorityDays=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class ActionCreateMoreActivity extends BaseActivity implements INetworkEv
     @Override
     protected void initVar() {
         super.initVar();
+        mPriorityDays=getIntent().getIntExtra(AppConstant.PRIORITY_DAYS,0);
+
     }
 
     @Override

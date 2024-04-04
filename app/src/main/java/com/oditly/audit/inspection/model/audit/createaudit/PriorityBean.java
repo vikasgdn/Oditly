@@ -7,6 +7,8 @@ public class PriorityBean
     private String priority_name;
     private String priority_color;
 
+    private long max_due_day_gap;
+
     public int getPriority_id() {
         return priority_id;
     }
@@ -30,6 +32,17 @@ public class PriorityBean
     public void setPriority_color(String priority_color) {
         this.priority_color = priority_color;
     }
+
+
+    public long getPriorityDays() {
+        return max_due_day_gap;
+    }
+
+    public void setPriority_color(int max_due_day_gap) {
+        this.max_due_day_gap = max_due_day_gap;
+    }
+
+
 
 
 /* "priority_id": 1,

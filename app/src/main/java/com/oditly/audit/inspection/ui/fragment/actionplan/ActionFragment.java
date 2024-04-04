@@ -53,6 +53,8 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
     private int mCurrentPage=1;
     private int mTotalPage=1;
     private boolean isPagingData=false;
+    private String mOverDueCountURL=NetworkURL.ACTION_PLAN_LIST+"?filter[action_plan_status][]=40&filter[assigned]=1";;
+    private String mProgressCountURL=NetworkURL.ACTION_PLAN_LIST+"?filter[action_plan_status][]=30&filter[assigned]=1";
 
 
     public static ActionFragment newInstance(int page) {
@@ -79,6 +81,8 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
         mURL= NetworkURL.ACTION_PLAN_LIST+"?filter[action_plan_status][]=10&filter[assigned]=1";
 
         getAuditListFromServer(status); //scheduled
+        getActionResumeCountFromServer();
+        getActiontOverdueCountFromServer();
 
     }
 
@@ -206,6 +210,26 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
+    private void getActionResumeCountFromServer()
+    {
+        if (NetworkStatus.isNetworkConnected(mActivity)) {
+            NetworkService networkService = new NetworkService(mProgressCountURL, NetworkConstant.METHOD_GET, this,mActivity);
+            networkService.call( new HashMap<String, String>());
+        } else
+        {
+            AppUtils.toast(mActivity, mActivity.getString(R.string.internet_error));
+        }
+    }
+    private void getActiontOverdueCountFromServer()
+    {
+        if (NetworkStatus.isNetworkConnected(mActivity)) {
+            NetworkService networkService = new NetworkService(mOverDueCountURL, NetworkConstant.METHOD_GET, this,mActivity);
+            networkService.call( new HashMap<String, String>());
+        } else
+        {
+            AppUtils.toast(mActivity, mActivity.getString(R.string.internet_error));
+        }
+    }
 
     private void getAuditListFromServer(int status)
     {
@@ -232,46 +256,57 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
     {
         try {
             JSONObject object = new JSONObject(response);
-            mNoDataFoundRL.setVisibility(View.GONE);
-            if (!isPagingData) {
-                mAuditLisBean.clear();
+
+            if (service.equalsIgnoreCase(mProgressCountURL)) {
+                mResumeTv.setText(getString(R.string.s_progress_audit) + "(" + object.optString("rows") + ")");
+                mProgressCountURL="";
+                // mResumeTv.setSelected(true);
             }
-            if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                row=object.optInt("rows");
-             //   mTotalPage=(object.optInt("rows")/object.optInt("limit"))+1;
+            else if(service.equalsIgnoreCase(mOverDueCountURL)) {
+                mOverDueTV.setText(getString(R.string.s_overdue) + "(" + object.optString("rows") + ")");
+                mOverDueCountURL="";
+                //  mOverDueTV.setSelected(true);
+            }
+            else {
 
-                ActionRootObject auditRootObject = new GsonBuilder().create().fromJson(object.toString(), ActionRootObject.class);
-                Log.e(" ACTION","=====> size "+auditRootObject.getData().size());
-                if (auditRootObject.getData() != null && auditRootObject.getData().size() > 0) {
-
-                    mAuditLisBean.addAll(auditRootObject.getData());
-                    mAuditListAdapter.notifyDataSetChanged();
-
-                    switch (status)
-                    {
-                        case 1:
-                            mSheduleTv.setText(mActivity.getString(R.string.s_scheduled)+"("+object.optString("rows")+")");
-                            break;
-                        case 2:
-                            mResumeTv.setText(mActivity.getString(R.string.s_progress)+"("+object.optString("rows")+")");
-                            break;
-                        case 4:
-                            mOverDueTV.setText(mActivity.getString(R.string.s_overdue)+"("+object.optString("rows")+")");
-                            break;
-
-                    }
-
-                }else {
-                    if (row!=20)
-                        mNoDataFoundRL.setVisibility(View.VISIBLE);
+                mNoDataFoundRL.setVisibility(View.GONE);
+                if (!isPagingData) {
+                    mAuditLisBean.clear();
                 }
-            } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                Log.e("ACTION","=====> ELSE IF ");
-                mNoDataFoundRL.setVisibility(View.VISIBLE);
-                AppUtils.toast((BaseActivity) mActivity, object.getString(AppConstant.RES_KEY_MESSAGE));
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    row = object.optInt("rows");
+                    //   mTotalPage=(object.optInt("rows")/object.optInt("limit"))+1;
+
+                    ActionRootObject auditRootObject = new GsonBuilder().create().fromJson(object.toString(), ActionRootObject.class);
+                    Log.e(" ACTION", "=====> size " + auditRootObject.getData().size());
+                    if (auditRootObject.getData() != null && auditRootObject.getData().size() > 0) {
+
+                        mAuditLisBean.addAll(auditRootObject.getData());
+                        mAuditListAdapter.notifyDataSetChanged();
+
+                        switch (status) {
+                            case 1:
+                                mSheduleTv.setText(mActivity.getString(R.string.s_scheduled) + "(" + object.optString("rows") + ")");
+                                break;
+                            case 2:
+                                mResumeTv.setText(mActivity.getString(R.string.s_progress) + "(" + object.optString("rows") + ")");
+                                break;
+                            case 4:
+                                mOverDueTV.setText(mActivity.getString(R.string.s_overdue) + "(" + object.optString("rows") + ")");
+                                break;
+
+                        }
+
+                    } else {
+                        if (row != 20)
+                            mNoDataFoundRL.setVisibility(View.VISIBLE);
+                    }
+                } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    Log.e("ACTION", "=====> ELSE IF ");
+                    mNoDataFoundRL.setVisibility(View.VISIBLE);
+                    AppUtils.toast((BaseActivity) mActivity, object.getString(AppConstant.RES_KEY_MESSAGE));
+                }
             }
-
-
         }
         catch (Exception e)
         {

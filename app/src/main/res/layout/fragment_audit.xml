@@ -50,7 +50,8 @@
                 android:singleLine="true"
                 android:fontFamily="@font/nunitosans_regular"
                 android:background="@drawable/auditbn_selector"
-                android:padding="@dimen/d_8dp"
+                android:paddingHorizontal="@dimen/d_6dp"
+                android:paddingVertical="@dimen/d_8dp"
                 android:textColor="@color/text_selector"
                 android:textSize="@dimen/text_size_14"/>
             <View
@@ -69,7 +70,8 @@
                 android:layout_marginBottom="@dimen/d_1dp"
                 android:background="@drawable/auditbn_selector"
                 android:fontFamily="@font/nunitosans_regular"
-                android:padding="@dimen/d_8dp"
+                android:paddingHorizontal="@dimen/d_6dp"
+                android:paddingVertical="@dimen/d_8dp"
                 android:ellipsize="marquee"
                 android:singleLine="true"
                 android:textColor="@color/text_selector"
@@ -93,7 +95,8 @@
                 android:ellipsize="marquee"
                 android:background="@drawable/auditbn_selector"
                 android:fontFamily="@font/nunitosans_regular"
-                android:padding="@dimen/d_8dp"
+                android:paddingHorizontal="@dimen/d_6dp"
+                android:paddingVertical="@dimen/d_8dp"
                 android:textColor="@color/text_selector"
                 android:textSize="@dimen/text_size_14"/>
         </LinearLayout>

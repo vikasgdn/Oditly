@@ -586,6 +586,26 @@ public class AppDialogs
                             activity.getResources().updateConfiguration(config9, activity.getResources().getDisplayMetrics());
                             Toast.makeText(activity, "Locale in Thai !", Toast.LENGTH_LONG).show();
                             break;
+
+                        case "Italian":
+                            AppPreferences.INSTANCE.setSelectedLang("it");
+                            Locale locale10 = new Locale("it");
+                            Locale.setDefault(locale10);
+                            Configuration config10 = new Configuration();
+                            config10.locale = locale10;
+                            activity.getResources().updateConfiguration(config10, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in Italian !", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "French":
+                            AppPreferences.INSTANCE.setSelectedLang("fr");
+                            Locale locale11 = new Locale("fr");
+                            Locale.setDefault(locale11);
+                            Configuration config11 = new Configuration();
+                            config11.locale = locale11;
+                            activity.getResources().updateConfiguration(config11, activity.getResources().getDisplayMetrics());
+                            Toast.makeText(activity, "Locale in French !", Toast.LENGTH_LONG).show();
+                            break;
                     }
 
 

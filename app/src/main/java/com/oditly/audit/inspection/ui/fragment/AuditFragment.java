@@ -61,6 +61,10 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
     private int mCurrentPage=1;
     private int mTotalPage=1;
     private boolean isPagingData=false;
+
+   private String mProgressCountURL=  NetworkURL.AUDIT_LIST+"?filter[brand_std_status][]=2&filter[brand_std_status][]=3&filter[assigned]=1&filter[skip_overdue]=1";
+   private String mOverDueCountURL=NetworkURL.AUDIT_LIST+"?filter[brand_std_status][]=-1&filter[assigned]=1";
+
     //private int row;
 
     public static AuditFragment newInstance(String auditType) {
@@ -90,9 +94,11 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
         mBsOfflineDB= BsOfflineDBImpl.getInstance(mActivity);
         initView(getView());
         initVar();
-        //mAuditURL= NetworkURL.AUDIT_LIST+"?filter_brand_std_status%5B%5D=1&assigned=1&page=1&skip_overdue=1";
         mAuditURL=NetworkURL.AUDIT_LIST+"?filter[brand_std_status][]=1&filter[assigned]=1&filter[skip_overdue]=1";
         getAuditListFromServer(); //scheduled
+
+        getAuditResumeCountFromServer();
+        getAuditOverdueCountFromServer();
     }
 
 
@@ -240,6 +246,27 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
         }
     }
 
+    private void getAuditResumeCountFromServer()
+    {
+        if (NetworkStatus.isNetworkConnected(mActivity)) {
+            NetworkService networkService = new NetworkService(mProgressCountURL, NetworkConstant.METHOD_GET, this,mActivity);
+            networkService.call( new HashMap<String, String>());
+        } else
+        {
+            AppUtils.toast(mActivity, mActivity.getString(R.string.internet_error));
+        }
+    }
+    private void getAuditOverdueCountFromServer()
+    {
+        if (NetworkStatus.isNetworkConnected(mActivity)) {
+            NetworkService networkService = new NetworkService(mOverDueCountURL, NetworkConstant.METHOD_GET, this,mActivity);
+            networkService.call( new HashMap<String, String>());
+        } else
+        {
+            AppUtils.toast(mActivity, mActivity.getString(R.string.internet_error));
+        }
+    }
+
     @Override
     public void onNetworkCallInitiated(String service)
     {
@@ -250,53 +277,65 @@ public class AuditFragment extends BaseFragment implements View.OnClickListener 
     {
         mBsOfflineDB.deleteAuditListJSONToDB(mAudityType);
         mBsOfflineDB.saveAuditListJSONToDB(mAudityType,response);
-        processAuditListResponse(response);
+
+            processAuditListResponse(response,service);
 
     }
     @Override
     public void onNetworkCallError(String service, String errorMessage) {
         Log.e("onNetworkCallError","===>"+errorMessage);
-      //  if (mActivity!=null)
-        //    AppUtils.toast(mActivity, mActivity.getString(R.string.oops));
         mSpinKitView.setVisibility(View.GONE);
     }
-    private void processAuditListResponse(String response) {
+    private void processAuditListResponse(String response,String service) {
         try {
 
             JSONObject object = new JSONObject(response);
-            mNoDataFoundRL.setVisibility(View.GONE);
-           if (!isPagingData) {
-                mAuditLisBean.clear();
+
+            if (service.equalsIgnoreCase(mProgressCountURL)) {
+                mResumeTv.setText(getString(R.string.s_progress_audit) + "(" + object.optString("rows") + ")");
+                mProgressCountURL="";
+               // mResumeTv.setSelected(true);
             }
-            if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-             //   row=object.getInt("rows");
-                mTotalPage=(object.getInt("rows")/object.getInt("limit"))+1;
+            else if(service.equalsIgnoreCase(mOverDueCountURL)) {
+                mOverDueTV.setText(getString(R.string.s_overdue) + "(" + object.optString("rows") + ")");
+                mOverDueCountURL="";
+              //  mOverDueTV.setSelected(true);
+            }
+            else {
 
-                AuditRootObject auditRootObject = new GsonBuilder().create().fromJson(object.toString(), AuditRootObject.class);
-                if (auditRootObject.getData() != null && auditRootObject.getData().size() > 0) {
-
-                     mAuditLisBean.addAll(auditRootObject.getData());
-                     mAuditListAdapter.updateStatus(status);
-                     mAuditListAdapter.notifyDataSetChanged();
-                    switch (status)
-                    {
-                        case 1:
-                            mSheduleTv.setText(getString(R.string.s_scheduled_audit)+"("+object.optString("rows")+")");
-                            break;
-                        case 2:
-                            mResumeTv.setText(getString(R.string.s_progress_audit)+"("+object.optString("rows")+")");
-                            break;
-                        case 3:
-                            mOverDueTV.setText(getString(R.string.s_overdue)+"("+object.optString("rows")+")");
-                            break;
-                    }
-                }else {
-                    mNoDataFoundRL.setVisibility(View.VISIBLE);
+                mNoDataFoundRL.setVisibility(View.GONE);
+                if (!isPagingData) {
+                    mAuditLisBean.clear();
                 }
-            } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                Log.e("auditRootObject","=====> ELSE IF ");
-                mNoDataFoundRL.setVisibility(View.VISIBLE);
-                AppUtils.toast((BaseActivity) mActivity, object.getString(AppConstant.RES_KEY_MESSAGE));
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    //   row=object.getInt("rows");
+                    mTotalPage = (object.getInt("rows") / object.getInt("limit")) + 1;
+
+                    AuditRootObject auditRootObject = new GsonBuilder().create().fromJson(object.toString(), AuditRootObject.class);
+                    if (auditRootObject.getData() != null && auditRootObject.getData().size() > 0) {
+
+                        mAuditLisBean.addAll(auditRootObject.getData());
+                        mAuditListAdapter.updateStatus(status);
+                        mAuditListAdapter.notifyDataSetChanged();
+                        switch (status) {
+                            case 1:
+                                mSheduleTv.setText(getString(R.string.s_scheduled_audit) + "(" + object.optString("rows") + ")");
+                                break;
+                            case 2:
+                                mResumeTv.setText(getString(R.string.s_progress_audit) + "(" + object.optString("rows") + ")");
+                                break;
+                            case 3:
+                                mOverDueTV.setText(getString(R.string.s_overdue) + "(" + object.optString("rows") + ")");
+                                break;
+                        }
+                    } else {
+                        mNoDataFoundRL.setVisibility(View.VISIBLE);
+                    }
+                } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    Log.e("auditRootObject", "=====> ELSE IF ");
+                    mNoDataFoundRL.setVisibility(View.VISIBLE);
+                    AppUtils.toast((BaseActivity) mActivity, object.getString(AppConstant.RES_KEY_MESSAGE));
+                }
             }
         }
         catch (Exception e)

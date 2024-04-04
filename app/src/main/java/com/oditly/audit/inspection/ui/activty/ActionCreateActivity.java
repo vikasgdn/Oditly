@@ -95,6 +95,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
     private Spinner mSectionTypeSPN;
     private List<String> mLocationList, mLocationListID;
     private List<String> mPriorityList, mPriorityListID;
+    private List<Long> mPriorityListDays;
     private List<String> mSectionList, mSectionListID;
     private CustomDialog imageCustomDialog;
     private boolean isVideoPermission=false;
@@ -117,6 +118,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
     private EditText mMeidaCountET;
     private ArrayList<String> mReviewerList, getmReviewerListID;
     private String mPriorityID = "";
+    private long mPriorityDays=0;
     private String mSectionID = "0", mSectionGroupID, mQuestionID, mAuditID = "";
     private TextView mTitleErrorTV, mDetailsErrorTV, mDueDateErrorTV, mAssigneeErrorTV;
     private String mActionCreateUsingLocationURL = "", mActionCreateUsingAuditURL = "";
@@ -214,8 +216,10 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
         mPriorityTypeSPN.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (mPriorityListID != null && mPriorityListID.size() > 0)
+                if (mPriorityListID != null && mPriorityListID.size() > 0) {
                     mPriorityID = mPriorityListID.get(position);
+                    mPriorityDays= mPriorityListDays.get(position);
+                }
             }
 
             @Override
@@ -255,6 +259,8 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
 
         mPriorityList = new ArrayList<>();
         mPriorityListID = new ArrayList<>();
+
+        mPriorityListDays = new ArrayList<>();
 
         mSectionListID = new ArrayList<>();
         mSectionList = new ArrayList<>();
@@ -296,11 +302,15 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
             case R.id.tv_duedate:
                 DatePickerDialog datePickerDialog1 = new DatePickerDialog(this, (datePicker, i, i1, i2) -> ((TextView) view).setText(datePicker.getYear() + "-" + String.format("%02d-%02d", (datePicker.getMonth() + 1), i2)), startYear, startMonth, startDay);
                 datePickerDialog1.getDatePicker().setMinDate(System.currentTimeMillis());
+                //days *hours * Minute * second *1000 -> =  milliseconds
+                long maxDate=System.currentTimeMillis()+(mPriorityDays*24*3600000);
+                datePickerDialog1.getDatePicker().setMaxDate(maxDate);
                 datePickerDialog1.show();
               //  AppUtils.datePickerForAction(this,mDueDateET,true);
                 break;
             case R.id.tv_moreoptions:
                 Intent intent = new Intent(this, ActionCreateMoreActivity.class);
+                intent.putExtra(AppConstant.PRIORITY_DAYS,mPriorityDays);
                 startActivityForResult(intent, 1001);
                 break;
             case R.id.fb_media:
@@ -516,6 +526,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
 
                     mPriorityListID.clear();
                     mPriorityList.clear();
+                    mPriorityListDays.clear();
 
                     ActionFilterRootObject teamRootObject = new GsonBuilder().create().fromJson(object.toString(), ActionFilterRootObject.class);
                     if (teamRootObject.getData().getUsers() != null && teamRootObject.getData().getUsers().size() > 0) {
@@ -528,6 +539,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                             PriorityBean atype = teamRootObject.getData().getPriorities().get(i);
                             mPriorityListID.add("" + atype.getPriority_id());
                             mPriorityList.add("" + atype.getPriority_name());
+                            mPriorityListDays.add(atype.getPriorityDays());
                         }
                         ArrayAdapter priorityAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, mPriorityList);
                         priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.oditly.audit.inspection.R;
+import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.model.ActionDashboard;
 import com.oditly.audit.inspection.model.InspectionDashboard;
 import com.oditly.audit.inspection.network.INetworkEvent;
@@ -85,7 +86,11 @@ public class DashboardFragment extends BaseFragment implements INetworkEvent {
         super.onActivityCreated(savedInstanceState);
         initView(getView());
         initVar();
-        getDashBoardDataFromServer();
+        int roleId= AppPreferences.INSTANCE.getUserRole(mActivity);
+        if (roleId==280)
+            AppUtils.toast(mActivity,getString(R.string.text_youdonthaveaccess_dashboard));
+        else
+            getDashBoardDataFromServer();
     }
 
     @Override

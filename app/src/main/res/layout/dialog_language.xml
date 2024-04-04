@@ -157,6 +157,28 @@
                 android:layout_margin="@dimen/d_5dp"
                 android:checked="false"
                 android:textSize="@dimen/text_size_18" />
+            <RadioButton
+                android:id="@+id/rd_french"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="French"
+                android:visibility="visible"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/c_gray_text"
+                android:layout_margin="@dimen/d_5dp"
+                android:checked="false"
+                android:textSize="@dimen/text_size_18" />
+            <RadioButton
+                android:id="@+id/rd_italian"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Italian"
+                android:visibility="visible"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/c_gray_text"
+                android:layout_margin="@dimen/d_5dp"
+                android:checked="false"
+                android:textSize="@dimen/text_size_18" />
 
         </RadioGroup>
 

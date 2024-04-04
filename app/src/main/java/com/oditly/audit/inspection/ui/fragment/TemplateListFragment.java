@@ -104,7 +104,13 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
         super.onActivityCreated(savedInstanceState);
         initView(getView());
         initVar();
-        getTeamListFromServer();
+        int roleId= AppPreferences.INSTANCE.getUserRole(mActivity);
+        if (roleId==280)
+            AppUtils.toast(mActivity,getString(R.string.text_youdonthaveaccess_template));
+        else
+            getTeamListFromServer();
+
+
     }
 
 
@@ -265,8 +271,9 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
                         mNoDataFoundRL.setVisibility(View.VISIBLE);
 
 
-                } else
+                } else {
                     AppUtils.toast(mActivity, message);
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();

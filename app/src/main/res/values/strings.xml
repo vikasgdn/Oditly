@@ -167,6 +167,7 @@
     <string name="text_filter">Filter</string>
     <string name="text_eraser">Eraser</string>
     <string name="text_text">Text</string>
+
     <string name="s_no_action_found">No Action Found</string>
     <string name="inspection_option">Inspection-Section</string>
     <string name="text_pleasemark">Please only mark this file as critical if you want to highlight this file out of all the file</string>
@@ -414,5 +415,9 @@
    <string name="text_template_lastmodifiedon">Last Modified On:</string>
    <string name="text_clickonthedesiretemplate">Please click on the desired template to start the inspection.</string>
     <string name="text_start_inspection">Start Inspection</string>
+    <string name="text_youdonthaveaccess_template">You don\'t have access to Templates section</string>
+    <string name="text_youdonthaveaccess_dashboard">You don\'t have access to Analytics section</string>
+
+
 
 </resources>
