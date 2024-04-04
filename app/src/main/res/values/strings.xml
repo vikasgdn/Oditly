@@ -417,7 +417,7 @@
     <string name="text_start_inspection">Start Inspection</string>
     <string name="text_youdonthaveaccess_template">You don\'t have access to Templates section</string>
     <string name="text_youdonthaveaccess_dashboard">You don\'t have access to Analytics section</string>
-
+    <string name="text_completed_late">Completed Late</string>
 
 
 </resources>

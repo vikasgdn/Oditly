@@ -69,7 +69,7 @@
     <string name="text_you_need">Devi completare le seguenti sezioni</string>
     <string name="text_your_goal">Il tuo obiettivo</string>
     <string name="text_you_need_assignmnt">Devi completare le seguenti sezioni</string>
-    <string name="text_search_with_auditid">Cerca con ID di ispezione, ID e-mail dell'assegnatario</string>
+    <string name="text_search_with_auditid">Cerca con ID di ispezione, ID e-mail dell\'assegnatario</string>
     <string name="text_sorrynoauditfound">ขออภัย Spiacenti, nessuna ispezione trovata</string>
 
 
@@ -316,7 +316,7 @@
     <string name="text_thanksforcontact">Grazie per aver contattato il Team Oditly. Il tuo messaggio è stato ricevuto e ti contatteremo a breve</string>
     <string name="text_feedback_des">Ci piacerebbe qui i tuoi pensieri, suggerimenti, preoccupazioni o problemi con qualsiasi cosa in modo da poter migliorare!</string>
     <string name="text_schedule_demo_oditly">Non hai un account Oditly? <b><u>Clicca qui</u></b> Clicca qui per programmare una demo con noi..</string>
-    <string name="text_teamoditlyisworking">Il team Oditly sta lavorando continuamente per aggiungere più funzionalità all\'app, dai un\'occhiata ad alcune delle funzionalità che dovrebbero essere pubblicate nell'app a breve.</string>
+    <string name="text_teamoditlyisworking">Il team Oditly sta lavorando continuamente per aggiungere più funzionalità all\'app, dai un\'occhiata ad alcune delle funzionalità che dovrebbero essere pubblicate nell app a breve.</string>
     <string name="text_passed">Passato</string>
     <string name="text_priority">Priorità</string>
     <string name="s_entertitle">Per favore inserisci il titolo</string>
@@ -340,83 +340,84 @@
     //newly added
 -->
 
-    <string name="text_pending">Pending</string>
-    <string name="text_score">Score</string>
-    <string name="text_type_your_comment">Type your comment</string>
-    <string name="text_type_your_answer">Type your answer</string>
-    <string name="text_nature_of_complaint">Nature of Complaint</string>
-    <string name="text_overdue_by_days">Overdue By XXX Days</string>
-    <string name="text_overdue_by_day">Overdue By XXX Day</string>
-    <string name="text_overdue_days_notapplicable">Due date is not applicable</string>
-    <string name="text_overdue_on">Overdue On</string>
-    <string name="text_by">By</string>
-    <string name="text_complted_on">Completed On</string>
-    <string name="text_members">Members</string>
-    <string name="text_member">Member</string>
-    <string name="text_teamname">Team Name  :</string>
-    <string name="text_create_date">Created Date :</string>
-    <string name="text_team_count">Team Count   :</string>
-    <string name="text_action_has_been_created">Action plan has been created</string>
-    <string name="text_inspection_hasbeen_created_and_assigned">inspection has been created and assigned to the auditor</string>
-    <string name="text_inspection_hasbeen_created_and_scheduled">inspection has been scheduled and will be assigned to the auditor at the scheduled time</string>
-    <string name="text_select_startdate_first">Please select Start Date First</string>
-    <string name="text_select_duedate_first">Please select Due Date First</string>
-    <string name="text_select_time">Select Time</string>
-    <string name="text_select_am_pm">Select AM/PM</string>
-    <string name="text_question">Question:</string>
-    <string name="text_create_actionplanfor_question">Please Create the Action Plan for question no.</string>
+    <string name="text_pending">In attesa di</string>
+    <string name="text_score">Punto</string>
+    <string name="text_type_your_comment">Scrivi il tuo commento</string>
+    <string name="text_type_your_answer">Scrivi la tua risposta</string>
+    <string name="text_nature_of_complaint">Natura del reclamo</string>
+    <string name="text_overdue_by_days">In ritardo entro XXX Giorni</string>
+    <string name="text_overdue_by_day">In ritardo entro XXX Giorno</string>
+    <string name="text_overdue_days_notapplicable">La data di scadenza non è applicabile</string>
+    <string name="text_overdue_on">Overdue Hon</string>
+    <string name="text_by">Di</string>
+    <string name="text_complted_on">Completato il</string>
+    <string name="text_members">Membri</string>
+    <string name="text_member">Membro</string>
+    <string name="text_teamname">Nome della squadra :</string>
+    <string name="text_create_date">Data di Creazione :</string>
+    <string name="text_team_count">Conteggio della squadra  :</string>
+    <string name="text_action_has_been_created">È stato creato un piano d\'azione</string>
+    <string name="text_inspection_hasbeen_created_and_assigned">l\'ispezione è stata creata e assegnata al revisore</string>
+    <string name="text_inspection_hasbeen_created_and_scheduled">l\'ispezione è stata programmata e sarà assegnata al revisore all\'orario previsto</string>
+    <string name="text_select_startdate_first">Seleziona prima la data di inizio</string>
+    <string name="text_select_duedate_first">Seleziona prima la data di scadenza</string>
+    <string name="text_select_time">Seleziona Ora</string>
+    <string name="text_select_am_pm">Selezionare AM/PM</string>
+    <string name="text_question">Domanda:</string>
+    <string name="text_create_actionplanfor_question">Si prega di creare il piano d\'azione per la domanda n.</string>
 
-    <string name="text_submit_requredmedia_count">Please submit the required MMM image(s) for question no. CCC in section</string>
-    <string name="text_enter_requredcomment_count">Please enter the  minimum required XXX characters comment for question no. CCC</string>
-    <string name="text_youhavenot_answer_question">You have not answered question no. CCC</string>
-    <string name="text_actionplan_has_been_created_forthis_question">Action plan has been created for this Question</string>
-    <string name="text_answer_hasbeen_save">Your answer has been saved</string>
-    <string name="text_back">Back</string>
-    <string name="text_youhave_not_answer_question_section">You have not answered question no CCC in section SSS</string>
-    <string name="text_create_actionplan_for_question_section">Please Create the Action Plan for question no. CCC in section SSS</string>
-    <string name="text_submit_requiredmedia_for_question_section">Please submit the required MMM image(s) for question no. CCC in section SSS</string>
-    <string name="text_submit_require_comment_for_question_section">Please enter the minimum required MMM characters comment for question no. CCC in section SSS</string>
-    <string name="text_subsection">SubSection</string>
+    <string name="text_submit_requredmedia_count">Si prega di inviare quanto richiesto MMM immagine/i per la domanda n. CCC nella sezione</string>
+    <string name="text_enter_requredcomment_count">Inserisci il minimo richiesto XXX commento dei personaggi per la domanda n. CCC</string>
+    <string name="text_youhavenot_answer_question">Non hai risposto alla domanda n. CCC</string>
+    <string name="text_actionplan_has_been_created_forthis_question">È stato creato un piano d\'azione per questa domanda</string>
+    <string name="text_answer_hasbeen_save">La tua risposta è stata salvata</string>
+    <string name="text_back">Indietro</string>
+    <string name="text_youhave_not_answer_question_section">Non hai risposto alla domanda n CCC nella sezione SSS</string>
+    <string name="text_create_actionplan_for_question_section">Si prega di creare il piano d\'azione per la domanda n. CCC nella sezione SSS</string>
+    <string name="text_submit_requiredmedia_for_question_section">Si prega di inviare quanto richiesto MMM immagine/i per la domanda n. CCC nella sezione SSS</string>
+    <string name="text_submit_require_comment_for_question_section">Inserisci il minimo richiesto MMM commento dei personaggi per la domanda n. CCC nella sezione SSS</string>
+    <string name="text_subsection">Sottosezione</string>
 
-    <string name="text_appupdate">You are missing out on some important features of Oditly, please update your application.</string>
-    <string name="text_update">Update</string>
-    <string name="text_app_uptodate">Your app is up to date</string>
+    <string name="text_appupdate">Ti stai perdendo alcune importanti funzionalità di Oditly, aggiorna la tua applicazione</string>
+    <string name="text_update">Aggiornamento</string>
+    <string name="text_app_uptodate">La tua app è aggiornata.</string>
     <string name="text_update_your_app">Update your App</string>
 
 
     <!--new-->
-    <string name="text_submit_requredmedia_action">Please submit the required MMM image</string>
-    <string name="text_image_not_attched">Opps.. Image Not Attached</string>
-    <string name="text_douwant_to_continue">Do you want to continue?</string>
-    <string name="text_please_enterminimum">Please enter minimum CCC characters </string>
-    <string name="please_enter_valuein">Please enter value in</string>
-    <string name="text_instruction">Instruction</string>
+    <string name="text_submit_requredmedia_action">Si prega di inviare quanto richiesto MMM Immagine</string>
+    <string name="text_image_not_attched">Ops.. Immagine non allegata</string>
+    <string name="text_douwant_to_continue">Vuoi continuare?</string>
+    <string name="text_please_enterminimum">Inserisci il minimo CCC characters </string>
+    <string name="please_enter_valuein">Inserisci il valore</string>
+    <string name="text_instruction">Istruzioni</string>
     <string name="text_adhoc">Ad Hoc</string>
 
     <!--new in september-->
 
-    <string name="text_overall_score">Overall Score</string>
-    <string name="text_actionplan_attachment">Action Plan Attachment</string>
-    <string name="text_answer">Answer</string>
-    <string name="text_response">Response</string>
-    <string name="text_inspection_attachment">Inspection Attachment</string>
-    <string name="text_root_cause">" Root Cause Analysis"</string>
-    <string name="text_enter_rootcause">Type root cause</string>
-    <string name="text_notify_user">Notify Users</string>
-    <string name="text_enteremail_commaseperated">Enter email IDs separated by comma</string>
-    <string name="text_no_attachment">No Attachment</string>
+    <string name="text_overall_score">Punteggio totale</string>
+    <string name="text_actionplan_attachment">Allegato al piano d\'azione</string>
+    <string name="text_answer">Risposta</string>
+    <string name="text_response">Risposta</string>
+    <string name="text_inspection_attachment">Allegato di ispezione</string>
+    <string name="text_root_cause">" Analisi delle cause profonde"</string>
+    <string name="text_enter_rootcause">Digita la causa principale</string>
+    <string name="text_notify_user">Avvisa gli utenti</string>
+    <string name="text_enteremail_commaseperated">Inserisci gli ID e-mail separati da virgola</string>
+    <string name="text_no_attachment">Nessun allegato</string>
 
-    <string name="login_privacypolicy">Please read our privacy policy <u>here</u></string>
+    <string name="login_privacypolicy">Si prega di leggere la nostra politica sulla privacy <u>qui</u></string>
 
 
-    <string name="text_templatename">Template:</string>
-    <string name="text_templateid">Template ID:</string>
-    <string name="text_templateaddedby">Added By:</string>
-    <string name="text_template_lastmodifiedon">Last Modified On:</string>
-    <string name="text_clickonthedesiretemplate">Please click on the desired template to start the inspection.</string>
-    <string name="text_start_inspection">Start Inspection</string>
-    <string name="text_youdonthaveaccess_template">You don\'t have access to Templates section</string>
-    <string name="text_youdonthaveaccess_dashboard">You don\'t have access to Analytics section</string>
+    <string name="text_templatename">Modelli:</string>
+    <string name="text_templateid">Codice modello:</string>
+    <string name="text_templateaddedby">Aggiunto da:</string>
+    <string name="text_template_lastmodifiedon">Ultima modifica attivata:</string>
+    <string name="text_clickonthedesiretemplate">Fare clic sul modello desiderato per avviare l\'ispezione.</string>
+    <string name="text_start_inspection">Avvia l\'ispezione</string>
+    <string name="text_youdonthaveaccess_template">Non hai accesso alla sezione Modelli.</string>
+    <string name="text_youdonthaveaccess_dashboard">Non hai accesso alla sezione Analytics</string>
+   <string name="text_completed_late">Completato in ritardo</string>
 
 
 </resources>
