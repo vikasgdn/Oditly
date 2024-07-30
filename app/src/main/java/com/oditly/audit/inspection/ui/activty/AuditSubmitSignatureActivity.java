@@ -56,7 +56,6 @@ import java.io.OutputStreamWriter;
 
 public class AuditSubmitSignatureActivity extends BaseActivity {
 
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String TAG =AddAttachmentActivity.class.getSimpleName(); ;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private SignaturePad mSignaturePad;
@@ -152,17 +151,7 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_EXTERNAL_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(context, "Cannot write images to external storage", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
+
 
     public File getAlbumStorageDir(String albumName) {
         // Get the directory for the user's public pictures directory.
@@ -182,28 +171,6 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
         newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         stream.close();
     }
-
-    public boolean addJpgSignatureToGallery(Bitmap signature) {
-        boolean result = false;
-        try {
-            File photo = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
-            saveBitmapToJPG(signature, photo);
-            scanMediaFile(photo);
-            result = true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    private void scanMediaFile(File photo) {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri contentUri = Uri.fromFile(photo);
-        mediaScanIntent.setData(contentUri);
-        context.sendBroadcast(mediaScanIntent);
-    }
-
-
 
     @Override
     public void onBackPressed() {
@@ -243,7 +210,6 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
                 //hideProgressDialog();
                 mProgressBarRL.setVisibility(View.GONE);
                 AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
-                //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
                 Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
 
             }

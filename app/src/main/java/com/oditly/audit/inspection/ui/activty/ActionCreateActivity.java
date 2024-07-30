@@ -218,7 +218,8 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (mPriorityListID != null && mPriorityListID.size() > 0) {
                     mPriorityID = mPriorityListID.get(position);
-                    mPriorityDays= mPriorityListDays.get(position);
+                    if (mPriorityListDays.size()>0)
+                       mPriorityDays= mPriorityListDays.get(position);
                 }
             }
 
@@ -589,6 +590,7 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
                             PriorityBean atype = teamRootObject.getData().getPriorities().get(i);
                             mPriorityListID.add("" + atype.getPriority_id());
                             mPriorityList.add("" + atype.getPriority_name());
+                            mPriorityListDays.add(atype.getPriorityDays());
                         }
                         ArrayAdapter ad1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, mPriorityList);
                         ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -719,20 +721,8 @@ public class ActionCreateActivity extends BaseActivity implements INetworkEvent,
         }
     }
     private void chooseImagesFromGallery() {
-    /*    BSImagePicker pickerDialog = new BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".provider")
-                .setMaximumDisplayingImages(200)
-                .isMultiSelect()
-                .setTag("")
-                .setMinimumMultiSelectCount(1)
-                .setMaximumMultiSelectCount(10)
-                .build();
-        pickerDialog.show(getSupportFragmentManager(),"Picker");*/
-
-
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(photoPickerIntent, AppConstant.REQUEST_TAKE_PHOTO_GALLERY);
-
-
     }
 
 

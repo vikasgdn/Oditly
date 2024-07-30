@@ -7,6 +7,10 @@ public class AditorReviewBean
     private int user_id;
     private String name;
 
+    private String custom_role_name;
+
+    private String email;
+
     public int getRole_id() {
         return role_id;
     }
@@ -29,6 +33,22 @@ public class AditorReviewBean
 
     public void setName(String name) {
         this.name = name;
+    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    public String getCustom_role_name() {
+        return custom_role_name;
+    }
+
+    public void setCustom_role_name(String custom_role_name) {
+        this.custom_role_name = custom_role_name;
     }
 
 //    user_id : 3

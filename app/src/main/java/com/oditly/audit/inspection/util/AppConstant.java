@@ -123,6 +123,7 @@ public class AppConstant {
     public static final String PRIVACY_POLICY = "privacy_policy";
     public static final String TERM_CONDITION = "term_condition";
     public static final String PRIORITY_DAYS ="priority_days" ;
+    public static final String SIGNATURE = "SIGNATURE";
 
 
     public static String DEVICE_ID = "";

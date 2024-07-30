@@ -660,6 +660,12 @@ public class AppDialogs
             case "es":
                 radioGroup.check(R.id.rd_spanish);
                 break;
+            case "it":
+                radioGroup.check(R.id.rd_italian);
+                break;
+            case "fr":
+                radioGroup.check(R.id.rd_french);
+                break;
         }
     }
 

@@ -39,6 +39,16 @@ public class BrandStandardQuestion {
     private BrandStandardUnit unit;
     private String max_mark;
 
+    public String getSignature_image_url() {
+        return signature_image_url;
+    }
+
+    public void setSignature_image_url(String signature_image_url) {
+        this.signature_image_url = signature_image_url;
+    }
+
+    private String signature_image_url;
+
     public int getQuestion_id() {
         return this.question_id;
     }
@@ -266,19 +276,4 @@ public class BrandStandardQuestion {
     }
 
 
-    /*public int getCommentCountForCondition() {
-        return commentCount;
-    }
-
-    public void setCommentCount(int commentCount) {
-        this.commentCount = commentCount;
-    }
-
-    public int getMediaCountForCondition() {
-        return mediaCount;
-    }
-
-    public void setMediaCount(int mediaCount) {
-        this.mediaCount = mediaCount;
-    }*/
 }

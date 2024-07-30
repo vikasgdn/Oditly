@@ -63,10 +63,10 @@ public class SplashActivity extends BaseActivity implements INetworkEvent {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppUtils.setApplicationLanguage(this,AppPreferences.INSTANCE.getSelectedLang(this));
         setContentView(R.layout.activity_splash);
         AppPreferences.INSTANCE.initAppPreferences(this);
 
-        AppUtils.setApplicationLanguage(this,AppPreferences.INSTANCE.getSelectedLang(this));
 
         AppUtils.deleteCache(this);
         initView();

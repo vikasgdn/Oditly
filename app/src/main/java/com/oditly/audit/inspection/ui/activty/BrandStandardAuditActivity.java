@@ -39,6 +39,7 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSectio
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSubSection;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
+import com.oditly.audit.inspection.network.NetworkService;
 import com.oditly.audit.inspection.network.NetworkServiceJSON;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
@@ -52,6 +53,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -88,7 +90,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     private static final String TAG = BrandStandardAuditActivity.class.getSimpleName();
     private List<BrandStandardQuestion> mBrandStandardListCurrent;
     private  Context context;
-    private String auditId = "",auditDate = "",sectionGroupId = "",sectionId = "",sectionTitle = "",mLocation = "",mChecklist = "",fileCount = "";
+    private String auditDate = "",sectionGroupId = "",sectionId = "",sectionTitle = "",mLocation = "",mChecklist = "",fileCount = "";
     public LayoutInflater inflater;
     private float totalMarks = 0, marksObtained = 0;
     private ArrayList<BrandStandardSection> brandStandardSectionArrayList = new ArrayList<>();
@@ -108,6 +110,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     private String mSectionWeightage="";
     private int mNextPreviousClick=0; // 0,1=next,2=prev;
     public boolean isDialogSaveClicked=false;
+
+    public String auditId="";
 
     @Override
     protected void onResume() {
@@ -264,6 +268,11 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             } else if (requestCode == 1021 && resultCode == -1) {
                 BrandStandardAuditActivity.isAnswerCliked=true;
                 this.currentBrandStandardAuditAdapter.setActionCreatedFlag(this.itemClickedPos);
+            }
+            else if (requestCode == 141 && resultCode == Activity.RESULT_OK) {
+                Log.e("======>    inside on Result","");
+                isAnswerCliked = true;
+                this.sectionTabAdapter.setSignatureUpdate(this.itemClickedPos,data.getStringExtra("SignatueDelete"),data.getStringExtra("URL"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -560,18 +569,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_showhow:
-                BrandStandardRefrence bsRefrence = (BrandStandardRefrence) view.getTag();
-                if (bsRefrence != null) {
-                    if (bsRefrence.getFile_type().contains("image"))
-                        ShowHowImageActivity.start(this, bsRefrence.getFile_url(),"");
-                    else if (bsRefrence.getFile_type().contains("audio"))
-                        AudioPlayerActivity.start(this, bsRefrence.getFile_url());
-                    else if (bsRefrence.getFile_type().contains("video"))
-                        ExoVideoPlayer.start(this, bsRefrence.getFile_url(),"");
-                    else {
-                        ShowHowWebViewActivity.start(this, bsRefrence.getFile_url(),"");
-                    }
-                }
+                getQuestionsRefrenceFile(view.getTag().toString());
                 break;
             case R.id.ll_actioncreate:
                 BrandStandardQuestion bsQuestion = (BrandStandardQuestion) view.getTag();
@@ -856,7 +854,19 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
     };
 
-
+    private String mRefListUrl="";
+    private void getQuestionsRefrenceFile(String questionId)
+    {
+        if (NetworkStatus.isNetworkConnected(this)) {
+            mProgressRL.setVisibility(View.VISIBLE);
+            mRefListUrl = NetworkURL.GET_REFERENCE_FILE_FOR_QUESTION + "?" + "audit_id=" + auditId+"&question_id="+questionId;
+            NetworkService networkService = new NetworkService(mRefListUrl, NetworkConstant.METHOD_GET, this,this);
+            networkService.call( new HashMap<String, String>());
+        } else
+        {
+            AppUtils.toast(this, this.getString(R.string.internet_error));
+        }
+    }
     @Override
     public void onNetworkCallInitiated(String service) { }
     @Override
@@ -866,6 +876,39 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
             //newly added for position refresh
          //   this.currentBrandStandardAuditAdapter.updatehParticularPosition(itemClickedPos);
+        }
+        else if(service.equalsIgnoreCase(mRefListUrl))
+        {
+            mProgressRL.setVisibility(View.GONE);
+            try {
+                JSONObject jsonObject=new JSONObject(responseStr);
+                if (!jsonObject.getBoolean("error"))
+                {
+                    JSONObject bsRefrence=jsonObject.getJSONObject("data");
+
+                    if (bsRefrence != null) {
+                        if (bsRefrence.optString("file_type").contains("image"))
+                            ShowHowImageActivity.start(this, bsRefrence.optString("file_url"),"");
+                        else if (bsRefrence.optString("file_type").contains("audio"))
+                            AudioPlayerActivity.start(this, bsRefrence.optString("file_url"));
+                        else if (bsRefrence.optString("file_type").contains("video"))
+                            ExoVideoPlayer.start(this, bsRefrence.optString("file_url"),"");
+                        else {
+                            ShowHowWebViewActivity.start(this, bsRefrence.optString("file_url"),"");
+                        }
+                    }
+
+                }
+                else {
+                    AppUtils.toast(this, this.getString(R.string.oops));
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
         }
         else
         {

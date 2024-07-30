@@ -26,13 +26,12 @@
         android:layout_below="@+id/spin_kit"
         android:layout_marginStart="@dimen/d_10dp"
         android:layout_marginEnd="@dimen/d_10dp"
-        android:layout_marginBottom="@dimen/d_8dp"
+        android:layout_marginBottom="@dimen/d_6dp"
         android:fontFamily="@font/nunitosans_regular"
         android:gravity="center"
-        android:padding="@dimen/d_4dp"
         android:text="@string/s_loading"
         android:textColor="@color/c_gray_text"
-        android:textSize="@dimen/text_size_16" />
+        android:textSize="@dimen/text_size_14" />
 
 </RelativeLayout>
 

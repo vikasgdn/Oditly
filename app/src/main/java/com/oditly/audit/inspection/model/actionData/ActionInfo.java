@@ -64,7 +64,7 @@ public class ActionInfo {
     private String reviewer_lname = "";
     private String reviewer_email = "";
     private String reviewer_phone = "";
-    private int total_obtained_mark = 0;
+    private float total_obtained_mark = 0;
     private int total_max_mark = 0;
     private String category_title = "";
     private int audit_type_id = 0;
@@ -342,7 +342,7 @@ public class ActionInfo {
         this.reviewer_phone = reviewer_phone;
     }
 
-    public int getTotal_obtained_mark() {
+    public float getTotal_obtained_mark() {
         return total_obtained_mark;
     }
 

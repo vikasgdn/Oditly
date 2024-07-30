@@ -13,6 +13,8 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.oditly.audit.inspection.BuildConfig;
 import com.oditly.audit.inspection.OditlyApplication;
@@ -36,27 +38,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AccountProfileActivity extends BaseActivity implements INetworkEvent {
+public class AccountProfileActivity extends AppCompatActivity implements View.OnClickListener, INetworkEvent {
 
     private TextView mNameLetterTV;
     private TextView mNameTV;
     private TextView mEmailTV;
     private RelativeLayout mProgressBarRL;
-    private TextView mUpdateAppTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        AppPreferences.INSTANCE.initAppPreferences(this);
+      //  AppPreferences.INSTANCE.initAppPreferences(this);
         initView();
         initVar();
 
     }
-    @Override
+
     protected void initView() {
-        super.initView();
 
         TextView textView=(TextView)findViewById(R.id.tv_title);
         textView.setText(getResources().getString(R.string.s_account));
@@ -79,20 +79,16 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
         findViewById(R.id.tv_upcomingfeature).setOnClickListener(this);
         findViewById(R.id.tv_chatwithus).setOnClickListener(this);
         findViewById(R.id.tv_updateteyourapp).setOnClickListener(this);
-
-        mUpdateAppTV=findViewById(R.id.tv_updateteyourapp);
     }
-    @Override
+
     protected void initVar() {
-        super.initVar();
         mNameTV.setText(AppPreferences.INSTANCE.getUserFname(this)+" "+AppPreferences.INSTANCE.getUserLName(this));
         mEmailTV.setText(AppPreferences.INSTANCE.getUserEmail(this));
         mNameLetterTV.setText(AppUtils.returnFirstLetter(this));
     }
 
-    @Override
+
     public void onClick(View view) {
-        super.onClick(view);
         switch (view.getId())
         {
             case R.id.iv_back:
@@ -146,19 +142,6 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
 
         }
     }
-  /*  public void setOTPServer()
-    {
-        if (NetworkStatus.isNetworkConnected(this)) {
-            mProgressBarRL.setVisibility(View.VISIBLE);
-            Map<String, String> params = new HashMap<>();
-            params.put(NetworkConstant.REQ_PARAM_USER, AppPreferences.INSTANCE.getUserEmail(this));
-            NetworkService networkService = new NetworkService(NetworkURL.SENDOTP, NetworkConstant.METHOD_POST, this,this);
-            networkService.call(params);
-        }
-        else
-            AppUtils.toast(this, getString(R.string.internet_error));
-
-    }*/
 
 
     public void setUpdateLanguageToServer()
@@ -233,18 +216,6 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
     }
 
 
-   /* private void logOutServerData()
-    {
-        if (NetworkStatus.isNetworkConnected(this)) {
-            //  showAppProgressDialog();
-            mProgressBarRL.setVisibility(View.VISIBLE);
-            NetworkService networkService = new NetworkService(NetworkURL.LOGOUT, NetworkConstant.METHOD_POST, this ,this);
-            networkService.call(new HashMap<String, String>());
-        } else {
-            AppUtils.toast(this, getString(R.string.internet_error));
-        }
-
-    }*/
     private void getAppUpdateStatusFromServer() {
         if (NetworkStatus.isNetworkConnected(this)) {
             mProgressBarRL.setVisibility(View.VISIBLE);
@@ -264,33 +235,6 @@ public class AccountProfileActivity extends BaseActivity implements INetworkEven
     @Override
     public void onNetworkCallCompleted(String type, String service, String response)
     {
-        Log.e("RESPONSE PROFILE==> ",""+response);
-      /*  if(service.equalsIgnoreCase(NetworkURL.LOGOUT)) {
-            try {
-                JSONObject object = new JSONObject(response);
-                String message = object.getString(AppConstant.RES_KEY_MESSAGE);
-                if (object.getString(AppConstant.RES_KEY_ERROR).equals(AppConstant.ATTRIBUTE_FALSE)) {
-                    wipeDataAfterLogout();
-
-                } else {
-                    AppUtils.toast(AccountProfileActivity.this, message);
-                    if (object.getInt(AppConstant.RES_KEY_CODE) == AppConstant.ERROR) {
-                        finish();
-                        AppPreferences.INSTANCE.setLogin(false, this);
-                        AppPreferences.INSTANCE.setAccessToken("", this);
-                        AppPreferences.INSTANCE.clearPreferences();
-                        Intent intent = new Intent(AccountProfileActivity.this, SplashActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
-
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else*/
         if(service.equalsIgnoreCase(NetworkURL.POST_UPDATE_PROFILE_LANG)) {
             {
                 try {

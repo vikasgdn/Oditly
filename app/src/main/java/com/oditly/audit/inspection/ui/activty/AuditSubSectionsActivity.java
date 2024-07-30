@@ -148,7 +148,8 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
 
     private void getAuditQuestionsFromServer()
     {
-        if (NetworkStatus.isNetworkConnected(this)) {
+        if (NetworkStatus.isNetworkConnected(this))
+        {
             mSpinKitView.setVisibility(View.VISIBLE);
             String questionListUrl = NetworkURL.BRANDSTANDARD + "?" + "audit_id=" + auditId ;
             System.out.println("==> mAuditTYpeID "+questionListUrl);
@@ -157,7 +158,6 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         } else
         {
             AppUtils.toast(this, this.getString(R.string.internet_error));
-            //  processQuestionListResponse(mBsOfflineDB.getOffileQuestionJSONToDB(auditId));
         }
     }
     private void setQuestionList(BrandStandardInfo info){

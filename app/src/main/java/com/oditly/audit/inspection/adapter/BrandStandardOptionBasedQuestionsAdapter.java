@@ -446,10 +446,10 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
 
         brandStandardQuestion.setmClickPosition(position); //newly added for question refresh
 
-        if (brandStandardQuestion.getRef_file()!=null && !AppUtils.isStringEmpty(brandStandardQuestion.getRef_file().getFile_url())) {
+        if (brandStandardQuestion.getRef_file()!=null && !AppUtils.isStringEmpty(brandStandardQuestion.getRef_file().getFile_name())) {
             holder.mShowHowLL.setVisibility(View.VISIBLE);
             holder.mShowHowLL.setEnabled(true);
-            holder.mShowHowLL.setTag(brandStandardQuestion.getRef_file());
+            holder.mShowHowLL.setTag(brandStandardQuestion.getQuestion_id());
             holder.mShowHowLL.setOnClickListener(context);
         } else {
             holder.mShowHowLL.setVisibility(View.GONE);

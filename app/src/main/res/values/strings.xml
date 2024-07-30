@@ -420,4 +420,14 @@
     <string name="text_completed_late">Completed Late</string>
 
 
+
+
+
+    <string name="text_notify_users_oncomplete">Notify Users (On Complete)</string>
+    <string name="text_select_users">Select User(s)</string>
+    <string name="delete">Delete</string>
+    <string name="edit_sign">Edit Signature</string>
+    <string name="click_to_sign">"Click to Sign "</string>
+
+
 </resources>

@@ -33,6 +33,7 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardRefren
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSection;
 import com.oditly.audit.inspection.network.INetworkEvent;
 import com.oditly.audit.inspection.network.NetworkConstant;
+import com.oditly.audit.inspection.network.NetworkService;
 import com.oditly.audit.inspection.network.NetworkServiceJSON;
 import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
@@ -46,6 +47,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -77,7 +79,8 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     private static final String TAG = BrandStandardAuditActivityPagingnation.class.getSimpleName();
     private List<BrandStandardQuestion> mBrandStandardListCurrent;
     private  Context context;
-    private String auditId = "",sectionGroupId = "",sectionId = "",sectionTitle = "",mLocation = "",mChecklist = "",fileCount = "";
+    public String auditId="";
+    private String sectionGroupId = "",sectionId = "",sectionTitle = "",mLocation = "",mChecklist = "",fileCount = "";
     private String sectionWeightage="";
     public LayoutInflater inflater;
     private ArrayList<BrandStandardSection> brandStandardSectionArrayList = new ArrayList<>();
@@ -231,6 +234,15 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 this.mBrandStandardListCurrent.get(this.itemClickedPos).setmImageList(tempList);
                 this.sectionTabAdapter.setattachmentCount(Integer.parseInt(attachmentCount2), this.itemClickedPos);
             } else if (requestCode == 1021 && resultCode == Activity.RESULT_OK) {
+                isAnswerCliked = true;
+                this.sectionTabAdapter.setActionCreatedFlag(this.itemClickedPos);
+            }
+            else if (requestCode == 141 && resultCode == Activity.RESULT_OK) {
+                Log.e("======>    inside on Result","");
+                isAnswerCliked = true;
+                this.sectionTabAdapter.setSignatureUpdate(this.itemClickedPos,data.getStringExtra("SignatueDelete"),data.getStringExtra("URL"));
+            }
+            else if (requestCode == 1021 && resultCode == Activity.RESULT_OK) {
                 isAnswerCliked = true;
                 this.sectionTabAdapter.setActionCreatedFlag(this.itemClickedPos);
             }
@@ -392,18 +404,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_showhow:
-                BrandStandardRefrence bsRefrence =(BrandStandardRefrence) view.getTag();
-                if (bsRefrence!=null)
-                {
-                    if (bsRefrence.getFile_type().contains("image"))
-                        ShowHowImageActivity.start(this,bsRefrence.getFile_url(),"");
-                    else  if (bsRefrence.getFile_type().contains("audio"))
-                        AudioPlayerActivity.start(this, bsRefrence.getFile_url());
-                    else  if (bsRefrence.getFile_type().contains("video"))
-                        ExoVideoPlayer.start(this, bsRefrence.getFile_url(),"");
-                    else
-                        ShowHowWebViewActivity.start(this,bsRefrence.getFile_url(),"");
-                }
+                    getQuestionsRefrenceFile(view.getTag().toString());
                 break;
             case R.id.bs_save_btn:
                 AppUtils.hideKeyboard(context, view);
@@ -485,6 +486,19 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         }
     }
 
+    private String mRefListUrl="";
+    private void getQuestionsRefrenceFile(String questionId)
+    {
+        if (NetworkStatus.isNetworkConnected(this)) {
+            mProgressRL.setVisibility(View.VISIBLE);
+            mRefListUrl = NetworkURL.GET_REFERENCE_FILE_FOR_QUESTION + "?" + "audit_id=" + auditId+"&question_id="+questionId;
+            NetworkService networkService = new NetworkService(mRefListUrl, NetworkConstant.METHOD_GET, this,this);
+            networkService.call( new HashMap<String, String>());
+        } else
+        {
+            AppUtils.toast(this, this.getString(R.string.internet_error));
+        }
+    }
     @Override
     public void onNetworkCallInitiated(String service) { }
     @Override
@@ -493,6 +507,39 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
         if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER))
         {
            //   this.sectionTabAdapter.updatehParticularPosition(itemClickedPos);
+        }
+        else if(service.equalsIgnoreCase(mRefListUrl))
+        {
+            mProgressRL.setVisibility(View.GONE);
+            try {
+                JSONObject jsonObject=new JSONObject(responseStr);
+                if (!jsonObject.getBoolean("error"))
+                {
+                    JSONObject bsRefrence=jsonObject.getJSONObject("data");
+
+                    if (bsRefrence != null) {
+                        if (bsRefrence.optString("file_type").contains("image"))
+                            ShowHowImageActivity.start(this, bsRefrence.optString("file_url"),"");
+                        else if (bsRefrence.optString("file_type").contains("audio"))
+                            AudioPlayerActivity.start(this, bsRefrence.optString("file_url"));
+                        else if (bsRefrence.optString("file_type").contains("video"))
+                            ExoVideoPlayer.start(this, bsRefrence.optString("file_url"),"");
+                        else {
+                            ShowHowWebViewActivity.start(this, bsRefrence.optString("file_url"),"");
+                        }
+                    }
+
+                }
+                else {
+                    AppUtils.toast(this, this.getString(R.string.oops));
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
         }
         else {
             isAnswerCliked = false; // because question is saved

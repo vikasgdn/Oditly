@@ -71,14 +71,15 @@
             android:id="@+id/tv_datetimepicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/d_5dp"
-            android:background="@drawable/brand_standard_unselect_btn"
-            android:text="@string/text_datetime"
-            android:textSize="@dimen/text_size_14"
             android:layout_margin="@dimen/d_5dp"
-            android:gravity="center"
+            android:background="@drawable/brand_standard_unselect_btn"
             android:fontFamily="@font/nunitosans_regular"
-            android:textColor="@color/c_dark_gray" />
+            android:gravity="center"
+            android:padding="@dimen/d_5dp"
+            android:text="@string/text_datetime"
+            android:textColor="@color/c_dark_gray"
+            android:textSize="@dimen/text_size_14" />
+
         <RelativeLayout
             android:id="@+id/rl_slider_layout"
             android:layout_width="match_parent"

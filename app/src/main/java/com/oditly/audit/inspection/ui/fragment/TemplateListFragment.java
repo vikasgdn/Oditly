@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,12 +24,18 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abdeveloper.library.MultiSelectDialog;
+import com.abdeveloper.library.MultiSelectModel;
+import com.google.gson.GsonBuilder;
 import com.oditly.audit.inspection.R;
 import com.oditly.audit.inspection.adapter.team.TeamListAdapter;
 import com.oditly.audit.inspection.adapter.team.TemplateListAdapter;
 import com.oditly.audit.inspection.apppreferences.AppPreferences;
 import com.oditly.audit.inspection.interfaces.OnRecyclerViewItemClickListener;
 import com.oditly.audit.inspection.model.audit.createaudit.AditorReviewBean;
+import com.oditly.audit.inspection.model.audit.createaudit.AuditFilterRootObject;
+import com.oditly.audit.inspection.model.filterData.AuditType;
+import com.oditly.audit.inspection.model.filterData.TemplateBean;
 import com.oditly.audit.inspection.model.teamData.TeamList;
 import com.oditly.audit.inspection.model.template.TemplateList;
 import com.oditly.audit.inspection.network.INetworkEvent;
@@ -38,6 +46,7 @@ import com.oditly.audit.inspection.network.NetworkStatus;
 import com.oditly.audit.inspection.network.NetworkURL;
 import com.oditly.audit.inspection.ui.activty.AddTeamMemberActivity;
 import com.oditly.audit.inspection.ui.activty.AuditSubSectionsActivity;
+import com.oditly.audit.inspection.ui.activty.BaseActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivity;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
 import com.oditly.audit.inspection.ui.activty.BrandStandardOptionsBasedQuestionActivity;
@@ -54,7 +63,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TemplateListFragment extends BaseFragment implements View.OnClickListener, OnRecyclerViewItemClickListener, INetworkEvent {
+public class TemplateListFragment extends BaseFragment implements View.OnClickListener, OnRecyclerViewItemClickListener, INetworkEvent,MultiSelectDialog.SubmitCallbackListener {
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
@@ -77,6 +86,13 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
     private int mCurrentPage=1;
     private int mTotalPage=1;
     private String mTemplateListURL="";
+
+    private List<AditorReviewBean> mAuditorNameList;
+    private ArrayList<String> mReviewerList,getmReviewerListID;
+    private EditText mAuditorNameET;
+    private ArrayList<Integer> mAuditorsIDSelected;
+    private ArrayList<MultiSelectModel> mMultiSelectModelsList;
+
 
     public static TemplateListFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -122,6 +138,7 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
         mTeamListRV=(RecyclerView)view.findViewById(R.id.rv_teamlist);
         mProgressBarRL=(RelativeLayout)view.findViewById(R.id.ll_parent_progress);
         mNoDataFoundRL=(RelativeLayout)view.findViewById(R.id.rl_nodatafound);
+
     }
     @Override
     protected void initVar() {
@@ -134,6 +151,14 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
 
         mAuditsTypeList=new ArrayList<>();
         mAuditTypeIDList=new ArrayList<>();
+
+
+        mMultiSelectModelsList=new ArrayList<>();
+        mAuditorNameList =new ArrayList<>();
+
+        mReviewerList=new ArrayList<>();
+        getmReviewerListID=new ArrayList<>();
+        mAuditorsIDSelected=new ArrayList<>();
 
 
         LinearLayoutManager mLayoutManager;
@@ -176,7 +201,10 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
     {
         switch (view.getId())
         {
-
+            /*case R.id.et_auditor_name:
+                populateMultiSelectData();
+                getMultiSelectionDialog(mMultiSelectModelsList,getString(R.string.text_assigneeselect));
+                break;*/
 
         }
 
@@ -215,12 +243,14 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
         if (NetworkStatus.isNetworkConnected(mActivity)) {
             mProgressBarRL.setVisibility(View.VISIBLE);
             try {
+                JSONArray jsArray=  new JSONArray(mAuditorsIDSelected);
 
                 JSONObject params = new JSONObject();
                 params.put("audit_type_id", Integer.parseInt(mAuditID));
                 params.put("auditor_id", AppPreferences.INSTANCE.getUserId(mActivity));
                 params.put("location_id", Integer.parseInt(mLocationID));
                 params.put("questionnaire_id", mQuestioneriesID);
+                params.put("completion_notify_user_ids", jsArray);
                 NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.POST_TEMPLATE_CREATE, NetworkConstant.METHOD_POST, this, mActivity);
                 networkService.call(params);
             }
@@ -242,7 +272,8 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onNetworkCallCompleted(String type, String service, String response)
     {
-        Log.e("TEMPLATE Response==>",""+response);
+        Log.e("===> Response==>"+service,""+response);
+        mProgressBarRL.setVisibility(View.GONE);
 
         if (service.equalsIgnoreCase(mTemplateListURL)) {
 
@@ -310,7 +341,8 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
             catch (Exception e){}
 
         }
-        else {
+        else  if (service.contains(NetworkURL.GET_TEMPLATE_CREATELIST))
+        {
 
             try{
                 mLocationListID.clear();
@@ -345,8 +377,30 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
             }
 
         }
+        else {
+            try {
+                JSONObject object = new JSONObject(response);
 
-        mProgressBarRL.setVisibility(View.GONE);
+                if (!object.getBoolean(AppConstant.RES_KEY_ERROR))
+                {
+
+                    AuditFilterRootObject teamRootObject = new GsonBuilder().create().fromJson(object.toString(), AuditFilterRootObject.class);
+                    if (teamRootObject.getData().getAuditors() != null && teamRootObject.getData().getAuditors().size() > 0) {
+                        mAuditorNameList.clear();
+                        mAuditorNameList.addAll(teamRootObject.getData().getAuditors());
+
+                    } else
+                        AppUtils.toast(mActivity, object.getString(AppConstant.RES_KEY_MESSAGE));
+                } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppUtils.toast(mActivity, object.getString(AppConstant.RES_KEY_MESSAGE));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                AppUtils.toast(mActivity, getString(R.string.oops));
+            }
+        }
+
+
     }
 
     @Override
@@ -385,6 +439,21 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
         Spinner mLocationSPN=dialog.findViewById(R.id.spn_locationtype);
         Spinner mAuditTypeSPN=dialog.findViewById(R.id.spn_audittype);
 
+        mAuditorNameET=(EditText) dialog.findViewById(R.id.et_auditor_name);
+        mAuditorNameET.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        populateMultiSelectData();
+                    }
+                        },300);
+            }
+        });
+
+
+
         mLocationAdapter = new ArrayAdapter(mActivity, android.R.layout.simple_spinner_item, mLocationList);
         mLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mLocationSPN.setAdapter(mLocationAdapter);
@@ -408,8 +477,10 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
         mLocationSPN.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (mLocationListID!=null && mLocationListID.size()>0)
+                if (mLocationListID!=null && mLocationListID.size()>0) {
                     mLocationID = mLocationListID.get(position);
+                    getFilterListFromServer(mLocationID);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -440,6 +511,72 @@ public class TemplateListFragment extends BaseFragment implements View.OnClickLi
 
     }
 
+    private void getFilterListFromServer(String locationid)
+    {
+        if (NetworkStatus.isNetworkConnected(mActivity)) {
+            mProgressBarRL.setVisibility(View.VISIBLE);
+            String url=NetworkURL.GET_AUDITCREATEFILTER_URL+locationid;
+            Log.e("Filter url==> ",""+url);
+            NetworkService networkService = new NetworkService(url, NetworkConstant.METHOD_GET, this,mActivity);
+            networkService.call( new HashMap<String, String>());
+        } else
+        {
+            AppUtils.toast(mActivity, getString(R.string.internet_error));
+
+        }
+    }
+
+
+    private void populateMultiSelectData()
+    {
+        mMultiSelectModelsList.clear();
+        mReviewerList.clear();
+        getmReviewerListID.clear();
+        for(int i=0;i<mAuditorNameList.size();i++)
+        {
+            AditorReviewBean bean=mAuditorNameList.get(i);
+            String name=(bean.getName()+"\n"+bean.getEmail()+"\n"+(bean.getCustom_role_name()==null?"":bean.getCustom_role_name()));
+            mReviewerList.add(name);
+            getmReviewerListID.add(""+bean.getUser_id());
+            MultiSelectModel data1=new MultiSelectModel(bean.getUser_id(),name);
+            mMultiSelectModelsList.add(data1);
+        }
+        Log.e("list size===>","=====> "+mMultiSelectModelsList.size());
+        getMultiSelectionDialog(mMultiSelectModelsList,getString(R.string.text_assigneeselect));
+    }
+
+    private void getMultiSelectionDialog(ArrayList<MultiSelectModel> model,String filterName)
+    {
+        MultiSelectDialog multiSelectDialog = new MultiSelectDialog()
+                .title(filterName) //setting title for dialog
+                .titleSize(20)
+                .positiveText("Done")
+                .negativeText("Cancel")
+                .setMinSelectionLimit(1) //you can set minimum checkbox selection limit (Optional)
+                .setMaxSelectionLimit(model.size()) //you can set maximum checkbox selection limit (Optional)
+                //.preSelectIDsList(alreadySelectedCountries) //List of ids that you need to be selected
+                .multiSelectList(model) // the multi select model list with ids and name
+                .onSubmit(this);
+
+        multiSelectDialog.show(getChildFragmentManager(), "multiSelectDialog");
+
+    }
+
+
+    @Override
+    public void onSelected(ArrayList<Integer> id, ArrayList<String> name, String data) {
+        mAuditorsIDSelected.clear();
+        Log.e(";;;;;;;;;;;;;;;;;;;   ",name.toString());
+        mAuditorNameET.setText(name.toString());
+        mAuditorsIDSelected.addAll(id);
+    }
+
+    @Override
+    public void onCancel()
+    {
+
+
+    }
 }
 
 

@@ -1,6 +1,7 @@
 package com.oditly.audit.inspection.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +33,8 @@ import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuesti
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.oditly.audit.inspection.model.audit.BrandStandard.BrandStandardSlider;
 import com.oditly.audit.inspection.ui.activty.BrandStandardAuditActivityPagingnation;
+import com.oditly.audit.inspection.ui.activty.SignatureForQauestionActivity;
+import com.oditly.audit.inspection.util.AppConstant;
 import com.oditly.audit.inspection.util.AppLogger;
 import com.oditly.audit.inspection.util.AppUtils;
 
@@ -140,6 +144,34 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                     AppUtils.datePicker(context,holder.mDateTimePickerTV,false,brandStandardQuestion);
                 }
             });
+        }
+        else if(questionType.equalsIgnoreCase("signature"))
+        {
+            holder.mDateTimePickerTV.setText(R.string.click_to_sign);
+
+            ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) holder.mDateTimePickerTV.getLayoutParams();
+            params.height = 140;
+            holder.mDateTimePickerTV.setLayoutParams(params);
+
+            if (!TextUtils.isEmpty(brandStandardQuestion.getAudit_answer())) {
+                holder.mDateTimePickerTV.setText(R.string.edit_sign);
+                holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
+            }
+            setOtherViewHide(holder);
+            // holder.mCommentMediaShowLayout.setVisibility(View.GONE);
+            holder.mDateTimePickerTV.setVisibility(View.VISIBLE);
+            holder.mDateTimePickerTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickedOnAnswerTpye();
+                    Intent intent=new Intent(context, SignatureForQauestionActivity.class);
+                    intent.putExtra(AppConstant.AUDIT_ID, ((BrandStandardAuditActivityPagingnation)context).auditId);
+                    intent.putExtra(AppConstant.QUESTION_ID,brandStandardQuestion.getQuestion_id());
+                    intent.putExtra(AppConstant.SIGNATURE,brandStandardQuestion.getSignature_image_url());
+                    ((BrandStandardAuditActivityPagingnation) context).startActivityForResult(intent,141);
+                   // open signature Pad
+                }
+            });
 
         }
         else  if(questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") )
@@ -149,11 +181,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
             setOtherViewHide(holder);
-         /*   if (questionType.equalsIgnoreCase("textarea"))
-                holder.mTextAnswerET.setMinLines(4);
-            else
-                holder.mTextAnswerET.setMinLines(2);
-*/
+
             holder.mTextAnswerET.setVisibility(View.VISIBLE);
 
             holder.mTextAnswerET.setOnClickListener(new View.OnClickListener() {
@@ -162,22 +190,6 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                     AppDialogs.showeTexTypeAnswerForQuestionBS(brandStandardQuestion, context.getString(R.string.text_type_your_answer), (BrandStandardAuditActivityPagingnation)context);
                 }
             });
-
-
-         /*   holder.mTextAnswerET.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-                @Override
-                public void afterTextChanged(Editable editable)
-                {
-                    clickedOnAnswerTpye();
-                    brandStandardQuestion.setAudit_answer("" + editable.toString());
-
-                }
-            });*/
 
         }
         else  if(questionType.equalsIgnoreCase("number") )
@@ -195,22 +207,6 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                     AppDialogs.showeTexTypeAnswerForQuestionBS(brandStandardQuestion, context.getString(R.string.text_type_your_answer), (BrandStandardAuditActivityPagingnation)context);
                 }
             });
-
-
-         /*   holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-                @Override
-                public void afterTextChanged(Editable editable)
-                {
-                    clickedOnAnswerTpye();
-                    brandStandardQuestion.setAudit_answer("" + editable.toString());
-
-                }
-            });*/
 
         }
         else  if(questionType.equalsIgnoreCase("slider") )
@@ -275,21 +271,6 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                 }
             });
 
-           /* holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-                @Override
-                public void afterTextChanged(Editable editable)
-                {
-                    clickedOnAnswerTpye();
-                    brandStandardQuestion.setAudit_answer("" + editable.toString());
-
-                }
-            });*/
-
         }
         else if(questionType.equalsIgnoreCase("measurement"))
         {
@@ -308,21 +289,6 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                 }
             });
 
-
-       /*     holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-                @Override
-                public void afterTextChanged(Editable editable)
-                {
-                    clickedOnAnswerTpye();
-                    brandStandardQuestion.setAudit_answer("" + editable.toString());
-
-                }
-            });*/
         }
         else if(questionType.equalsIgnoreCase("target"))
         {
@@ -340,21 +306,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
                 }
             });
 
-           /* holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-                @Override
-                public void afterTextChanged(Editable editable)
-                {
-                    clickedOnAnswerTpye();
-                    brandStandardQuestion.setAudit_answer("" + editable.toString());
-                    ((BrandStandardAuditActivityPagingnation) context).countNA_Answers();
-                }
-            });
-*/        }
+        }
         else if(questionType.equalsIgnoreCase("radio"))
         {
             // for radio type question
@@ -455,10 +407,10 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
 
         brandStandardQuestion.setmClickPosition(position); // add position for action list and refresh
 
-        if (brandStandardQuestion.getRef_file()!=null && !AppUtils.isStringEmpty(brandStandardQuestion.getRef_file().getFile_url())) {
+        if (brandStandardQuestion.getRef_file()!=null && !AppUtils.isStringEmpty(brandStandardQuestion.getRef_file().getFile_name())) {
             holder.mShowHowLL.setVisibility(View.VISIBLE);
             holder.mShowHowLL.setEnabled(true);
-            holder.mShowHowLL.setTag(brandStandardQuestion.getRef_file());
+            holder.mShowHowLL.setTag(""+brandStandardQuestion.getQuestion_id());
             holder.mShowHowLL.setOnClickListener((BrandStandardAuditActivityPagingnation)context);
         } else {
             holder.mShowHowLL.setVisibility(View.GONE);
@@ -887,6 +839,20 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
     public void setActionCreatedFlag(int pos) {
         this.data.get(pos).setCan_create_action_plan(false);
         this.data.get(pos).setAction_plan(new BrandStandardActionPlan());
+        notifyItemChanged(pos);
+    }
+
+    public void setSignatureUpdate(int pos,String isDeleted,String URL) {
+      //  Toast.makeText(context,"SIGNATURE "+pos+" || "+isDeleted,Toast.LENGTH_SHORT).show();
+        if (isDeleted.equalsIgnoreCase("Yes")) {
+            this.data.get(pos).setAudit_answer("");
+            this.data.get(pos).setSignature_image_url("");
+        }
+        else {
+            this.data.get(pos).setAudit_answer("Signature Done");
+            this.data.get(pos).setSignature_image_url(URL);
+        }
+
         notifyItemChanged(pos);
     }
 

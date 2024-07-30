@@ -21,7 +21,9 @@ import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -88,7 +90,7 @@ public class AppUtils {
                 BrandStandardQuestion question = brandStandardQuestion.get(j);
                 brandStandardQuestionsSubmissions.add(question);
                 String questionType = question.getQuestion_type();
-                if (brandStandardQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target"))) {
+                if (brandStandardQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target") || questionType.equalsIgnoreCase("signature"))) {
                     if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required() == 1) {
                         // String message="You have not answered question no " + count + " in section " + brandStandardSection.get(i).getSection_title();
                         AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
@@ -161,7 +163,7 @@ public class AppUtils {
                         count += 1;
                         BrandStandardQuestion question = brandStandardSubQuestion.get(j);
                         String questionType = question.getQuestion_type();
-                        if (brandStandardSubQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target"))) {
+                        if (brandStandardSubQuestion.size() > 0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") || questionType.equalsIgnoreCase("temperature") || questionType.equalsIgnoreCase("measurement") || questionType.equalsIgnoreCase("target") || questionType.equalsIgnoreCase("signature"))) {
                             if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required() == 1) {
                                 //  AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
                                 AppUtils.toastDisplayForLong(activity, activity.getResources().getString(R.string.text_youhave_not_answer_question_section).replace("CCC",""+count).replace("SSS",brandStandardSection.get(i).getSection_title()));
@@ -547,15 +549,6 @@ public class AppUtils {
         return check;
     }
 
-    /*  public  static  boolean isVallidPassword(String password)
-      {
-          final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}";
-         // final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\\]).{8,32}$";
-
-          return PASSWORD_PATTERN.matches(password);
-
-      }
-  */
     public static boolean isValidPassword(final String password) {
 
         Pattern pattern;
@@ -636,51 +629,6 @@ public class AppUtils {
         return dateFormat.format(date);
     }
 
-  /*  public static void setScoreColor(String score, TextView tv_score, Context context) {
-        String scoreReplace = score.replace("%", "");
-        try {
-            float rep_score = Float.valueOf(scoreReplace);
-            if (rep_score >= 80.0) {
-                tv_score.setTextColor(context.getResources().getColor(R.color.scoreGreen));
-            } else if (rep_score < 80.0 && rep_score >= 65.0) {
-                tv_score.setTextColor(context.getResources().getColor(R.color.scoreGold));
-            } else {
-                tv_score.setTextColor(context.getResources().getColor(R.color.scoreRed));
-            }
-        }catch (NumberFormatException e){
-            e.printStackTrace();
-        }
-
-    }*/
-
-  /*  public static void setStatusColor(int status, TextView tv_score, Context context) {
-        switch (status){
-            case 0:
-                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_na_status_border));
-                tv_score.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                break;
-            case 1:
-                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_created_status_border));
-                tv_score.setTextColor(context.getResources().getColor(R.color.colorBlack));
-                break;
-            case 2:
-                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_created_status_border));
-                tv_score.setTextColor(context.getResources().getColor(R.color.colorBlack));
-                break;
-            case 3:
-                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_rejected_status_border));
-                tv_score.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                break;
-            case 4:
-                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_submitted_status_border));
-                tv_score.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                break;
-            case 5:
-                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_reviewed_status_border));
-                tv_score.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                break;
-        }
-    }*/
 
     public static String getShowDate(String date) {
 
@@ -1211,7 +1159,7 @@ public class AppUtils {
     }*/
 
     public static void setApplicationLanguage(Context context, String newLanguage) {
-        Resources activityRes = context.getResources();
+       /* Resources activityRes = context.getResources();
         Configuration activityConf = activityRes.getConfiguration();
         Locale newLocale = new Locale(newLanguage);
         activityConf.setLocale(newLocale);
@@ -1220,7 +1168,34 @@ public class AppUtils {
         Resources applicationRes = context.getResources();
         Configuration applicationConf = applicationRes.getConfiguration();
         applicationConf.setLocale(newLocale);
-        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());*/
+
+
+      /*  Locale myLocale = new Locale(newLanguage);
+        Resources res = context.getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        Locale.setDefault(myLocale);
+        conf.setLayoutDirection(myLocale);
+        res.updateConfiguration(conf, dm);*/
+
+
+        Resources res = context.getResources();
+        // create the corresponding locale
+        Locale locale = new Locale(newLanguage); // for example "en"
+        // Change locale settings in the app.
+        android.content.res.Configuration conf = res.getConfiguration();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            conf.setLayoutDirection(locale);
+        } else {
+            conf.locale = locale;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            context.getApplicationContext().createConfigurationContext(conf);
+        }
+        res.updateConfiguration(conf, null);
     }
 
 

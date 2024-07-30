@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -42,11 +44,18 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         }
 
     }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AppUtils.setApplicationLanguage(this,AppPreferences.INSTANCE.getSelectedLang(this));
+
+    }
+
     @Override
     protected void onStart()
     {
         super.onStart();
-        AppUtils.setApplicationLanguage(this,AppPreferences.INSTANCE.getSelectedLang(this));
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         if (mUser!=null) {
             mUser.getIdToken(true)

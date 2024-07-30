@@ -8,15 +8,16 @@ package com.oditly.audit.inspection.network;
 public class NetworkURL {
 
     //API URL'S LIVE SERVER
-   // public static final String API_BASE_URL_NEW= "https://api.account.oditly.in/";
-   // public static final String API_BASE_URL = "https://api.account.oditly.in/m/";
+
+ //  public static final String API_BASE_URL_NEW= "https://api.account.oditly.com/";
+  // public static final String API_BASE_URL = "https://api.account.oditly.com/m/";
 
 
 
 
     //API URL'S STAGE SERVER NEW
     public static final String API_BASE_URL_NEW= "https://api.account.stage.oditly.com/";
-     public static final String API_BASE_URL = "https://api.account.stage.oditly.com/m/";
+    public static final String API_BASE_URL = "https://api.account.stage.oditly.com/m/";
 
 
 
@@ -115,7 +116,10 @@ public class NetworkURL {
 
 
     public static final String GET_RefreshToke_OKTA_URL="https://securetoken.googleapis.com/v1/token?key=";
-    public static final String OKTA_LIVE_URL="https://oditly.firebaseapp.com/?providerId=";
+   // public static final String OKTA_LIVE_URL="https://oditly.firebaseapp.com/?providerId=";
+    public static final String OKTA_LIVE_URL="https://auth.account.oditly.com/?providerId=";
+
+
     public static final String URL_CHATSUPPORT ="https://go.crisp.chat/chat/embed/?website_id=e6111076-aafa-4cf4-830e-e6582700d1dc";
     public static final String URL_PRIVACY_POLICY="https://www.oditly.com/privacy_policy";
     public static final String URL_TERM_AND_CONDITION="https://www.oditly.com/terms_of_use";
@@ -125,6 +129,13 @@ public class NetworkURL {
     public static final String GET_TEMPLATE_LIST=API_BASE_URL_NEW+"internal-questionnaires?filter%5Bque_status%5D%5B%5D=1";
     public static final String GET_TEMPLATE_CREATELIST=API_BASE_URL_NEW+"internal-questionnaire/create-inspection?questionnaire_id=";
     public static final String POST_TEMPLATE_CREATE=API_BASE_URL_NEW+"internal-audit";
+
+    public static final String GET_REFERENCE_FILE_FOR_QUESTION=API_BASE_URL_NEW+"internal-audit/question/reference-file";
+    //public static final String GET_REFERENCE_FILE_FOR_QUESTION=API_BASE_URL_NEW+"internal-audit/question/reference-file";
+
+    public static final String AUDIT_INTERNAL_SIGNATURE_QUESTION = API_BASE_URL_NEW + "internal-audit/question/signature";
+    public static final String AUDIT_INTERNAL_SIGNATURE_QUESTION_REMOVE = API_BASE_URL_NEW + "internal-audit/question/signature/remove";
+
 
 
     // audit_id,action_plan_id,file
