@@ -60,7 +60,9 @@ public class SignatureForQauestionActivity extends BaseActivity implements INetw
     private TextView mHeaderTitleTV;
     private String  mAuditId="0",mQuestionID="0",mSignatureImageURL="";
     private RelativeLayout mProgressBarRL;
-    private LinearLayout mButtonContainerLL,mImageContainerLL;
+    private LinearLayout mButtonContainerLL;
+    private RelativeLayout mImageContainerLL;
+
     private ImageView mSignatureImageIV;
 
 
@@ -87,7 +89,7 @@ public class SignatureForQauestionActivity extends BaseActivity implements INetw
         mButtonContainerLL=(LinearLayout)findViewById(R.id.buttons_container) ;
         mSignaturePad = findViewById(R.id.signature_pad);
         mSignatureImageIV=(ImageView)findViewById(R.id.iv_signature_image);
-        mImageContainerLL=(LinearLayout)findViewById(R.id.ll_image_container);
+        mImageContainerLL=(RelativeLayout) findViewById(R.id.ll_image_container);
         findViewById(R.id.tv_cancel).setOnClickListener(this);
         findViewById(R.id.tv_delete).setOnClickListener(this);
 
